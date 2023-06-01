@@ -1,0 +1,6 @@
+﻿name: Abacus of Violent Odds
+ap: 64
+# Use: Increases haste rating by 260 for 10 sec (2 Min Cooldown) - handled in code
+wowhead: 28288
+source: dungeon
+phase: 1

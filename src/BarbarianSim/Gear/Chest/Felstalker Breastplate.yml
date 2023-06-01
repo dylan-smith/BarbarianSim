@@ -1,0 +1,14 @@
+﻿name: Felstalker Breastplate
+armor: 646
+agility: 26
+intellect: 26
+ap: 52
+sockets:
+  red: 2
+  blue: 1
+  bonus:
+    stamina: 6
+wowhead: 25696
+source: crafting
+phase: 1
+# Part of Felstalker Armor set

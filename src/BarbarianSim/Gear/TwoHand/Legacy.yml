@@ -1,0 +1,12 @@
+﻿name: Legacy
+speed: 3.5
+mindmg: 319
+maxdmg: 479
+type: axe
+agility: 40
+stamina: 46
+ap: 80
+mp5: 8
+wowhead: 28587
+source: karazhan
+phase: 1

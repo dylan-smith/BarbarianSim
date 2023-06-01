@@ -1,0 +1,15 @@
+﻿name: Beast Lord Handguards
+armor: 407
+agility: 25
+stamina: 12
+intellect: 17
+ap: 34
+sockets:
+  red: 1
+  blue: 1
+  bonus:
+    hit: 3
+wowhead: 27474
+source: dungeon
+phase: 1
+# Part of Beast Lord Armor set

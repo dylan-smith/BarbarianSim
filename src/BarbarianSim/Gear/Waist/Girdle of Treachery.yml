@@ -1,0 +1,12 @@
+﻿name: Girdle of Treachery
+armor: 205
+agility: 18
+stamina: 37
+ap: 58
+sockets:
+  red: 2
+  bonus:
+    agility: 3
+wowhead: 28750
+source: karazhan
+phase: 1

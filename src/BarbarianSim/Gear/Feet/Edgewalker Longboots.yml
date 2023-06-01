@@ -1,0 +1,15 @@
+﻿name: Edgewalker Longboots
+armor: 250
+agility: 29
+stamina: 28
+hit: 13
+ap: 44
+sockets:
+  red: 1
+  yellow: 1
+  bonus:
+    hit: 3
+stealth: 5
+wowhead: 28545
+source: karazhan
+phase: 1

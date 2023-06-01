@@ -1,0 +1,15 @@
+﻿name: Beast Lord Mantle
+armor: 489
+agility: 25
+intellect: 12
+ap: 34
+mp5: 5
+sockets:
+  yellow: 1
+  red: 1
+  bonus:
+    stamina: 4
+wowhead: 27801
+source: dungeon
+phase: 1
+# Part of Beast Lord Armor set

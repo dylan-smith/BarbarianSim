@@ -1,0 +1,14 @@
+﻿name: Felstalker Belt
+armor: 357
+agility: 18
+intellect: 17
+ap: 50
+sockets:
+  red: 1
+  blue: 1
+  bonus:
+    stamina: 4
+wowhead: 25695
+source: crafting
+phase: 1
+# Part of Felstalker Armor set

@@ -1,0 +1,13 @@
+﻿name: Barrel-Blade Longrifle
+speed: 2.6
+mindmg: 147
+maxdmg: 275
+type: gun
+agility: 16
+sockets:
+  red: 2
+  bonus:
+    crit: 3
+wowhead: 30724
+source: worldboss
+phase: 1

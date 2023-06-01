@@ -1,0 +1,12 @@
+﻿name: Scaled Greaves of the Marksman
+armor: 740
+agility: 37
+hit: 16
+ap: 76
+sockets:
+  red: 3
+  bonus:
+    agility: 4
+wowhead: 30739
+source: worldboss
+phase: 1

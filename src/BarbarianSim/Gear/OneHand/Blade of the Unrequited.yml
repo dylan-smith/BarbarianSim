@@ -1,0 +1,17 @@
+﻿name: Blade of the Unrequited
+speed: 1.6
+mindmg: 112
+maxdmg: 168
+type: dagger
+stamina: 13
+crit: 9
+ap: 18
+sockets:
+  red: 1
+  yellow: 1
+  blue: 1
+  bonus:
+    ap: 8
+wowhead: 28572
+source: karazhan
+phase: 1

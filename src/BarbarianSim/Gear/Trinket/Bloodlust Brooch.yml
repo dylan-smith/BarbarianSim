@@ -1,0 +1,6 @@
+﻿name: Bloodlust Brooch
+ap: 72
+# Use: Increases Attack Power by 278 for 20 sec (2 Min Cooldown) - handled in code
+wowhead: 29383
+source: badges
+phase: 1

@@ -1,0 +1,15 @@
+﻿name: Beast Lord Helm
+armor: 530
+agility: 25
+stamina: 21
+intellect: 22
+ap: 50
+sockets:
+  red: 1
+  meta: 1
+  bonus:
+    mp5: 2
+wowhead: 28275
+source: dungeon
+phase: 1
+# Part of Beast Lord Armor Set
