@@ -1,4 +1,4 @@
-﻿namespace HunterSim.GearSets
+﻿namespace BarbarianSim.GearSets
 {
     public interface IGearSet
     {

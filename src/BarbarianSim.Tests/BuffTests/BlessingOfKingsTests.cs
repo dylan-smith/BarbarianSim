@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HunterSim.Tests.Buffs
+namespace BarbarianSim.Tests.Buffs
 {
     [TestClass]
     public class BlessingOfKingsTests

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public static class ExtensionMethods
     {

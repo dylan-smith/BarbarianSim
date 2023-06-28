@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public enum WeaponType
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HunterSim.Tests.GearSetTests
+namespace BarbarianSim.Tests.GearSetTests
 {
     [TestClass]
     public class BeastLordArmorTests

@@ -1,4 +1,4 @@
-﻿namespace HunterSim
+﻿namespace BarbarianSim
 {
     public abstract class EventInfo
     {

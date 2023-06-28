@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class YamlProperty : Attribute

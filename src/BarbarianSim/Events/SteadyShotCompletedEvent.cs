@@ -1,4 +1,4 @@
-﻿namespace HunterSim.Events
+﻿namespace BarbarianSim.Events
 {
     public class SteadyShotCompletedEvent : EventInfo
     {

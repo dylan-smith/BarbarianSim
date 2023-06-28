@@ -1,4 +1,4 @@
-﻿namespace HunterSim.MetaGems
+﻿namespace BarbarianSim.MetaGems
 {
     public class ThunderingSkyfireDiamond : MetaGem
     {

@@ -1,8 +1,8 @@
-using HunterSim.MetaGems;
+using BarbarianSim.MetaGems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace HunterSim.Tests
+namespace BarbarianSim.Tests
 {
     [TestClass]
     public class ConfigValidationTests

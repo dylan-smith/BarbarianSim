@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     internal class Program
     {

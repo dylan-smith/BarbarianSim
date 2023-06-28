@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace HunterSim.Tests.ProcTests
+namespace BarbarianSim.Tests.ProcTests
 {
     [TestClass]
     public class ImprovedAspectOfTheHawkTests

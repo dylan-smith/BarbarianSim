@@ -1,8 +1,8 @@
-﻿using HunterSim.GearSets;
+﻿using BarbarianSim.GearSets;
 using System;
 using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public class Simulation
     {

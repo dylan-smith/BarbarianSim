@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace HunterSim.MetaGems
+namespace BarbarianSim.MetaGems
 {
     public class SwiftWindfireDiamond : MetaGem
     {

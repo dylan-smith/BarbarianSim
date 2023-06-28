@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HunterSim.Tests.AuraTests
+namespace BarbarianSim.Tests.AuraTests
 {
     [TestClass]
     public class AspectOfTheMonkeyTests

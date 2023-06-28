@@ -1,4 +1,4 @@
-﻿namespace HunterSim
+﻿namespace BarbarianSim
 {
     public class DodgeCalculator : BaseStatCalculator
     {

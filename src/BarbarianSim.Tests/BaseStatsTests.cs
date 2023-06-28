@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HunterSim.Tests
+namespace BarbarianSim.Tests
 {
     [TestClass]
     public class BaseStatsTests

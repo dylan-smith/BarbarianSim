@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace HunterSim.Tests.TalentTests
+namespace BarbarianSim.Tests.TalentTests
 {
     [TestClass]
     public class ExposeWeaknessTests

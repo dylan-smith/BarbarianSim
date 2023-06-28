@@ -1,10 +1,10 @@
-﻿using HunterSim.Abilities;
-using HunterSim.Events;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace HunterSim.Tests.AbilityTests
+namespace BarbarianSim.Tests.AbilityTests
 {
     [TestClass]
     public class SteadyShotTests

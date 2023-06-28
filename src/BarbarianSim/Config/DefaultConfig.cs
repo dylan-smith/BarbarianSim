@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public class DefaultConfig : SimulationConfig
     {

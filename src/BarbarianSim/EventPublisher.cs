@@ -1,7 +1,7 @@
-﻿using HunterSim.Events;
+﻿using BarbarianSim.Events;
 using System;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public static class EventPublisher
     {

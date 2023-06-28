@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public abstract class BaseStatCalculator
     {

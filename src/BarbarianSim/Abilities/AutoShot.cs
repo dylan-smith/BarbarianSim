@@ -1,7 +1,7 @@
-﻿using HunterSim.Events;
+﻿using BarbarianSim.Events;
 using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public class AutoShot
     {

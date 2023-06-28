@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HunterSim.Tests.Buffs
+namespace BarbarianSim.Tests.Buffs
 {
     [TestClass]
     public class ScrollOfAgilityVTests

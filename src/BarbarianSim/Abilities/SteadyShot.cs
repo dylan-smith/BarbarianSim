@@ -1,6 +1,6 @@
-﻿using HunterSim.Events;
+﻿using BarbarianSim.Events;
 
-namespace HunterSim.Abilities
+namespace BarbarianSim.Abilities
 {
     public class SteadyShot
     {

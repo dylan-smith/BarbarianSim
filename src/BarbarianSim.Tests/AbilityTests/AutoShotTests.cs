@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace HunterSim.Tests.AbilityTests
+namespace BarbarianSim.Tests.AbilityTests
 {
     [TestClass]
     public class AutoShotTests
@@ -25,9 +25,9 @@ namespace HunterSim.Tests.AbilityTests
                 CurrentTime = 7.2
             };
 
-            Assert.IsTrue(HunterSim.AutoShot.CanUse(state));
+            Assert.IsTrue(BarbarianSim.AutoShot.CanUse(state));
 
-            HunterSim.AutoShot.Use(state);
+            BarbarianSim.AutoShot.Use(state);
 
             Assert.AreEqual(1, state.Events.Count);
             Assert.AreEqual(7.2, state.Events[0].Timestamp, 0.001);
@@ -41,7 +41,7 @@ namespace HunterSim.Tests.AbilityTests
 
             state.Auras.Add(Aura.AutoShotOnCooldown);
 
-            Assert.IsFalse(HunterSim.AutoShot.CanUse(state));
+            Assert.IsFalse(BarbarianSim.AutoShot.CanUse(state));
         }
 
         [TestMethod]

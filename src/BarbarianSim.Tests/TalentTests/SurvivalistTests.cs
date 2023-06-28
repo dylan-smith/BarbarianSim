@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HunterSim.Tests.TalentTests
+namespace BarbarianSim.Tests.TalentTests
 {
     [TestClass]
     public class SurvivalistTests

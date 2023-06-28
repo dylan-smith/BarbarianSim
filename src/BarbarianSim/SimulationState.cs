@@ -1,9 +1,9 @@
-﻿using HunterSim.GearSets;
+﻿using BarbarianSim.GearSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HunterSim
+namespace BarbarianSim
 {
     public class SimulationState
     {

@@ -1,4 +1,4 @@
-﻿namespace HunterSim.Tests
+﻿namespace BarbarianSim.Tests
 {
     public class FakeStatCalculator : BaseStatCalculator
     {

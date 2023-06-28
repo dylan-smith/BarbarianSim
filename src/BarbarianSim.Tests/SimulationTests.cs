@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System.Linq;
 
-namespace HunterSim.Tests
+namespace BarbarianSim.Tests
 {
     [TestClass]
     public class SimulationTests

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace HunterSim.Tests
+namespace BarbarianSim.Tests
 {
     public class FakeRandomGenerator : RandomGenerator
     {

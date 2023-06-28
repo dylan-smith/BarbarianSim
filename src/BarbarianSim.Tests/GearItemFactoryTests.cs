@@ -3,7 +3,7 @@ using Newtonsoft.Json.Schema;
 using System;
 using System.Linq;
 
-namespace HunterSim.Tests
+namespace BarbarianSim.Tests
 {
     [TestClass]
     public class GearItemFactoryTests
