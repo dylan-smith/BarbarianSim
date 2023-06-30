@@ -12,7 +12,9 @@
             var damageToSlowed = state.Enemy.IsSlowed() ? state.Config.Gear.GetStatTotal(g => g.DamageToSlowed) : 0.0;
             var damageToCrowdControlled = state.Enemy.IsCrowdControlled() ? state.Config.Gear.GetStatTotal(g => g.DamageToCrowdControlled) : 0.0;
 
-            return 1.0 + (physicalDamage / 100.0);
+            var bonus = physicalDamage + damageToClose + damageToInjured + damageToSlowed + damageToCrowdControlled;
+
+            return 1.0 + (bonus / 100.0);
         }
     }
 }

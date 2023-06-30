@@ -16,7 +16,8 @@ namespace BarbarianSim
         public SimulationState(SimulationConfig config)
         {
             Config = config;
-            Enemy.Life = config.EnemySettings.Life;
+            Enemy.MaxLife = config.EnemySettings.Life;
+            Enemy.Life = Enemy.MaxLife;
         }
 
         public IEnumerable<DamageEvent> DamageEvents => ProcessedEvents.Where(e => e is DamageEvent).Cast<DamageEvent>();
