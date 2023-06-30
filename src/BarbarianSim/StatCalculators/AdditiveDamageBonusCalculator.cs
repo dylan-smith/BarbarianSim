@@ -6,7 +6,7 @@
 
         protected override double InstanceCalculate(SimulationState state)
         {
-            return 0.0;
+            return 1.0;
         }
     }
 }

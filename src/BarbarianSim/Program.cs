@@ -160,21 +160,21 @@ namespace BarbarianSim
             var sim = new Simulation(config);
             var state = sim.Run();
 
-            Console.WriteLine(state.ProcessedEvents.Count);
+            Console.WriteLine($"Total Events: {state.ProcessedEvents.Count}");
 
             var hits = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Where(x => x.DamageType == DamageType.Direct);
             var crits = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Where(x => x.DamageType == DamageType.DirectCrit);
 
             var avgHit = hits.Average(x => x.Damage);
-            var avgCrit = crits.Average(x => x.Damage);
+            //var avgCrit = crits.Average(x => x.Damage);
 
-            var critBonus = (avgCrit - avgHit) / avgHit * 100;
+            //var critBonus = (avgCrit - avgHit) / avgHit * 100;
 
             Console.WriteLine($"Hits: {hits.Count()}");
-            Console.WriteLine($"Crits: {crits.Count()}");
+            //Console.WriteLine($"Crits: {crits.Count()}");
             Console.WriteLine($"Avg Hit: {avgHit}");
-            Console.WriteLine($"Avg Crit: {avgCrit}");
-            Console.WriteLine($"Crit Bonus: {critBonus}");
+            //Console.WriteLine($"Avg Crit: {avgCrit}");
+            //Console.WriteLine($"Crit Bonus: {critBonus}");
         }
     }
 }

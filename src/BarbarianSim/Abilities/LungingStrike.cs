@@ -15,11 +15,11 @@ namespace BarbarianSim.Abilities
         {
             return skillLevel switch
             {
-                1 => 1.33,
-                2 => 1.36,
-                3 => 1.39,
-                4 => 1.42,
-                5 => 1.45,
+                1 => 0.33,
+                2 => 0.36,
+                3 => 0.39,
+                4 => 0.42,
+                5 => 0.45,
                 _ => 0.0,
             };
         }

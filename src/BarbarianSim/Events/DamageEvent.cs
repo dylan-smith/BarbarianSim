@@ -11,9 +11,7 @@
             DamageType = damageType;
         }
 
-        public override void ProcessEvent(SimulationState state)
-        {
-        }
+        public override void ProcessEvent(SimulationState state) => state.EnemyLife -= (int)Damage;
 
         public override string ToString() => $"[{Timestamp:F1}] {DamageType} for {Damage:F2}";
     }

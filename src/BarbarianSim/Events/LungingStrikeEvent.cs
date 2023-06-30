@@ -14,12 +14,12 @@ namespace BarbarianSim.Events
         public override void ProcessEvent(SimulationState state)
         {
             var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
-            _ = LungingStrike.GetSkillMultiplier(state.Config.Skills[Skill.LungingStrike]);
+            var skillMultiplier = LungingStrike.GetSkillMultiplier(state.Config.Skills[Skill.LungingStrike]);
             var additiveDamageBonus = AdditiveDamageBonusCalculator.Calculate(state);
             var multiplicativeDamageBonus = MultiplicativeDamageBonusCalculator.Calculate(state);
             var vulnerableDamageBonus = VulnerableDamageBonusCalculator.Calculate(state);
 
-            var damage = weaponDamage * additiveDamageBonus * multiplicativeDamageBonus * vulnerableDamageBonus;
+            var damage = weaponDamage * skillMultiplier * additiveDamageBonus * multiplicativeDamageBonus * vulnerableDamageBonus;
             var damageType = DamageType.Direct;
 
             var critChance = CritChanceCalculator.Calculate(state);

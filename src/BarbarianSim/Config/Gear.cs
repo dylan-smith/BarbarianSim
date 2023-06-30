@@ -2,18 +2,18 @@
 {
     public class Gear
     {
-        public GearItem Helm { get; private set; } = new GearItem();
-        public GearItem Chest { get; private set; }
-        public GearItem Gloves { get; private set; }
-        public GearItem Pants { get; private set; }
-        public GearItem Boots { get; private set; }
-        public GearItem TwoHandBludgeoning { get; private set; }
-        public GearItem OneHandLeft { get; private set; }
-        public GearItem OneHandRight { get; private set; }
-        public GearItem TwoHandSlashing { get; private set; }
-        public GearItem Amulet { get; private set; }
-        public GearItem Ring1 { get; private set; }
-        public GearItem Ring2 { get; private set; }
+        public GearItem Helm { get; init; } = new();
+        public GearItem Chest { get; init; } = new();
+        public GearItem Gloves { get; init; } = new();
+        public GearItem Pants { get; init; } = new();
+        public GearItem Boots { get; init; } = new();
+        public GearItem TwoHandBludgeoning { get; init; } = new();
+        public GearItem OneHandLeft { get; init; } = new();
+        public GearItem OneHandRight { get; init; } = new();
+        public GearItem TwoHandSlashing { get; init; } = new();
+        public GearItem Amulet { get; init; } = new();
+        public GearItem Ring1 { get; init; } = new();
+        public GearItem Ring2 { get; init; } = new();
 
         public IEnumerable<GearItem> AllGear
         {
