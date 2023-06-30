@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BarbarianSim.Config
+﻿namespace BarbarianSim.Config
 {
     public class Gear
     {
@@ -19,24 +15,27 @@ namespace BarbarianSim.Config
         public GearItem Ring1 { get; private set; }
         public GearItem Ring2 { get; private set; }
 
-        public IEnumerable<GearItem> GetAllGear()
+        public IEnumerable<GearItem> AllGear
         {
-            yield return Helm;
-            yield return Chest;
-            yield return Gloves;
-            yield return Pants;
-            yield return Boots;
-            yield return TwoHandBludgeoning;
-            yield return OneHandLeft;
-            yield return OneHandRight;
-            yield return TwoHandSlashing;
-            yield return Amulet;
-            yield return Ring1;
-            yield return Ring2;
+            get
+            {
+                yield return Helm;
+                yield return Chest;
+                yield return Gloves;
+                yield return Pants;
+                yield return Boots;
+                yield return TwoHandBludgeoning;
+                yield return OneHandLeft;
+                yield return OneHandRight;
+                yield return TwoHandSlashing;
+                yield return Amulet;
+                yield return Ring1;
+                yield return Ring2;
+            }
         }
-        
-        public IEnumerable<Gem> GetAllGems() => GetAllGear().SelectMany(g => g.Gems);
-        
-        public double GetStatTotal(Func<GearItem, double> stat) => GetAllGear().Sum(g => g.GetStatWithGems(stat));
+
+        public IEnumerable<Gem> GetAllGems() => AllGear.SelectMany(g => g.Gems);
+
+        public double GetStatTotal(Func<GearItem, double> stat) => AllGear.Sum(g => g.GetStatWithGems(stat));
     }
 }

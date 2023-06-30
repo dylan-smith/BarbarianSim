@@ -1,10 +1,9 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Events;
-using System.Linq;
 
 namespace BarbarianSim.Abilities
 {
-    public class LungingStrike
+    public static class LungingStrike
     {
         public static bool CanUse(SimulationState state) => !state.Auras.Contains(Aura.WeaponCooldown);
 

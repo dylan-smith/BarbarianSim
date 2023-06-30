@@ -4,7 +4,7 @@
     {
         public double Timestamp { get; set; }
 
-        public EventInfo(double timestamp) => Timestamp = timestamp;
+        protected EventInfo(double timestamp) => Timestamp = timestamp;
 
         public abstract void ProcessEvent(SimulationState state);
 

@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace BarbarianSim.Config
+﻿namespace BarbarianSim.Config
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class YamlProperty : Attribute
+    public sealed class YamlPropertyAttribute : Attribute
     {
         public string PropertyName { get; set; }
 
-        public YamlProperty(string propertyName) => PropertyName = propertyName;
+        public YamlPropertyAttribute(string propertyName) => PropertyName = propertyName;
     }
 
     public class GearItem
     {
-        [YamlProperty("armor")]
+        [YamlPropertyAttribute("armor")]
         public int Armor { get; set; }
         public double CooldownReduction { get; set; }
         public double PoisonResistance { get; set; }
@@ -40,9 +36,9 @@ namespace BarbarianSim.Config
         public int Dexterity { get; set; }
         public int DPS { get; set; }
         public Expertise Expertise { get; set; }
-        [YamlProperty("min-damage")]
+        [YamlPropertyAttribute("min-damage")]
         public int MinDamage { get; set; }
-        [YamlProperty("max-damage")]
+        [YamlPropertyAttribute("max-damage")]
         public int MaxDamage { get; set; }
         public double AttacksPerSecond { get; set; }
         public double OverpowerDamage { get; set; }
@@ -67,7 +63,7 @@ namespace BarbarianSim.Config
         public double DamageReductionWhileFortified { get; set; }
         public double CritDamageVulnerable { get; set; }
 
-        public IList<Gem> Gems = new List<Gem>();
+        public IList<Gem> Gems { get; init; } = new List<Gem>();
         public Aspect Aspect { get; set; }
 
         public double GetStatWithGems(Func<GearItem, double> statFunc) => statFunc(this) + Gems.Sum(x => statFunc(x));

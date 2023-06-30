@@ -1,22 +1,19 @@
 ﻿using BarbarianSim.Config;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace BarbarianSim
 {
     public class SimulationState
     {
-        public readonly IList<EventInfo> Events = new List<EventInfo>();
-        public readonly IList<EventInfo> ProcessedEvents = new List<EventInfo>();
-        public double CurrentTime = 0.0;
-        public readonly ISet<Aura> Auras = new HashSet<Aura>();
-        public readonly ISet<Aura> EnemyAuras = new HashSet<Aura>();
+        public IList<EventInfo> Events { get; init; } = new List<EventInfo>();
+        public IList<EventInfo> ProcessedEvents { get; init; } = new List<EventInfo>();
+        public double CurrentTime { get; set; }
+        public ISet<Aura> Auras { get; init; } = new HashSet<Aura>();
+        public ISet<Aura> EnemyAuras { get; init; } = new HashSet<Aura>();
         public SimulationConfig Config { get; init; }
-        public readonly IList<string> Warnings = new List<string>();
-        public readonly IList<string> Errors = new List<string>();
+        public IList<string> Warnings { get; init; } = new List<string>();
+        public IList<string> Errors { get; init; } = new List<string>();
 
-        public int EnemyLife;
+        public int EnemyLife { get; set; }
 
         public SimulationState(SimulationConfig config)
         {

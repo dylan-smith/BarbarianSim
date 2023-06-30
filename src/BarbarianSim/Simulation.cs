@@ -1,13 +1,11 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Config;
-using System;
-using System.Linq;
 
 namespace BarbarianSim
 {
     public class Simulation
     {
-        public readonly SimulationState State;
+        public SimulationState State { get; init; }
 
         public Simulation(SimulationConfig config) => State = new SimulationState(config);
 

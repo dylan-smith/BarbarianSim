@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Enums;
-using System;
 
 namespace BarbarianSim
 {

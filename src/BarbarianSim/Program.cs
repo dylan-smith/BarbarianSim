@@ -1,9 +1,7 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Config;
-using BarbarianSim.Gear.Aspects;
-using BarbarianSim.Gear.Gems;
-using System;
-using System.Linq;
+using BarbarianSim.Aspects;
+using BarbarianSim.Gems;
 
 namespace BarbarianSim
 {
@@ -16,7 +14,7 @@ namespace BarbarianSim
             config.EnemySettings.Life = 500000;
             config.EnemySettings.NumberOfEnemies = 1;
             config.EnemySettings.Level = 100;
-            
+
             config.PlayerSettings.Level = 100;
             config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedAxe;
 

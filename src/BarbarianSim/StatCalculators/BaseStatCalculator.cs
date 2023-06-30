@@ -1,7 +1,4 @@
 ﻿using BarbarianSim.Config;
-using BarbarianSim;
-using System;
-using System.Collections.Generic;
 
 namespace BarbarianSim.StatCalculators
 {

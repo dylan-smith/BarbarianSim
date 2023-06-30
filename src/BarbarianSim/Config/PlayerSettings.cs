@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BarbarianSim.Config
+﻿namespace BarbarianSim.Config
 {
     public class PlayerSettings
     {

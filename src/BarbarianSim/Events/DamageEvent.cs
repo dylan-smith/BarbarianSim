@@ -2,8 +2,8 @@
 {
     public class DamageEvent : EventInfo
     {
-        public readonly double Damage;
-        public readonly DamageType DamageType;
+        public double Damage { get; set; }
+        public DamageType DamageType { get; set; }
 
         public DamageEvent(double timestamp, double damage, DamageType damageType) : base(timestamp)
         {

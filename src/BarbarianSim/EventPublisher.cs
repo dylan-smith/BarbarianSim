@@ -1,7 +1,4 @@
-﻿using BarbarianSim.Events;
-using System;
-
-namespace BarbarianSim
+﻿namespace BarbarianSim
 {
     public static class EventPublisher
     {
