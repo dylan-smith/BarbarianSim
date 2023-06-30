@@ -6,9 +6,9 @@
         public int MaxLife { get; set; }
         public ISet<Aura> Auras { get; init; } = new HashSet<Aura>();
 
-        public bool IsSlowed() => false;
+        public bool IsSlowed() => Auras.Contains(Aura.Slow);
 
-        public bool IsCrowdControlled() => false;
+        public bool IsCrowdControlled() => Auras.Any(a => a is Aura.Chill or Aura.Daze or Aura.Fear or Aura.Freeze or Aura.Immobilize or Aura.Knockback or Aura.Knockdown or Aura.Stagger or Aura.Stun or Aura.Taunt or Aura.Tether or Aura.Stagger);
 
         public bool IsInjured() => ((double)Life / MaxLife) <= 0.35;
 
