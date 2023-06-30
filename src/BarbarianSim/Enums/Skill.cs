@@ -19,7 +19,7 @@
         EnhancedFlay,
         BattleFlay,
         CombatFlay,
-        
+
         // Core
         Whirlwind,
         EnhancedWhirlwind,
@@ -43,7 +43,7 @@
         EnhancedRend,
         ViolentRend,
         FuriousRend,
-        
+
         // Defensive
         GroundStomp,
         EnhancedGroundStomp,
@@ -65,7 +65,7 @@
         EnhancedChallengingShout,
         TacticalChallengingShout,
         StrategicChallengingShout,
-        
+
         // Brawling
         Kick,
         EnhancedKick,
@@ -114,7 +114,7 @@
         EnhancedDeathBlow,
         WarriorsDeathBlow,
         FightersDeathBlow,
-        
+
         // Ultimate
         CallOfTheAncients,
         PrimeCallOfTheAncients,
@@ -133,7 +133,7 @@
         HeavyHanded,
         BruteForce,
         Concussion,
-        
+
         // Key Passives
         GushingWounds,
         UnbridledRage,

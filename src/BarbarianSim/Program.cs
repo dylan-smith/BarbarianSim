@@ -1,6 +1,6 @@
 ﻿using BarbarianSim.Abilities;
-using BarbarianSim.Config;
 using BarbarianSim.Aspects;
+using BarbarianSim.Config;
 using BarbarianSim.Gems;
 
 namespace BarbarianSim
