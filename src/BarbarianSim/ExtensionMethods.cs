@@ -23,7 +23,7 @@ namespace BarbarianSim
             list.Where(predicate).ToList().ForEach(x => list.Remove(x));
         }
 
-        public static string ShaveLeft(this string a, int characters) => a.Substring(characters);
+        public static string ShaveLeft(this string a, int characters) => a[characters..];
 
         public static string ShaveLeft(this string a, string shave)
         {
@@ -31,13 +31,13 @@ namespace BarbarianSim
 
             while (result.StartsWith(shave))
             {
-                result = result.Substring(shave.Length);
+                result = result[shave.Length..];
             }
 
             return result;
         }
 
-        public static string ShaveRight(this string a, int characters) => a.Substring(0, a.Length - characters);
+        public static string ShaveRight(this string a, int characters) => a[..^characters];
 
         public static string ShaveRight(this string a, string shave)
         {
@@ -45,7 +45,7 @@ namespace BarbarianSim
 
             while (result.EndsWith(shave))
             {
-                result = result.Substring(0, result.Length - shave.Length);
+                result = result[..^shave.Length];
             }
 
             return result;
@@ -59,12 +59,12 @@ namespace BarbarianSim
 
             while (result.StartsWith(shave))
             {
-                result = result.Substring(shave.Length);
+                result = result[shave.Length..];
             }
 
             while (result.EndsWith(shave))
             {
-                result = result.Substring(0, result.Length - shave.Length);
+                result = result[..^shave.Length];
             }
 
             return result;

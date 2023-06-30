@@ -1,4 +1,5 @@
-﻿using BarbarianSim.GearSets;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Config;
 using System;
 using System.Linq;
 
@@ -6,19 +7,12 @@ namespace BarbarianSim
 {
     public class Simulation
     {
-        public readonly SimulationState State = new SimulationState();
+        public readonly SimulationState State;
 
-        public Simulation(SimulationConfig config) => State.Config = config;
+        public Simulation(SimulationConfig config) => State = new SimulationState(config);
 
         public SimulationState Run()
         {
-            // TODO: Start MP5 events
-            // TODO: Start Spirit events
-            // TODO: Raid DPS
-            // TODO: Generate Report/Analysis
-            // TODO: Pet DPS
-            // TODO: Apply aspect of the hawk
-
             if (!State.Validate())
             {
                 return State;
@@ -31,7 +25,7 @@ namespace BarbarianSim
 
                 State.CurrentTime = nextEvent.Timestamp;
 
-                if (State.CurrentTime > State.Config.SimulationSettings.FightLength)
+                if (State.EnemyLife <= 0)
                 {
                     return State;
                 }
@@ -52,13 +46,9 @@ namespace BarbarianSim
 
         private void ExecuteRotation()
         {
-            // TODO: config setting for whether we are responsible for refreshing hunters mark
-            // TODO: config setting for if/when we cast feign death
-            // TODO: config settings for potion usage
-            // TODO: configurable reaction time delays for all abilities
-            if (AutoShot.CanUse(State))
+            if (LungingStrike.CanUse(State))
             {
-                AutoShot.Use(State);
+                LungingStrike.Use(State);
             }
         }
 

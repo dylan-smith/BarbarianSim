@@ -1,7 +1,9 @@
-﻿using System;
+﻿using BarbarianSim.Config;
+using BarbarianSim;
+using System;
 using System.Collections.Generic;
 
-namespace BarbarianSim
+namespace BarbarianSim.StatCalculators
 {
     public abstract class BaseStatCalculator
     {

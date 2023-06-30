@@ -1,11 +1,9 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim.Enums
 {
     public enum RollType
     {
-        AutoShotMiss,
-        AutoShotCrit,
-        ImprovedAspectOfTheHawkProc,
-        ExposeWeaknessProc,
-        MasterTacticianProc
+        CriticalStrike,
+        LuckyStrike,
+        Overpower,
     }
 }

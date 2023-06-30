@@ -2,8 +2,10 @@
 {
     public enum DamageType
     {
-        Miss,
-        Crit,
-        Hit
+        Direct,
+        DirectCrit,
+        DirectOverpower,
+        DirectOverpowerCrit,
+        DamageOverTime,
     }
 }

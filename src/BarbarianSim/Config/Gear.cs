@@ -2,80 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BarbarianSim
+namespace BarbarianSim.Config
 {
     public class Gear
     {
-        public GearItem Head { get; set; }
-        public GearItem Neck { get; set; }
-        public GearItem Shoulder { get; set; }
-        public GearItem Back { get; set; }
-        public GearItem Chest { get; set; }
-        public GearItem Wrist { get; set; }
-        public GearItem MainHand { get; set; }
-        public GearItem OffHand { get; set; }
-        public GearItem Hands { get; set; }
-        public GearItem Waist { get; set; }
-        public GearItem Legs { get; set; }
-        public GearItem Feet { get; set; }
-        public GearItem Finger1 { get; set; }
-        public GearItem Finger2 { get; set; }
-        public GearItem Trinket1 { get; set; }
-        public GearItem Trinket2 { get; set; }
-        public GearItem Ranged { get; set; }
-        public GearItem Ammo { get; set; }
-        public GearItem Quiver { get; set; }
-        public ICollection<GearItem> Other { get; } = new List<GearItem>();
+        public GearItem Helm { get; private set; } = new GearItem();
+        public GearItem Chest { get; private set; }
+        public GearItem Gloves { get; private set; }
+        public GearItem Pants { get; private set; }
+        public GearItem Boots { get; private set; }
+        public GearItem TwoHandBludgeoning { get; private set; }
+        public GearItem OneHandLeft { get; private set; }
+        public GearItem OneHandRight { get; private set; }
+        public GearItem TwoHandSlashing { get; private set; }
+        public GearItem Amulet { get; private set; }
+        public GearItem Ring1 { get; private set; }
+        public GearItem Ring2 { get; private set; }
 
         public IEnumerable<GearItem> GetAllGear()
         {
-            if (Head != null) yield return Head;
-            if (Neck != null) yield return Neck;
-            if (Shoulder != null) yield return Shoulder;
-            if (Back != null) yield return Back;
-            if (Chest != null) yield return Chest;
-            if (Wrist != null) yield return Wrist;
-            if (MainHand != null) yield return MainHand;
-            if (OffHand != null) yield return OffHand;
-            if (Hands != null) yield return Hands;
-            if (Waist != null) yield return Waist;
-            if (Legs != null) yield return Legs;
-            if (Feet != null) yield return Feet;
-            if (Finger1 != null) yield return Finger1;
-            if (Finger2 != null) yield return Finger2;
-            if (Trinket1 != null) yield return Trinket1;
-            if (Trinket2 != null) yield return Trinket2;
-            if (Ranged != null) yield return Ranged;
-            if (Ammo != null) yield return Ammo;
-            if (Quiver != null) yield return Quiver;
-
-            foreach (var x in Other)
-            {
-                yield return x;
-            }
+            yield return Helm;
+            yield return Chest;
+            yield return Gloves;
+            yield return Pants;
+            yield return Boots;
+            yield return TwoHandBludgeoning;
+            yield return OneHandLeft;
+            yield return OneHandRight;
+            yield return TwoHandSlashing;
+            yield return Amulet;
+            yield return Ring1;
+            yield return Ring2;
         }
-
-        public IEnumerable<GearItem> GetAllEnchants()
-        {
-            return GetAllGear().Where(x => x.Enchant != null).Select(x => x.Enchant).ToList();
-        }
-
-        public IEnumerable<GearItem> GetAllGems()
-        {
-            return GetAllGear().SelectMany(g => g.Sockets.Select(s => s.Gem)).Where(g => g != null).ToList();
-        }
-
-        public double GetStatTotal(Func<GearItem, double> stat)
-        {
-            var result = GetAllGear().Sum(g => g.GetStatWithSockets(stat));
-            result += GetAllEnchants().Sum(e => e.GetStatWithSockets(stat));
-
-            return result;
-        }
-
-        public int GetGearCount(params int[] ids)
-        {
-            return ids.Count(id => GetAllGear().Any(g => g.Wowhead == id));
-        }
+        
+        public IEnumerable<Gem> GetAllGems() => GetAllGear().SelectMany(g => g.Gems);
+        
+        public double GetStatTotal(Func<GearItem, double> stat) => GetAllGear().Sum(g => g.GetStatWithGems(stat));
     }
 }

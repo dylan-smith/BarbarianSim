@@ -1,0 +1,24 @@
+Elixirs
+Incense
+Fury management/generation
+Enemy level
+Player Level
+Validate build at start
+comments for all skills with description (skill.cs)
+add paragon board
+parse yaml input file rather than hardcoding config in program.cs
+fight length setting instead of enemy health???
+more than 1 enemy setting
+enemy level vs player level
+lucky hits
+overpower
+normalize line endings?
+validate all aspects max roll (requires storing aspect roll range)
+base stat values based on level (PlayerSettings.cs)
+configurable reaction time delays for all abilities
+Could Aspect be IAspect instead
+different levels of weapon expertise
+
+Skill weapons should be stored in the config instance, not in the static ability classes
+Does vulnerabledamagecalculator need to be it's own top-level thing, couldn't it be rolled under MultiplicativeDamageCalculator
+Can we rename InstanceCalculate to Calculate and have it work?

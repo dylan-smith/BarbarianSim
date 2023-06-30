@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BarbarianSim.Enums;
+using System;
 
 namespace BarbarianSim
 {
@@ -11,10 +12,7 @@ namespace BarbarianSim
 
         public static double Roll(RollType type)
         {
-            if (_instance == null)
-            {
-                _instance = new RandomGenerator();
-            }
+            _instance ??= new RandomGenerator();
 
             return _instance.RollImplementation(type);
         }

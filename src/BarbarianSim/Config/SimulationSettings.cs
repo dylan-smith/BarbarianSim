@@ -1,7 +1,6 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim.Config
 {
     public class SimulationSettings
     {
-        public double FightLength { get; set; }
     }
 }

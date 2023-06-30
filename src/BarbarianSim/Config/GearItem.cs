@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BarbarianSim
+namespace BarbarianSim.Config
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class YamlProperty : Attribute
@@ -14,98 +14,62 @@ namespace BarbarianSim
 
     public class GearItem
     {
-        public GearType GearType { get; set; }
-        [YamlProperty("name")]
-        public string Name { get; set; }
-        [YamlProperty("mindmg")]
-        public double MinDamage { get; set; } // Weapons
-        [YamlProperty("maxdmg")]
-        public double MaxDamage { get; set; } // Weapons
-        [YamlProperty("speed")]
-        public double Speed { get; set; } // Weapons
         [YamlProperty("armor")]
-        public double Armor { get; set; }
-        [YamlProperty("strength")]
-        public double Strength { get; set; }
-        [YamlProperty("stamina")]
-        public double Stamina { get; set; }
-        [YamlProperty("agility")]
-        public double Agility { get; set; }
-        [YamlProperty("intellect")]
-        public double Intellect { get; set; }
-        [YamlProperty("spirit")]
-        public double Spirit { get; set; }
-        [YamlProperty("ap")]
-        public double AttackPower { get; set; }
-        [YamlProperty("rap")]
-        public double RangedAttackPower { get; set; }
-        [YamlProperty("map")]
-        public double MeleeAttackPower { get; set; }
-        [YamlProperty("crit")]
-        public double CritRating { get; set; }
-        [YamlProperty("rangedcrit")]
-        public double RangedCritRating { get; set; }
-        [YamlProperty("meleecrit")]
-        public double MeleeCritRating { get; set; }
-        [YamlProperty("hit")]
-        public double HitRating { get; set; }
-        [YamlProperty("dodge")]
-        public double DodgeRating { get; set; }
-        [YamlProperty("haste")]
-        public double HasteRating { get; set; }
-        [YamlProperty("mp5")]
-        public double MP5 { get; set; }
-        [YamlProperty("defense")]
-        public double Defense { get; set; }
-        [YamlProperty("fireresist")]
+        public int Armor { get; set; }
+        public double CooldownReduction { get; set; }
+        public double PoisonResistance { get; set; }
+        public double TotalArmor { get; set; }
+        public int MaxLife { get; set; }
+        public double PhysicalDamage { get; set; }
+        public double CritChancePhysicalAgainstElites { get; set; }
+        public double DamageReductionFromBleeding { get; set; }
+        public int Thorns { get; set; }
+        public double AttackSpeed { get; set; }
+        public double LuckyHitChance { get; set; }
+        public double NonPhysicalDamage { get; set; }
+        public int Whirlwind { get; set; }
+        public double PotionSpeedWhileInjured { get; set; }
+        public int WarCry { get; set; }
+        public double Dodge { get; set; }
+        public double DamageReductionFromClose { get; set; }
+        public double DamageReductionWhileInjured { get; set; }
+        public double AttacksReduceEvadeCooldown { get; set; }
+        public double MovementAfterKillingElite { get; set; }
+        public double MovementSpeed { get; set; }
+        public double DodgeAgainstDistant { get; set; }
+        public int Dexterity { get; set; }
+        public int DPS { get; set; }
+        public Expertise Expertise { get; set; }
+        [YamlProperty("min-damage")]
+        public int MinDamage { get; set; }
+        [YamlProperty("max-damage")]
+        public int MaxDamage { get; set; }
+        public double AttacksPerSecond { get; set; }
+        public double OverpowerDamage { get; set; }
+        public double DamageToClose { get; set; }
+        public double CoreDamage { get; set; }
+        public int Strength { get; set; }
+        public double CritDamage { get; set; }
+        public double VulnerableDamage { get; set; }
+        public double DamageToInjured { get; set; }
+        public int AllStats { get; set; }
+        public double DamageToSlowed { get; set; }
+        public double DamageToCrowdControlled { get; set; }
+        public double ResistanceToAll { get; set; }
+        public double DamageReductionFromDistant { get; set; }
+        public double HealingReceived { get; set; }
+        public double FuryCostReduction { get; set; }
+        public double LightningResistance { get; set; }
         public double FireResistance { get; set; }
-        [YamlProperty("frostresist")]
-        public double FrostResistance { get; set; }
-        [YamlProperty("arcaneresist")]
-        public double ArcaneResistance { get; set; }
-        [YamlProperty("natureresist")]
-        public double NatureResistance { get; set; }
-        [YamlProperty("shadowresist")]
-        public double ShadowResistance { get; set; }
-        [YamlProperty("threat")]
-        public double ThreatDecrease { get; set; }
-        [YamlProperty("stealth")]
-        public double Stealth { get; set; }
-        [YamlProperty("rangedbonusdps")]
-        public double RangedBonusDPS { get; set; } // Ammo
-        [YamlProperty("rangedbonusdmg")]
-        public double RangedBonusDamage { get; set; } // E.g. Sniper Scope
-        [YamlProperty("color")]
-        public GemColor Color { get; set; } // used by gems
-        [YamlProperty("unique")]
-        public bool Unique { get; set; }
-        [YamlProperty("type")]
-        public WeaponType WeaponType { get; set; }
-        public IDictionary<WeaponType, int> WeaponSkill = new Dictionary<WeaponType, int>();
-        public GearItem Enchant { get; set; }
-        public IList<Socket> Sockets = new List<Socket>();
-        public GearItem SocketBonus { get; set; }
-        [YamlProperty("wowhead")]
-        public int Wowhead { get; set; }
-        [YamlProperty("source")]
-        public GearSource Source { get; set; }
-        [YamlProperty("phase")]
-        public int Phase { get; set; }
+        public double ResourceGeneration { get; set; }
+        public double CritChance { get; set; }
+        public double ColdResistance { get; set; }
+        public double DamageReductionWhileFortified { get; set; }
+        public double CritDamageVulnerable { get; set; }
 
-        public bool IsSocketBonusActive() => Sockets.All(x => x.IsColorMatch());
+        public IList<Gem> Gems = new List<Gem>();
+        public Aspect Aspect { get; set; }
 
-        public double GetStatWithSockets(Func<GearItem, double> statFunc)
-        {
-            var result = statFunc(this);
-
-            result += Sockets.Where(x => x.Gem != null).Sum(x => statFunc(x.Gem));
-
-            if (SocketBonus != null && IsSocketBonusActive())
-            {
-                result += statFunc(SocketBonus);
-            }
-
-            return result;
-        }
+        public double GetStatWithGems(Func<GearItem, double> statFunc) => statFunc(this) + Gems.Sum(x => statFunc(x));
     }
 }

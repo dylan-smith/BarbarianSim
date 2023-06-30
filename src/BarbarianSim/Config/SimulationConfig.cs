@@ -1,45 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace BarbarianSim
+namespace BarbarianSim.Config
 {
     public class SimulationConfig
     {
-        public readonly Gear Gear = new Gear();
-        public readonly ISet<Buff> Buffs = new HashSet<Buff>();
-        public readonly PlayerSettings PlayerSettings = new PlayerSettings();
-        public readonly BossSettings BossSettings = new BossSettings();
-        public readonly SimulationSettings SimulationSettings = new SimulationSettings();
-        public readonly IDictionary<Talent, int> Talents = new Dictionary<Talent, int>();
+        public readonly Gear Gear = new();
+        public readonly PlayerSettings PlayerSettings = new();
+        public readonly EnemySettings EnemySettings = new();
+        public readonly SimulationSettings SimulationSettings = new();
+        public readonly IDictionary<Skill, int> Skills = new Dictionary<Skill, int>();
 
         public (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
         {
             var warnings = new List<string>();
             var errors = new List<string>();
 
-            if (!ValidateFoodBuffs())
-            {
-                warnings.Add(SimulationWarnings.TooManyFoodBuffs);
-            }
-
-            if (!ValidateRace())
-            {
-                errors.Add(SimulationErrors.NoRaceSelected);
-            }
-
-            if (!ValidateTooManyTalentPoints())
+            if (!ValidateTooManySkillPoints())
             {
                 warnings.Add(SimulationWarnings.TooManyTalentPoints);
             }
 
-            if (!ValidateNotEnoughTalentPoints())
+            if (!ValidateNotEnoughSkillPoints())
             {
                 warnings.Add(SimulationWarnings.MissingTalentPoints);
             }
 
-            if (!ValidateAllGearSelected())
+            if (!ValidateAllGearHasAspects())
             {
-                warnings.Add(SimulationWarnings.MissingGear);
+                warnings.Add(SimulationWarnings.MissingAspect);
             }
 
             if (!ValidatePlayerMaxLevel())
@@ -47,61 +36,51 @@ namespace BarbarianSim
                 warnings.Add(SimulationWarnings.PlayerNotMaxLevel);
             }
 
-            if (!ValidateMissingRangedWeapon())
+            if (!ValidateAllSocketsUsed())
             {
-                errors.Add(SimulationErrors.MissingRangedWeapon);
+                warnings.Add(SimulationWarnings.MoreSocketsAvailable);
             }
 
-            if (!ValidateTooManyMetaGems())
+            if (!ValidateMaxLevelGemsUsed())
             {
-                warnings.Add(SimulationWarnings.TooManyMetaGems);
+                warnings.Add(SimulationWarnings.HigherLevelGemsAvailable);
             }
 
-            if (!ValidateMetaGemInNonMetaSocket())
+            if (!ValidateWeaponsHaveExpertise())
             {
-                warnings.Add(SimulationWarnings.CantPutMetaGemInNonMetaSocket);
-            }
-
-            if (!ValidateNonMetaGemInMetaSocket())
-            {
-                warnings.Add(SimulationWarnings.CantPutNonMetaGemInMetaSocket);
+                warnings.Add(SimulationWarnings.ExpertiseMissing);
             }
 
             return (warnings, errors);
         }
 
-        private bool ValidateNonMetaGemInMetaSocket() => !Gear.GetAllGear().SelectMany(g => g.Sockets).Any(s => s.Color == SocketColor.Meta && s.Gem != null && s.Gem.Color != GemColor.Meta);
-        private bool ValidateMetaGemInNonMetaSocket() => !Gear.GetAllGear().SelectMany(g => g.Sockets).Any(s => s.Gem != null && s.Gem.Color == GemColor.Meta && s.Color != SocketColor.Meta);
-        private bool ValidateTooManyMetaGems() => Gear.GetAllGems().Count(x => x.Color == GemColor.Meta) <= 1;
-        private bool ValidateMissingRangedWeapon() => Gear.Ranged != null;
 
-        private bool ValidatePlayerMaxLevel() => PlayerSettings.Level == 70;
+        private bool ValidatePlayerMaxLevel() => PlayerSettings.Level == 1000;
 
-        private bool ValidateAllGearSelected() => Gear.GetAllGear().Count() == 19;
-
-        private bool ValidateTooManyTalentPoints()
+        private bool ValidateTooManySkillPoints()
         {
             var points = PlayerSettings.Level - 9;
 
-            return Talents.Values.Sum() <= points;
+            return Skills.Values.Sum() <= points;
         }
 
-        private bool ValidateNotEnoughTalentPoints()
+        private bool ValidateNotEnoughSkillPoints()
         {
             var points = PlayerSettings.Level - 9;
 
-            return Talents.Values.Sum() >= points;
+            return Skills.Values.Sum() >= points;
         }
 
-        private bool ValidateRace() => PlayerSettings.Race != Race.NotSet;
+        private bool ValidateAllGearHasAspects() => Gear.GetAllGear().All(x => x.Aspect != null);
 
-        private bool ValidateFoodBuffs()
-        {
-            var foodBuffCount = 0;
+        private bool ValidateAllSocketsUsed() => Gear.GetAllGems().Count() == 14;
 
-            // TODO: Add various food buffs
+        private bool ValidateMaxLevelGemsUsed() => Gear.GetAllGems().All(gem => gem.IsMaxLevel());
 
-            return foodBuffCount <= 1;
-        }
+        private bool ValidateWeaponsHaveExpertise() => 
+            Gear.TwoHandBludgeoning.Expertise != Expertise.NA &&
+            Gear.OneHandLeft.Expertise != Expertise.NA &&
+            Gear.OneHandRight.Expertise != Expertise.NA &&
+            Gear.TwoHandSlashing.Expertise != Expertise.NA;
     }
 }

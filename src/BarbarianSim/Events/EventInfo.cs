@@ -8,6 +8,6 @@
 
         public abstract void ProcessEvent(SimulationState state);
 
-        public override string ToString() => $"[{Timestamp.ToString("F1")}] {GetType().Name}";
+        public override string ToString() => $"[{Timestamp:F1}] {GetType().Name}";
     }
 }

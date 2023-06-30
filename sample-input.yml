@@ -1,0 +1,164 @@
+gear:
+  helm:
+    armor: 904
+    cooldown-reduction: 11.0
+    poison-resistance: 45.2
+    total-armor: 6.8
+    max-life: 472
+    aspect: Aspect of Grasping Whirlwind
+    gems:
+      - Royal Sapphire
+
+  chest:
+    armor: 1195
+    physical-damage: 10.5
+    crit-chance-physical-against-elites: 6.0
+    dmg-reduction-from-bleeding: 14.6
+    thorns: 403
+    aspect:
+      name: Rage of Harrogath
+      lucky-hit: 26
+    gems:
+      - Royal Sapphire
+      - Royal Sapphire
+
+  gloves:
+    armor: 354
+    attack-speed: 10.6
+    lucky-hit-chance: 10.2
+    non-physical-dmg: 18.0
+    whirlwind: 3
+    aspect:
+      name: Gohr's Devastating Grips
+      dmg: 24
+
+  pants:
+    armor: 729
+    potion-speed-while-injured: 45
+    war-cry: 4
+    dodge: 7.4
+    dmg-reduction-from-close: 23.0
+    dmg-reduction-while-injured: 39.5
+    aspect: 
+      name: Aspect of Numbing Wraith
+      fortify: 12
+    gems:
+      - Royal Sapphire
+      - Royal Sapphire
+
+  boots:
+    armor: 344
+    attacks-reduce-evade-cd: 1.2
+    movement-after-killing-elite: 22.5
+    movement-speed: 15.8
+    dodge-against-distant: 6.4
+    dexterity: 51
+    aspect: 
+      name: Ghostwalker Aspect
+      movement-speed: 10
+
+  2h-bludgeoning:
+    dps: 2199
+    min-dmg: 1955
+    max-dmg: 2933
+    attacks-per-second: 0.9
+    overpower-dmg: 94.5
+    dmg-to-close: 57.0
+    core-dmg: 58.5
+    strength: 156
+    crit-dmg: 57.0
+    aspect:
+      name: Aspect of Limitless Rage
+      dmg: 4
+      max-dmg: 60
+    gems:
+      - Royal Emerald
+      - Royal Emerald
+
+  1h-left:
+    dps: 645
+    min-dmg: 470
+    max-dmg: 704
+    attacks-per-second: 1.1
+    crit-dmg: 18.8
+    vulnerable-dmg: 21.0
+    strength: 77
+    dmg-to-injured: 34.5
+    core-dmg: 18.8
+    aspect:
+      name: Conceited Aspect
+      dmg: 25
+    gems:
+      - Royal Emerald
+
+  1h-right:
+    dps: 650
+    min-dmg: 473
+    max-dmg: 709
+    attacks-per-second: 1.1
+    crit-dmg: 18.8
+    dmg-to-close: 24.8
+    all-stats: 30
+    dmg-to-slowed: 22.5
+    dmg-to-cc: 13.5
+    aspect:
+      name: Aspect of Berserk Ripping
+      dmg: 30
+    gems:
+      - Royal Emerald
+
+  2h-slashing:
+    dps: 2465
+    min-dmg: 1972
+    max-dmg: 2958
+    attacks-per-second: 1.0
+    crit-dmg: 52.5
+    vulnerable-dmg: 69.0
+    dmg-to-close: 57.0
+    strength: 174
+    dmg-to-injured: 93.0
+    aspect:
+      name: Aspect of the Dire Whirlwind
+      crit-chance: 14
+      max-crit-chance: 42
+    gems:
+      - Royal Emerald
+      - Royal Emerald
+
+  amulet:
+    resistance-to-all: 24.1
+    dmg-reduction-from-distant: 19.6
+    healing-received: 12.8
+    dmg-reduction-from-close: 12.5
+    fury-cost-reduction: 16.7
+    aspect:
+      name: Edgemaster's Aspect
+      dmg: 29
+    gems:
+      - Royal Skull
+
+  ring-1:
+    lightning-resistance: 35.0
+    fire-resistance: 35.0
+    resource-generation: 15.4
+    dmg-to-slowed: 31.5
+    crit-chance: 6.9
+    crit-dmg: 23.3
+    aspect:
+      name: Bold Chieftain's Aspect
+      cd: 1.9
+    gems:
+      - Royal Skull
+
+  ring-2:
+    cold-resistance: 32.2
+    lightning-resistance: 32.2
+    dmg-to-close: 18.8
+    crit-chance: 6.0
+    dmg-to-slowed: 20.3
+    crit-dmg: 16.5
+    aspect:
+      name: Aspect of Echoing Fury
+      fury: 4
+    gems:
+      - Royal Skull
