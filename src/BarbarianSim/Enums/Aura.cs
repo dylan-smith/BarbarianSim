@@ -3,5 +3,6 @@
     public enum Aura
     {
         WeaponCooldown,
+        Vulnerable,
     }
 }

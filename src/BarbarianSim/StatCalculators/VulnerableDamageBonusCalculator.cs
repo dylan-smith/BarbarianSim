@@ -6,7 +6,9 @@
 
         protected override double InstanceCalculate(SimulationState state)
         {
-            return 1.0;
+            var vulnerableDamage = state.Config.Gear.AllGear.Sum(g => g.VulnerableDamage);
+
+            return state.Enemy.IsVulnerable() ? 1.2 + (vulnerableDamage / 100.0) : 1.0;
         }
     }
 }

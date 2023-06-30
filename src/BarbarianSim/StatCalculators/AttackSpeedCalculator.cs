@@ -6,7 +6,9 @@
 
         protected override double InstanceCalculate(SimulationState state)
         {
-            return 1.0;
+            var attackSpeed = state.Config.Gear.AllGear.Sum(g => g.AttackSpeed);
+
+            return 1.0 / (1.0 + (attackSpeed / 100.0));
         }
     }
 }

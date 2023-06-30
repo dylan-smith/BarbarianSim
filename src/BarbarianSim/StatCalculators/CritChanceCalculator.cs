@@ -6,7 +6,14 @@
 
         protected override double InstanceCalculate(SimulationState state)
         {
-            return 0.0;
+            var critChance = state.Config.Gear.AllGear.Sum(g => g.CritChance);
+
+            if (state.Config.EnemySettings.IsElite)
+            {
+                critChance += state.Config.Gear.AllGear.Sum(g => g.CritChancePhysicalAgainstElites);
+            }
+
+            return critChance / 100.0;
         }
     }
 }

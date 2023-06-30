@@ -6,7 +6,13 @@
 
         protected override double InstanceCalculate(SimulationState state)
         {
-            return 1.0;
+            var physicalDamage = state.Config.Gear.GetStatTotal(g => g.PhysicalDamage);
+            var damageToClose = state.Config.Gear.GetStatTotal(g => g.DamageToClose);
+            var damageToInjured = state.Enemy.IsInjured() ? state.Config.Gear.GetStatTotal(g => g.DamageToInjured) : 0.0;
+            var damageToSlowed = state.Enemy.IsSlowed() ? state.Config.Gear.GetStatTotal(g => g.DamageToSlowed) : 0.0;
+            var damageToCrowdControlled = state.Enemy.IsCrowdControlled() ? state.Config.Gear.GetStatTotal(g => g.DamageToCrowdControlled) : 0.0;
+
+            return 1.0 + (physicalDamage / 100.0);
         }
     }
 }

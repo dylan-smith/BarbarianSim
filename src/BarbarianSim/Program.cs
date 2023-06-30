@@ -14,6 +14,7 @@ namespace BarbarianSim
             config.EnemySettings.Life = 500000;
             config.EnemySettings.NumberOfEnemies = 1;
             config.EnemySettings.Level = 100;
+            config.EnemySettings.IsElite = true;
 
             config.PlayerSettings.Level = 100;
             config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedAxe;

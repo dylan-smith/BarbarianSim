@@ -23,9 +23,10 @@
         public double AttackSpeed { get; set; }
         public double LuckyHitChance { get; set; }
         public double NonPhysicalDamage { get; set; }
-        public int Whirlwind { get; set; }
         public double PotionSpeedWhileInjured { get; set; }
         public int WarCry { get; set; }
+        public int Whirlwind { get; set; }
+        public int LungingStrike { get; set; }
         public double Dodge { get; set; }
         public double DamageReductionFromClose { get; set; }
         public double DamageReductionWhileInjured { get; set; }

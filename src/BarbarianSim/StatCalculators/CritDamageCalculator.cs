@@ -6,7 +6,9 @@
 
         protected override double InstanceCalculate(SimulationState state)
         {
-            return 1.0;
+            var critDamage = state.Config.Gear.AllGear.Sum(g => g.CritDamage);
+
+            return 1.5 + (critDamage / 100.0);
         }
     }
 }

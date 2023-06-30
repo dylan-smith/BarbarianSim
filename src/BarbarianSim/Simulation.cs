@@ -23,7 +23,7 @@ namespace BarbarianSim
 
                 State.CurrentTime = nextEvent.Timestamp;
 
-                if (State.EnemyLife <= 0)
+                if (State.Enemy.Life <= 0)
                 {
                     return State;
                 }

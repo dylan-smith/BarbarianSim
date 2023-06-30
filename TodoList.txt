@@ -22,3 +22,6 @@ different levels of weapon expertise
 Skill weapons should be stored in the config instance, not in the static ability classes
 Does vulnerabledamagecalculator need to be it's own top-level thing, couldn't it be rolled under MultiplicativeDamageCalculator
 Can we rename InstanceCalculate to Calculate and have it work?
+NonPhysical stat (only applies to Gohr damage - does NOT apply to bleeds)
+Skill bonuses when higher than rank 5
+Implement Enemy.IsSlowed/IsCrowdControlled/IsVulnerable/etc
