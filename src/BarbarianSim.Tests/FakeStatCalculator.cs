@@ -1,4 +1,7 @@
-﻿namespace BarbarianSim.Tests
+﻿using BarbarianSim.Config;
+using BarbarianSim.StatCalculators;
+
+namespace BarbarianSim.Tests
 {
     public class FakeStatCalculator : BaseStatCalculator
     {

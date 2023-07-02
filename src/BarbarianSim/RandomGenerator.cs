@@ -24,6 +24,6 @@ namespace BarbarianSim
 
         public static void ClearMock() => _instance = null;
 
-        protected virtual double RollImplementation(RollType _) => _random.NextDouble();
+        protected virtual double RollImplementation(RollType type) => _random.NextDouble();
     }
 }
