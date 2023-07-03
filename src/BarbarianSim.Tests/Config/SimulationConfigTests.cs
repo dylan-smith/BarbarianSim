@@ -115,18 +115,6 @@ namespace BarbarianSim.Tests.Config
         }
 
         [TestMethod]
-        public void Player_Not_Max_Level()
-        {
-            var config = DefaultConfig();
-
-            config.PlayerSettings.Level = 99;
-
-            var (warnings, _) = config.Validate();
-
-            Assert.IsTrue(warnings.Contains(SimulationWarnings.PlayerNotMaxLevel));
-        }
-
-        [TestMethod]
         public void Not_Enough_Skill_Points()
         {
             var config = DefaultConfig();
@@ -151,6 +139,55 @@ namespace BarbarianSim.Tests.Config
             var (warnings, _) = config.Validate();
 
             Assert.IsTrue(warnings.Contains(SimulationWarnings.MissingAspect));
+        }
+
+        [TestMethod]
+        public void Player_Not_Max_Level()
+        {
+            var config = DefaultConfig();
+
+            config.PlayerSettings.Level = 99;
+
+            var (warnings, _) = config.Validate();
+
+            Assert.IsTrue(warnings.Contains(SimulationWarnings.PlayerNotMaxLevel));
+        }
+
+        [TestMethod]
+        public void Socket_Missing()
+        {
+            var config = DefaultConfig();
+
+            config.Gear.Helm.Gems.RemoveAt(0);
+
+            var (warnings, _) = config.Validate();
+
+            Assert.IsTrue(warnings.Contains(SimulationWarnings.MoreSocketsAvailable));
+        }
+
+        [TestMethod]
+        public void Gem_Not_Max_Level()
+        {
+            var config = DefaultConfig();
+
+            config.Gear.Helm.Gems.RemoveAt(0);
+            config.Gear.Helm.Gems.Add(new FlawlessSapphire());
+
+            var (warnings, _) = config.Validate();
+
+            Assert.IsTrue(warnings.Contains(SimulationWarnings.HigherLevelGemsAvailable));
+        }
+
+        [TestMethod]
+        public void Weapon_Missing_Expertise()
+        {
+            var config = DefaultConfig();
+
+            config.Gear.TwoHandSlashing.Expertise = default;
+
+            var (warnings, _) = config.Validate();
+
+            Assert.IsTrue(warnings.Contains(SimulationWarnings.ExpertiseMissing));
         }
     }
 }
