@@ -8,7 +8,7 @@
         public SimulationSettings SimulationSettings { get; init; } = new();
         public IDictionary<Skill, int> Skills { get; init; } = new Dictionary<Skill, int>();
 
-        public (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
+        public virtual (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
         {
             var warnings = new List<string>();
             var errors = new List<string>();

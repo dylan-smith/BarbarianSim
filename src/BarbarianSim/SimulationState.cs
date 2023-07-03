@@ -22,7 +22,7 @@ namespace BarbarianSim
 
         public IEnumerable<DamageEvent> DamageEvents => ProcessedEvents.Where(e => e is DamageEvent).Cast<DamageEvent>();
 
-        public bool Validate()
+        public virtual bool Validate()
         {
             var (warnings, errors) = Config.Validate();
 
