@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BarbarianSim.Tests
 {
     [TestClass]
-    public class ConfigValidationTests
+    public class SimulationStateTests
     {
         [TestMethod]
         public void Sets_Enemy_Life_And_MaxLife_From_Config()

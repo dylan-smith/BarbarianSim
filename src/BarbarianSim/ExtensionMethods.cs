@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim
+﻿using System.Net.Http.Headers;
+
+namespace BarbarianSim
 {
     public static class ExtensionMethods
     {
@@ -19,6 +21,14 @@
             foreach (var item in list)
             {
                 action(item);
+            }
+        }
+
+        public static void RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dict)
+        {
+            while (dict.Any())
+            {
+                dict?.Remove(dict.First().Key);
             }
         }
     }

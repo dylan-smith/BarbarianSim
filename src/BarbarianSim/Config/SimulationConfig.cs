@@ -15,12 +15,12 @@
 
             if (!ValidateTooManySkillPoints())
             {
-                warnings.Add(SimulationWarnings.TooManyTalentPoints);
+                warnings.Add(SimulationWarnings.TooManySkillPoints);
             }
 
             if (!ValidateNotEnoughSkillPoints())
             {
-                warnings.Add(SimulationWarnings.MissingTalentPoints);
+                warnings.Add(SimulationWarnings.MissingSkillPoints);
             }
 
             if (!ValidateAllGearHasAspects())
@@ -52,7 +52,7 @@
         }
 
 
-        private bool ValidatePlayerMaxLevel() => PlayerSettings.Level == 1000;
+        private bool ValidatePlayerMaxLevel() => PlayerSettings.Level == 100;
 
         private bool ValidateTooManySkillPoints()
         {
@@ -63,7 +63,7 @@
 
         private bool ValidateNotEnoughSkillPoints()
         {
-            var points = PlayerSettings.Level - 9;
+            var points = Math.Min(PlayerSettings.Level - 1, 48);
 
             return Skills.Values.Sum() >= points;
         }
