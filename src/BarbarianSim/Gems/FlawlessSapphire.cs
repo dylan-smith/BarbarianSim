@@ -1,9 +1,8 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Gems
+namespace BarbarianSim.Gems;
+
+public class FlawlessSapphire : Gem
 {
-    public class FlawlessSapphire : Gem
-    {
-        public FlawlessSapphire() => DamageReductionWhileFortified = 2.5;
-    }
+    public FlawlessSapphire() => DamageReductionWhileFortified = 2.5;
 }

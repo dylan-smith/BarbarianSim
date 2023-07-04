@@ -1,10 +1,8 @@
-﻿namespace BarbarianSim
+﻿using BarbarianSim.Events;
+
+namespace BarbarianSim;
+
+public static class EventPublisher
 {
-    public static class EventPublisher
-    {
-        public static void PublishEvent(EventInfo e, SimulationState state)
-        {
-            state.ProcessedEvents.Add(e);
-        }
-    }
+    public static void PublishEvent(EventInfo e, SimulationState state) => state.ProcessedEvents.Add(e);
 }

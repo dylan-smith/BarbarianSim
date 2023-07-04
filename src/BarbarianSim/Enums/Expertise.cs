@@ -1,14 +1,13 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim.Enums;
+
+public enum Expertise
 {
-    public enum Expertise
-    {
-        NA,
-        OneHandedAxe,
-        OneHandedMace,
-        OneHandedSword,
-        TwoHandedAxe,
-        Polearm,
-        TwoHandedSword,
-        TwoHandedMace,
-    }
+    NA,
+    OneHandedAxe,
+    OneHandedMace,
+    OneHandedSword,
+    TwoHandedAxe,
+    Polearm,
+    TwoHandedSword,
+    TwoHandedMace,
 }

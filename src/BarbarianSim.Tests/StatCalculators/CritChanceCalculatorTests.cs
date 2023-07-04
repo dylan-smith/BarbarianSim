@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
@@ -10,6 +11,17 @@ public sealed class CritChanceCalculatorTests : IDisposable
     public void Dispose() => BaseStatCalculator.ClearMocks();
 
     [Fact]
+    public void Includes_Base_5_Percent_Chance()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(0.0));
+
+        var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
+
+        result.Should().Be(0.05);
+    }
+
+    [Fact]
     public void Includes_Stats_From_Gear()
     {
         var config = new SimulationConfig();
@@ -19,7 +31,7 @@ public sealed class CritChanceCalculatorTests : IDisposable
 
         var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
-        result.Should().Be(0.12);
+        result.Should().Be(0.17);
     }
 
     [Fact]
@@ -32,7 +44,7 @@ public sealed class CritChanceCalculatorTests : IDisposable
 
         var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
-        result.Should().Be(0.12);
+        result.Should().Be(0.17);
     }
 
     [Fact]
@@ -43,6 +55,6 @@ public sealed class CritChanceCalculatorTests : IDisposable
 
         var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
-        result.Should().Be(0.08);
+        result.Should().Be(0.13);
     }
 }

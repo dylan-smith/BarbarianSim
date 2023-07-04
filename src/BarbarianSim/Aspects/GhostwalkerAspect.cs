@@ -1,14 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Aspects
-{
-    public class GhostwalkerAspect : Aspect
-    {
-        public int Speed { get; init; }
+namespace BarbarianSim.Aspects;
 
-        public GhostwalkerAspect(int speed)
-        {
-            Speed = speed;
-        }
-    }
+public class GhostwalkerAspect : Aspect
+{
+    public int Speed { get; init; }
+
+    public GhostwalkerAspect(int speed) => Speed = speed;
 }
