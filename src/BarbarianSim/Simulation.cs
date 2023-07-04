@@ -1,5 +1,4 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Config;
+﻿using BarbarianSim.Config;
 
 namespace BarbarianSim
 {

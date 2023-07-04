@@ -31,7 +31,7 @@ public class StrengthCalculatorTests
 
         Assert.AreEqual(52, result);
     }
-    
+
     [TestMethod]
     public void Includes_All_Stats_Gear_Bonus()
     {
