@@ -64,6 +64,7 @@
         public double DamageReductionWhileFortified { get; set; }
         public double CritDamageVulnerable { get; set; }
         public double Willpower { get; set; }
+        public double Intelligence { get; set; }
 
         public IList<Gem> Gems { get; init; } = new List<Gem>();
         public Aspect Aspect { get; set; }
