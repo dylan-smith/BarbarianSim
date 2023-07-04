@@ -173,6 +173,14 @@ internal class Program
 
         var critBonus = (avgCrit - avgHit) / avgHit * 100;
 
+        var totalTime = state.ProcessedEvents.Max(x => x.Timestamp);
+        var totalDamage = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Sum(x => x.Damage);
+        var dps = totalDamage / totalTime;
+
+        Console.WriteLine($"Total Time: {totalTime}");
+        Console.WriteLine($"Total Damage: {totalDamage}");
+        Console.WriteLine($"DPS: {dps}");
+
         Console.WriteLine($"Hits: {hits.Count()}");
         Console.WriteLine($"Crits: {crits.Count()}");
         Console.WriteLine($"Avg Hit: {avgHit}");
