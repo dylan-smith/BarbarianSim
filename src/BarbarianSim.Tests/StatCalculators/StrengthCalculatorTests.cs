@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class StrengthCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Base_Value()
     {
         var config = new SimulationConfig();
@@ -16,10 +16,10 @@ public class StrengthCalculatorTests
 
         var result = StrengthCalculator.Calculate(state);
 
-        Assert.AreEqual(10, result);
+        result.Should().Be(10.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Strength_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -29,10 +29,10 @@ public class StrengthCalculatorTests
 
         var result = StrengthCalculator.Calculate(state);
 
-        Assert.AreEqual(52, result);
+        result.Should().Be(52.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_All_Stats_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -42,10 +42,10 @@ public class StrengthCalculatorTests
 
         var result = StrengthCalculator.Calculate(state);
 
-        Assert.AreEqual(27, result);
+        result.Should().Be(27.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Level_Bonus()
     {
         var config = new SimulationConfig();
@@ -54,6 +54,6 @@ public class StrengthCalculatorTests
 
         var result = StrengthCalculator.Calculate(state);
 
-        Assert.AreEqual(109, result);
+        result.Should().Be(109.0);
     }
 }

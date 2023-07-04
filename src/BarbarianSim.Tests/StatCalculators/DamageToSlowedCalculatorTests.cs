@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class DamageToSlowedCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Damage_To_Slowed_When_Enemy_Is_Slowed()
     {
         var config = new SimulationConfig();
@@ -17,10 +17,10 @@ public class DamageToSlowedCalculatorTests
 
         var result = DamageToSlowedCalculator.Calculate(state);
 
-        Assert.AreEqual(12, result);
+        result.Should().Be(12.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Returns_0_When_Enemy_Is_Not_Slowed()
     {
         var config = new SimulationConfig();
@@ -30,6 +30,6 @@ public class DamageToSlowedCalculatorTests
 
         var result = DamageToSlowedCalculator.Calculate(state);
 
-        Assert.AreEqual(0, result);
+        result.Should().Be(0.0);
     }
 }

@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class WillpowerCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Base_Value()
     {
         var config = new SimulationConfig();
@@ -16,10 +16,10 @@ public class WillpowerCalculatorTests
 
         var result = WillpowerCalculator.Calculate(state);
 
-        Assert.AreEqual(7, result);
+        result.Should().Be(7.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Willpower_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -29,10 +29,10 @@ public class WillpowerCalculatorTests
 
         var result = WillpowerCalculator.Calculate(state);
 
-        Assert.AreEqual(49, result);
+        result.Should().Be(49.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_All_Stats_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -42,10 +42,10 @@ public class WillpowerCalculatorTests
 
         var result = WillpowerCalculator.Calculate(state);
 
-        Assert.AreEqual(24, result);
+        result.Should().Be(24.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Level_Bonus()
     {
         var config = new SimulationConfig();
@@ -54,6 +54,6 @@ public class WillpowerCalculatorTests
 
         var result = WillpowerCalculator.Calculate(state);
 
-        Assert.AreEqual(106, result);
+        result.Should().Be(106.0);
     }
 }

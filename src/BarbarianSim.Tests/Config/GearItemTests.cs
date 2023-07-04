@@ -1,12 +1,12 @@
 ﻿using BarbarianSim.Config;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.Config;
 
-[TestClass]
 public class GearItemTests
 {
-    [TestMethod]
+    [Fact]
     public void GetStatWithGems_Without_Gems()
     {
         var gear = new GearItem
@@ -14,10 +14,10 @@ public class GearItemTests
             Strength = 7
         };
 
-        Assert.AreEqual(7, gear.GetStatWithGems(x => x.Strength));
+        gear.GetStatWithGems(x => x.Strength).Should().Be(7);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetStatWithGems_With_Gems()
     {
         var gear = new GearItem
@@ -38,6 +38,6 @@ public class GearItemTests
         gear.Gems.Add(gem1);
         gear.Gems.Add(gem2);
 
-        Assert.AreEqual(16, gear.GetStatWithGems(x => x.Strength));
+        gear.GetStatWithGems(x => x.Strength).Should().Be(16);
     }
 }

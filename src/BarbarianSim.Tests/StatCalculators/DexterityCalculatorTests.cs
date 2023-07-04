@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class DexterityCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Base_Value()
     {
         var config = new SimulationConfig();
@@ -16,10 +16,10 @@ public class DexterityCalculatorTests
 
         var result = DexterityCalculator.Calculate(state);
 
-        Assert.AreEqual(8, result);
+        result.Should().Be(8.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Dexterity_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -29,10 +29,10 @@ public class DexterityCalculatorTests
 
         var result = DexterityCalculator.Calculate(state);
 
-        Assert.AreEqual(50, result);
+        result.Should().Be(50.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_All_Stats_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -42,10 +42,10 @@ public class DexterityCalculatorTests
 
         var result = DexterityCalculator.Calculate(state);
 
-        Assert.AreEqual(25, result);
+        result.Should().Be(25.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Level_Bonus()
     {
         var config = new SimulationConfig();
@@ -54,6 +54,6 @@ public class DexterityCalculatorTests
 
         var result = DexterityCalculator.Calculate(state);
 
-        Assert.AreEqual(107, result);
+        result.Should().Be(107.0);
     }
 }

@@ -1,16 +1,15 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
-public class ResourceGenerationCalculatorTests
+public sealed class ResourceGenerationCalculatorTests : IDisposable
 {
-    [TestCleanup]
-    public void TestCleanup() => BaseStatCalculator.ClearMocks();
+    public void Dispose() => BaseStatCalculator.ClearMocks();
 
-    [TestMethod]
+    [Fact]
     public void Returns_1_By_Default()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -18,10 +17,10 @@ public class ResourceGenerationCalculatorTests
 
         var result = ResourceGenerationCalculator.Calculate(state);
 
-        Assert.AreEqual(1.0, result);
+        result.Should().Be(1.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_ResourceGeneration_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -31,10 +30,10 @@ public class ResourceGenerationCalculatorTests
 
         var result = ResourceGenerationCalculator.Calculate(state);
 
-        Assert.AreEqual(1.42, result);
+        result.Should().Be(1.42);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Willpower_Bonus()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -42,6 +41,6 @@ public class ResourceGenerationCalculatorTests
 
         var result = ResourceGenerationCalculator.Calculate(state);
 
-        Assert.AreEqual(1.12, result);
+        result.Should().Be(1.12);
     }
 }

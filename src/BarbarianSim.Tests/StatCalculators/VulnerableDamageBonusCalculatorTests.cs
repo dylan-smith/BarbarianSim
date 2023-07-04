@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class VulnerableDamageBonusCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Base_Vulnerable_Damage_Is_20()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -15,10 +15,10 @@ public class VulnerableDamageBonusCalculatorTests
 
         var result = VulnerableDamageBonusCalculator.Calculate(state);
 
-        Assert.AreEqual(1.2, result);
+        result.Should().Be(1.2);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Damage_To_Vulnerable_When_Enemy_Is_Vulnerable()
     {
         var config = new SimulationConfig();
@@ -28,10 +28,10 @@ public class VulnerableDamageBonusCalculatorTests
 
         var result = VulnerableDamageBonusCalculator.Calculate(state);
 
-        Assert.AreEqual(1.32, result, 0.00001);
+        result.Should().BeApproximately(1.32, 0.000001);
     }
 
-    [TestMethod]
+    [Fact]
     public void Returns_1_When_Enemy_Is_Not_Vulnerable()
     {
         var config = new SimulationConfig();
@@ -41,6 +41,6 @@ public class VulnerableDamageBonusCalculatorTests
 
         var result = VulnerableDamageBonusCalculator.Calculate(state);
 
-        Assert.AreEqual(1.0, result);
+        result.Should().Be(1.0);
     }
 }

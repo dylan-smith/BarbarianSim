@@ -1,16 +1,15 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
-public class ResistanceToAllCalculatorTests
+public sealed class ResistanceToAllCalculatorTests : IDisposable
 {
-    [TestCleanup]
-    public void TestCleanup() => BaseStatCalculator.ClearMocks();
+    public void Dispose() => BaseStatCalculator.ClearMocks();
 
-    [TestMethod]
+    [Fact]
     public void Returns_0_By_Default()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -18,10 +17,10 @@ public class ResistanceToAllCalculatorTests
 
         var result = ResistanceToAllCalculator.Calculate(state);
 
-        Assert.AreEqual(0.0, result);
+        result.Should().Be(0.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_ResistanceToAll_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -31,10 +30,10 @@ public class ResistanceToAllCalculatorTests
 
         var result = ResistanceToAllCalculator.Calculate(state);
 
-        Assert.AreEqual(0.42, result);
+        result.Should().Be(0.42);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Intelligence_Bonus()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -42,6 +41,6 @@ public class ResistanceToAllCalculatorTests
 
         var result = ResistanceToAllCalculator.Calculate(state);
 
-        Assert.AreEqual(0.2, result);
+        result.Should().Be(0.2);
     }
 }
