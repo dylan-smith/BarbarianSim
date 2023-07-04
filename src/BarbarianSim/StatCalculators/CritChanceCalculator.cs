@@ -9,6 +9,7 @@ public class CritChanceCalculator : BaseStatCalculator
         var critChance = state.Config.Gear.AllGear.Sum(g => g.CritChance);
 
         critChance += CritChancePhysicalAgainstElitesCalculator.Calculate(state, damageType);
+        critChance += DexterityCalculator.Calculate(state) * 0.02;
 
         return critChance / 100.0;
     }

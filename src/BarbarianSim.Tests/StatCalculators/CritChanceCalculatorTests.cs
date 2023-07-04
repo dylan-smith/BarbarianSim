@@ -16,6 +16,7 @@ public class CritChanceCalculatorTests
         var config = new SimulationConfig();
         config.Gear.Helm.CritChance = 12.0;
         var state = new SimulationState(config);
+        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(0.0));
 
         var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
@@ -27,10 +28,22 @@ public class CritChanceCalculatorTests
     {
         var state = new SimulationState(new SimulationConfig());
 
+        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(0.0));
         BaseStatCalculator.InjectMock(typeof(CritChancePhysicalAgainstElitesCalculator), new FakeStatCalculator(12.0));
 
         var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
         Assert.AreEqual(0.12, result);
+    }
+
+    [TestMethod]
+    public void Includes_Dexterity_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(400.0));
+
+        var result = CritChanceCalculator.Calculate(state, DamageType.Physical);
+
+        Assert.AreEqual(0.08, result);
     }
 }
