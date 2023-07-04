@@ -32,7 +32,8 @@ namespace BarbarianSim.Events
             DamageEvent = new DamageEvent(Timestamp, damage, damageType);
             state.Events.Add(DamageEvent);
 
-            var weaponSpeed = LungingStrike.Weapon.AttacksPerSecond * AttackSpeedCalculator.Calculate(state);
+            var weaponSpeed = 1 / LungingStrike.Weapon.AttacksPerSecond;
+            weaponSpeed *= AttackSpeedCalculator.Calculate(state);
             state.Auras.Add(Aura.WeaponCooldown);
             state.Events.Add(new WeaponAuraCooldownCompletedEvent(Timestamp + weaponSpeed));
         }
