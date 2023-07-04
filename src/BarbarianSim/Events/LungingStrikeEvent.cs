@@ -15,14 +15,12 @@ namespace BarbarianSim.Events
         {
             var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
             var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
-            var additiveDamageBonus = AdditiveDamageBonusCalculator.Calculate(state);
-            var multiplicativeDamageBonus = MultiplicativeDamageBonusCalculator.Calculate(state);
-            var vulnerableDamageBonus = VulnerableDamageBonusCalculator.Calculate(state);
+            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
 
-            var damage = weaponDamage * skillMultiplier * additiveDamageBonus * multiplicativeDamageBonus * vulnerableDamageBonus;
+            var damage = weaponDamage * skillMultiplier * damageMultiplier;
             var damageType = DamageType.Direct;
 
-            var critChance = CritChanceCalculator.Calculate(state);
+            var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
             var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
 
             if (critRoll <= critChance)

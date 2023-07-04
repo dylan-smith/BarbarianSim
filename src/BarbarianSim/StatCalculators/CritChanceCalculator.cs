@@ -1,19 +1,15 @@
-﻿namespace BarbarianSim.StatCalculators
+﻿namespace BarbarianSim.StatCalculators;
+
+public class CritChanceCalculator : BaseStatCalculator
 {
-    public class CritChanceCalculator : BaseStatCalculator
+    public static double Calculate(SimulationState state, DamageType damageType) => Calculate<CritChanceCalculator>(state, damageType);
+
+    protected override double InstanceCalculate(SimulationState state, DamageType damageType)
     {
-        public static double Calculate(SimulationState state) => Calculate<CritChanceCalculator>(state);
+        var critChance = state.Config.Gear.AllGear.Sum(g => g.CritChance);
 
-        protected override double InstanceCalculate(SimulationState state)
-        {
-            var critChance = state.Config.Gear.AllGear.Sum(g => g.CritChance);
+        critChance += CritChancePhysicalAgainstElitesCalculator.Calculate(state, damageType);
 
-            if (state.Config.EnemySettings.IsElite)
-            {
-                critChance += state.Config.Gear.AllGear.Sum(g => g.CritChancePhysicalAgainstElites);
-            }
-
-            return critChance / 100.0;
-        }
+        return critChance / 100.0;
     }
 }

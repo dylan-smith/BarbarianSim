@@ -7,5 +7,6 @@
         DirectOverpower,
         DirectOverpowerCrit,
         DamageOverTime,
+        Physical,
     }
 }
