@@ -1,6 +1,5 @@
-﻿namespace BarbarianSim.Config
+﻿namespace BarbarianSim.Config;
+
+public class Aspect
 {
-    public class Aspect
-    {
-    }
 }

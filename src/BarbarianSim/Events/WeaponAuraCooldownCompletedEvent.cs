@@ -1,16 +1,17 @@
-﻿namespace BarbarianSim.Events
-{
-    public class WeaponAuraCooldownCompletedEvent : EventInfo
-    {
-        public WeaponAuraCooldownCompletedEvent(double timestamp) : base(timestamp)
-        { }
+﻿using BarbarianSim.Enums;
 
-        public override void ProcessEvent(SimulationState state)
+namespace BarbarianSim.Events;
+
+public class WeaponAuraCooldownCompletedEvent : EventInfo
+{
+    public WeaponAuraCooldownCompletedEvent(double timestamp) : base(timestamp)
+    { }
+
+    public override void ProcessEvent(SimulationState state)
+    {
+        if (!state.Auras.Remove(Aura.WeaponCooldown))
         {
-            if (!state.Auras.Remove(Aura.WeaponCooldown))
-            {
-                throw new Exception("WeaponCooldown aura was expected in State");
-            }
+            throw new Exception("WeaponCooldown aura was expected in State");
         }
     }
 }

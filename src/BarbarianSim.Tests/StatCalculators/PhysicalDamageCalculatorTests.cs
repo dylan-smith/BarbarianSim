@@ -1,13 +1,14 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class PhysicalDamageCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Stats_From_Gear()
     {
         var config = new SimulationConfig();
@@ -16,10 +17,10 @@ public class PhysicalDamageCalculatorTests
 
         var result = PhysicalDamageCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(12, result);
+        result.Should().Be(12.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Returns_0_For_Non_Physical_Damage_Type()
     {
         var config = new SimulationConfig();
@@ -28,6 +29,6 @@ public class PhysicalDamageCalculatorTests
 
         var result = PhysicalDamageCalculator.Calculate(state, DamageType.Direct);
 
-        Assert.AreEqual(0, result);
+        result.Should().Be(0.0);
     }
 }

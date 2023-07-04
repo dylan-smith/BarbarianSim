@@ -1,27 +1,27 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Gems;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.Config;
 
-[TestClass]
 public class GearTests
 {
-    [TestMethod]
+    [Fact]
     public void AllGear_Returns_12_Items()
     {
         var gear = new Gear();
-        Assert.AreEqual(12, gear.AllGear.Count());
+        gear.AllGear.Should().HaveCount(12);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAllGems_Returns_0_Gems()
     {
         var gear = new Gear();
-        Assert.AreEqual(0, gear.GetAllGems().Count());
+        gear.GetAllGems().Should().BeEmpty();
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAllGems_Returns_All_Gems()
     {
         var gear = new Gear();
@@ -30,17 +30,17 @@ public class GearTests
         gear.Chest.Gems.Add(new RoyalSapphire());
         gear.Amulet.Gems.Add(new RoyalSapphire());
 
-        Assert.AreEqual(4, gear.GetAllGems().Count());
+        gear.GetAllGems().Should().HaveCount(4);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetStatTotal_Returns_0()
     {
         var gear = new Gear();
-        Assert.AreEqual(0, gear.GetStatTotal(g => g.Strength));
+        gear.GetStatTotal(g => g.Strength).Should().Be(0);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetStatTotal_Adds_Up_All_Gear()
     {
         var gear = new Gear();
@@ -57,15 +57,15 @@ public class GearTests
         gear.Ring1.Strength = 1;
         gear.Ring2.Strength = 1;
 
-        Assert.AreEqual(12, gear.GetStatTotal(g => g.Strength));
+        gear.GetStatTotal(g => g.Strength).Should().Be(12);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetStatTotal_Includes_Gems()
     {
         var gear = new Gear();
         gear.Helm.Gems.Add(new Gem() { Strength = 3 });
 
-        Assert.AreEqual(3, gear.GetStatTotal(g => g.Strength));
+        gear.GetStatTotal(g => g.Strength).Should().Be(3);
     }
 }

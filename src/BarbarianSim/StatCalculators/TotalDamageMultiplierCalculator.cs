@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim.StatCalculators;
+﻿using BarbarianSim.Enums;
+
+namespace BarbarianSim.StatCalculators;
 
 public class TotalDamageMultiplierCalculator : BaseStatCalculator
 {
@@ -6,6 +8,10 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
 
     protected override double InstanceCalculate(SimulationState state, DamageType damageType)
     {
-        return AdditiveDamageBonusCalculator.Calculate(state, damageType) * VulnerableDamageBonusCalculator.Calculate(state);
+        var damageBonus = AdditiveDamageBonusCalculator.Calculate(state, damageType);
+        damageBonus *= VulnerableDamageBonusCalculator.Calculate(state);
+        damageBonus *= 1 + (StrengthCalculator.Calculate(state) * 0.001);
+
+        return damageBonus;
     }
 }

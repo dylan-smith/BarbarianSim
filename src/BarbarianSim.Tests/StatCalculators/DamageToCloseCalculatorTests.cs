@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class DamageToCloseCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Stats_From_Gear()
     {
         var config = new SimulationConfig();
@@ -16,6 +16,6 @@ public class DamageToCloseCalculatorTests
 
         var result = DamageToCloseCalculator.Calculate(state);
 
-        Assert.AreEqual(12, result);
+        result.Should().Be(12);
     }
 }

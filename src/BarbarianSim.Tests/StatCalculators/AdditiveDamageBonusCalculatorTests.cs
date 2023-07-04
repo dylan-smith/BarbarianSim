@@ -1,17 +1,16 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
-public class AdditiveDamageBonusCalculatorTests
+public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 {
-    [TestCleanup]
-    public void TestCleanup() => BaseStatCalculator.ClearMocks();
+    public void Dispose() => BaseStatCalculator.ClearMocks();
 
-    [TestInitialize]
-    public void TestInitialize()
+    public AdditiveDamageBonusCalculatorTests()
     {
         BaseStatCalculator.InjectMock(typeof(PhysicalDamageCalculator), new FakeStatCalculator(0.0));
         BaseStatCalculator.InjectMock(typeof(DamageToCloseCalculator), new FakeStatCalculator(0.0));
@@ -20,17 +19,17 @@ public class AdditiveDamageBonusCalculatorTests
         BaseStatCalculator.InjectMock(typeof(DamageToCrowdControlledCalculator), new FakeStatCalculator(0.0));
     }
 
-    [TestMethod]
+    [Fact]
     public void Returns_1_When_No_Additive_Damage_Bonuses()
     {
         var state = new SimulationState(new SimulationConfig());
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.0, result);
+        result.Should().Be(1.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Physical_Damage()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -39,10 +38,10 @@ public class AdditiveDamageBonusCalculatorTests
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.12, result);
+        result.Should().Be(1.12);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Damage_To_Close()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -51,10 +50,10 @@ public class AdditiveDamageBonusCalculatorTests
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.12, result);
+        result.Should().Be(1.12);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Damage_To_Injured()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -63,10 +62,10 @@ public class AdditiveDamageBonusCalculatorTests
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.12, result);
+        result.Should().Be(1.12);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Damage_To_Slowed()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -75,10 +74,10 @@ public class AdditiveDamageBonusCalculatorTests
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.12, result);
+        result.Should().Be(1.12);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Damage_To_Crowd_Controlled()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -87,10 +86,10 @@ public class AdditiveDamageBonusCalculatorTests
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.12, result);
+        result.Should().Be(1.12);
     }
 
-    [TestMethod]
+    [Fact]
     public void Adds_All_Additive_Damage_Bonuses()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -103,6 +102,6 @@ public class AdditiveDamageBonusCalculatorTests
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.6, result);
+        result.Should().Be(1.6);
     }
 }

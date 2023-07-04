@@ -29,13 +29,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
-
-    - name: dotnet format
-      run: dotnet format src/BarbarianSim.sln --verify-no-changes
+        dotnet-version: 7.0.x
 
     - name: Restore dependencies
       run: dotnet restore src/BarbarianSim.sln
+      
+    - name: dotnet format
+      run: dotnet format src/BarbarianSim.sln --verify-no-changes --no-restore
 
     - name: Build
       run: dotnet build src/BarbarianSim.sln --no-restore /p:TreatWarningsAsErrors=true

@@ -1,11 +1,12 @@
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.Gems;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.Config;
 
-[TestClass]
 public class SimulationConfigTests
 {
     public SimulationConfig DefaultConfig()
@@ -91,18 +92,19 @@ public class SimulationConfigTests
 
         return config;
     }
-    [TestMethod]
+
+    [Fact]
     public void DefaultConfig_Validate_Successfully()
     {
         var config = DefaultConfig();
 
         var (warnings, errors) = config.Validate();
 
-        Assert.AreEqual(0, warnings.Count());
-        Assert.AreEqual(0, errors.Count());
+        warnings.Should().BeEmpty();
+        errors.Should().BeEmpty();
     }
 
-    [TestMethod]
+    [Fact]
     public void Has_Too_Many_Skill_Points_For_Level()
     {
         var config = DefaultConfig();
@@ -111,10 +113,10 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.TooManySkillPoints));
+        warnings.Should().Contain(SimulationWarnings.TooManySkillPoints);
     }
 
-    [TestMethod]
+    [Fact]
     public void Not_Enough_Skill_Points()
     {
         var config = DefaultConfig();
@@ -126,10 +128,10 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.MissingSkillPoints));
+        warnings.Should().Contain(SimulationWarnings.MissingSkillPoints);
     }
 
-    [TestMethod]
+    [Fact]
     public void Gear_Missing_Aspect()
     {
         var config = DefaultConfig();
@@ -138,10 +140,10 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.MissingAspect));
+        warnings.Should().Contain(SimulationWarnings.MissingAspect);
     }
 
-    [TestMethod]
+    [Fact]
     public void Player_Not_Max_Level()
     {
         var config = DefaultConfig();
@@ -150,10 +152,10 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.PlayerNotMaxLevel));
+        warnings.Should().Contain(SimulationWarnings.PlayerNotMaxLevel);
     }
 
-    [TestMethod]
+    [Fact]
     public void Socket_Missing()
     {
         var config = DefaultConfig();
@@ -162,10 +164,10 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.MoreSocketsAvailable));
+        warnings.Should().Contain(SimulationWarnings.MoreSocketsAvailable);
     }
 
-    [TestMethod]
+    [Fact]
     public void Gem_Not_Max_Level()
     {
         var config = DefaultConfig();
@@ -175,10 +177,10 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.HigherLevelGemsAvailable));
+        warnings.Should().Contain(SimulationWarnings.HigherLevelGemsAvailable);
     }
 
-    [TestMethod]
+    [Fact]
     public void Weapon_Missing_Expertise()
     {
         var config = DefaultConfig();
@@ -187,6 +189,6 @@ public class SimulationConfigTests
 
         var (warnings, _) = config.Validate();
 
-        Assert.IsTrue(warnings.Contains(SimulationWarnings.ExpertiseMissing));
+        warnings.Should().Contain(SimulationWarnings.ExpertiseMissing);
     }
 }

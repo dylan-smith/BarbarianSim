@@ -1,16 +1,16 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
-public class CritChancePhysicalAgainstElitesCalculatorTests
+public sealed class CritChancePhysicalAgainstElitesCalculatorTests : IDisposable
 {
-    [TestCleanup]
-    public void TestCleanup() => BaseStatCalculator.ClearMocks();
+    public void Dispose() => BaseStatCalculator.ClearMocks();
 
-    [TestMethod]
+    [Fact]
     public void Includes_Stats_From_Gear()
     {
         var config = new SimulationConfig();
@@ -20,10 +20,10 @@ public class CritChancePhysicalAgainstElitesCalculatorTests
 
         var result = CritChancePhysicalAgainstElitesCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(0.12, result);
+        result.Should().Be(0.12);
     }
 
-    [TestMethod]
+    [Fact]
     public void Returns_0_For_Non_Elites()
     {
         var config = new SimulationConfig();
@@ -33,10 +33,10 @@ public class CritChancePhysicalAgainstElitesCalculatorTests
 
         var result = CritChancePhysicalAgainstElitesCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(0.0, result);
+        result.Should().Be(0.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Returns_0_For_Non_Physical_Damage()
     {
         var config = new SimulationConfig();
@@ -46,6 +46,6 @@ public class CritChancePhysicalAgainstElitesCalculatorTests
 
         var result = CritChancePhysicalAgainstElitesCalculator.Calculate(state, DamageType.Direct);
 
-        Assert.AreEqual(0.0, result);
+        result.Should().Be(0.0);
     }
 }
