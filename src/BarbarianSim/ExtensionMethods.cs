@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Headers;
-
-namespace BarbarianSim
+﻿namespace BarbarianSim
 {
     public static class ExtensionMethods
     {

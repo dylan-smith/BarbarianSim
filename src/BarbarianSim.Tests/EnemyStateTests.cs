@@ -143,9 +143,11 @@ public class EnemyStateTests
     [TestMethod]
     public void IsInjured_Returns_True_When_Life_Less_Than_35_Percent()
     {
-        var enemyState = new EnemyState();
-        enemyState.Life = 34;
-        enemyState.MaxLife = 100;
+        var enemyState = new EnemyState
+        {
+            Life = 34,
+            MaxLife = 100
+        };
 
         Assert.IsTrue(enemyState.IsInjured());
     }
@@ -153,9 +155,11 @@ public class EnemyStateTests
     [TestMethod]
     public void IsInjured_Returns_False_When_Life_Greater_Than_35_Percent()
     {
-        var enemyState = new EnemyState();
-        enemyState.Life = 36;
-        enemyState.MaxLife = 100;
+        var enemyState = new EnemyState
+        {
+            Life = 36,
+            MaxLife = 100
+        };
 
         Assert.IsFalse(enemyState.IsInjured());
     }
