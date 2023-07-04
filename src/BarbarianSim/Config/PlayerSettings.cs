@@ -5,49 +5,16 @@
         public int Level { get; set; }
         public Expertise ExpertiseTechnique { get; set; }
 
-        public double Strength
-        {
-            get
-            {
-                // TODO: return base value based on level
-                return 0;
-            }
-        }
+        // https://gamerant.com/diablo-4-stats-explained/
 
-        public double Intelligence
-        {
-            get
-            {
-                // TODO: return base value based on level
-                return 0;
-            }
-        }
+        public double Strength => 10;
 
-        public double Willpower
-        {
-            get
-            {
-                // TODO: return base value based on level
-                return 0;
-            }
-        }
+        public double Intelligence => 7;
 
-        public double Dexterity
-        {
-            get
-            {
-                // TODO: return base value based on level
-                return 0;
-            }
-        }
+        public double Willpower => 7;
 
-        public double Life
-        {
-            get
-            {
-                // TODO: return base value based on level
-                return 0;
-            }
-        }
+        public double Dexterity => 8;
+
+        public double Life => 40;
     }
 }
