@@ -31,11 +31,11 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    - name: dotnet format
-      run: dotnet format src/BarbarianSim.sln --verify-no-changes
-
     - name: Restore dependencies
       run: dotnet restore src/BarbarianSim.sln
+      
+    - name: dotnet format
+      run: dotnet format src/BarbarianSim.sln --verify-no-changes --no-restore
 
     - name: Build
       run: dotnet build src/BarbarianSim.sln --no-restore /p:TreatWarningsAsErrors=true
