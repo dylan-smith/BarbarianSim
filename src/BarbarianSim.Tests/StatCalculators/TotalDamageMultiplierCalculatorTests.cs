@@ -15,6 +15,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.0));
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.0));
+        BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(0.0));
     }
 
     [TestMethod]
@@ -52,15 +53,28 @@ public class TotalDamageMultiplierCalculatorTests
     }
 
     [TestMethod]
+    public void Includes_Strength_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(42.0));
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+
+        Assert.AreEqual(1.042, result);
+    }
+
+    [TestMethod]
     public void Multiplies_All_Bonuses_Together()
     {
         var state = new SimulationState(new SimulationConfig());
 
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.2));
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.2));
+        BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(50.0));
 
         var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
 
-        Assert.AreEqual(1.44, result);
+        Assert.AreEqual(1.512, result);
     }
 }

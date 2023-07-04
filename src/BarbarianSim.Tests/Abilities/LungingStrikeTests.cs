@@ -17,6 +17,15 @@ public class LungingStrikeTests
         RandomGenerator.ClearMock();
     }
 
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0));
+        BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0));
+        BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(1.5));
+        BaseStatCalculator.InjectMock(typeof(AttackSpeedCalculator), new FakeStatCalculator(1.0));
+    }
+
     [TestMethod]
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
     {
@@ -165,7 +174,6 @@ public class LungingStrikeTests
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7));
-        BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(1.5));
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.69));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
