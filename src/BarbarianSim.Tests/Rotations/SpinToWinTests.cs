@@ -24,7 +24,7 @@ public class SpinToWinTests
     public void Does_Nothing_When_Lunging_Strike_On_Cooldown()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Auras.Add(Aura.WeaponCooldown);
+        state.Player.Auras.Add(Aura.WeaponCooldown);
         var rotation = new SpinToWin();
 
         rotation.Execute(state);

@@ -28,7 +28,7 @@ public sealed class LungingStrikeTests : IDisposable
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Auras.Add(Aura.WeaponCooldown);
+        state.Player.Auras.Add(Aura.WeaponCooldown);
 
         LungingStrike.CanUse(state).Should().BeFalse();
     }

@@ -34,7 +34,7 @@ public class LungingStrikeEvent : EventInfo
 
         var weaponSpeed = 1 / LungingStrike.Weapon.AttacksPerSecond;
         weaponSpeed *= AttackSpeedCalculator.Calculate(state);
-        state.Auras.Add(Aura.WeaponCooldown);
+        state.Player.Auras.Add(Aura.WeaponCooldown);
         state.Events.Add(new WeaponAuraCooldownCompletedEvent(Timestamp + weaponSpeed));
     }
 }
