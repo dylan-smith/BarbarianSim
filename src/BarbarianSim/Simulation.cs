@@ -18,7 +18,7 @@ namespace BarbarianSim
 
             while (true)
             {
-                ExecuteRotation();
+                State.Config.Rotation.Execute(State);
                 var nextEvent = GetNextEvent();
 
                 State.CurrentTime = nextEvent.Timestamp;
@@ -40,14 +40,6 @@ namespace BarbarianSim
             }
 
             throw new Exception("This should never happen");
-        }
-
-        private void ExecuteRotation()
-        {
-            if (LungingStrike.CanUse(State))
-            {
-                LungingStrike.Use(State);
-            }
         }
 
         private EventInfo GetNextEvent() => State.Events.OrderBy(e => e.Timestamp).FirstOrDefault();
