@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Gems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BarbarianSim.Tests.Config;
@@ -18,6 +19,18 @@ public class GearTests
     {
         var gear = new Gear();
         Assert.AreEqual(0, gear.GetAllGems().Count());
+    }
+
+    [TestMethod]
+    public void GetAllGems_Returns_All_Gems()
+    {
+        var gear = new Gear();
+        gear.Helm.Gems.Add(new RoyalSapphire());
+        gear.Helm.Gems.Add(new RoyalSapphire());
+        gear.Chest.Gems.Add(new RoyalSapphire());
+        gear.Amulet.Gems.Add(new RoyalSapphire());
+
+        Assert.AreEqual(4, gear.GetAllGems().Count());
     }
 
     [TestMethod]
