@@ -1,14 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Aspects
-{
-    public class RageOfHarrogath : Aspect
-    {
-        public int Chance { get; init; }
+namespace BarbarianSim.Aspects;
 
-        public RageOfHarrogath(int chance)
-        {
-            Chance = chance;
-        }
-    }
+public class RageOfHarrogath : Aspect
+{
+    public int Chance { get; init; }
+
+    public RageOfHarrogath(int chance) => Chance = chance;
 }

@@ -1,14 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Aspects
-{
-    public class AspectOfBerserkRipping : Aspect
-    {
-        public int Damage { get; init; }
+namespace BarbarianSim.Aspects;
 
-        public AspectOfBerserkRipping(int damage)
-        {
-            Damage = damage;
-        }
-    }
+public class AspectOfBerserkRipping : Aspect
+{
+    public int Damage { get; init; }
+
+    public AspectOfBerserkRipping(int damage) => Damage = damage;
 }

@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class CritDamageCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Stats_From_Gear()
     {
         var config = new SimulationConfig();
@@ -17,10 +17,10 @@ public class CritDamageCalculatorTests
         var result = CritDamageCalculator.Calculate(state);
 
         // 1.5 base + 0.12 from helm == 1.62
-        Assert.AreEqual(1.62, result);
+        result.Should().Be(1.62);
     }
 
-    [TestMethod]
+    [Fact]
     public void Base_Crit_Is_50()
     {
         var config = new SimulationConfig();
@@ -28,6 +28,6 @@ public class CritDamageCalculatorTests
 
         var result = CritDamageCalculator.Calculate(state);
 
-        Assert.AreEqual(1.50, result);
+        result.Should().Be(1.50);
     }
 }

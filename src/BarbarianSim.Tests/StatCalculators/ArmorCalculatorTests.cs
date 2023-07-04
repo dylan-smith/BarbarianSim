@@ -1,22 +1,17 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
-public class ArmorCalculatorTests
+public sealed class ArmorCalculatorTests : IDisposable
 {
-    [TestCleanup]
-    public void TestCleanup() => BaseStatCalculator.ClearMocks();
+    public void Dispose() => BaseStatCalculator.ClearMocks();
 
-    [TestInitialize]
-    public void TestInitialize()
-    {
-        BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(0.0));
-    }
+    public ArmorCalculatorTests() => BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(0.0));
 
-    [TestMethod]
+    [Fact]
     public void Starts_At_Zero()
     {
         var config = new SimulationConfig();
@@ -24,10 +19,10 @@ public class ArmorCalculatorTests
 
         var result = ArmorCalculator.Calculate(state);
 
-        Assert.AreEqual(0, result);
+        result.Should().Be(0.0);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Gear_Bonus()
     {
         var config = new SimulationConfig();
@@ -36,10 +31,10 @@ public class ArmorCalculatorTests
 
         var result = ArmorCalculator.Calculate(state);
 
-        Assert.AreEqual(42, result);
+        result.Should().Be(42);
     }
 
-    [TestMethod]
+    [Fact]
     public void Includes_Strength_Bonus()
     {
         var config = new SimulationConfig();
@@ -49,6 +44,6 @@ public class ArmorCalculatorTests
 
         var result = ArmorCalculator.Calculate(state);
 
-        Assert.AreEqual(42, result);
+        result.Should().Be(42);
     }
 }

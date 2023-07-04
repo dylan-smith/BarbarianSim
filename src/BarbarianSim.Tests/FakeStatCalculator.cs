@@ -1,4 +1,5 @@
-﻿using BarbarianSim.StatCalculators;
+﻿using BarbarianSim.Enums;
+using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Tests;
 

@@ -3,22 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
-[TestClass]
-public class LungingStrikeTests
+public sealed class LungingStrikeTests : IDisposable
 {
-    [TestCleanup]
-    public void TestCleanup()
+    public void Dispose()
     {
         BaseStatCalculator.ClearMocks();
         RandomGenerator.ClearMock();
     }
 
-    [TestInitialize]
-    public void TestInitialize()
+    public LungingStrikeTests()
     {
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0));
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0));
@@ -26,24 +24,24 @@ public class LungingStrikeTests
         BaseStatCalculator.InjectMock(typeof(AttackSpeedCalculator), new FakeStatCalculator(1.0));
     }
 
-    [TestMethod]
+    [Fact]
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Auras.Add(Aura.WeaponCooldown);
 
-        Assert.IsFalse(LungingStrike.CanUse(state));
+        LungingStrike.CanUse(state).Should().BeFalse();
     }
 
-    [TestMethod]
+    [Fact]
     public void CanUse_When_Weapon_Not_On_Cooldown_Returns_True()
     {
         var state = new SimulationState(new SimulationConfig());
 
-        Assert.IsTrue(LungingStrike.CanUse(state));
+        LungingStrike.CanUse(state).Should().BeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void Use_Adds_LungingStrikeEvent_To_Events()
     {
         var state = new SimulationState(new SimulationConfig())
@@ -53,29 +51,29 @@ public class LungingStrikeTests
 
         LungingStrike.Use(state);
 
-        Assert.AreEqual(1, state.Events.Count);
-        Assert.IsInstanceOfType(state.Events[0], typeof(LungingStrikeEvent));
-        Assert.AreEqual(123, state.Events[0].Timestamp);
+        state.Events.Count.Should().Be(1);
+        state.Events[0].Should().BeOfType<LungingStrikeEvent>();
+        state.Events[0].Timestamp.Should().Be(123);
     }
 
-    [DataTestMethod]
-    [DataRow(0, 0.0)]
-    [DataRow(1, 0.33)]
-    [DataRow(2, 0.36)]
-    [DataRow(3, 0.39)]
-    [DataRow(4, 0.42)]
-    [DataRow(5, 0.45)]
-    [DataRow(6, 0.45)]
+    [Theory]
+    [InlineData(0, 0.0)]
+    [InlineData(1, 0.33)]
+    [InlineData(2, 0.36)]
+    [InlineData(3, 0.39)]
+    [InlineData(4, 0.42)]
+    [InlineData(5, 0.45)]
+    [InlineData(6, 0.45)]
     public void GetSkillMultiplier_Converts_Skill_Points_To_Correct_Multiplier(int skillPoints, double expectedMultiplier)
     {
         var state = new SimulationState(new SimulationConfig { Skills = { [Skill.LungingStrike] = skillPoints } });
 
         var result = LungingStrike.GetSkillMultiplier(state);
 
-        Assert.AreEqual(expectedMultiplier, result);
+        result.Should().Be(expectedMultiplier);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetSkillMultiplier_Includes_Skill_Points_And_Gear_Bonuses()
     {
         var state = new SimulationState(new SimulationConfig
@@ -87,10 +85,10 @@ public class LungingStrikeTests
 
         var result = LungingStrike.GetSkillMultiplier(state);
 
-        Assert.AreEqual(0.39, result);
+        result.Should().Be(0.39);
     }
 
-    [TestMethod]
+    [Fact]
     public void Adds_DamageEvent_To_Queue()
     {
         var state = new SimulationState(new SimulationConfig
@@ -103,14 +101,14 @@ public class LungingStrikeTests
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        Assert.IsTrue(state.Events.Any(e => e is DamageEvent));
+        state.Events.Any(e => e is DamageEvent).Should().BeTrue();
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        Assert.AreEqual(123, damageEvent.Timestamp);
-        Assert.AreEqual(DamageType.Direct, damageEvent.DamageType);
-        Assert.AreEqual(0.33, damageEvent.Damage); // 1 [WeaponDmg] * 0.33 [SkillModifier]
+        damageEvent.Timestamp.Should().Be(123);
+        damageEvent.DamageType.Should().Be(DamageType.Direct);
+        damageEvent.Damage.Should().Be(0.33); // 1 [WeaponDmg] * 0.33 [SkillModifier]
     }
 
-    [TestMethod]
+    [Fact]
     public void Averages_Weapon_Min_Max_Damage()
     {
         var state = new SimulationState(new SimulationConfig
@@ -125,10 +123,10 @@ public class LungingStrikeTests
         lungingStrikeEvent.ProcessEvent(state);
 
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        Assert.AreEqual(132, damageEvent.Damage); // 400 [WeaponDmg] * 0.33 [SkillModifier]
+        damageEvent.Damage.Should().Be(132); // 400 [WeaponDmg] * 0.33 [SkillModifier]
     }
 
-    [TestMethod]
+    [Fact]
     public void Applies_Skill_Multiplier()
     {
         var state = new SimulationState(new SimulationConfig
@@ -143,10 +141,10 @@ public class LungingStrikeTests
         lungingStrikeEvent.ProcessEvent(state);
 
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        Assert.AreEqual(0.42, damageEvent.Damage); // 1 [WeaponDmg] * 0.42 [SkillModifier]
+        damageEvent.Damage.Should().Be(0.42); // 1 [WeaponDmg] * 0.42 [SkillModifier]
     }
 
-    [TestMethod]
+    [Fact]
     public void Applies_TotalDamageMultiplier_To_Damage()
     {
         var state = new SimulationState(new SimulationConfig
@@ -162,10 +160,10 @@ public class LungingStrikeTests
         lungingStrikeEvent.ProcessEvent(state);
 
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        Assert.AreEqual(1.485, damageEvent.Damage); // 1 [WeaponDmg] * 4.5 [DmgMultiplier] * 0.33 [SkillModifier]
+        damageEvent.Damage.Should().Be(1.485); // 1 [WeaponDmg] * 4.5 [DmgMultiplier] * 0.33 [SkillModifier]
     }
 
-    [TestMethod]
+    [Fact]
     public void Critical_Strike_Applies_CritChance_Bonus()
     {
         var state = new SimulationState(new SimulationConfig
@@ -179,14 +177,14 @@ public class LungingStrikeTests
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        Assert.IsTrue(state.Events.Any(e => e is DamageEvent));
+        state.Events.Any(e => e is DamageEvent).Should().BeTrue();
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        Assert.AreEqual(123, damageEvent.Timestamp);
-        Assert.AreEqual(DamageType.DirectCrit, damageEvent.DamageType);
-        Assert.AreEqual(0.495, damageEvent.Damage); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 1.5 [Crit]
+        damageEvent.Timestamp.Should().Be(123);
+        damageEvent.DamageType.Should().Be(DamageType.DirectCrit);
+        damageEvent.Damage.Should().Be(0.495); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 1.5 [Crit]
     }
 
-    [TestMethod]
+    [Fact]
     public void Critical_Strike_Applies_CritDamaage_Bonus()
     {
         var state = new SimulationState(new SimulationConfig
@@ -201,10 +199,10 @@ public class LungingStrikeTests
         lungingStrikeEvent.ProcessEvent(state);
 
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        Assert.AreEqual(1.155, damageEvent.Damage); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 3.5 [Crit]
+        damageEvent.Damage.Should().Be(1.155); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 3.5 [Crit]
     }
 
-    [TestMethod]
+    [Fact]
     public void Adds_WeaponAuraCooldownCompletedEvent_To_Queue()
     {
         var state = new SimulationState(new SimulationConfig
@@ -217,11 +215,11 @@ public class LungingStrikeTests
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        Assert.IsTrue(state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent));
-        Assert.AreEqual(124, state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp);
+        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
+        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(124);
     }
 
-    [TestMethod]
+    [Fact]
     public void Considers_Weapon_AttacksPerSecond_When_Creating_WeaponAuraCooldownCompletedEvent()
     {
         var state = new SimulationState(new SimulationConfig
@@ -234,11 +232,11 @@ public class LungingStrikeTests
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        Assert.IsTrue(state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent));
-        Assert.AreEqual(123.5, state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp);
+        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
+        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.5);
     }
 
-    [TestMethod]
+    [Fact]
     public void Considers_AttackSpeed_Bonuses_When_Creating_WeaponAuraCooldownCompletedEvent()
     {
         var state = new SimulationState(new SimulationConfig
@@ -253,7 +251,7 @@ public class LungingStrikeTests
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        Assert.IsTrue(state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent));
-        Assert.AreEqual(123.6, state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp);
+        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
+        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.6);
     }
 }

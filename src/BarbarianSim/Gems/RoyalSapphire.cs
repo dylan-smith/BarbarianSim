@@ -1,11 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Gems
-{
-    public class RoyalSapphire : Gem
-    {
-        public override bool IsMaxLevel() => true;
+namespace BarbarianSim.Gems;
 
-        public RoyalSapphire() => DamageReductionWhileFortified = 3.0;
-    }
+public class RoyalSapphire : Gem
+{
+    public override bool IsMaxLevel() => true;
+
+    public RoyalSapphire() => DamageReductionWhileFortified = 3.0;
 }

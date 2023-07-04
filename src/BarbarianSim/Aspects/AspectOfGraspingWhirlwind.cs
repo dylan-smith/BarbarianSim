@@ -1,8 +1,7 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Aspects
+namespace BarbarianSim.Aspects;
+
+public class AspectOfGraspingWhirlwind : Aspect
 {
-    public class AspectOfGraspingWhirlwind : Aspect
-    {
-    }
 }

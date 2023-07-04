@@ -1,13 +1,13 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-[TestClass]
 public class AttackSpeedCalculatorTests
 {
-    [TestMethod]
+    [Fact]
     public void Includes_Stats_From_Gear()
     {
         var config = new SimulationConfig();
@@ -16,7 +16,6 @@ public class AttackSpeedCalculatorTests
 
         var result = AttackSpeedCalculator.Calculate(state);
 
-        // 1 / 1.60 == 0.625
-        Assert.AreEqual(0.625, result);
+        result.Should().Be(0.625); // 1 / 1.60 == 0.625
     }
 }
