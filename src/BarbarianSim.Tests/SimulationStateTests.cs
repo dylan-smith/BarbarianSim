@@ -1,13 +1,13 @@
 using BarbarianSim.Config;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using Moq;
+using Xunit;
 
 namespace BarbarianSim.Tests;
 
-[TestClass]
 public class SimulationStateTests
 {
-    [TestMethod]
+    [Fact]
     public void Sets_Enemy_Life_And_MaxLife_From_Config()
     {
         var config = new SimulationConfig();
@@ -15,11 +15,11 @@ public class SimulationStateTests
 
         var state = new SimulationState(config);
 
-        Assert.AreEqual(1234, state.Enemy.MaxLife);
-        Assert.AreEqual(1234, state.Enemy.Life);
+        state.Enemy.MaxLife.Should().Be(1234);
+        state.Enemy.Life.Should().Be(1234);
     }
 
-    [TestMethod]
+    [Fact]
     public void Validates_Config_And_Captures_Errors_And_Warnings()
     {
         var mockConfig = new Mock<SimulationConfig>();
@@ -31,16 +31,16 @@ public class SimulationStateTests
         var state = new SimulationState(mockConfig.Object);
         var result = state.Validate();
 
-        Assert.IsFalse(result);
-        Assert.AreEqual(2, state.Warnings.Count);
-        Assert.AreEqual(2, state.Errors.Count);
-        Assert.IsTrue(state.Warnings.Contains("111"));
-        Assert.IsTrue(state.Warnings.Contains("222"));
-        Assert.IsTrue(state.Errors.Contains("333"));
-        Assert.IsTrue(state.Errors.Contains("444"));
+        result.Should().BeFalse();
+        state.Warnings.Should().HaveCount(2);
+        state.Errors.Should().HaveCount(2);
+        state.Warnings.Should().Contain("111");
+        state.Warnings.Should().Contain("222");
+        state.Errors.Should().Contain("333");
+        state.Errors.Should().Contain("444");
     }
 
-    [TestMethod]
+    [Fact]
     public void Validate_Succeeds_When_Only_Warnings_No_Errors()
     {
         var mockConfig = new Mock<SimulationConfig>();
@@ -52,6 +52,6 @@ public class SimulationStateTests
         var state = new SimulationState(mockConfig.Object);
         var result = state.Validate();
 
-        Assert.IsTrue(result);
+        result.Should().BeTrue();
     }
 }

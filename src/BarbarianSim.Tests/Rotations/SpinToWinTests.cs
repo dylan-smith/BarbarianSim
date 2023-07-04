@@ -1,14 +1,15 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Rotations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using Xunit;
 
 namespace BarbarianSim.Tests.Rotations;
 
-[TestClass]
 public class SpinToWinTests
 {
-    [TestMethod]
+    [Fact]
     public void Uses_LungingStrike_When_Available()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -16,10 +17,10 @@ public class SpinToWinTests
 
         rotation.Execute(state);
 
-        Assert.IsTrue(state.Events.Any(e => e is LungingStrikeEvent));
+        state.Events.Any(e => e is LungingStrikeEvent).Should().BeTrue();
     }
 
-    [TestMethod]
+    [Fact]
     public void Does_Nothing_When_Lunging_Strike_On_Cooldown()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -28,6 +29,6 @@ public class SpinToWinTests
 
         rotation.Execute(state);
 
-        Assert.AreEqual(0, state.Events.Count);
+        state.Events.Should().BeEmpty();
     }
 }

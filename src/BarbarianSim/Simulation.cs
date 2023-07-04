@@ -1,47 +1,46 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Config;
+﻿using BarbarianSim.Config;
+using BarbarianSim.Events;
 
-namespace BarbarianSim
+namespace BarbarianSim;
+
+public class Simulation
 {
-    public class Simulation
+    public SimulationState State { get; init; }
+
+    public Simulation(SimulationConfig config) => State = new SimulationState(config);
+
+    public SimulationState Run()
     {
-        public SimulationState State { get; init; }
-
-        public Simulation(SimulationConfig config) => State = new SimulationState(config);
-
-        public SimulationState Run()
+        if (!State.Validate())
         {
-            if (!State.Validate())
+            return State;
+        }
+
+        while (true)
+        {
+            State.Config.Rotation.Execute(State);
+            var nextEvent = GetNextEvent();
+
+            State.CurrentTime = nextEvent.Timestamp;
+
+            if (State.Enemy.Life <= 0)
             {
                 return State;
             }
 
-            while (true)
+            while (nextEvent != null && nextEvent.Timestamp == State.CurrentTime)
             {
-                State.Config.Rotation.Execute(State);
-                var nextEvent = GetNextEvent();
+                State.Events.Remove(nextEvent);
+                nextEvent.ProcessEvent(State);
 
-                State.CurrentTime = nextEvent.Timestamp;
+                EventPublisher.PublishEvent(nextEvent, State);
 
-                if (State.Enemy.Life <= 0)
-                {
-                    return State;
-                }
-
-                while (nextEvent != null && nextEvent.Timestamp == State.CurrentTime)
-                {
-                    State.Events.Remove(nextEvent);
-                    nextEvent.ProcessEvent(State);
-
-                    EventPublisher.PublishEvent(nextEvent, State);
-
-                    nextEvent = GetNextEvent();
-                }
+                nextEvent = GetNextEvent();
             }
-
-            throw new Exception("This should never happen");
         }
 
-        private EventInfo GetNextEvent() => State.Events.OrderBy(e => e.Timestamp).FirstOrDefault();
+        throw new Exception("This should never happen");
     }
+
+    private EventInfo GetNextEvent() => State.Events.OrderBy(e => e.Timestamp).FirstOrDefault();
 }

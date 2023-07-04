@@ -1,12 +1,11 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim.Enums;
+
+public enum DamageType
 {
-    public enum DamageType
-    {
-        Direct,
-        DirectCrit,
-        DirectOverpower,
-        DirectOverpowerCrit,
-        DamageOverTime,
-        Physical,
-    }
+    Direct,
+    DirectCrit,
+    DirectOverpower,
+    DirectOverpowerCrit,
+    DamageOverTime,
+    Physical,
 }

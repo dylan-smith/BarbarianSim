@@ -1,7 +1,6 @@
-﻿namespace BarbarianSim.Config
+﻿namespace BarbarianSim.Config;
+
+public class Gem : GearItem
 {
-    public class Gem : GearItem
-    {
-        public virtual bool IsMaxLevel() => false;
-    }
+    public virtual bool IsMaxLevel() => false;
 }

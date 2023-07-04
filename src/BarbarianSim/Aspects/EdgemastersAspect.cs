@@ -1,14 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Aspects
-{
-    public class EdgemastersAspect : Aspect
-    {
-        public int Damage { get; init; }
+namespace BarbarianSim.Aspects;
 
-        public EdgemastersAspect(int damage)
-        {
-            Damage = damage;
-        }
-    }
+public class EdgemastersAspect : Aspect
+{
+    public int Damage { get; init; }
+
+    public EdgemastersAspect(int damage) => Damage = damage;
 }

@@ -1,14 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Aspects
-{
-    public class GohrsDevastatingGrips : Aspect
-    {
-        public int Damage { get; init; }
+namespace BarbarianSim.Aspects;
 
-        public GohrsDevastatingGrips(int damage)
-        {
-            Damage = damage;
-        }
-    }
+public class GohrsDevastatingGrips : Aspect
+{
+    public int Damage { get; init; }
+
+    public GohrsDevastatingGrips(int damage) => Damage = damage;
 }

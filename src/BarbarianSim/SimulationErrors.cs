@@ -1,6 +1,5 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim;
+
+public static class SimulationErrors
 {
-    public static class SimulationErrors
-    {
-    }
 }
