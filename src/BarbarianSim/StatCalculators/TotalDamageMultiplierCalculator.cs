@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim.StatCalculators;
+﻿using BarbarianSim.Enums;
+
+namespace BarbarianSim.StatCalculators;
 
 public class TotalDamageMultiplierCalculator : BaseStatCalculator
 {

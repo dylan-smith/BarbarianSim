@@ -1,9 +1,8 @@
-﻿namespace BarbarianSim.Enums
+﻿namespace BarbarianSim.Enums;
+
+public enum RollType
 {
-    public enum RollType
-    {
-        CriticalStrike,
-        LuckyStrike,
-        Overpower,
-    }
+    CriticalStrike,
+    LuckyStrike,
+    Overpower,
 }

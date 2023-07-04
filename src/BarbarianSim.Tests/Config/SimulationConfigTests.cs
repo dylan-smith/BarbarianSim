@@ -1,5 +1,6 @@
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.Gems;
 using FluentAssertions;
 using Xunit;

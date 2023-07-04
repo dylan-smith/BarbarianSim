@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim;
+﻿using BarbarianSim.Enums;
+
+namespace BarbarianSim;
 
 public class EnemyState
 {

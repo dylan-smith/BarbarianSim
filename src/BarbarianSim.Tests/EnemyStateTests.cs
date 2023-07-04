@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using BarbarianSim.Enums;
+using FluentAssertions;
 using Xunit;
 
 namespace BarbarianSim.Tests;

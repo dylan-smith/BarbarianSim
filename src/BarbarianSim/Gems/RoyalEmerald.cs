@@ -1,11 +1,10 @@
 ﻿using BarbarianSim.Config;
 
-namespace BarbarianSim.Gems
-{
-    public class RoyalEmerald : Gem
-    {
-        public override bool IsMaxLevel() => true;
+namespace BarbarianSim.Gems;
 
-        public RoyalEmerald() => CritDamageVulnerable = 3.0;
-    }
+public class RoyalEmerald : Gem
+{
+    public override bool IsMaxLevel() => true;
+
+    public RoyalEmerald() => CritDamageVulnerable = 3.0;
 }

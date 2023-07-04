@@ -1,20 +1,19 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim.Enums;
+
+public enum Aura
 {
-    public enum Aura
-    {
-        WeaponCooldown,
-        Vulnerable,
-        Slow,
-        Immobilize,
-        Stun,
-        Knockback,
-        Knockdown,
-        Taunt,
-        Fear,
-        Tether,
-        Daze,
-        Chill,
-        Freeze,
-        Stagger,
-    }
+    WeaponCooldown,
+    Vulnerable,
+    Slow,
+    Immobilize,
+    Stun,
+    Knockback,
+    Knockdown,
+    Taunt,
+    Fear,
+    Tether,
+    Daze,
+    Chill,
+    Freeze,
+    Stagger,
 }

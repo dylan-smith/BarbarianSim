@@ -1,33 +1,32 @@
-﻿namespace BarbarianSim
+﻿namespace BarbarianSim;
+
+public static class ExtensionMethods
 {
-    public static class ExtensionMethods
+    public static void AddRange<T>(this ICollection<T> list, IEnumerable<T> range) => range.ForEach(x => list.Add(x));
+
+    public static void ForEach<T>(this IEnumerable<T> list, Action<T> action)
     {
-        public static void AddRange<T>(this ICollection<T> list, IEnumerable<T> range) => range.ForEach(x => list.Add(x));
-
-        public static void ForEach<T>(this IEnumerable<T> list, Action<T> action)
+        if (list == null)
         {
-            if (list == null)
-            {
-                throw new ArgumentNullException(nameof(list));
-            }
-
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-
-            foreach (var item in list)
-            {
-                action(item);
-            }
+            throw new ArgumentNullException(nameof(list));
         }
 
-        public static void RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dict)
+        if (action == null)
         {
-            while (dict.Any())
-            {
-                dict?.Remove(dict.First().Key);
-            }
+            throw new ArgumentNullException(nameof(action));
+        }
+
+        foreach (var item in list)
+        {
+            action(item);
+        }
+    }
+
+    public static void RemoveAll<TKey, TValue>(this IDictionary<TKey, TValue> dict)
+    {
+        while (dict.Any())
+        {
+            dict?.Remove(dict.First().Key);
         }
     }
 }
