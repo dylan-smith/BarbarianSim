@@ -11,17 +11,9 @@ public static class Whirlwind
 
     public static bool CanUse(SimulationState state)
     {
-        if (state.Player.Auras.Contains(Aura.WeaponCooldown))
-        {
-            return false;
-        }
-
-        if (state.Player.Auras.Contains(Aura.Whirlwinding))
-        {
-            return false;
-        }
-
-        return state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state));
+        return !state.Player.Auras.Contains(Aura.WeaponCooldown) &&
+               !state.Player.Auras.Contains(Aura.Whirlwinding) &&
+               state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state));
     }
 
     public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state));
