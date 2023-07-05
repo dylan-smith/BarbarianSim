@@ -14,5 +14,7 @@ public class EnemyState
 
     public bool IsInjured() => ((double)Life / MaxLife) <= 0.35;
 
+    public bool IsHealthy() => ((double)Life / MaxLife) >= 0.80;
+
     public bool IsVulnerable() => Auras.Contains(Aura.Vulnerable);
 }
