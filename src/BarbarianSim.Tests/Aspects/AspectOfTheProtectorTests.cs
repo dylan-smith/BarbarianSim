@@ -5,7 +5,7 @@ using BarbarianSim.Events;
 using FluentAssertions;
 using Xunit;
 
-namespace BarbarianSim.Tests.Abilities;
+namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfTheProtectorTests
 {
@@ -53,5 +53,20 @@ public sealed class AspectOfTheProtectorTests
         aspect.ProcessEvent(dmg, state);
 
         state.Events.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Does_Not_Fire_When_Already_Procced()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.EnemySettings.IsElite = true;
+        state.Events.Add(new AspectOfTheProtectorProcEvent(0.0, 1000));
+        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike);
+
+        var aspect = new AspectOfTheProtector(1000);
+
+        aspect.ProcessEvent(dmg, state);
+
+        state.Events.Should().ContainSingle(e => e is AspectOfTheProtectorProcEvent);
     }
 }

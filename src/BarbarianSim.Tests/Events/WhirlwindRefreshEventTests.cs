@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
 using Xunit;
@@ -12,6 +13,7 @@ public class WhirlwindRefreshEventTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 100;
+        state.Player.Auras.Add(Aura.Whirlwinding);
 
         var whirlwindRefreshEvent = new WhirlwindRefreshEvent(123.0);
         whirlwindRefreshEvent.ProcessEvent(state);

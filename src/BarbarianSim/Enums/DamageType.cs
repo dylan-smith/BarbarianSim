@@ -8,4 +8,5 @@ public enum DamageType
     DirectOverpowerCrit,
     DamageOverTime,
     Physical,
+    Fire,
 }

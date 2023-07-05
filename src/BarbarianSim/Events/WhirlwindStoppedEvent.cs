@@ -10,9 +10,6 @@ public class WhirlwindStoppedEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        if (!state.Player.Auras.Remove(Aura.Whirlwinding))
-        {
-            throw new Exception("Whirlwinding aura was expected in State");
-        }
+        state.Player.Auras.Remove(Aura.Whirlwinding);
     }
 }

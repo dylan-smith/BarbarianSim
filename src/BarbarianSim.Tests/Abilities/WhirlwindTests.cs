@@ -48,21 +48,32 @@ public sealed class WhirlwindTests
     }
 
     [Fact]
+    public void CanRefresh_When_Enough_Fury_And_Whirlwinding_Aura_Applied_Should_Return_True()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Fury = 25;
+        state.Player.Auras.Add(Aura.Whirlwinding);
+
+        Whirlwind.CanRefresh(state).Should().BeTrue();
+    }
+
+    [Fact]
     public void CanRefresh_When_Not_Enough_Fury_Returns_False()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 24;
+        state.Player.Auras.Add(Aura.Whirlwinding);
 
         Whirlwind.CanRefresh(state).Should().BeFalse();
     }
 
     [Fact]
-    public void CanRefresh_When_Enough_Fury_Returns_True()
+    public void CanRefresh_When_No_Whirlwinding_Aura_Returns_False()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Player.Fury = 25;
+        state.Player.Fury = 100;
 
-        Whirlwind.CanRefresh(state).Should().BeTrue();
+        Whirlwind.CanRefresh(state).Should().BeFalse();
     }
 
     [Fact]
@@ -78,6 +89,17 @@ public sealed class WhirlwindTests
         state.Events.Count.Should().Be(1);
         state.Events[0].Should().BeOfType<WhirlwindStartedEvent>();
         state.Events[0].Timestamp.Should().Be(123);
+    }
+
+    [Fact]
+    public void StopSpinning_Applies_Whirlwinding_Aura()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.Whirlwinding);
+
+        Whirlwind.StopSpinning(state);
+
+        state.Player.Auras.Should().NotContain(Aura.Whirlwinding);
     }
 
     [Theory]

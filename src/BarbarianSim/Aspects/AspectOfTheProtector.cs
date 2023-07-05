@@ -23,6 +23,11 @@ public class AspectOfTheProtector : Aspect
             return;
         }
 
+        if (state.Events.Any(e => e is AspectOfTheProtectorProcEvent))
+        {
+            return;
+        }
+
         state.Events.Add(new AspectOfTheProtectorProcEvent(state.CurrentTime, BarrierAmount));
     }
 }

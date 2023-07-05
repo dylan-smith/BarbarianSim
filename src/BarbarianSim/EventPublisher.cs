@@ -18,6 +18,18 @@ public static class EventPublisher
                                          .Cast<AspectOfTheProtector>()
                                          .ToList()
                                          .ForEach(a => a.ProcessEvent(ev, state));
+                state.Config.Gear.AllGear.Select(g => g.Aspect)
+                                         .Where(a => a is GohrsDevastatingGrips)
+                                         .Cast<GohrsDevastatingGrips>()
+                                         .ToList()
+                                         .ForEach(a => a.ProcessEvent(ev, state));
+                break;
+            case WhirlwindStoppedEvent ev:
+                state.Config.Gear.AllGear.Select(g => g.Aspect)
+                                         .Where(a => a is GohrsDevastatingGrips)
+                                         .Cast<GohrsDevastatingGrips>()
+                                         .ToList()
+                                         .ForEach(a => a.ProcessEvent(ev, state));
                 break;
             default:
                 break;

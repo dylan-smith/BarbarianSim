@@ -16,9 +16,11 @@ public static class Whirlwind
                state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state));
     }
 
-    public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state));
+    public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state)) && state.Player.Auras.Contains(Aura.Whirlwinding);
 
     public static void Use(SimulationState state) => state.Events.Add(new WhirlwindStartedEvent(state.CurrentTime));
+
+    public static void StopSpinning(SimulationState state) => state.Player.Auras.Remove(Aura.Whirlwinding);
 
     public static GearItem Weapon { get; set; }
 
