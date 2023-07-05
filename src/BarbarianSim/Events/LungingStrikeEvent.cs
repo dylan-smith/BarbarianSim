@@ -32,7 +32,7 @@ public class LungingStrikeEvent : EventInfo
             damageType = DamageType.DirectCrit;
         }
 
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType);
+        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike);
         state.Events.Add(DamageEvent);
 
         FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, FURY_GENERATED);
