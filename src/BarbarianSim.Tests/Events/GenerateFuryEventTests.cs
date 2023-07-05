@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Config;
-using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;

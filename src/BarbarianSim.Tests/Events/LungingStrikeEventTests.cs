@@ -194,7 +194,11 @@ public sealed class LungingStrikeEventTests : IDisposable
     [Fact]
     public void Creates_GenerateFuryEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1 },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
 
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
