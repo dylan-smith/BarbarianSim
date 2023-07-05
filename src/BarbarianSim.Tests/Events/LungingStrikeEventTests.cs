@@ -190,4 +190,19 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
         state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.6);
     }
+
+    [Fact]
+    public void Creates_GenerateFuryEvent()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.GenerateFuryEvent);
+        state.Events.Should().ContainSingle(e => e is GenerateFuryEvent);
+        lungingStrikeEvent.GenerateFuryEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.GenerateFuryEvent.Fury.Should().Be(10);
+    }
 }
