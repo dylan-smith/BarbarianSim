@@ -4,8 +4,8 @@ namespace BarbarianSim;
 
 public class EnemyState
 {
-    public int Life { get; set; }
-    public int MaxLife { get; set; }
+    public double Life { get; set; }
+    public double MaxLife { get; set; }
     public ISet<Aura> Auras { get; init; } = new HashSet<Aura>();
 
     public bool IsSlowed() => Auras.Contains(Aura.Slow);

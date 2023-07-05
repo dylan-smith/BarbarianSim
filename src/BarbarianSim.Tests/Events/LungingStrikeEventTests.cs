@@ -210,4 +210,82 @@ public sealed class LungingStrikeEventTests : IDisposable
         lungingStrikeEvent.FuryGeneratedEvent.Timestamp.Should().Be(123);
         lungingStrikeEvent.FuryGeneratedEvent.BaseFury.Should().Be(10);
     }
+
+    [Fact]
+    public void EnhancedLungingStrike_Adds_30_Percent_Damage_When_Enemy_Healthy()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
+        });
+        state.Enemy.MaxLife = 1000;
+        state.Enemy.Life = 1000;
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        lungingStrikeEvent.DamageEvent.Damage.Should().BeApproximately(0.429, 0.0000001); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 1.3 [EnhancedLungingStrike]
+    }
+
+    [Fact]
+    public void EnhancedLungingStrike_Does_Not_Add_Damage_When_Enemy_Not_Healthy()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
+        });
+        state.Enemy.MaxLife = 1000;
+        state.Enemy.Life = 600;
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        lungingStrikeEvent.DamageEvent.Damage.Should().Be(0.33); // 1 [WeaponDmg] * 0.33 [SkillModifier]
+    }
+
+    [Fact]
+    public void EnhancedLungingStrike_Creates_HealingEvent_When_Enemy_Healthy()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
+        });
+        state.Enemy.MaxLife = 1000;
+        state.Enemy.Life = 1000;
+        state.Player.MaxLife = 1000;
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.HealingEvent);
+        state.Events.Should().ContainSingle(e => e is HealingEvent);
+        lungingStrikeEvent.HealingEvent.BaseAmountHealed.Should().Be(20);
+        lungingStrikeEvent.HealingEvent.Timestamp.Should().Be(123);
+    }
+
+    [Fact]
+    public void EnhancedLungingStrike_Does_Not_Create_HealingEvent_When_Enemy_Not_Healthy()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
+        });
+        state.Enemy.MaxLife = 1000;
+        state.Enemy.Life = 600;
+        state.Player.MaxLife = 1000;
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        lungingStrikeEvent.HealingEvent.Should().BeNull();
+        state.Events.Should().NotContain(e => e is HealingEvent);
+    }
 }
