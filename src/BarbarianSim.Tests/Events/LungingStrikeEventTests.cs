@@ -204,9 +204,9 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        state.Events.Should().Contain(lungingStrikeEvent.GenerateFuryEvent);
-        state.Events.Should().ContainSingle(e => e is GenerateFuryEvent);
-        lungingStrikeEvent.GenerateFuryEvent.Timestamp.Should().Be(123);
-        lungingStrikeEvent.GenerateFuryEvent.Fury.Should().Be(10);
+        state.Events.Should().Contain(lungingStrikeEvent.FuryGeneratedEvent);
+        state.Events.Should().ContainSingle(e => e is FuryGeneratedEvent);
+        lungingStrikeEvent.FuryGeneratedEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.FuryGeneratedEvent.BaseFury.Should().Be(10);
     }
 }

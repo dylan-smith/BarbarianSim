@@ -10,7 +10,7 @@ public class FakeRandomGenerator : RandomGenerator
 
     public FakeRandomGenerator(params double[] values) => _values = new List<double>(values);
 
-    public FakeRandomGenerator(RollType type, double value) => SetRolls(type, value);
+    public FakeRandomGenerator(RollType type, params double[] values) => SetRolls(type, values);
 
     public void SetRolls(RollType type, params double[] values)
     {
@@ -27,7 +27,7 @@ public class FakeRandomGenerator : RandomGenerator
         if (_typeValues.ContainsKey(type) && _typeValues[type].Any())
         {
             var result = _typeValues[type].First();
-            _typeValues[type] = _typeValues[type].SkipLast(1).ToArray();
+            _typeValues[type] = _typeValues[type].Skip(1).ToArray();
             return result;
         }
 

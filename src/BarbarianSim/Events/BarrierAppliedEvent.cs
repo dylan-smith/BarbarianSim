@@ -25,5 +25,7 @@ namespace BarbarianSim.Events
             BarrierExpiredEvent = new BarrierExpiredEvent(Timestamp + Duration, Barrier);
             state.Events.Add(BarrierExpiredEvent);
         }
+
+        public override string ToString() => $"{base.ToString()} - {BarrierAmount} barrier applied for {Duration} seconds";
     }
 }

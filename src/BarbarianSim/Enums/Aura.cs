@@ -18,4 +18,5 @@ public enum Aura
     Stagger,
     AspectOfTheProtectorCooldown,
     Barrier,
+    Whirlwinding,
 }

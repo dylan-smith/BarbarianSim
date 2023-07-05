@@ -6,7 +6,7 @@ using Xunit;
 
 namespace BarbarianSim.Tests.Events;
 
-public sealed class GenerateFuryEventTests : IDisposable
+public sealed class FuryGeneratedEventTests : IDisposable
 {
     public void Dispose() => BaseStatCalculator.ClearMocks();
 
@@ -15,7 +15,7 @@ public sealed class GenerateFuryEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         BaseStatCalculator.InjectMock(typeof(ResourceGenerationCalculator), new FakeStatCalculator(1.0));
-        var e = new GenerateFuryEvent(123.0, 12.0);
+        var e = new FuryGeneratedEvent(123.0, 12.0);
 
         e.ProcessEvent(state);
 
@@ -28,7 +28,7 @@ public sealed class GenerateFuryEventTests : IDisposable
         var state = new SimulationState(new SimulationConfig());
         BaseStatCalculator.InjectMock(typeof(ResourceGenerationCalculator), new FakeStatCalculator(1.4));
 
-        var e = new GenerateFuryEvent(123.0, 12.0);
+        var e = new FuryGeneratedEvent(123.0, 12.0);
 
         e.ProcessEvent(state);
 
@@ -41,7 +41,7 @@ public sealed class GenerateFuryEventTests : IDisposable
         var state = new SimulationState(new SimulationConfig());
         BaseStatCalculator.InjectMock(typeof(ResourceGenerationCalculator), new FakeStatCalculator(1.0));
         state.Player.Fury = 95;
-        var e = new GenerateFuryEvent(123.0, 12.0);
+        var e = new FuryGeneratedEvent(123.0, 12.0);
 
         e.ProcessEvent(state);
 

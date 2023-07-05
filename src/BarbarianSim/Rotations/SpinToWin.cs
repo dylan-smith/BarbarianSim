@@ -6,9 +6,16 @@ public class SpinToWin : IRotation
 {
     public void Execute(SimulationState state)
     {
-        if (LungingStrike.CanUse(state))
+        if (Whirlwind.CanUse(state))
         {
-            LungingStrike.Use(state);
+            Whirlwind.Use(state);
+        }
+        else
+        {
+            if (LungingStrike.CanUse(state))
+            {
+                LungingStrike.Use(state);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ public class LungingStrikeEvent : EventInfo
     { }
 
     public DamageEvent DamageEvent { get; set; }
-    public GenerateFuryEvent GenerateFuryEvent { get; set; }
+    public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
 
     private const double FURY_GENERATED = 10.0;
 
@@ -35,12 +35,12 @@ public class LungingStrikeEvent : EventInfo
         DamageEvent = new DamageEvent(Timestamp, damage, damageType);
         state.Events.Add(DamageEvent);
 
+        FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, FURY_GENERATED);
+        state.Events.Add(FuryGeneratedEvent);
+
         var weaponSpeed = 1 / LungingStrike.Weapon.AttacksPerSecond;
         weaponSpeed *= AttackSpeedCalculator.Calculate(state);
         state.Player.Auras.Add(Aura.WeaponCooldown);
         state.Events.Add(new WeaponAuraCooldownCompletedEvent(Timestamp + weaponSpeed));
-
-        GenerateFuryEvent = new GenerateFuryEvent(Timestamp, FURY_GENERATED);
-        state.Events.Add(GenerateFuryEvent);
     }
 }

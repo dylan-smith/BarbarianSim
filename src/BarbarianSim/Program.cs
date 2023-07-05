@@ -14,7 +14,7 @@ internal class Program
         var config = new SimulationConfig();
 
         config.EnemySettings.Life = 500000;
-        config.EnemySettings.NumberOfEnemies = 1;
+        config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;
 
@@ -159,6 +159,7 @@ internal class Program
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
 
         LungingStrike.Weapon = config.Gear.TwoHandSlashing;
+        Whirlwind.Weapon = config.Gear.TwoHandSlashing;
 
         var sim = new Simulation(config);
         var state = sim.Run();
