@@ -19,4 +19,16 @@ public class WhirlwindStoppedEventTests
 
         state.Player.Auras.Should().NotContain(Aura.Whirlwinding);
     }
+
+    [Fact]
+    public void Removes_ViolentWhirlwind_Aura()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.ViolentWhirlwind);
+
+        var whirlwindStoppedEvent = new WhirlwindStoppedEvent(0);
+        whirlwindStoppedEvent.ProcessEvent(state);
+
+        state.Player.Auras.Should().NotContain(Aura.ViolentWhirlwind);
+    }
 }

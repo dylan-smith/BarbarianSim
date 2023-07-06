@@ -21,4 +21,5 @@ public enum Aura
     Whirlwinding,
     Berserking,
     Bleeding,
+    ViolentWhirlwind,
 }

@@ -11,5 +11,6 @@ public class WhirlwindStoppedEvent : EventInfo
     public override void ProcessEvent(SimulationState state)
     {
         state.Player.Auras.Remove(Aura.Whirlwinding);
+        state.Player.Auras.Remove(Aura.ViolentWhirlwind);
     }
 }

@@ -23,7 +23,7 @@ public enum Skill
     // Core
     Whirlwind,
     EnhancedWhirlwind, // Gain 1 Fury each time Whirlwind deals damage to an enemy, 4 Fury against Elite enemies
-    ViolentWhirlwind,
+    ViolentWhirlwind, // After using Whirlwind for 2 seconds, Whirlwind deals 30%[x] increased damage until cancelled
     FuriousWhirlwind, // While using a slashing weapon Whirlwind also inflicts 40% of it's Base damage as Bleeding damage over 5 seconds
     HammerOfTheAncients,
     EnhancedHammerOfTheAncients,

@@ -28,6 +28,7 @@ internal class Program
         config.Skills.Add(Skill.Whirlwind, 5);
         config.Skills.Add(Skill.EnhancedWhirlwind, 1);
         config.Skills.Add(Skill.FuriousWhirlwind, 1);
+        config.Skills.Add(Skill.ViolentWhirlwind, 1);
         config.Skills.Add(Skill.PressurePoint, 3);
 
         config.Gear.Helm.Armor = 904;

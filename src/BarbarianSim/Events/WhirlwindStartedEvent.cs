@@ -14,6 +14,7 @@ public class WhirlwindStartedEvent : EventInfo
     public IList<BleedAppliedEvent> BleedAppliedEvents { get; init; } = new List<BleedAppliedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
+    public ViolentWhirlwindAppliedEvent ViolentWhirlwindAppliedEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -22,6 +23,17 @@ public class WhirlwindStartedEvent : EventInfo
         var weaponDamage = (Whirlwind.Weapon.MinDamage + Whirlwind.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
         var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+
+        if (state.Player.Auras.Contains(Aura.ViolentWhirlwind))
+        {
+            damageMultiplier *= 1.3;
+        }
+
+        if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
+        {
+            ViolentWhirlwindAppliedEvent = new ViolentWhirlwindAppliedEvent(Timestamp + 2);
+            state.Events.Add(ViolentWhirlwindAppliedEvent);
+        }
 
         var damage = weaponDamage * skillMultiplier * damageMultiplier;
         var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
