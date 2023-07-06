@@ -17,5 +17,5 @@ public class PlayerSettings
 
     public double Dexterity => 8;
 
-    public double Life => 40;
+    public int Life => 40;
 }

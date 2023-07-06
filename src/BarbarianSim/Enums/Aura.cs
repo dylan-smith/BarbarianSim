@@ -16,4 +16,7 @@ public enum Aura
     Chill,
     Freeze,
     Stagger,
+    AspectOfTheProtectorCooldown,
+    Barrier,
+    Whirlwinding,
 }

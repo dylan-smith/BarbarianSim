@@ -182,4 +182,28 @@ public class EnemyStateTests
 
         enemyState.IsVulnerable().Should().BeFalse();
     }
+
+    [Fact]
+    public void IsHealthy_Returns_True_When_Life_Greater_Than_80_Percent()
+    {
+        var enemyState = new EnemyState
+        {
+            Life = 801,
+            MaxLife = 1000
+        };
+
+        enemyState.IsHealthy().Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsHealthy_Returns_False_When_Life_Less_Than_80_Percent()
+    {
+        var enemyState = new EnemyState
+        {
+            Life = 799,
+            MaxLife = 1000
+        };
+
+        enemyState.IsHealthy().Should().BeFalse();
+    }
 }

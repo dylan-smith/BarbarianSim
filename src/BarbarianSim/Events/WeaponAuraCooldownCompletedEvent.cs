@@ -9,7 +9,7 @@ public class WeaponAuraCooldownCompletedEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        if (!state.Auras.Remove(Aura.WeaponCooldown))
+        if (!state.Player.Auras.Remove(Aura.WeaponCooldown))
         {
             throw new Exception("WeaponCooldown aura was expected in State");
         }

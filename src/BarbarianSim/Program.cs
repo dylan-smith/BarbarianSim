@@ -14,7 +14,7 @@ internal class Program
         var config = new SimulationConfig();
 
         config.EnemySettings.Life = 500000;
-        config.EnemySettings.NumberOfEnemies = 1;
+        config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;
 
@@ -33,7 +33,7 @@ internal class Program
         config.Gear.Helm.PoisonResistance = 45.2;
         config.Gear.Helm.TotalArmor = 6.8;
         config.Gear.Helm.MaxLife = 472;
-        config.Gear.Helm.Aspect = new AspectOfGraspingWhirlwind();
+        config.Gear.Helm.Aspect = new AspectOfTheProtector(2000);
         config.Gear.Helm.Gems.Add(new RoyalSapphire());
 
         config.Gear.Chest.Armor = 1195;
@@ -159,6 +159,7 @@ internal class Program
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
 
         LungingStrike.Weapon = config.Gear.TwoHandSlashing;
+        Whirlwind.Weapon = config.Gear.TwoHandSlashing;
 
         var sim = new Simulation(config);
         var state = sim.Run();
@@ -186,5 +187,48 @@ internal class Program
         Console.WriteLine($"Avg Hit: {avgHit}");
         Console.WriteLine($"Avg Crit: {avgCrit}");
         Console.WriteLine($"Crit Bonus: {critBonus}");
+
+        var (count, uptime, percentage) = GetBarrierStats(state.ProcessedEvents);
+        Console.WriteLine($"Barriers: Applied {count} times for {uptime} seconds ({percentage}%)");
+    }
+
+    private static (int count, double uptime, double percentage) GetBarrierStats(IEnumerable<EventInfo> events)
+    {
+        var count = events.Where(x => x is BarrierAppliedEvent).Count();
+
+        var barrierEvents = events.Where(x => x is BarrierAppliedEvent or BarrierExpiredEvent);
+
+        var timestamp = 0.0;
+        var uptime = 0.0;
+        var activeCount = 0;
+
+        foreach (var e in barrierEvents)
+        {
+            if (activeCount > 0)
+            {
+                uptime += e.Timestamp - timestamp;
+            }
+
+            timestamp = e.Timestamp;
+
+            if (e is BarrierAppliedEvent)
+            {
+                activeCount++;
+            }
+
+            if (e is BarrierExpiredEvent)
+            {
+                activeCount--;
+            }
+        }
+
+        if (activeCount > 0)
+        {
+            uptime += events.Max(x => x.Timestamp) - timestamp;
+        }
+
+        var percentage = uptime / events.Max(x => x.Timestamp) * 100;
+
+        return (count, uptime, percentage);
     }
 }
