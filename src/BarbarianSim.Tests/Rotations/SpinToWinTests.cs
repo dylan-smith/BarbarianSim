@@ -52,11 +52,12 @@ public class SpinToWinTests
     }
 
     [Fact]
-    public void Does_Nothing_When_Lunging_Strike_On_Cooldown_And_No_Fury()
+    public void Does_Nothing_When_Lunging_Strike_On_Cooldown_Rallying_Cry_On_Cooldown_And_No_Fury()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 0;
         state.Player.Auras.Add(Aura.WeaponCooldown);
+        state.Player.Auras.Add(Aura.RallyingCryCooldown);
         var rotation = new SpinToWin();
 
         rotation.Execute(state);

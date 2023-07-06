@@ -8,6 +8,11 @@ public class SpinToWin : IRotation
 {
     public void Execute(SimulationState state)
     {
+        if (RallyingCry.CanUse(state))
+        {
+            RallyingCry.Use(state);
+        }
+
         if (Whirlwind.CanUse(state))
         {
             Whirlwind.Use(state);

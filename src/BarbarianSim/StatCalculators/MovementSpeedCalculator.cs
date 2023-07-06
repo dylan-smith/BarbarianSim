@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Enums;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Enums;
 
 namespace BarbarianSim.StatCalculators;
 
@@ -10,6 +11,7 @@ public class MovementSpeedCalculator : BaseStatCalculator
     {
         var movementSpeed = state.Config.Gear.GetStatTotal(g => g.MovementSpeed);
         movementSpeed += state.Player.Auras.Contains(Aura.Berserking) ? 15 : 0;
+        movementSpeed += state.Player.Auras.Contains(Aura.RallyingCry) ? RallyingCry.MOVEMENT_SPEED : 0;
 
         return movementSpeed;
     }

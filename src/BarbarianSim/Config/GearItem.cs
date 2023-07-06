@@ -30,6 +30,7 @@ public class GearItem
     public int Whirlwind { get; set; }
     public int LungingStrike { get; set; }
     public int PressurePoint { get; set; }
+    public int RallyingCry { get; set; }
     public double Dodge { get; set; }
     public double DamageReductionFromClose { get; set; }
     public double DamageReductionWhileInjured { get; set; }

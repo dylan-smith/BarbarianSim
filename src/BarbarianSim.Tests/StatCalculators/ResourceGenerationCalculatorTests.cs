@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
@@ -42,5 +43,32 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
         var result = ResourceGenerationCalculator.Calculate(state);
 
         result.Should().Be(1.12);
+    }
+
+    [Fact]
+    public void Includes_RallyingCry_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Config.Skills.Add(Skill.RallyingCry, 5);
+        state.Player.Auras.Add(Aura.RallyingCry);
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().Be(1.56);
+    }
+
+    [Fact]
+    public void RallyingCry_Bonus_And_Gear_Multiply_Together()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Config.Skills.Add(Skill.RallyingCry, 5);
+        state.Player.Auras.Add(Aura.RallyingCry);
+        state.Config.Gear.Helm.ResourceGeneration = 30;
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().Be(2.028); // (1 + 30%) * 1.56
     }
 }

@@ -30,4 +30,16 @@ public class MovementSpeedCalculatorTests
 
         result.Should().Be(27.0);
     }
+
+    [Fact]
+    public void Bonus_From_RallyingCry()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Gear.Helm.MovementSpeed = 12.0;
+        state.Player.Auras.Add(Aura.RallyingCry);
+
+        var result = MovementSpeedCalculator.Calculate(state);
+
+        result.Should().Be(42);
+    }
 }

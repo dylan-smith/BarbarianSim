@@ -22,4 +22,6 @@ public enum Aura
     Berserking,
     Bleeding,
     ViolentWhirlwind,
+    RallyingCry,
+    RallyingCryCooldown,
 }

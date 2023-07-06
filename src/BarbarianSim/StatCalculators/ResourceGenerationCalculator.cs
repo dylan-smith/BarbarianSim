@@ -1,4 +1,7 @@
-﻿namespace BarbarianSim.StatCalculators;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Enums;
+
+namespace BarbarianSim.StatCalculators;
 
 public class ResourceGenerationCalculator : BaseStatCalculator
 {
@@ -9,6 +12,13 @@ public class ResourceGenerationCalculator : BaseStatCalculator
         var resourceGeneration = state.Config.Gear.GetStatTotal(g => g.ResourceGeneration);
         resourceGeneration += WillpowerCalculator.Calculate(state) * 0.03;
 
-        return 1.0 + (resourceGeneration / 100.0);
+        var result = 1.0 + (resourceGeneration / 100.0);
+
+        if (state.Player.Auras.Contains(Aura.RallyingCry))
+        {
+            result *= RallyingCry.GetResourceGeneration(state);
+        }
+
+        return result;
     }
 }
