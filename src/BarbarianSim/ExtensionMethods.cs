@@ -30,6 +30,14 @@ public static class ExtensionMethods
         }
     }
 
+    public static void RemoveAll<T>(this IList<T> list, Func<T, bool> filter)
+    {
+        while (list.Any(filter))
+        {
+            list?.Remove(list.First(filter));
+        }
+    }
+
     public static void Times(this int count, Action action)
     {
         for (var i = 0; i < count; i++)

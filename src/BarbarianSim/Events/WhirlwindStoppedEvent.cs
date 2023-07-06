@@ -12,5 +12,7 @@ public class WhirlwindStoppedEvent : EventInfo
     {
         state.Player.Auras.Remove(Aura.Whirlwinding);
         state.Player.Auras.Remove(Aura.ViolentWhirlwind);
+
+        state.Events.RemoveAll(e => e is ViolentWhirlwindAppliedEvent);
     }
 }
