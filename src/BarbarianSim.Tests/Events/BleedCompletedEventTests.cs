@@ -13,7 +13,7 @@ public class BleedCompletedEventTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.Bleeding);
-        var e = new BleedCompletedEvent(123.0, 500.0);
+        var e = new BleedCompletedEvent(123.0, 500.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 
@@ -25,8 +25,8 @@ public class BleedCompletedEventTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.Bleeding);
-        state.Events.Add(new BleedCompletedEvent(126.0, 300.0));
-        var e = new BleedCompletedEvent(123.0, 500.0);
+        state.Events.Add(new BleedCompletedEvent(126.0, 300.0, state.Enemies.First()));
+        var e = new BleedCompletedEvent(123.0, 500.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 
@@ -37,7 +37,7 @@ public class BleedCompletedEventTests
     public void Creates_DamageEvent()
     {
         var state = new SimulationState(new SimulationConfig());
-        var e = new BleedCompletedEvent(123.0, 500.0);
+        var e = new BleedCompletedEvent(123.0, 500.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 

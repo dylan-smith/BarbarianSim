@@ -229,11 +229,12 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     [Fact]
     public void Creates_DamageEvent_For_Each_Enemy()
     {
-        var state = new SimulationState(new SimulationConfig
+        var config = new SimulationConfig()
         {
             Skills = { [Skill.Whirlwind] = 1 },
-        });
-        state.Config.EnemySettings.NumberOfEnemies = 2;
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
@@ -251,11 +252,12 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     [Fact]
     public void Separate_Crit_Roll_For_Each_Enemy()
     {
-        var state = new SimulationState(new SimulationConfig
+        var config = new SimulationConfig
         {
             Skills = { [Skill.Whirlwind] = 1 },
-        });
-        state.Config.EnemySettings.NumberOfEnemies = 2;
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7));
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 0.69));
@@ -274,11 +276,12 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     [Fact]
     public void EnhancedWhirlwind_Generates_1_Fury_For_Non_Elites()
     {
-        var state = new SimulationState(new SimulationConfig
+        var config = new SimulationConfig()
         {
             Skills = { [Skill.Whirlwind] = 1, [Skill.EnhancedWhirlwind] = 1, },
-        });
-        state.Config.EnemySettings.NumberOfEnemies = 2;
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
@@ -298,12 +301,13 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     [Fact]
     public void EnhancedWhirlwind_Generates_4_Fury_For_Elites()
     {
-        var state = new SimulationState(new SimulationConfig
+        var config = new SimulationConfig()
         {
             Skills = { [Skill.Whirlwind] = 1, [Skill.EnhancedWhirlwind] = 1, },
-        });
-        state.Config.EnemySettings.NumberOfEnemies = 2;
-        state.Config.EnemySettings.IsElite = true;
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        config.EnemySettings.IsElite = true;
+        var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
@@ -318,15 +322,16 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     [Fact]
     public void FuriousWhirlwind_Applies_Bleeds()
     {
-        var state = new SimulationState(new SimulationConfig
+        var config = new SimulationConfig
         {
             Skills = { [Skill.Whirlwind] = 1, [Skill.FuriousWhirlwind] = 1, },
-        });
-        state.Config.EnemySettings.NumberOfEnemies = 2;
-        state.Config.Gear.TwoHandSlashing.MinDamage = 1000;
-        state.Config.Gear.TwoHandSlashing.MaxDamage = 1000;
-        state.Config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
-        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        config.Gear.TwoHandSlashing.MinDamage = 1000;
+        config.Gear.TwoHandSlashing.MaxDamage = 1000;
+        config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
+        var state = new SimulationState(config);
+        Whirlwind.Weapon = config.Gear.TwoHandSlashing;
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
@@ -347,16 +352,17 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     [Fact]
     public void FuriousWhirlwind_Applies_Bleeds_Including_Damage_Bonuses()
     {
-        var state = new SimulationState(new SimulationConfig
+        var config = new SimulationConfig
         {
             Skills = { [Skill.Whirlwind] = 1, [Skill.FuriousWhirlwind] = 1, },
-        });
-        state.Config.EnemySettings.NumberOfEnemies = 2;
-        state.Config.EnemySettings.NumberOfEnemies = 2;
-        state.Config.Gear.TwoHandSlashing.MinDamage = 1000;
-        state.Config.Gear.TwoHandSlashing.MaxDamage = 1000;
-        state.Config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
-        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        config.EnemySettings.NumberOfEnemies = 2;
+        config.Gear.TwoHandSlashing.MinDamage = 1000;
+        config.Gear.TwoHandSlashing.MaxDamage = 1000;
+        config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
+        var state = new SimulationState(config);
+        Whirlwind.Weapon = config.Gear.TwoHandSlashing;
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(3.5));
 

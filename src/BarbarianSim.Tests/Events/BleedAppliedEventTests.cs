@@ -12,7 +12,7 @@ public class BleedAppliedEventTests
     public void Adds_Bleeding_Aura()
     {
         var state = new SimulationState(new SimulationConfig());
-        var e = new BleedAppliedEvent(123.0, 500.0, 5.0);
+        var e = new BleedAppliedEvent(123.0, 500.0, 5.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 
@@ -23,7 +23,7 @@ public class BleedAppliedEventTests
     public void Creates_BleedCompletedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
-        var e = new BleedAppliedEvent(123.0, 500.0, 5.0);
+        var e = new BleedAppliedEvent(123.0, 500.0, 5.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 

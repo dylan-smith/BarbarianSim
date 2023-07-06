@@ -23,7 +23,7 @@ public class Simulation
 
             State.CurrentTime = nextEvent.Timestamp;
 
-            if (State.Enemy.Life <= 0)
+            if (State.Enemies.Any(e => e.Life <= 0))
             {
                 return State;
             }

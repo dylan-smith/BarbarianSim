@@ -11,14 +11,15 @@ public class SimulationState
     public SimulationConfig Config { get; init; }
     public IList<string> Warnings { get; init; } = new List<string>();
     public IList<string> Errors { get; init; } = new List<string>();
-    public EnemyState Enemy { get; init; } = new();
+    public IList<EnemyState> Enemies { get; init; } = new List<EnemyState>();
     public PlayerState Player { get; init; } = new();
 
     public SimulationState(SimulationConfig config)
     {
         Config = config;
-        Enemy.MaxLife = config.EnemySettings.Life;
-        Enemy.Life = Enemy.MaxLife;
+
+        config.EnemySettings.NumberOfEnemies.Times(() => Enemies.Add(new EnemyState() { MaxLife = config.EnemySettings.Life, Life = config.EnemySettings.Life }));
+
         Player.MaxLife = config.PlayerSettings.Life;
         Player.Life = Player.MaxLife;
     }

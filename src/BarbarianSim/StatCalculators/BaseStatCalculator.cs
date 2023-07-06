@@ -26,6 +26,26 @@ public abstract class BaseStatCalculator
         return _instances[typeof(T)].InstanceCalculate(state, damageType);
     }
 
+    protected static double Calculate<T>(SimulationState state, EnemyState target) where T : BaseStatCalculator
+    {
+        if (!_instances.ContainsKey(typeof(T)))
+        {
+            _instances.Add(typeof(T), Activator.CreateInstance<T>());
+        }
+
+        return _instances[typeof(T)].InstanceCalculate(state, target);
+    }
+
+    protected static double Calculate<T>(SimulationState state, DamageType damageType, EnemyState target) where T : BaseStatCalculator
+    {
+        if (!_instances.ContainsKey(typeof(T)))
+        {
+            _instances.Add(typeof(T), Activator.CreateInstance<T>());
+        }
+
+        return _instances[typeof(T)].InstanceCalculate(state, damageType, target);
+    }
+
     public static void InjectMock(Type type, BaseStatCalculator mock)
     {
         if (_instances.ContainsKey(type))
@@ -41,4 +61,8 @@ public abstract class BaseStatCalculator
     protected virtual double InstanceCalculate(SimulationState state) => 0.0;
 
     protected virtual double InstanceCalculate(SimulationState state, DamageType damageType) => 0.0;
+
+    protected virtual double InstanceCalculate(SimulationState state, EnemyState target) => 0.0;
+
+    protected virtual double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState target) => 0.0;
 }

@@ -22,7 +22,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.0);
     }
@@ -34,7 +34,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.12));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -46,7 +46,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.12));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -58,7 +58,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(42.0));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.042);
     }
@@ -72,7 +72,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.2));
         BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(50.0));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.512);
     }

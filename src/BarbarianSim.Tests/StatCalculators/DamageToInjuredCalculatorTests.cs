@@ -14,9 +14,9 @@ public class DamageToInjuredCalculatorTests
         config.EnemySettings.Life = 1000;
         config.Gear.Helm.DamageToInjured = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Life = 300;
+        state.Enemies.First().Life = 300;
 
-        var result = DamageToInjuredCalculator.Calculate(state);
+        var result = DamageToInjuredCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(12.0);
     }
@@ -28,9 +28,9 @@ public class DamageToInjuredCalculatorTests
         config.EnemySettings.Life = 1000;
         config.Gear.Helm.DamageToInjured = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Life = 1000;
+        state.Enemies.First().Life = 1000;
 
-        var result = DamageToInjuredCalculator.Calculate(state);
+        var result = DamageToInjuredCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(0.0);
     }

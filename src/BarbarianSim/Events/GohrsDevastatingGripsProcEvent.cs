@@ -11,9 +11,9 @@ public class GohrsDevastatingGripsProcEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        for (var i = 0; i < state.Config.EnemySettings.NumberOfEnemies; i++)
+        foreach (var enemy in state.Enemies)
         {
-            var damageEvent = new DamageEvent(Timestamp, Damage, DamageType.Fire, DamageSource.GohrsDevastatingGrips);
+            var damageEvent = new DamageEvent(Timestamp, Damage, DamageType.Fire, DamageSource.GohrsDevastatingGrips, enemy);
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
         }

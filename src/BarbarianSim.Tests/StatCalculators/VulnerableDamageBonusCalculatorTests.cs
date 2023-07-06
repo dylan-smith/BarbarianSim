@@ -12,9 +12,9 @@ public class VulnerableDamageBonusCalculatorTests
     public void Base_Vulnerable_Damage_Is_20()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Enemy.Auras.Add(Aura.Vulnerable);
+        state.Enemies.First().Auras.Add(Aura.Vulnerable);
 
-        var result = VulnerableDamageBonusCalculator.Calculate(state);
+        var result = VulnerableDamageBonusCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(1.2);
     }
@@ -25,9 +25,9 @@ public class VulnerableDamageBonusCalculatorTests
         var config = new SimulationConfig();
         config.Gear.Helm.VulnerableDamage = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Auras.Add(Aura.Vulnerable);
+        state.Enemies.First().Auras.Add(Aura.Vulnerable);
 
-        var result = VulnerableDamageBonusCalculator.Calculate(state);
+        var result = VulnerableDamageBonusCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().BeApproximately(1.32, 0.000001);
     }
@@ -38,9 +38,9 @@ public class VulnerableDamageBonusCalculatorTests
         var config = new SimulationConfig();
         config.Gear.Helm.VulnerableDamage = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Auras.Add(Aura.Stun);
+        state.Enemies.First().Auras.Add(Aura.Stun);
 
-        var result = VulnerableDamageBonusCalculator.Calculate(state);
+        var result = VulnerableDamageBonusCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(1.0);
     }

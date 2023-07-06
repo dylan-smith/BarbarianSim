@@ -14,9 +14,9 @@ public class DamageToCrowdControlledCalculatorTests
         var config = new SimulationConfig();
         config.Gear.Helm.DamageToCrowdControlled = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Auras.Add(Aura.Slow);
+        state.Enemies.First().Auras.Add(Aura.Slow);
 
-        var result = DamageToCrowdControlledCalculator.Calculate(state);
+        var result = DamageToCrowdControlledCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(12);
     }
@@ -28,7 +28,7 @@ public class DamageToCrowdControlledCalculatorTests
         config.Gear.Helm.DamageToCrowdControlled = 12.0;
         var state = new SimulationState(config);
 
-        var result = DamageToCrowdControlledCalculator.Calculate(state);
+        var result = DamageToCrowdControlledCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(0);
     }

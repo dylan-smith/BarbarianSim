@@ -2,7 +2,7 @@
 
 public class DamageToSlowedCalculator : BaseStatCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<DamageToSlowedCalculator>(state);
+    public static double Calculate(SimulationState state, EnemyState target) => Calculate<DamageToSlowedCalculator>(state, target);
 
-    protected override double InstanceCalculate(SimulationState state) => state.Enemy.IsSlowed() ? state.Config.Gear.GetStatTotal(g => g.DamageToSlowed) : 0.0;
+    protected override double InstanceCalculate(SimulationState state, EnemyState target) => target.IsSlowed() ? state.Config.Gear.GetStatTotal(g => g.DamageToSlowed) : 0.0;
 }

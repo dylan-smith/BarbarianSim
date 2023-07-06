@@ -15,8 +15,8 @@ public class SimulationStateTests
 
         var state = new SimulationState(config);
 
-        state.Enemy.MaxLife.Should().Be(1234);
-        state.Enemy.Life.Should().Be(1234);
+        state.Enemies.First().MaxLife.Should().Be(1234);
+        state.Enemies.First().Life.Should().Be(1234);
     }
 
     [Fact]

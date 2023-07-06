@@ -14,9 +14,9 @@ public class DamageToSlowedCalculatorTests
         var config = new SimulationConfig();
         config.Gear.Helm.DamageToSlowed = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Auras.Add(Aura.Slow);
+        state.Enemies.First().Auras.Add(Aura.Slow);
 
-        var result = DamageToSlowedCalculator.Calculate(state);
+        var result = DamageToSlowedCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(12.0);
     }
@@ -27,9 +27,9 @@ public class DamageToSlowedCalculatorTests
         var config = new SimulationConfig();
         config.Gear.Helm.DamageToSlowed = 12.0;
         var state = new SimulationState(config);
-        state.Enemy.Auras.Add(Aura.Stun);
+        state.Enemies.First().Auras.Add(Aura.Stun);
 
-        var result = DamageToSlowedCalculator.Calculate(state);
+        var result = DamageToSlowedCalculator.Calculate(state, state.Enemies.First());
 
         result.Should().Be(0.0);
     }

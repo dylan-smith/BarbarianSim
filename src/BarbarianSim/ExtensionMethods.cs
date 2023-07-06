@@ -29,4 +29,12 @@ public static class ExtensionMethods
             dict?.Remove(dict.First().Key);
         }
     }
+
+    public static void Times(this int count, Action action)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            action();
+        }
+    }
 }

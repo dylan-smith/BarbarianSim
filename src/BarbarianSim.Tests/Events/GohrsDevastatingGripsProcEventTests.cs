@@ -11,8 +11,9 @@ public class GohrsDevastatingGripsProcEventTests
     [Fact]
     public void Creates_DamageEvents()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.EnemySettings.NumberOfEnemies = 2;
+        var config = new SimulationConfig();
+        config.EnemySettings.NumberOfEnemies = 2;
+        var state = new SimulationState(config);
         var e = new GohrsDevastatingGripsProcEvent(123.0, 1200.0);
 
         e.ProcessEvent(state);

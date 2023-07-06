@@ -218,8 +218,8 @@ public sealed class LungingStrikeEventTests : IDisposable
         {
             Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
         });
-        state.Enemy.MaxLife = 1000;
-        state.Enemy.Life = 1000;
+        state.Enemies.First().MaxLife = 1000;
+        state.Enemies.First().Life = 1000;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
@@ -236,8 +236,8 @@ public sealed class LungingStrikeEventTests : IDisposable
         {
             Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
         });
-        state.Enemy.MaxLife = 1000;
-        state.Enemy.Life = 600;
+        state.Enemies.First().MaxLife = 1000;
+        state.Enemies.First().Life = 600;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
@@ -254,8 +254,8 @@ public sealed class LungingStrikeEventTests : IDisposable
         {
             Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
         });
-        state.Enemy.MaxLife = 1000;
-        state.Enemy.Life = 1000;
+        state.Enemies.First().MaxLife = 1000;
+        state.Enemies.First().Life = 1000;
         state.Player.MaxLife = 1000;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
@@ -276,8 +276,8 @@ public sealed class LungingStrikeEventTests : IDisposable
         {
             Skills = { [Skill.LungingStrike] = 1, [Skill.EnhancedLungingStrike] = 1 },
         });
-        state.Enemy.MaxLife = 1000;
-        state.Enemy.Life = 600;
+        state.Enemies.First().MaxLife = 1000;
+        state.Enemies.First().Life = 600;
         state.Player.MaxLife = 1000;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));

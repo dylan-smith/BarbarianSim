@@ -14,7 +14,7 @@ public sealed class AspectOfTheProtectorTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.EnemySettings.IsElite = true;
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike);
+        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, state.Enemies.First());
         state.CurrentTime = 123.0;
 
         var aspect = new AspectOfTheProtector(1000);
@@ -31,7 +31,7 @@ public sealed class AspectOfTheProtectorTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.EnemySettings.IsElite = false;
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike);
+        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, state.Enemies.First());
 
         var aspect = new AspectOfTheProtector(1000);
 
@@ -46,7 +46,7 @@ public sealed class AspectOfTheProtectorTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.EnemySettings.IsElite = true;
         state.Player.Auras.Add(Aura.AspectOfTheProtectorCooldown);
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike);
+        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, state.Enemies.First());
 
         var aspect = new AspectOfTheProtector(1000);
 
@@ -61,7 +61,7 @@ public sealed class AspectOfTheProtectorTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.EnemySettings.IsElite = true;
         state.Events.Add(new AspectOfTheProtectorProcEvent(0.0, 1000));
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike);
+        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, state.Enemies.First());
 
         var aspect = new AspectOfTheProtector(1000);
 

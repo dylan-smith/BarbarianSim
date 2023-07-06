@@ -25,7 +25,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.0);
     }
@@ -37,7 +37,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(PhysicalDamageCalculator), new FakeStatCalculator(12.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -49,7 +49,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(DamageToCloseCalculator), new FakeStatCalculator(12.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -61,7 +61,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(DamageToInjuredCalculator), new FakeStatCalculator(12.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -73,7 +73,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(DamageToSlowedCalculator), new FakeStatCalculator(12.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -85,7 +85,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(DamageToCrowdControlledCalculator), new FakeStatCalculator(12.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.12);
     }
@@ -97,7 +97,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(BerserkingDamageCalculator), new FakeStatCalculator(25.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.25);
     }
@@ -114,7 +114,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
         BaseStatCalculator.InjectMock(typeof(DamageToCrowdControlledCalculator), new FakeStatCalculator(12.0));
         BaseStatCalculator.InjectMock(typeof(BerserkingDamageCalculator), new FakeStatCalculator(12.0));
 
-        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
         result.Should().Be(1.72);
     }

@@ -3,6 +3,7 @@
 public enum RollType
 {
     CriticalStrike,
-    LuckyStrike,
+    LuckyHit,
     Overpower,
+    PressurePoint,
 }

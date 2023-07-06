@@ -22,12 +22,7 @@ public class WhirlwindStartedEvent : EventInfo
 
         var weaponDamage = (Whirlwind.Weapon.MinDamage + Whirlwind.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
-
-        if (state.Player.Auras.Contains(Aura.ViolentWhirlwind))
-        {
-            damageMultiplier *= 1.3;
-        }
+        var violentWhirlwindMultiplier = state.Player.Auras.Contains(Aura.ViolentWhirlwind) ? 1.3 : 1.0;
 
         if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
         {
@@ -35,22 +30,24 @@ public class WhirlwindStartedEvent : EventInfo
             state.Events.Add(ViolentWhirlwindAppliedEvent);
         }
 
-        var damage = weaponDamage * skillMultiplier * damageMultiplier;
         var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
-        for (var i = 0; i < state.Config.EnemySettings.NumberOfEnemies; i++)
+        foreach (var enemy in state.Enemies)
         {
-            var enemyDamage = damage;
+            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy);
+
+            var damage = weaponDamage * skillMultiplier * damageMultiplier * violentWhirlwindMultiplier;
+
             var damageType = DamageType.Direct;
             var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
 
             if (critRoll <= critChance)
             {
-                enemyDamage *= CritDamageCalculator.Calculate(state);
+                damage *= CritDamageCalculator.Calculate(state);
                 damageType = DamageType.DirectCrit;
             }
 
-            var damageEvent = new DamageEvent(Timestamp, enemyDamage, damageType, DamageSource.Whirlwind);
+            var damageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, enemy);
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
 
@@ -65,7 +62,7 @@ public class WhirlwindStartedEvent : EventInfo
 
             if (state.Config.Skills.ContainsKey(Skill.FuriousWhirlwind) && Whirlwind.Weapon == state.Config.Gear.TwoHandSlashing)
             {
-                var bleedAppliedEvent = new BleedAppliedEvent(Timestamp, weaponDamage * damageMultiplier * 0.4, 5);
+                var bleedAppliedEvent = new BleedAppliedEvent(Timestamp, weaponDamage * damageMultiplier * 0.4, 5, enemy);
                 BleedAppliedEvents.Add(bleedAppliedEvent);
                 state.Events.Add(bleedAppliedEvent);
             }

@@ -29,7 +29,7 @@ public enum Skill
     EnhancedHammerOfTheAncients,
     ViolentHammerOfTheAncients,
     FuriousHammerOfTheAncients,
-    PressurePoint,
+    PressurePoint, // Lucky Hit: Your Core skills have up to a 30% chance to make enemies Vulnerable for 2 seconds
     Upheaval,
     EnhancedUpheaval,
     ViolentUpheaval,

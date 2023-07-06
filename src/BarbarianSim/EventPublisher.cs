@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Aspects;
 using BarbarianSim.Events;
+using BarbarianSim.Skills;
 
 namespace BarbarianSim;
 
@@ -30,6 +31,9 @@ public static class EventPublisher
                                          .Cast<GohrsDevastatingGrips>()
                                          .ToList()
                                          .ForEach(a => a.ProcessEvent(ev, state));
+                break;
+            case LuckyHitEvent ev:
+                PressurePoint.ProcessEvent(ev, state);
                 break;
             default:
                 break;

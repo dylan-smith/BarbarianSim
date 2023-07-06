@@ -19,11 +19,13 @@ public class LungingStrikeEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
+        var target = state.Enemies.First();
+
         var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical);
+        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, target);
 
-        if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) && state.Enemy.IsHealthy())
+        if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) && target.IsHealthy())
         {
             damageMultiplier *= 1.3;
             HealingEvent = new HealingEvent(Timestamp, state.Player.MaxLife * 0.02);
@@ -36,7 +38,7 @@ public class LungingStrikeEvent : EventInfo
         if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
         {
             var bleedDamage = damage * 0.2;
-            BleedAppliedEvent = new BleedAppliedEvent(Timestamp, bleedDamage, 5.0);
+            BleedAppliedEvent = new BleedAppliedEvent(Timestamp, bleedDamage, 5.0, target);
             state.Events.Add(BleedAppliedEvent);
         }
 
@@ -55,7 +57,7 @@ public class LungingStrikeEvent : EventInfo
             }
         }
 
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike);
+        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, target);
         state.Events.Add(DamageEvent);
 
         FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, FURY_GENERATED);
