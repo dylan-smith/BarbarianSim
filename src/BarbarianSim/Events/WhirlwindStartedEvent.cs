@@ -11,6 +11,7 @@ public class WhirlwindStartedEvent : EventInfo
 
     public IList<DamageEvent> DamageEvents { get; init; } = new List<DamageEvent>();
     public IList<FuryGeneratedEvent> FuryGeneratedEvents { get; init; } = new List<FuryGeneratedEvent>();
+    public IList<BleedAppliedEvent> BleedAppliedEvents { get; init; } = new List<BleedAppliedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
 
@@ -48,6 +49,13 @@ public class WhirlwindStartedEvent : EventInfo
                 var furyGeneratedEvent = new FuryGeneratedEvent(Timestamp, furyGenerated);
                 FuryGeneratedEvents.Add(furyGeneratedEvent);
                 state.Events.Add(furyGeneratedEvent);
+            }
+
+            if (state.Config.Skills.ContainsKey(Skill.FuriousWhirlwind) && Whirlwind.Weapon == state.Config.Gear.TwoHandSlashing)
+            {
+                var bleedAppliedEvent = new BleedAppliedEvent(Timestamp, weaponDamage * damageMultiplier * 0.4, 5);
+                BleedAppliedEvents.Add(bleedAppliedEvent);
+                state.Events.Add(bleedAppliedEvent);
             }
         }
 

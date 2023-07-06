@@ -317,4 +317,80 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         whirlwindStartedEvent.FuryGeneratedEvents[0].BaseFury.Should().Be(4);
         whirlwindStartedEvent.FuryGeneratedEvents[1].BaseFury.Should().Be(4);
     }
+
+    [Fact]
+    public void FuriousWhirlwind_Applies_Bleeds()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.Whirlwind] = 1, [Skill.FuriousWhirlwind] = 1, },
+        });
+        state.Config.EnemySettings.NumberOfEnemies = 2;
+        state.Config.Gear.TwoHandSlashing.MinDamage = 1000;
+        state.Config.Gear.TwoHandSlashing.MaxDamage = 1000;
+        state.Config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
+        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
+
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(whirlwindStartedEvent.BleedAppliedEvents[0]);
+        state.Events.Should().Contain(whirlwindStartedEvent.BleedAppliedEvents[1]);
+        state.Events.Count(e => e is BleedAppliedEvent).Should().Be(2);
+        whirlwindStartedEvent.BleedAppliedEvents[0].Damage.Should().Be(400);
+        whirlwindStartedEvent.BleedAppliedEvents[1].Damage.Should().Be(400);
+        whirlwindStartedEvent.BleedAppliedEvents[0].Timestamp.Should().Be(123);
+        whirlwindStartedEvent.BleedAppliedEvents[1].Timestamp.Should().Be(123);
+        whirlwindStartedEvent.BleedAppliedEvents[0].Duration.Should().Be(5);
+        whirlwindStartedEvent.BleedAppliedEvents[1].Duration.Should().Be(5);
+    }
+
+    [Fact]
+    public void FuriousWhirlwind_Applies_Bleeds_Including_Damage_Bonuses()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.Whirlwind] = 1, [Skill.FuriousWhirlwind] = 1, },
+        });
+        state.Config.EnemySettings.NumberOfEnemies = 2;
+        state.Config.EnemySettings.NumberOfEnemies = 2;
+        state.Config.Gear.TwoHandSlashing.MinDamage = 1000;
+        state.Config.Gear.TwoHandSlashing.MaxDamage = 1000;
+        state.Config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
+        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
+        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(3.5));
+
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        whirlwindStartedEvent.BleedAppliedEvents[0].Damage.Should().Be(1400);
+        whirlwindStartedEvent.BleedAppliedEvents[1].Damage.Should().Be(1400);
+    }
+
+    [Fact]
+    public void FuriousWhirlwind_Does_Not_Proc_If_Not_Using_Slashing_Weapon()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.Whirlwind] = 1, [Skill.FuriousWhirlwind] = 1, },
+        });
+        state.Config.EnemySettings.NumberOfEnemies = 2;
+        state.Config.EnemySettings.NumberOfEnemies = 2;
+        state.Config.Gear.TwoHandBludgeoning.MinDamage = 1000;
+        state.Config.Gear.TwoHandBludgeoning.MaxDamage = 1000;
+        state.Config.Gear.TwoHandBludgeoning.AttacksPerSecond = 1;
+        Whirlwind.Weapon = state.Config.Gear.TwoHandBludgeoning;
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
+        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(3.5));
+
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        state.Events.Should().NotContain(e => e is BleedAppliedEvent);
+    }
 }
