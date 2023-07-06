@@ -164,9 +164,12 @@ internal class Program
         LungingStrike.Weapon = config.Gear.TwoHandSlashing;
         Whirlwind.Weapon = config.Gear.TwoHandSlashing;
 
+        RandomGenerator.Seed(123);
+
         var sim = new Simulation(config);
         var state = sim.Run();
 
+        Console.WriteLine("");
         Console.WriteLine($"Total Events: {state.ProcessedEvents.Count}");
 
         var hits = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Where(x => x.DamageType == DamageType.Direct);
@@ -181,18 +184,59 @@ internal class Program
         var totalDamage = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Sum(x => x.Damage);
         var dps = totalDamage / totalTime;
 
-        Console.WriteLine($"Total Time: {totalTime}");
-        Console.WriteLine($"Total Damage: {totalDamage}");
-        Console.WriteLine($"DPS: {dps}");
+        Console.WriteLine("");
+        Console.WriteLine($"Total Time: {totalTime:F1} seconds");
+        Console.WriteLine($"Total Damage: {totalDamage:N0}");
+        Console.WriteLine($"DPS: {dps:N0}");
 
+        Console.WriteLine("");
         Console.WriteLine($"Hits: {hits.Count()}");
         Console.WriteLine($"Crits: {crits.Count()}");
-        Console.WriteLine($"Avg Hit: {avgHit}");
-        Console.WriteLine($"Avg Crit: {avgCrit}");
-        Console.WriteLine($"Crit Bonus: {critBonus}");
+        Console.WriteLine($"Avg Hit: {avgHit:N0}");
+        Console.WriteLine($"Avg Crit: {avgCrit:N0}");
+        Console.WriteLine($"Crit Bonus: {critBonus:F1}%");
 
+        Console.WriteLine("");
         var (count, uptime, percentage) = GetBarrierStats(state.ProcessedEvents);
-        Console.WriteLine($"Barriers: Applied {count} times for {uptime} seconds ({percentage}%)");
+        Console.WriteLine($"Barriers: Applied {count} times for {uptime:F1} seconds ({percentage:F1}%)");
+
+        (count, uptime, percentage) = GetVulnerableStats(state);
+        Console.WriteLine($"Vulnerable: Applied {count} times across {state.Enemies.Count} enemies, for a average uptime of {uptime:F1} seconds ({percentage:F1}%)");
+
+        (count, uptime, percentage) = GetBerserkingStats(state.ProcessedEvents);
+        Console.WriteLine($"Berserking: Applied {count} times for {uptime:F1} seconds ({percentage:F1}%)");
+
+        (count, uptime, percentage) = GetBleedingStats(state);
+        Console.WriteLine($"Bleeding: Applied {count} times across {state.Enemies.Count} enemies, for a average uptime of {uptime:F1} seconds ({percentage:F1}%)");
+
+        var lungingStrikeCount = state.ProcessedEvents.Count(e => e is LungingStrikeEvent);
+        var whirlwindCount = state.ProcessedEvents.Count(e => e is WhirlwindStartedEvent);
+        var rallyingCryCount = state.ProcessedEvents.Count(e => e is RallyingCryEvent);
+
+        var aspectOfTheProtectorCount = state.ProcessedEvents.Count(e => e is AspectOfTheProtectorProcEvent);
+        var gohrsCount = state.ProcessedEvents.Count(e => e is GohrsDevastatingGripsProcEvent);
+        var pressurePointCount = state.ProcessedEvents.Count(e => e is PressurePointProcEvent);
+
+        Console.WriteLine("");
+        Console.WriteLine($"Lunging Strikes: {lungingStrikeCount}");
+        Console.WriteLine($"Whirlwinds: {whirlwindCount}");
+        Console.WriteLine($"Rallying Cries: {rallyingCryCount}");
+
+        Console.WriteLine("");
+        Console.WriteLine($"Aspect of the Protector Procs: {aspectOfTheProtectorCount}");
+        Console.WriteLine($"Gohrs Devastating Grips Procs: {gohrsCount}");
+        Console.WriteLine($"Pressure Point Procs: {pressurePointCount}");
+
+        var lungingStrikeDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.LungingStrike).Sum(e => e.Damage);
+        var whirlwindDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.Whirlwind).Sum(e => e.Damage);
+        var gohrsDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.GohrsDevastatingGrips).Sum(e => e.Damage);
+        var bleedingDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.Bleeding).Sum(e => e.Damage);
+
+        Console.WriteLine("");
+        Console.WriteLine($"Lunging Strike Damage: {lungingStrikeDamage:N0} [{100 * lungingStrikeDamage / totalDamage:F1}%]");
+        Console.WriteLine($"Whirlwind Damage: {whirlwindDamage:N0} [{100 * whirlwindDamage / totalDamage:F1}%]");
+        Console.WriteLine($"Gohrs Devastating Grips Damage: {gohrsDamage:N0} [{100 * gohrsDamage / totalDamage:F1}%]");
+        Console.WriteLine($"Bleeding Damage: {bleedingDamage:N0} [{100 * bleedingDamage / totalDamage:F1}%]");
     }
 
     private static (int count, double uptime, double percentage) GetBarrierStats(IEnumerable<EventInfo> events)
@@ -233,5 +277,156 @@ internal class Program
         var percentage = uptime / events.Max(x => x.Timestamp) * 100;
 
         return (count, uptime, percentage);
+    }
+
+    private static (int count, double uptime, double percentage) GetVulnerableStats(SimulationState state)
+    {
+        var totalCount = 0;
+        var totalUptime = 0.0;
+        var totalPercentage = 0.0;
+
+        var vulnerableEvents = state.ProcessedEvents.Where(x => x is VulnerableAppliedEvent or VulnerableExpiredEvent).ToList();
+        var endOfFight = state.ProcessedEvents.Max(x => x.Timestamp);
+
+        foreach (var enemy in state.Enemies)
+        {
+            var count = vulnerableEvents.Where(x => x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy).Count();
+
+            var enemyEvents = vulnerableEvents.Where(x => (x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy) ||
+                                                           (x is VulnerableExpiredEvent && (x as VulnerableExpiredEvent).Target == enemy));
+
+            var timestamp = 0.0;
+            var uptime = 0.0;
+            var active = false;
+
+            foreach (var e in enemyEvents)
+            {
+                if (active)
+                {
+                    uptime += e.Timestamp - timestamp;
+                }
+
+                timestamp = e.Timestamp;
+
+                if (e is VulnerableAppliedEvent)
+                {
+                    active = true;
+                }
+
+                if (e is VulnerableExpiredEvent)
+                {
+                    active = false;
+                }
+            }
+
+            if (active)
+            {
+                uptime += endOfFight - timestamp;
+            }
+
+            var percentage = uptime / endOfFight * 100;
+
+            totalCount += count;
+            totalUptime += uptime; ;
+            totalPercentage += percentage;
+        }
+
+        return (totalCount, totalUptime / state.Enemies.Count, totalPercentage / state.Enemies.Count);
+    }
+
+    private static (int count, double uptime, double percentage) GetBerserkingStats(IEnumerable<EventInfo> events)
+    {
+        var count = events.Where(x => x is BerserkingAppliedEvent).Count();
+
+        var berserkingEvents = events.Where(x => x is BerserkingAppliedEvent or BerserkingExpiredEvent);
+        var endOfFight = events.Max(x => x.Timestamp);
+
+        var timestamp = 0.0;
+        var uptime = 0.0;
+        var active = false;
+
+        foreach (var e in berserkingEvents)
+        {
+            if (active)
+            {
+                uptime += e.Timestamp - timestamp;
+            }
+
+            timestamp = e.Timestamp;
+
+            if (e is BerserkingAppliedEvent)
+            {
+                active = true;
+            }
+
+            if (e is BerserkingExpiredEvent)
+            {
+                active = false;
+            }
+        }
+
+        if (active)
+        {
+            uptime += endOfFight - timestamp;
+        }
+
+        var percentage = uptime / endOfFight * 100;
+
+        return (count, uptime, percentage);
+    }
+
+    private static (int count, double uptime, double percentage) GetBleedingStats(SimulationState state)
+    {
+        var totalCount = 0;
+        var totalUptime = 0.0;
+        var totalPercentage = 0.0;
+
+        var vulnerableEvents = state.ProcessedEvents.Where(x => x is BleedAppliedEvent or BleedCompletedEvent).ToList();
+        var endOfFight = state.ProcessedEvents.Max(x => x.Timestamp);
+
+        foreach (var enemy in state.Enemies)
+        {
+            var count = vulnerableEvents.Where(x => x is BleedAppliedEvent && (x as BleedAppliedEvent).Target == enemy).Count();
+
+            var enemyEvents = vulnerableEvents.Where(x => (x is BleedAppliedEvent && (x as BleedAppliedEvent).Target == enemy) ||
+                                                           (x is BleedCompletedEvent && (x as BleedCompletedEvent).Target == enemy));
+
+            var timestamp = 0.0;
+            var uptime = 0.0;
+            var activeCount = 0;
+
+            foreach (var e in enemyEvents)
+            {
+                if (activeCount > 0)
+                {
+                    uptime += e.Timestamp - timestamp;
+                }
+
+                timestamp = e.Timestamp;
+
+                if (e is BleedAppliedEvent)
+                {
+                    activeCount++;
+                }
+
+                if (e is BleedCompletedEvent)
+                {
+                    activeCount--;
+                }
+            }
+
+            if (activeCount > 0)
+            {
+                uptime += endOfFight - timestamp;
+            }
+
+            var percentage = uptime / endOfFight * 100;
+
+            totalCount += count;
+            totalUptime += uptime; ;
+            totalPercentage += percentage;
+        }
+
+        return (totalCount, totalUptime / state.Enemies.Count, totalPercentage / state.Enemies.Count);
     }
 }
