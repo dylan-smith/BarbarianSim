@@ -22,7 +22,7 @@ public enum Skill
 
     // Core
     Whirlwind,
-    EnhancedWhirlwind,
+    EnhancedWhirlwind, // Gain 1 Fury each time Whirlwind deals damage to an enemy, 4 Fury against Elite enemies
     ViolentWhirlwind,
     FuriousWhirlwind,
     HammerOfTheAncients,

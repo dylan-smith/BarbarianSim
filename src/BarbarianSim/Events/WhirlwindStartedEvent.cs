@@ -10,6 +10,7 @@ public class WhirlwindStartedEvent : EventInfo
     { }
 
     public IList<DamageEvent> DamageEvents { get; init; } = new List<DamageEvent>();
+    public IList<FuryGeneratedEvent> FuryGeneratedEvents { get; init; } = new List<FuryGeneratedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
 
@@ -39,6 +40,15 @@ public class WhirlwindStartedEvent : EventInfo
             var damageEvent = new DamageEvent(Timestamp, enemyDamage, damageType, DamageSource.Whirlwind);
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
+
+            if (state.Config.Skills.ContainsKey(Skill.EnhancedWhirlwind))
+            {
+                var furyGenerated = state.Config.EnemySettings.IsElite ? 4 : 1;
+
+                var furyGeneratedEvent = new FuryGeneratedEvent(Timestamp, furyGenerated);
+                FuryGeneratedEvents.Add(furyGeneratedEvent);
+                state.Events.Add(furyGeneratedEvent);
+            }
         }
 
         FurySpentEvent = new FurySpentEvent(Timestamp, Whirlwind.FURY_COST);
