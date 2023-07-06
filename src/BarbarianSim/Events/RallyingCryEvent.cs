@@ -11,11 +11,19 @@ public class RallyingCryEvent : EventInfo
 
     public RallyingCryCooldownCompletedEvent RallyingCryCooldownCompletedEvent { get; set; }
     public RallyingCryExpiredEvent RallyingCryExpiredEvent { get; set; }
+    public UnstoppableExpiredEvent UnstoppableExpiredEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.Auras.Add(Aura.RallyingCryCooldown);
+
+        if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
+        {
+            state.Player.Auras.Add(Aura.Unstoppable);
+            UnstoppableExpiredEvent = new UnstoppableExpiredEvent(Timestamp + RallyingCry.DURATION);
+            state.Events.Add(UnstoppableExpiredEvent);
+        }
 
         RallyingCryCooldownCompletedEvent = new RallyingCryCooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN);
         state.Events.Add(RallyingCryCooldownCompletedEvent);

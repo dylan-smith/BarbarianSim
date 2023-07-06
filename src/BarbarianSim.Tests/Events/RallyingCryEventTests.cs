@@ -56,6 +56,32 @@ public class RallyingCryEventTests
         state.Events.Should().Contain(rallyingCryEvent.RallyingCryExpiredEvent);
         state.Events.Should().ContainSingle(e => e is RallyingCryExpiredEvent);
         rallyingCryEvent.RallyingCryExpiredEvent.Timestamp.Should().Be(129);
+    }
 
+    [Fact]
+    public void EnhancedRallyingCry_Adds_Unstoppable_Aura()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.EnhancedRallyingCry, 1);
+        var rallyingCryEvent = new RallyingCryEvent(123);
+
+        rallyingCryEvent.ProcessEvent(state);
+
+        state.Player.Auras.Should().Contain(Aura.Unstoppable);
+    }
+
+    [Fact]
+    public void EnhancedRallyingCry_Creates_UnstoppableExpiredEvent()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.EnhancedRallyingCry, 1);
+        var rallyingCryEvent = new RallyingCryEvent(123);
+
+        rallyingCryEvent.ProcessEvent(state);
+
+        rallyingCryEvent.UnstoppableExpiredEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.UnstoppableExpiredEvent);
+        state.Events.Should().ContainSingle(e => e is UnstoppableExpiredEvent);
+        rallyingCryEvent.UnstoppableExpiredEvent.Timestamp.Should().Be(129);
     }
 }

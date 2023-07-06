@@ -24,4 +24,5 @@ public enum Aura
     ViolentWhirlwind,
     RallyingCry,
     RallyingCryCooldown,
+    Unstoppable,
 }
