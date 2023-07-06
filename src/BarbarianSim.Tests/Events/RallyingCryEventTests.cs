@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
@@ -83,5 +84,21 @@ public class RallyingCryEventTests
         state.Events.Should().Contain(rallyingCryEvent.UnstoppableExpiredEvent);
         state.Events.Should().ContainSingle(e => e is UnstoppableExpiredEvent);
         rallyingCryEvent.UnstoppableExpiredEvent.Timestamp.Should().Be(129);
+    }
+
+    [Fact]
+    public void TacticalRallyingCry_Creates_FuryGeneratedEvent()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
+        var rallyingCryEvent = new RallyingCryEvent(123);
+
+        rallyingCryEvent.ProcessEvent(state);
+
+        rallyingCryEvent.FuryGeneratedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.FuryGeneratedEvent);
+        state.Events.Should().ContainSingle(e => e is FuryGeneratedEvent);
+        rallyingCryEvent.FuryGeneratedEvent.Timestamp.Should().Be(123);
+        rallyingCryEvent.FuryGeneratedEvent.BaseFury.Should().Be(RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
     }
 }

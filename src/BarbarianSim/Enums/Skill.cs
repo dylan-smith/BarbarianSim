@@ -53,7 +53,7 @@ public enum Skill
     MartialVigor,
     RallyingCry, // Bellow a Rallying Cry, increasing your Movement Speed by 30%[+] and Resource Generation by 40%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
     EnhancedRallyingCry, // Rallying Cry grants you Unstoppable while active
-    TacticalRallyingCry,
+    TacticalRallyingCry, // Rallying Cry generates 20 fury, and grants you an additional 20%[x] Resource Generation
     StrategicRallyingCry,
     IronSkin,
     EnhancedIronSkin,

@@ -17,6 +17,11 @@ public class ResourceGenerationCalculator : BaseStatCalculator
         if (state.Player.Auras.Contains(Aura.RallyingCry))
         {
             result *= RallyingCry.GetResourceGeneration(state);
+
+            if (state.Config.Skills.ContainsKey(Skill.TacticalRallyingCry))
+            {
+                result *= RallyingCry.RESOURCE_GENERATION_FROM_TACTICAL_RALLYING_CRY;
+            }
         }
 
         return result;

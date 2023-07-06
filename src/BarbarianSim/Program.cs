@@ -30,6 +30,9 @@ internal class Program
         config.Skills.Add(Skill.FuriousWhirlwind, 1);
         config.Skills.Add(Skill.ViolentWhirlwind, 1);
         config.Skills.Add(Skill.PressurePoint, 3);
+        config.Skills.Add(Skill.RallyingCry, 5);
+        config.Skills.Add(Skill.EnhancedRallyingCry, 1);
+        config.Skills.Add(Skill.TacticalRallyingCry, 1);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;

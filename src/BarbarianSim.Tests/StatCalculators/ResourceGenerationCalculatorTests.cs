@@ -71,4 +71,19 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
 
         result.Should().Be(2.028); // (1 + 30%) * 1.56
     }
+
+    [Fact]
+    public void TacticalRallyingCry_Bonus_Multiplied_In()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Config.Skills.Add(Skill.RallyingCry, 5);
+        state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
+        state.Player.Auras.Add(Aura.RallyingCry);
+        state.Config.Gear.Helm.ResourceGeneration = 30;
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().BeApproximately(2.4336, 0.00000001); // (1 + 30%) * 1.56 * 1.2
+    }
 }
