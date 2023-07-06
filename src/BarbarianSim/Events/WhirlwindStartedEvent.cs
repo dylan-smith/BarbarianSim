@@ -15,6 +15,7 @@ public class WhirlwindStartedEvent : EventInfo
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
     public ViolentWhirlwindAppliedEvent ViolentWhirlwindAppliedEvent { get; set; }
+    public IList<LuckyHitEvent> LuckyHitEvents { get; init; } = new List<LuckyHitEvent>();
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -65,6 +66,15 @@ public class WhirlwindStartedEvent : EventInfo
                 var bleedAppliedEvent = new BleedAppliedEvent(Timestamp, weaponDamage * damageMultiplier * 0.4, 5, enemy);
                 BleedAppliedEvents.Add(bleedAppliedEvent);
                 state.Events.Add(bleedAppliedEvent);
+            }
+
+            var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
+
+            if (luckyRoll <= (Whirlwind.LUCKY_HIT_CHANCE + LuckyHitChanceCalculator.Calculate(state)))
+            {
+                var luckyHitEvent = new LuckyHitEvent(Timestamp, SkillType.Core, enemy);
+                LuckyHitEvents.Add(luckyHitEvent);
+                state.Events.Add(luckyHitEvent);
             }
         }
 

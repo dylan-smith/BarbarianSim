@@ -14,6 +14,7 @@ public class LungingStrikeEvent : EventInfo
     public HealingEvent HealingEvent { get; set; }
     public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
     public BleedAppliedEvent BleedAppliedEvent { get; set; }
+    public LuckyHitEvent LuckyHitEvent { get; set; }
 
     private const double FURY_GENERATED = 10.0;
 
@@ -68,6 +69,12 @@ public class LungingStrikeEvent : EventInfo
         state.Player.Auras.Add(Aura.WeaponCooldown);
         state.Events.Add(new WeaponAuraCooldownCompletedEvent(Timestamp + weaponSpeed));
 
+        var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
 
+        if (luckyRoll <= (LungingStrike.LUCKY_HIT_CHANCE + LuckyHitChanceCalculator.Calculate(state)))
+        {
+            LuckyHitEvent = new LuckyHitEvent(Timestamp, SkillType.Basic, target);
+            state.Events.Add(LuckyHitEvent);
+        }
     }
 }

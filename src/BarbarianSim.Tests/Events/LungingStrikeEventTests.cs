@@ -6,7 +6,7 @@ using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
 
-namespace BarbarianSim.Tests.Abilities;
+namespace BarbarianSim.Tests.Events;
 
 public sealed class LungingStrikeEventTests : IDisposable
 {
@@ -16,12 +16,17 @@ public sealed class LungingStrikeEventTests : IDisposable
         RandomGenerator.ClearMock();
     }
 
+    private readonly FakeRandomGenerator _fakeRandomGenerator = new();
+
     public LungingStrikeEventTests()
     {
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0));
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0));
         BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(1.5));
         BaseStatCalculator.InjectMock(typeof(AttackSpeedCalculator), new FakeStatCalculator(1.0));
+        RandomGenerator.InjectMock(_fakeRandomGenerator);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 1.0);
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 1.0);
     }
 
     [Fact]
@@ -32,7 +37,6 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -54,7 +58,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 300, MaxDamage = 500, AttacksPerSecond = 1 };
 
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -72,7 +75,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
 
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -91,7 +93,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
 
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(4.5));
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -109,7 +110,7 @@ public sealed class LungingStrikeEventTests : IDisposable
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7));
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.69));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.69);
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -129,7 +130,7 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.0));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
         BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(3.5));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
@@ -221,7 +222,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Enemies.First().MaxLife = 1000;
         state.Enemies.First().Life = 1000;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -239,7 +239,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Enemies.First().MaxLife = 1000;
         state.Enemies.First().Life = 600;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -258,7 +257,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Enemies.First().Life = 1000;
         state.Player.MaxLife = 1000;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -280,7 +278,6 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Enemies.First().Life = 600;
         state.Player.MaxLife = 1000;
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -297,7 +294,7 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1, [Skill.CombatLungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.0));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -315,7 +312,6 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1, [Skill.BattleLungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -335,7 +331,6 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1, [Skill.BattleLungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(2.3));
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
@@ -356,7 +351,7 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1, [Skill.BattleLungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.0));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
         var lungingStrikeEvent = new LungingStrikeEvent(123);
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -366,5 +361,42 @@ public sealed class LungingStrikeEventTests : IDisposable
         lungingStrikeEvent.BleedAppliedEvent.Timestamp.Should().Be(123);
         lungingStrikeEvent.BleedAppliedEvent.Duration.Should().Be(5);
         lungingStrikeEvent.BleedAppliedEvent.Damage.Should().Be(0.066); // 1 [Weapon Damage] * 0.33 [Skill Modifier] * 0.2 [Battle Lunging Strike]
+    }
+
+    [Fact]
+    public void LuckyHit_50_Percent_Chance()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.49);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.LuckyHitEvent);
+        state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
+        lungingStrikeEvent.LuckyHitEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.LuckyHitEvent.SkillType.Should().Be(SkillType.Basic);
+        lungingStrikeEvent.LuckyHitEvent.Target.Should().Be(state.Enemies.First());
+    }
+
+    [Fact]
+    public void LuckyHit_Includes_Increased_Chance_From_Gear()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
+        BaseStatCalculator.InjectMock(typeof(LuckyHitChanceCalculator), new FakeStatCalculator(20));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.69);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
     }
 }

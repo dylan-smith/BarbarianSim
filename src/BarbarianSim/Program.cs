@@ -13,7 +13,7 @@ internal class Program
     {
         var config = new SimulationConfig();
 
-        config.EnemySettings.Life = 500000;
+        config.EnemySettings.Life = 1000000;
         config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;

@@ -16,13 +16,17 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         RandomGenerator.ClearMock();
     }
 
+    private readonly FakeRandomGenerator _fakeRandomGenerator = new();
+
     public WhirlwindStartedEventTests()
     {
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0));
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0));
         BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(1.5));
         BaseStatCalculator.InjectMock(typeof(AttackSpeedCalculator), new FakeStatCalculator(1.0));
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        RandomGenerator.InjectMock(_fakeRandomGenerator);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 1.0);
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 1.0);
     }
 
     [Fact]
@@ -106,7 +110,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         });
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7));
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.69));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.69);
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123);
 
         whirlwindStartedEvent.ProcessEvent(state);
@@ -126,7 +130,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
             Skills = { [Skill.Whirlwind] = 1 },
         });
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.0));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
         BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(3.5));
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123);
 
@@ -236,7 +240,6 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         config.EnemySettings.NumberOfEnemies = 2;
         var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
 
@@ -260,7 +263,8 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7));
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 0.69));
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 1.0, 0.69);
+
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
 
@@ -283,7 +287,6 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         config.EnemySettings.NumberOfEnemies = 2;
         var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
 
@@ -309,7 +312,6 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         config.EnemySettings.IsElite = true;
         var state = new SimulationState(config);
         Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
 
@@ -332,7 +334,6 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
         var state = new SimulationState(config);
         Whirlwind.Weapon = config.Gear.TwoHandSlashing;
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
 
@@ -363,7 +364,6 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         config.Gear.TwoHandSlashing.AttacksPerSecond = 1;
         var state = new SimulationState(config);
         Whirlwind.Weapon = config.Gear.TwoHandSlashing;
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(3.5));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
@@ -387,7 +387,6 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         state.Config.Gear.TwoHandBludgeoning.MaxDamage = 1000;
         state.Config.Gear.TwoHandBludgeoning.AttacksPerSecond = 1;
         Whirlwind.Weapon = state.Config.Gear.TwoHandBludgeoning;
-        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0, 1.0));
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(3.5));
 
         var whirlwindStartedEvent = new WhirlwindStartedEvent(123.0);
@@ -430,5 +429,63 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         whirlwindStartedEvent.ProcessEvent(state);
 
         whirlwindStartedEvent.DamageEvents.First().Damage.Should().Be(221); // 1000 [WeaponDmg] * 0.17 [SkillModifier] * 1.3 [ViolentWhirlwind]
+    }
+
+    [Fact]
+    public void LuckyHit_20_Percent_Chance()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.Whirlwind] = 1, },
+        });
+        Whirlwind.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.19);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(whirlwindStartedEvent.LuckyHitEvents.Single());
+        state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
+        whirlwindStartedEvent.LuckyHitEvents.Single().Timestamp.Should().Be(123);
+        whirlwindStartedEvent.LuckyHitEvents.Single().SkillType.Should().Be(SkillType.Core);
+        whirlwindStartedEvent.LuckyHitEvents.Single().Target.Should().Be(state.Enemies.First());
+    }
+
+    [Fact]
+    public void LuckyHit_Includes_Increased_Chance_From_Gear()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.Whirlwind] = 1, },
+        });
+        Whirlwind.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
+        BaseStatCalculator.InjectMock(typeof(LuckyHitChanceCalculator), new FakeStatCalculator(15));
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.34);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
+    }
+
+    [Fact]
+    public void Multiple_Enemies_Can_Have_Lucky_Hits_For_Each()
+    {
+        var config = new SimulationConfig()
+        {
+            Skills = { [Skill.Whirlwind] = 1, },
+        };
+        config.EnemySettings.NumberOfEnemies = 2;
+        var state = new SimulationState(config);
+        Whirlwind.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123);
+        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.19);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(whirlwindStartedEvent.LuckyHitEvents);
+        state.Events.Count(e => e is LuckyHitEvent).Should().Be(2);
+        whirlwindStartedEvent.LuckyHitEvents.First().Target.Should().Be(state.Enemies.First());
+        whirlwindStartedEvent.LuckyHitEvents.Last().Target.Should().Be(state.Enemies.Last());
     }
 }

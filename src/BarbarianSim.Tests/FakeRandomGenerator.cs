@@ -4,15 +4,13 @@ namespace BarbarianSim.Tests;
 
 public class FakeRandomGenerator : RandomGenerator
 {
-    private readonly IList<double> _values;
-
     private readonly IDictionary<RollType, double[]> _typeValues = new Dictionary<RollType, double[]>();
 
-    public FakeRandomGenerator(params double[] values) => _values = new List<double>(values);
+    public FakeRandomGenerator(RollType type, params double[] values) => FakeRoll(type, values);
 
-    public FakeRandomGenerator(RollType type, params double[] values) => SetRolls(type, values);
+    public FakeRandomGenerator() { }
 
-    public void SetRolls(RollType type, params double[] values)
+    public void FakeRoll(RollType type, params double[] values)
     {
         if (_typeValues.ContainsKey(type))
         {
@@ -24,21 +22,15 @@ public class FakeRandomGenerator : RandomGenerator
 
     protected override double RollImplementation(RollType type)
     {
-        if (_typeValues.ContainsKey(type) && _typeValues[type].Any())
+        if (_typeValues.TryGetValue(type, out var value) && value.Any())
         {
-            var result = _typeValues[type].First();
-            _typeValues[type] = _typeValues[type].Skip(1).ToArray();
+            var result = value.First();
+            if (value.Length > 1)
+            {
+                _typeValues[type] = value.Skip(1).ToArray();
+            }
             return result;
         }
-
-        if (_values.Any())
-        {
-            var result = _values.First();
-            _values.RemoveAt(0);
-            return result;
-        }
-
-        // TODO: Should probably throw an exception if there's no value found in typeValues
 
         return 0.0;
     }

@@ -29,6 +29,7 @@ public class GearItem
     public int WarCry { get; set; }
     public int Whirlwind { get; set; }
     public int LungingStrike { get; set; }
+    public int PressurePoint { get; set; }
     public double Dodge { get; set; }
     public double DamageReductionFromClose { get; set; }
     public double DamageReductionWhileInjured { get; set; }

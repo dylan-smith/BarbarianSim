@@ -8,6 +8,7 @@ namespace BarbarianSim.Abilities;
 public static class Whirlwind
 {
     public const double FURY_COST = 25.0;
+    public const double LUCKY_HIT_CHANCE = 0.2;
 
     public static bool CanUse(SimulationState state)
     {
