@@ -12,6 +12,7 @@ public class LungingStrikeEvent : EventInfo
     public DamageEvent DamageEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public HealingEvent HealingEvent { get; set; }
+    public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
 
     private const double FURY_GENERATED = 10.0;
 
@@ -38,6 +39,12 @@ public class LungingStrikeEvent : EventInfo
         {
             damage *= CritDamageCalculator.Calculate(state);
             damageType = DamageType.DirectCrit;
+
+            if (state.Config.Skills.ContainsKey(Skill.CombatLungingStrike))
+            {
+                BerserkingAppliedEvent = new BerserkingAppliedEvent(Timestamp, 1.5);
+                state.Events.Add(BerserkingAppliedEvent);
+            }
         }
 
         DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike);

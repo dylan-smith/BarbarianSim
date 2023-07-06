@@ -23,6 +23,7 @@ internal class Program
 
         config.Skills.Add(Skill.LungingStrike, 1);
         config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        config.Skills.Add(Skill.CombatLungingStrike, 1);
         config.Skills.Add(Skill.Whirlwind, 5);
         config.Skills.Add(Skill.EnhancedWhirlwind, 1);
         config.Skills.Add(Skill.FuriousWhirlwind, 1);

@@ -288,4 +288,22 @@ public sealed class LungingStrikeEventTests : IDisposable
         lungingStrikeEvent.HealingEvent.Should().BeNull();
         state.Events.Should().NotContain(e => e is HealingEvent);
     }
+
+    [Fact]
+    public void CombatLungingStrike_Grants_Berserking_On_Crit()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.CombatLungingStrike] = 1 },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.BerserkingAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is BerserkingAppliedEvent);
+        lungingStrikeEvent.BerserkingAppliedEvent.Duration.Should().Be(1.5);
+    }
 }

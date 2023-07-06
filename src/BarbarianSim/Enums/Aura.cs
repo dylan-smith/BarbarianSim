@@ -19,4 +19,5 @@ public enum Aura
     AspectOfTheProtectorCooldown,
     Barrier,
     Whirlwinding,
+    Berserking,
 }

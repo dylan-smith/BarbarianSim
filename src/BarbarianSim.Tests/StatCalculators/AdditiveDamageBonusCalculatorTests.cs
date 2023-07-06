@@ -17,6 +17,7 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
         BaseStatCalculator.InjectMock(typeof(DamageToInjuredCalculator), new FakeStatCalculator(0.0));
         BaseStatCalculator.InjectMock(typeof(DamageToSlowedCalculator), new FakeStatCalculator(0.0));
         BaseStatCalculator.InjectMock(typeof(DamageToCrowdControlledCalculator), new FakeStatCalculator(0.0));
+        BaseStatCalculator.InjectMock(typeof(BerserkingDamageCalculator), new FakeStatCalculator(0.0));
     }
 
     [Fact]
@@ -90,6 +91,18 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
     }
 
     [Fact]
+    public void Includes_BerserkingDamage()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        BaseStatCalculator.InjectMock(typeof(BerserkingDamageCalculator), new FakeStatCalculator(25.0));
+
+        var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
+
+        result.Should().Be(1.25);
+    }
+
+    [Fact]
     public void Adds_All_Additive_Damage_Bonuses()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -99,9 +112,10 @@ public sealed class AdditiveDamageBonusCalculatorTests : IDisposable
         BaseStatCalculator.InjectMock(typeof(DamageToInjuredCalculator), new FakeStatCalculator(12.0));
         BaseStatCalculator.InjectMock(typeof(DamageToSlowedCalculator), new FakeStatCalculator(12.0));
         BaseStatCalculator.InjectMock(typeof(DamageToCrowdControlledCalculator), new FakeStatCalculator(12.0));
+        BaseStatCalculator.InjectMock(typeof(BerserkingDamageCalculator), new FakeStatCalculator(12.0));
 
         var result = AdditiveDamageBonusCalculator.Calculate(state, DamageType.Physical);
 
-        result.Should().Be(1.6);
+        result.Should().Be(1.72);
     }
 }
