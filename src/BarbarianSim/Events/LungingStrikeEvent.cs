@@ -13,6 +13,7 @@ public class LungingStrikeEvent : EventInfo
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public HealingEvent HealingEvent { get; set; }
     public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
+    public BleedAppliedEvent BleedAppliedEvent { get; set; }
 
     private const double FURY_GENERATED = 10.0;
 
@@ -31,6 +32,13 @@ public class LungingStrikeEvent : EventInfo
 
         var damage = weaponDamage * skillMultiplier * damageMultiplier;
         var damageType = DamageType.Direct;
+
+        if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
+        {
+            var bleedDamage = damage * 0.2;
+            BleedAppliedEvent = new BleedAppliedEvent(Timestamp, bleedDamage, 5.0);
+            state.Events.Add(BleedAppliedEvent);
+        }
 
         var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
         var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
@@ -57,5 +65,7 @@ public class LungingStrikeEvent : EventInfo
         weaponSpeed *= AttackSpeedCalculator.Calculate(state);
         state.Player.Auras.Add(Aura.WeaponCooldown);
         state.Events.Add(new WeaponAuraCooldownCompletedEvent(Timestamp + weaponSpeed));
+
+
     }
 }

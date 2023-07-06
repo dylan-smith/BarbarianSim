@@ -5,4 +5,5 @@ public enum DamageSource
     LungingStrike,
     Whirlwind,
     GohrsDevastatingGrips,
+    Bleeding,
 }

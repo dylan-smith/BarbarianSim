@@ -306,4 +306,65 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Events.Should().ContainSingle(e => e is BerserkingAppliedEvent);
         lungingStrikeEvent.BerserkingAppliedEvent.Duration.Should().Be(1.5);
     }
+
+    [Fact]
+    public void BattleLungingStrike_Applies_Bleed()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.BattleLungingStrike] = 1 },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.BleedAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
+        lungingStrikeEvent.BleedAppliedEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.BleedAppliedEvent.Duration.Should().Be(5);
+        lungingStrikeEvent.BleedAppliedEvent.Damage.Should().Be(0.066); // 1 [Weapon Damage] * 0.33 [Skill Modifier] * 0.2 [Battle Lunging Strike]
+    }
+
+    [Fact]
+    public void BattleLungingStrike_Bleed_Damage_Includes_Damage_Bonuses()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.BattleLungingStrike] = 1 },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 1.0));
+        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(2.3));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.BleedAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
+        lungingStrikeEvent.BleedAppliedEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.BleedAppliedEvent.Duration.Should().Be(5);
+        lungingStrikeEvent.BleedAppliedEvent.Damage.Should().BeApproximately(0.1518, 0.0000001); // 1 [Weapon Damage] * 0.33 [Skill Modifier] * 2.3 [Damage Bonuses] * 0.2 [Battle Lunging Strike]
+    }
+
+    [Fact]
+    public void BattleLungingStrike_Bleed_Damage_Does_Not_Includes_Crit_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1, [Skill.BattleLungingStrike] = 1 },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        RandomGenerator.InjectMock(new FakeRandomGenerator(RollType.CriticalStrike, 0.0));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        state.Events.Should().Contain(lungingStrikeEvent.BleedAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
+        lungingStrikeEvent.BleedAppliedEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.BleedAppliedEvent.Duration.Should().Be(5);
+        lungingStrikeEvent.BleedAppliedEvent.Damage.Should().Be(0.066); // 1 [Weapon Damage] * 0.33 [Skill Modifier] * 0.2 [Battle Lunging Strike]
+    }
 }

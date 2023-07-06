@@ -20,4 +20,5 @@ public enum Aura
     Barrier,
     Whirlwinding,
     Berserking,
+    Bleeding,
 }
