@@ -101,4 +101,21 @@ public class RallyingCryEventTests
         rallyingCryEvent.FuryGeneratedEvent.Timestamp.Should().Be(123);
         rallyingCryEvent.FuryGeneratedEvent.BaseFury.Should().Be(RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
     }
+
+    [Fact]
+    public void StrategicRallyingCry_Creates_FortifyGeneratedEvent()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        state.Player.MaxLife = 4000;
+        var rallyingCryEvent = new RallyingCryEvent(123);
+
+        rallyingCryEvent.ProcessEvent(state);
+
+        rallyingCryEvent.FortifyGeneratedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.FortifyGeneratedEvent);
+        state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
+        rallyingCryEvent.FortifyGeneratedEvent.Timestamp.Should().Be(123);
+        rallyingCryEvent.FortifyGeneratedEvent.Amount.Should().Be(400);
+    }
 }

@@ -65,4 +65,60 @@ public class RallyingCryTests
 
         RallyingCry.GetResourceGeneration(state).Should().Be(1.48);
     }
+
+    [Fact]
+    public void StrategicRallyingCry_Creates_FortifyGeneratedEvent_On_Direct_Damage()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        state.Player.Auras.Add(Aura.RallyingCry);
+        state.Player.MaxLife = 4000;
+        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, state.Enemies.First());
+
+        RallyingCry.ProcessEvent(damageEvent, state);
+
+        state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
+        state.Events.OfType<FortifyGeneratedEvent>().First().Timestamp.Should().Be(123);
+        state.Events.OfType<FortifyGeneratedEvent>().First().Amount.Should().Be(80);
+    }
+
+    [Fact]
+    public void StrategicRallyingCry_Does_Not_Fortify_If_Missing_Skill()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.RallyingCry);
+        state.Player.MaxLife = 4000;
+        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, state.Enemies.First());
+
+        RallyingCry.ProcessEvent(damageEvent, state);
+
+        state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
+    }
+
+    [Fact]
+    public void StrategicRallyingCry_Does_Not_Fortify_If_DamageOverTime()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        state.Player.Auras.Add(Aura.RallyingCry);
+        state.Player.MaxLife = 4000;
+        var damageEvent = new DamageEvent(123, 500, DamageType.DamageOverTime, DamageSource.Bleeding, state.Enemies.First());
+
+        RallyingCry.ProcessEvent(damageEvent, state);
+
+        state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
+    }
+
+    [Fact]
+    public void StrategicRallyingCry_Does_Not_Fortify_If_Shout_Not_Active()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        state.Player.MaxLife = 4000;
+        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, state.Enemies.First());
+
+        RallyingCry.ProcessEvent(damageEvent, state);
+
+        state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
+    }
 }

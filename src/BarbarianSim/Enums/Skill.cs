@@ -54,7 +54,7 @@ public enum Skill
     RallyingCry, // Bellow a Rallying Cry, increasing your Movement Speed by 30%[+] and Resource Generation by 40%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
     EnhancedRallyingCry, // Rallying Cry grants you Unstoppable while active
     TacticalRallyingCry, // Rallying Cry generates 20 fury, and grants you an additional 20%[x] Resource Generation
-    StrategicRallyingCry,
+    StrategicRallyingCry, // Rallying Cry grants you 10% Base Life (10%[x] HP) as Fortify. While Rallying Cry is active, you gain an additional 2% Base Life (2%[x] HP) as Fortify each time you take or deal Direct Damage
     IronSkin,
     EnhancedIronSkin,
     TacticalIronSkin,

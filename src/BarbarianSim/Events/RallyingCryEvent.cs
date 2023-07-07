@@ -13,6 +13,7 @@ public class RallyingCryEvent : EventInfo
     public RallyingCryExpiredEvent RallyingCryExpiredEvent { get; set; }
     public UnstoppableExpiredEvent UnstoppableExpiredEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
+    public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -30,6 +31,12 @@ public class RallyingCryEvent : EventInfo
         {
             FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
             state.Events.Add(FuryGeneratedEvent);
+        }
+
+        if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry))
+        {
+            FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.MaxLife);
+            state.Events.Add(FortifyGeneratedEvent);
         }
 
         RallyingCryCooldownCompletedEvent = new RallyingCryCooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN);

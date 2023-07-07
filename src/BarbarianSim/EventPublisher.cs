@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Aspects;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Aspects;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 
@@ -9,7 +10,7 @@ public static class EventPublisher
     public static void PublishEvent(EventInfo e, SimulationState state)
     {
         state.ProcessedEvents.Add(e);
-        Console.WriteLine(e.ToString());
+        Console.WriteLine(e?.ToString());
 
         switch (e)
         {
@@ -24,6 +25,7 @@ public static class EventPublisher
                                          .Cast<GohrsDevastatingGrips>()
                                          .ToList()
                                          .ForEach(a => a.ProcessEvent(ev, state));
+                RallyingCry.ProcessEvent(ev, state);
                 break;
             case WhirlwindStoppedEvent ev:
                 state.Config.Gear.AllGear.Select(g => g.Aspect)
