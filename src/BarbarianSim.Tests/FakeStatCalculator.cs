@@ -13,7 +13,7 @@ public class FakeStatCalculator : BaseStatCalculator
 
     protected override double InstanceCalculate(SimulationState state, DamageType damageType) => _value;
 
-    protected override double InstanceCalculate(SimulationState state, EnemyState target) => _value;
+    protected override double InstanceCalculate(SimulationState state, EnemyState enemy) => _value;
 
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState target) => _value;
+    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy) => _value;
 }

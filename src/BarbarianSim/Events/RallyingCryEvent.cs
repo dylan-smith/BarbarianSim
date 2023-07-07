@@ -35,7 +35,7 @@ public class RallyingCryEvent : EventInfo
 
         if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry))
         {
-            FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.MaxLife);
+            FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife);
             state.Events.Add(FortifyGeneratedEvent);
         }
 

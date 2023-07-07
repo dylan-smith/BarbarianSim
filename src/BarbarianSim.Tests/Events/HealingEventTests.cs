@@ -10,14 +10,17 @@ public sealed class HealingEventTests : IDisposable
 {
     public void Dispose() => BaseStatCalculator.ClearMocks();
 
-    public HealingEventTests() => BaseStatCalculator.InjectMock(typeof(HealingReceivedCalculator), new FakeStatCalculator(1.0));
+    public HealingEventTests()
+    {
+        BaseStatCalculator.InjectMock(typeof(HealingReceivedCalculator), new FakeStatCalculator(1.0));
+        BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
+    }
 
     [Fact]
     public void Increases_Player_Life()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Life = 500.0;
-        state.Player.MaxLife = 1000.0;
         var e = new HealingEvent(123.0, 270.0);
 
         e.ProcessEvent(state);
@@ -33,7 +36,6 @@ public sealed class HealingEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Life = 500.0;
-        state.Player.MaxLife = 1000.0;
         BaseStatCalculator.InjectMock(typeof(HealingReceivedCalculator), new FakeStatCalculator(1.5));
         var e = new HealingEvent(123.0, 270.0);
 
@@ -47,7 +49,6 @@ public sealed class HealingEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Life = 500.0;
-        state.Player.MaxLife = 1000.0;
         var e = new HealingEvent(123.0, 810.0);
 
         e.ProcessEvent(state);

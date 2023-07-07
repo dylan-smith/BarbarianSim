@@ -1,0 +1,120 @@
+﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
+using BarbarianSim.StatCalculators;
+using FluentAssertions;
+using Xunit;
+
+namespace BarbarianSim.Tests.StatCalculators;
+
+public sealed class DamageReductionCalculatorTests : IDisposable
+{
+    public void Dispose() => BaseStatCalculator.ClearMocks();
+
+    public DamageReductionCalculatorTests()
+    {
+        BaseStatCalculator.InjectMock(typeof(DamageReductionFromBleedingCalculator), new FakeStatCalculator(0.0));
+        BaseStatCalculator.InjectMock(typeof(DamageReductionFromCloseCalculator), new FakeStatCalculator(0.0));
+        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileFortifiedCalculator), new FakeStatCalculator(0.0));
+        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileInjuredCalculator), new FakeStatCalculator(0.0));
+    }
+
+    [Fact]
+    public void Returns_Base_DamageReduction_Of_10_Percent()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.9);
+    }
+
+    [Fact]
+    public void Includes_DamageReduction_From_Gear()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Gear.Helm.DamageReduction = 12.0;
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
+    public void Includes_DamageReductionFromBleeding()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        BaseStatCalculator.InjectMock(typeof(DamageReductionFromBleedingCalculator), new FakeStatCalculator(12.0));
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
+    public void Includes_DamageReductionFromClose()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        BaseStatCalculator.InjectMock(typeof(DamageReductionFromCloseCalculator), new FakeStatCalculator(12.0));
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
+    public void Includes_DamageReductionWhileFortified()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileFortifiedCalculator), new FakeStatCalculator(12.0));
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
+    public void Includes_DamageReductionWhileInjured()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileInjuredCalculator), new FakeStatCalculator(12.0));
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
+    public void Includes_Bonus_From_Challenging_Shout()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.ChallengingShout);
+        state.Config.Skills.Add(Skill.ChallengingShout, 5);
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().Be(0.468);
+    }
+
+    [Fact]
+    public void Multiplies_All_Damage_Reduction_Bonuses()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.ChallengingShout);
+        state.Config.Skills.Add(Skill.ChallengingShout, 2);
+
+        state.Config.Gear.Helm.DamageReduction = 8.0;
+
+        BaseStatCalculator.InjectMock(typeof(DamageReductionFromBleedingCalculator), new FakeStatCalculator(8.0));
+        BaseStatCalculator.InjectMock(typeof(DamageReductionFromCloseCalculator), new FakeStatCalculator(8.0));
+        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileFortifiedCalculator), new FakeStatCalculator(8.0));
+        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileInjuredCalculator), new FakeStatCalculator(8.0));
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().BeApproximately(0.34404, 0.00001); // 0.9 * 0.58 * 0.92 * 0.92 * 0.92 * 0.92 * 0.92
+    }
+}

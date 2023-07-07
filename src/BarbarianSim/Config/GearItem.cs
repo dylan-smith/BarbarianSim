@@ -31,7 +31,9 @@ public class GearItem
     public int LungingStrike { get; set; }
     public int PressurePoint { get; set; }
     public int RallyingCry { get; set; }
+    public int ChallengingShout { get; set; }
     public double Dodge { get; set; }
+    public double DamageReduction { get; set; }
     public double DamageReductionFromClose { get; set; }
     public double DamageReductionWhileInjured { get; set; }
     public double AttacksReduceEvadeCooldown { get; set; }
@@ -74,4 +76,6 @@ public class GearItem
     public Aspect Aspect { get; set; }
 
     public double GetStatWithGems(Func<GearItem, double> statFunc) => statFunc(this) + Gems.Sum(x => statFunc(x));
+
+    public double GetStatWithGemsMultiplied(Func<GearItem, double> statFunc) => statFunc(this) * Gems.Multiply(x => statFunc(x));
 }

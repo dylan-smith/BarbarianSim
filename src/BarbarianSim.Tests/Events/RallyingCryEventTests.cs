@@ -107,7 +107,7 @@ public class RallyingCryEventTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
-        state.Player.MaxLife = 4000;
+        state.Player.BaseLife = 4000;
         var rallyingCryEvent = new RallyingCryEvent(123);
 
         rallyingCryEvent.ProcessEvent(state);

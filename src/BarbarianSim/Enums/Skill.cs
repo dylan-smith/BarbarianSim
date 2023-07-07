@@ -61,10 +61,10 @@ public enum Skill
     StrategicIronSkin,
     Outburst,
     ToughAsNails,
-    ChallengingShout,
-    EnhancedChallengingShout,
-    TacticalChallengingShout,
-    StrategicChallengingShout,
+    ChallengingShout, // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)
+    EnhancedChallengingShout, // While Challenging Shout is active, gain 20%[x] bonus Max Life
+    TacticalChallengingShout, // While Challenging Shout is active, you gain 3 Fury each time you take damage
+    StrategicChallengingShout, // While Challenging Shout is active, gain Thorns equal to 30% of your Maximum Life
 
     // Brawling
     Kick,

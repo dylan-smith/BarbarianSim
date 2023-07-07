@@ -45,4 +45,14 @@ public static class ExtensionMethods
             action();
         }
     }
+
+    public static double Multiply(this IEnumerable<double> list)
+    {
+        return list.Aggregate(1.0, (acc, x) => acc * x);
+    }
+
+    public static double Multiply<T>(this IEnumerable<T> list, Func<T, double> projection)
+    {
+        return list.Aggregate(1.0, (acc, x) => acc * projection(x));
+    }
 }

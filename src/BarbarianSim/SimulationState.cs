@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Events;
+using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim;
 
@@ -20,8 +21,8 @@ public class SimulationState
 
         config.EnemySettings.NumberOfEnemies.Times(() => Enemies.Add(new EnemyState() { MaxLife = config.EnemySettings.Life, Life = config.EnemySettings.Life }));
 
-        Player.MaxLife = config.PlayerSettings.Life;
-        Player.Life = Player.MaxLife;
+        Player.BaseLife = config.PlayerSettings.Life;
+        Player.Life = MaxLifeCalculator.Calculate(this);
     }
 
     public IEnumerable<DamageEvent> DamageEvents => ProcessedEvents.Where(e => e is DamageEvent).Cast<DamageEvent>();

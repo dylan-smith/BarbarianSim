@@ -25,4 +25,6 @@ public enum Aura
     RallyingCry,
     RallyingCryCooldown,
     Unstoppable,
+    ChallengingShout,
+    ChallengingShoutCooldown,
 }

@@ -14,9 +14,9 @@ public class HealingEvent : EventInfo
     {
         AmountHealed = BaseAmountHealed * HealingReceivedCalculator.Calculate(state);
 
-        if (AmountHealed + state.Player.Life > state.Player.MaxLife)
+        if (AmountHealed + state.Player.Life > MaxLifeCalculator.Calculate(state))
         {
-            OverHeal = state.Player.Life + AmountHealed - state.Player.MaxLife;
+            OverHeal = state.Player.Life + AmountHealed - MaxLifeCalculator.Calculate(state);
             AmountHealed -= OverHeal;
         }
 

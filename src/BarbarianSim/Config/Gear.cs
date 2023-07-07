@@ -37,4 +37,6 @@ public class Gear
     public IEnumerable<Gem> GetAllGems() => AllGear.SelectMany(g => g.Gems);
 
     public double GetStatTotal(Func<GearItem, double> stat) => AllGear.Sum(g => g.GetStatWithGems(stat));
+
+    public double GetStatTotalMultiplied(Func<GearItem, double> stat) => AllGear.Multiply(g => g.GetStatWithGemsMultiplied(stat));
 }

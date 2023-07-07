@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim.Events;
+﻿using BarbarianSim.StatCalculators;
+
+namespace BarbarianSim.Events;
 
 public class FortifyGeneratedEvent : EventInfo
 {
@@ -9,6 +11,6 @@ public class FortifyGeneratedEvent : EventInfo
     public override void ProcessEvent(SimulationState state)
     {
         state.Player.Fortify += Amount;
-        state.Player.Fortify = Math.Min(state.Player.MaxLife, state.Player.Fortify);
+        state.Player.Fortify = Math.Min(MaxLifeCalculator.Calculate(state), state.Player.Fortify);
     }
 }

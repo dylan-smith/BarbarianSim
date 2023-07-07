@@ -34,6 +34,10 @@ internal class Program
         config.Skills.Add(Skill.EnhancedRallyingCry, 1);
         config.Skills.Add(Skill.TacticalRallyingCry, 1);
         config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        config.Skills.Add(Skill.ChallengingShout, 5);
+        config.Skills.Add(Skill.EnhancedChallengingShout, 1);
+        config.Skills.Add(Skill.TacticalChallengingShout, 1);
+        config.Skills.Add(Skill.StrategicChallengingShout, 1);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;

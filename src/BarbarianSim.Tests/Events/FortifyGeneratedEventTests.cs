@@ -1,12 +1,15 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Events;
+using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
 
 namespace BarbarianSim.Tests.Events;
 
-public class FortifyGeneratedEventTests
+public sealed class FortifyGeneratedEventTests : IDisposable
 {
+    public void Dispose() => BaseStatCalculator.ClearMocks();
+
     [Fact]
     public void Adds_Fortify_To_Player()
     {
@@ -22,7 +25,7 @@ public class FortifyGeneratedEventTests
     public void Caps_Fortify_At_Max_Life()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Player.MaxLife = 4000;
+        BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(4000));
         state.Player.Fortify = 3970;
         var e = new FortifyGeneratedEvent(123.0, 80.0);
 
@@ -30,4 +33,6 @@ public class FortifyGeneratedEventTests
 
         state.Player.Fortify.Should().Be(4000);
     }
+
+
 }

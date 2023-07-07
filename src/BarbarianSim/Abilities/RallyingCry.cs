@@ -44,7 +44,7 @@ public static class RallyingCry
             state.Player.Auras.Contains(Aura.RallyingCry) &&
             damageEvent.DamageType != DamageType.DamageOverTime)
         {
-            state.Events.Add(new FortifyGeneratedEvent(damageEvent.Timestamp, DIRECT_DAMAGE_FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.MaxLife));
+            state.Events.Add(new FortifyGeneratedEvent(damageEvent.Timestamp, DIRECT_DAMAGE_FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife));
         }
     }
 }

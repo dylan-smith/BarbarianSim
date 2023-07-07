@@ -13,6 +13,11 @@ public class SpinToWin : IRotation
             RallyingCry.Use(state);
         }
 
+        if (ChallengingShout.CanUse(state))
+        {
+            ChallengingShout.Use(state);
+        }
+
         if (Whirlwind.CanUse(state))
         {
             Whirlwind.Use(state);

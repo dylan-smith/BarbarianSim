@@ -29,7 +29,7 @@ public class LungingStrikeEvent : EventInfo
         if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) && target.IsHealthy())
         {
             damageMultiplier *= 1.3;
-            HealingEvent = new HealingEvent(Timestamp, state.Player.MaxLife * 0.02);
+            HealingEvent = new HealingEvent(Timestamp, MaxLifeCalculator.Calculate(state) * 0.02);
             state.Events.Add(HealingEvent);
         }
 

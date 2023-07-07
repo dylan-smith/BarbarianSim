@@ -4,15 +4,15 @@ namespace BarbarianSim.StatCalculators;
 
 public class AdditiveDamageBonusCalculator : BaseStatCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType, EnemyState target) => Calculate<AdditiveDamageBonusCalculator>(state, damageType, target);
+    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy) => Calculate<AdditiveDamageBonusCalculator>(state, damageType, enemy);
 
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState target)
+    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy)
     {
         var physicalDamage = PhysicalDamageCalculator.Calculate(state, damageType);
         var damageToClose = DamageToCloseCalculator.Calculate(state);
-        var damageToInjured = DamageToInjuredCalculator.Calculate(state, target);
-        var damageToSlowed = DamageToSlowedCalculator.Calculate(state, target);
-        var damageToCrowdControlled = DamageToCrowdControlledCalculator.Calculate(state, target);
+        var damageToInjured = DamageToInjuredCalculator.Calculate(state, enemy);
+        var damageToSlowed = DamageToSlowedCalculator.Calculate(state, enemy);
+        var damageToCrowdControlled = DamageToCrowdControlledCalculator.Calculate(state, enemy);
         var berserkingDamage = BerserkingDamageCalculator.Calculate(state);
 
         var bonus = physicalDamage + damageToClose + damageToInjured + damageToSlowed + damageToCrowdControlled + berserkingDamage;
