@@ -71,10 +71,10 @@ public enum Skill
     EnhancedKick,
     MightyKick,
     PowerKick,
-    WarCry,
-    EnhancedWarCry,
-    MightyWarCry,
-    PowerWarCry,
+    WarCry, // Bellow a mighty war cry, increasing your damage dealt by 15%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
+    EnhancedWarCry, // War Cry grants you Berserking for 4 seconds
+    MightyWarCry, // War Cry grants you 15%[x] Base Life (15%[x] HP) as Fortify
+    PowerWarCry, // If at least 6 enemies are Nearby when you use War Cry, your damage bonus is increased by an additional 10%[x]
     BoomingVoice,
     RaidLeader,
     GutteralYell,

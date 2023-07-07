@@ -27,4 +27,6 @@ public enum Aura
     Unstoppable,
     ChallengingShout,
     ChallengingShoutCooldown,
+    WarCry,
+    WarCryCooldown,
 }

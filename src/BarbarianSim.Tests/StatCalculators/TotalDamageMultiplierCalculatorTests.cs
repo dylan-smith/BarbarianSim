@@ -64,9 +64,25 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
     }
 
     [Fact]
+    public void Includes_WarCry_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        state.Player.Auras.Add(Aura.WarCry);
+        state.Config.Skills.Add(Skill.WarCry, 5);
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+
+        result.Should().Be(1.21);
+    }
+
+    [Fact]
     public void Multiplies_All_Bonuses_Together()
     {
         var state = new SimulationState(new SimulationConfig());
+
+        state.Player.Auras.Add(Aura.WarCry);
+        state.Config.Skills.Add(Skill.WarCry, 5);
 
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.2));
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.2));
@@ -74,6 +90,6 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
 
-        result.Should().Be(1.512);
+        result.Should().Be(1.82952);
     }
 }

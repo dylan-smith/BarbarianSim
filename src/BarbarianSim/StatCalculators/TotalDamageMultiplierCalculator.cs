@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Enums;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Enums;
 
 namespace BarbarianSim.StatCalculators;
 
@@ -11,6 +12,11 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
         var damageBonus = AdditiveDamageBonusCalculator.Calculate(state, damageType, enemy);
         damageBonus *= VulnerableDamageBonusCalculator.Calculate(state, enemy);
         damageBonus *= 1 + (StrengthCalculator.Calculate(state) * 0.001);
+
+        if (state.Player.Auras.Contains(Aura.WarCry))
+        {
+            damageBonus *= WarCry.GetDamageBonus(state);
+        }
 
         return damageBonus;
     }
