@@ -11,6 +11,18 @@ internal class Program
 {
     private static void Main()
     {
+        var config = CreateConfig();
+
+        RandomGenerator.Seed(123);
+
+        var sim = new Simulation(config);
+        var state = sim.Run();
+
+        ReportResults(state);
+    }
+
+    private static SimulationConfig CreateConfig()
+    {
         var config = new SimulationConfig();
 
         config.EnemySettings.Life = 1000000;
@@ -172,11 +184,11 @@ internal class Program
         LungingStrike.Weapon = config.Gear.TwoHandSlashing;
         Whirlwind.Weapon = config.Gear.TwoHandSlashing;
 
-        RandomGenerator.Seed(123);
+        return config;
+    }
 
-        var sim = new Simulation(config);
-        var state = sim.Run();
-
+    private static void ReportResults(SimulationState state)
+    {
         Console.WriteLine("");
         Console.WriteLine($"Total Events: {state.ProcessedEvents.Count}");
 
