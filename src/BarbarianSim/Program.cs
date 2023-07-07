@@ -240,6 +240,13 @@ internal class Program
         Console.WriteLine($"Whirlwind Damage: {whirlwindDamage:N0} [{100 * whirlwindDamage / totalDamage:F1}%]");
         Console.WriteLine($"Gohrs Devastating Grips Damage: {gohrsDamage:N0} [{100 * gohrsDamage / totalDamage:F1}%]");
         Console.WriteLine($"Bleeding Damage: {bleedingDamage:N0} [{100 * bleedingDamage / totalDamage:F1}%]");
+
+        var furyGenerated = state.ProcessedEvents.OfType<FuryGeneratedEvent>().Sum(e => e.FuryGenerated);
+        var furySpent = state.ProcessedEvents.OfType<FurySpentEvent>().Sum(e => e.FurySpent);
+
+        Console.WriteLine("");
+        Console.WriteLine($"Total Fury Generated: {furyGenerated:N0}");
+        Console.WriteLine($"Total Fury Spent: {furySpent:N0}");
     }
 
     private static (int count, double uptime, double percentage) GetBarrierStats(IEnumerable<EventInfo> events)
