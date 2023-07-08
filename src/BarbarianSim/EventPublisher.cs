@@ -36,6 +36,15 @@ public static class EventPublisher
             case LuckyHitEvent ev:
                 PressurePoint.ProcessEvent(ev, state);
                 break;
+            case WarCryEvent ev:
+                GutteralYell.ProcessEvent(ev, state);
+                break;
+            case ChallengingShoutEvent ev:
+                GutteralYell.ProcessEvent(ev, state);
+                break;
+            case RallyingCryEvent ev:
+                GutteralYell.ProcessEvent(ev, state);
+                break;
             default:
                 break;
         }

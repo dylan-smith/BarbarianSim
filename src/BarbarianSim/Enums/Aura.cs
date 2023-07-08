@@ -31,4 +31,5 @@ public enum Aura
     WarCryCooldown,
     IronSkin,
     IronSkinCooldown,
+    GutteralYell,
 }

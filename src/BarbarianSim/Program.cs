@@ -55,6 +55,7 @@ internal class Program
         config.Skills.Add(Skill.MightyWarCry, 1);
         config.Skills.Add(Skill.PowerWarCry, 1);
         config.Skills.Add(Skill.BoomingVoice, 3);
+        config.Skills.Add(Skill.GutteralYell, 3);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;
@@ -234,6 +235,9 @@ internal class Program
         (count, uptime, percentage) = GetBleedingStats(state);
         Console.WriteLine($"Bleeding: Applied {count} times across {state.Enemies.Count} enemies, for a average uptime of {uptime:F1} seconds ({percentage:F1}%)");
 
+        (count, uptime, percentage) = GetGutteralYellStats(state.ProcessedEvents);
+        Console.WriteLine($"Gutteral Yell: Applied {count} times for {uptime:F1} seconds ({percentage:F1}%)");
+
         var lungingStrikeCount = state.ProcessedEvents.Count(e => e is LungingStrikeEvent);
         var whirlwindCount = state.ProcessedEvents.Count(e => e is WhirlwindStartedEvent);
         var rallyingCryCount = state.ProcessedEvents.Count(e => e is RallyingCryEvent);
@@ -392,6 +396,47 @@ internal class Program
             }
 
             if (e is BerserkingExpiredEvent)
+            {
+                active = false;
+            }
+        }
+
+        if (active)
+        {
+            uptime += endOfFight - timestamp;
+        }
+
+        var percentage = uptime / endOfFight * 100;
+
+        return (count, uptime, percentage);
+    }
+
+    private static (int count, double uptime, double percentage) GetGutteralYellStats(IEnumerable<EventInfo> events)
+    {
+        var count = events.Where(x => x is GutteralYellProcEvent).Count();
+
+        var gutteralYellEvents = events.Where(x => x is GutteralYellProcEvent || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.GutteralYell));
+        var endOfFight = events.Max(x => x.Timestamp);
+
+        var timestamp = 0.0;
+        var uptime = 0.0;
+        var active = false;
+
+        foreach (var e in gutteralYellEvents)
+        {
+            if (active)
+            {
+                uptime += e.Timestamp - timestamp;
+            }
+
+            timestamp = e.Timestamp;
+
+            if (e is GutteralYellProcEvent)
+            {
+                active = true;
+            }
+
+            if (e is AuraExpiredEvent)
             {
                 active = false;
             }

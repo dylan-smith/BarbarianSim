@@ -77,7 +77,7 @@ public enum Skill
     PowerWarCry, // If at least 6 enemies are Nearby when you use War Cry, your damage bonus is increased by an additional 10%[x]
     BoomingVoice, // Your Shout skill effect durations are increased by 24%[x]
     RaidLeader,
-    GutteralYell,
+    GutteralYell, // Your Shout skills cause enemies to deal 4% less damage for 5 seconds
     Charge,
     EnhancedCharge,
     MightyCharge,
