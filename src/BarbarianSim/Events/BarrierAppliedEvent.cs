@@ -4,12 +4,12 @@ namespace BarbarianSim.Events
 {
     public class BarrierAppliedEvent : EventInfo
     {
-        public int BarrierAmount { get; init; }
+        public double BarrierAmount { get; init; }
         public double Duration { get; init; }
         public Barrier Barrier { get; set; }
         public BarrierExpiredEvent BarrierExpiredEvent { get; set; }
 
-        public BarrierAppliedEvent(double timestamp, int barrierAmount, double duration) : base(timestamp)
+        public BarrierAppliedEvent(double timestamp, double barrierAmount, double duration) : base(timestamp)
         {
             BarrierAmount = barrierAmount;
             Duration = duration;

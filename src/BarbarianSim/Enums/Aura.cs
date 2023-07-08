@@ -29,4 +29,6 @@ public enum Aura
     ChallengingShoutCooldown,
     WarCry,
     WarCryCooldown,
+    IronSkin,
+    IronSkinCooldown,
 }

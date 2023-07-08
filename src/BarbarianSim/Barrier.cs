@@ -2,8 +2,8 @@
 {
     public class Barrier
     {
-        public int Amount { get; set; }
+        public double Amount { get; set; }
 
-        public Barrier(int amount) => Amount = amount;
+        public Barrier(double amount) => Amount = amount;
     }
 }

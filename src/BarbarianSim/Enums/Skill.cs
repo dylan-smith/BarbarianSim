@@ -55,10 +55,10 @@ public enum Skill
     EnhancedRallyingCry, // Rallying Cry grants you Unstoppable while active
     TacticalRallyingCry, // Rallying Cry generates 20 fury, and grants you an additional 20%[x] Resource Generation
     StrategicRallyingCry, // Rallying Cry grants you 10% Base Life (10%[x] HP) as Fortify. While Rallying Cry is active, you gain an additional 2% Base Life (2%[x] HP) as Fortify each time you take or deal Direct Damage
-    IronSkin,
-    EnhancedIronSkin,
-    TacticalIronSkin,
-    StrategicIronSkin,
+    IronSkin, // Steel yourself, gaining a Barrier that absorbs 65% of your missing life for 5 seconds (Cooldown: 14 seconds)
+    EnhancedIronSkin, // Ironskin's Barrier absorbs 20% more of your Maximum Life
+    TacticalIronSkin, // While Ironskin is active Heal for 10% of the Barrier's original amount as Life per second
+    StrategicIronSkin, // Ironskin also grants 15% Base Life (15%[x] HP) as Fortify. Double this amount if cast while below 50% Life
     Outburst,
     ToughAsNails,
     ChallengingShout, // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)

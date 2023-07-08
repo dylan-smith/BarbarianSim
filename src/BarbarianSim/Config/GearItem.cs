@@ -32,6 +32,7 @@ public class GearItem
     public int PressurePoint { get; set; }
     public int RallyingCry { get; set; }
     public int ChallengingShout { get; set; }
+    public int IronSkin { get; set; }
     public double Dodge { get; set; }
     public double DamageReduction { get; set; }
     public double DamageReductionFromClose { get; set; }

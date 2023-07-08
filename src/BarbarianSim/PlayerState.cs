@@ -14,7 +14,13 @@ public class PlayerState
 
     public bool IsFortified() => Fortify > Life;
 
-    public bool IsInjured(double maxLife) => (Life / maxLife) <= 0.35;
+    public bool IsInjured(double maxLife) => GetLifePercentage(maxLife) <= 0.35;
 
-    public bool IsHealthy(double maxLife) => (Life / maxLife) >= 0.80;
+    public bool IsHealthy(double maxLife) => GetLifePercentage(maxLife) >= 0.80;
+
+    public double GetLifePercentage(double maxLife) => GetLife(maxLife) / maxLife;
+
+    public double GetMissingLife(double maxLife) => maxLife - GetLife(maxLife);
+
+    private double GetLife(double maxLife) => Math.Min(Life, maxLife);
 }

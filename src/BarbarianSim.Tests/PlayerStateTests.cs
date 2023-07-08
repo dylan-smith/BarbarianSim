@@ -84,4 +84,37 @@ public class PlayerStateTests
 
         playerState.IsHealthy(1000).Should().BeFalse();
     }
+
+    [Fact]
+    public void GetMissingLife_Returns_Missing_Life()
+    {
+        var playerState = new PlayerState
+        {
+            Life = 800,
+        };
+
+        playerState.GetMissingLife(1000).Should().Be(200);
+    }
+
+    [Fact]
+    public void GetMissingLife_Returns_0_If_Life_Greater_Than_MaxLife()
+    {
+        var playerState = new PlayerState
+        {
+            Life = 1200,
+        };
+
+        playerState.GetMissingLife(1000).Should().Be(0);
+    }
+
+    [Fact]
+    public void GetLifePercentage_Returns_Life_Percentage()
+    {
+        var playerState = new PlayerState
+        {
+            Life = 800,
+        };
+
+        playerState.GetLifePercentage(1000).Should().Be(0.8);
+    }
 }
