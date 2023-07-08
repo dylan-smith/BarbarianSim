@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 
 namespace BarbarianSim.Events;
 
@@ -20,7 +21,9 @@ public class ChallengingShoutEvent : EventInfo
         ChallengingShoutCooldownCompletedEvent = new ChallengingShoutCooldownCompletedEvent(Timestamp + ChallengingShout.COOLDOWN);
         state.Events.Add(ChallengingShoutCooldownCompletedEvent);
 
-        ChallengingShoutExpiredEvent = new ChallengingShoutExpiredEvent(Timestamp + ChallengingShout.DURATION);
+        var duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);
+
+        ChallengingShoutExpiredEvent = new ChallengingShoutExpiredEvent(Timestamp + duration);
         state.Events.Add(ChallengingShoutExpiredEvent);
 
         foreach (var enemy in state.Enemies)

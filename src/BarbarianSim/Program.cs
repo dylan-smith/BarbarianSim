@@ -54,6 +54,7 @@ internal class Program
         config.Skills.Add(Skill.EnhancedWarCry, 1);
         config.Skills.Add(Skill.MightyWarCry, 1);
         config.Skills.Add(Skill.PowerWarCry, 1);
+        config.Skills.Add(Skill.BoomingVoice, 3);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;

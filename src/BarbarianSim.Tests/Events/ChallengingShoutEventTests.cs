@@ -73,4 +73,22 @@ public class ChallengingShoutEventTests
             enemy.Auras.Should().Contain(Aura.Taunt);
         }
     }
+
+    [Theory]
+    [InlineData(0, 6)]
+    [InlineData(1, 6.48)]
+    [InlineData(2, 6.96)]
+    [InlineData(3, 7.44)]
+    [InlineData(4, 7.44)]
+    public void BoomingVoice_Increases_Duration(int skillPoints, double expectedDuration)
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.BoomingVoice, skillPoints);
+
+        var challengingShoutEvent = new ChallengingShoutEvent(123);
+
+        challengingShoutEvent.ProcessEvent(state);
+
+        challengingShoutEvent.ChallengingShoutExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
+    }
 }

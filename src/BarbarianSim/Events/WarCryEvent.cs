@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 
 namespace BarbarianSim.Events;
 
@@ -19,10 +20,12 @@ public class WarCryEvent : EventInfo
         state.Player.Auras.Add(Aura.WarCry);
         state.Player.Auras.Add(Aura.WarCryCooldown);
 
+        var duration = WarCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+
         WarCryCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + WarCry.COOLDOWN, Aura.WarCryCooldown);
         state.Events.Add(WarCryCooldownCompletedEvent);
 
-        WarCryExpiredEvent = new AuraExpiredEvent(Timestamp + WarCry.DURATION, Aura.WarCry);
+        WarCryExpiredEvent = new AuraExpiredEvent(Timestamp + duration, Aura.WarCry);
         state.Events.Add(WarCryExpiredEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedWarCry))

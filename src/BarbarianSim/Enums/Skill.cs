@@ -75,7 +75,7 @@ public enum Skill
     EnhancedWarCry, // War Cry grants you Berserking for 4 seconds
     MightyWarCry, // War Cry grants you 15%[x] Base Life (15%[x] HP) as Fortify
     PowerWarCry, // If at least 6 enemies are Nearby when you use War Cry, your damage bonus is increased by an additional 10%[x]
-    BoomingVoice,
+    BoomingVoice, // Your Shout skill effect durations are increased by 24%[x]
     RaidLeader,
     GutteralYell,
     Charge,

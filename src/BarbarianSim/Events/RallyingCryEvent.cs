@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 
 namespace BarbarianSim.Events;
 
@@ -20,10 +21,12 @@ public class RallyingCryEvent : EventInfo
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.Auras.Add(Aura.RallyingCryCooldown);
 
+        var duration = RallyingCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+
         if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
         {
             state.Player.Auras.Add(Aura.Unstoppable);
-            UnstoppableExpiredEvent = new UnstoppableExpiredEvent(Timestamp + RallyingCry.DURATION);
+            UnstoppableExpiredEvent = new UnstoppableExpiredEvent(Timestamp + duration);
             state.Events.Add(UnstoppableExpiredEvent);
         }
 
@@ -42,7 +45,7 @@ public class RallyingCryEvent : EventInfo
         RallyingCryCooldownCompletedEvent = new RallyingCryCooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN);
         state.Events.Add(RallyingCryCooldownCompletedEvent);
 
-        RallyingCryExpiredEvent = new RallyingCryExpiredEvent(Timestamp + RallyingCry.DURATION);
+        RallyingCryExpiredEvent = new RallyingCryExpiredEvent(Timestamp + duration);
         state.Events.Add(RallyingCryExpiredEvent);
     }
 }

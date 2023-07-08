@@ -118,4 +118,22 @@ public class RallyingCryEventTests
         rallyingCryEvent.FortifyGeneratedEvent.Timestamp.Should().Be(123);
         rallyingCryEvent.FortifyGeneratedEvent.Amount.Should().Be(400);
     }
+
+    [Theory]
+    [InlineData(0, 6)]
+    [InlineData(1, 6.48)]
+    [InlineData(2, 6.96)]
+    [InlineData(3, 7.44)]
+    [InlineData(4, 7.44)]
+    public void BoomingVoice_Increases_Duration(int skillPoints, double expectedDuration)
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.BoomingVoice, skillPoints);
+
+        var rallyingCryEvent = new RallyingCryEvent(123);
+
+        rallyingCryEvent.ProcessEvent(state);
+
+        rallyingCryEvent.RallyingCryExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
+    }
 }
