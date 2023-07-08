@@ -52,13 +52,27 @@ public class SpinToWinTests
     }
 
     [Fact]
-    public void Does_Nothing_When_LungingStrike_RallyingCry_ChallengingShout_On_Cooldown_And_No_Fury()
+    public void Uses_All_Shouts_When_Not_On_Cooldown()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        var rotation = new SpinToWin();
+
+        rotation.Execute(state);
+
+        state.Events.Any(e => e is RallyingCryEvent).Should().BeTrue();
+        state.Events.Any(e => e is ChallengingShoutEvent).Should().BeTrue();
+        state.Events.Any(e => e is WarCryEvent).Should().BeTrue();
+    }
+
+    [Fact]
+    public void Does_Nothing_When_Shouts_On_Cooldown_And_No_Fury()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 0;
         state.Player.Auras.Add(Aura.WeaponCooldown);
         state.Player.Auras.Add(Aura.RallyingCryCooldown);
         state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
+        state.Player.Auras.Add(Aura.WarCryCooldown);
         var rotation = new SpinToWin();
 
         rotation.Execute(state);

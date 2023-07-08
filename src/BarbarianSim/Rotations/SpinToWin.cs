@@ -18,6 +18,11 @@ public class SpinToWin : IRotation
             ChallengingShout.Use(state);
         }
 
+        if (WarCry.CanUse(state))
+        {
+            WarCry.Use(state);
+        }
+
         if (Whirlwind.CanUse(state))
         {
             Whirlwind.Use(state);
