@@ -28,7 +28,8 @@ public class BerserkingAppliedEventTests
         e.ProcessEvent(state);
 
         state.Events.Should().Contain(e.BerserkingExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is BerserkingExpiredEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         e.BerserkingExpiredEvent.Timestamp.Should().Be(124.5);
+        e.BerserkingExpiredEvent.Aura.Should().Be(Aura.Berserking);
     }
 }

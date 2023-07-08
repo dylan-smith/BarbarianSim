@@ -8,13 +8,13 @@ public class BerserkingAppliedEvent : EventInfo
 
     public double Duration { get; set; }
 
-    public BerserkingExpiredEvent BerserkingExpiredEvent { get; set; }
+    public AuraExpiredEvent BerserkingExpiredEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
         state.Player.Auras.Add(Aura.Berserking);
 
-        BerserkingExpiredEvent = new BerserkingExpiredEvent(Timestamp + Duration);
+        BerserkingExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Aura.Berserking);
         state.Events.Add(BerserkingExpiredEvent);
     }
 }

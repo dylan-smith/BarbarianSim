@@ -13,13 +13,13 @@ public class VulnerableAppliedEvent : EventInfo
     public double Duration { get; set; }
     public EnemyState Target { get; init; }
 
-    public VulnerableExpiredEvent VulnerableExpiredEvent { get; set; }
+    public AuraExpiredEvent VulnerableExpiredEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
         Target.Auras.Add(Aura.Vulnerable);
 
-        VulnerableExpiredEvent = new VulnerableExpiredEvent(Timestamp + Duration, Target);
+        VulnerableExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Target, Aura.Vulnerable);
         state.Events.Add(VulnerableExpiredEvent);
     }
 }

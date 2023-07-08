@@ -56,8 +56,9 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.RallyingCryExpiredEvent.Should().NotBeNull();
         state.Events.Should().Contain(rallyingCryEvent.RallyingCryExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is RallyingCryExpiredEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         rallyingCryEvent.RallyingCryExpiredEvent.Timestamp.Should().Be(129);
+        rallyingCryEvent.RallyingCryExpiredEvent.Aura.Should().Be(Aura.RallyingCry);
     }
 
     [Fact]
@@ -83,8 +84,9 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.UnstoppableExpiredEvent.Should().NotBeNull();
         state.Events.Should().Contain(rallyingCryEvent.UnstoppableExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is UnstoppableExpiredEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent && ((AuraExpiredEvent)e).Aura == Aura.Unstoppable);
         rallyingCryEvent.UnstoppableExpiredEvent.Timestamp.Should().Be(129);
+        rallyingCryEvent.UnstoppableExpiredEvent.Aura.Should().Be(Aura.Unstoppable);
     }
 
     [Fact]

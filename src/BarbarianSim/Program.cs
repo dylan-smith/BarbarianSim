@@ -326,15 +326,15 @@ internal class Program
         var totalUptime = 0.0;
         var totalPercentage = 0.0;
 
-        var vulnerableEvents = state.ProcessedEvents.Where(x => x is VulnerableAppliedEvent or VulnerableExpiredEvent).ToList();
+        var vulnerableEvents = state.ProcessedEvents.Where(x => x is VulnerableAppliedEvent || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Vulnerable)).ToList();
         var endOfFight = state.ProcessedEvents.Max(x => x.Timestamp);
 
         foreach (var enemy in state.Enemies)
         {
             var count = vulnerableEvents.Where(x => x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy).Count();
 
-            var enemyEvents = vulnerableEvents.Where(x => (x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy) ||
-                                                           (x is VulnerableExpiredEvent && (x as VulnerableExpiredEvent).Target == enemy));
+            var enemyEvents = vulnerableEvents.Where(x => (x is VulnerableAppliedEvent appliedEvent && appliedEvent.Target == enemy) ||
+                                                           (x is AuraExpiredEvent expiredEvent && expiredEvent.Enemy == enemy));
 
             var timestamp = 0.0;
             var uptime = 0.0;
@@ -354,7 +354,7 @@ internal class Program
                     active = true;
                 }
 
-                if (e is VulnerableExpiredEvent)
+                if (e is AuraExpiredEvent)
                 {
                     active = false;
                 }
@@ -379,7 +379,7 @@ internal class Program
     {
         var count = events.Where(x => x is BerserkingAppliedEvent).Count();
 
-        var berserkingEvents = events.Where(x => x is BerserkingAppliedEvent or BerserkingExpiredEvent);
+        var berserkingEvents = events.Where(x => x is BerserkingAppliedEvent || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Berserking));
         var endOfFight = events.Max(x => x.Timestamp);
 
         var timestamp = 0.0;
@@ -400,7 +400,7 @@ internal class Program
                 active = true;
             }
 
-            if (e is BerserkingExpiredEvent)
+            if (e is AuraExpiredEvent)
             {
                 active = false;
             }
