@@ -2,6 +2,7 @@
 
 public enum Aura
 {
+    None,
     WeaponCooldown,
     Vulnerable,
     Slow,

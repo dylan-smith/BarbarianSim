@@ -57,6 +57,7 @@ internal class Program
         config.Skills.Add(Skill.BoomingVoice, 3);
         config.Skills.Add(Skill.GutteralYell, 3);
         config.Skills.Add(Skill.RaidLeader, 3);
+        config.Skills.Add(Skill.UnbridledRage, 1);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;
@@ -196,6 +197,11 @@ internal class Program
 
     private static void ReportResults(SimulationState state)
     {
+        foreach (var e in state.ProcessedEvents)
+        {
+            Console.WriteLine(e);
+        }
+
         Console.WriteLine("");
         Console.WriteLine($"Total Events: {state.ProcessedEvents.Count}");
 

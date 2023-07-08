@@ -2,6 +2,7 @@
 
 public enum DamageSource
 {
+    None,
     LungingStrike,
     Whirlwind,
     GohrsDevastatingGrips,

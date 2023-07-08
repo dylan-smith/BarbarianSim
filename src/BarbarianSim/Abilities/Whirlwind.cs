@@ -14,10 +14,10 @@ public static class Whirlwind
     {
         return !state.Player.Auras.Contains(Aura.WeaponCooldown) &&
                !state.Player.Auras.Contains(Aura.Whirlwinding) &&
-               state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state));
+               state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state, SkillType.Core));
     }
 
-    public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state)) && state.Player.Auras.Contains(Aura.Whirlwinding);
+    public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state, SkillType.Core)) && state.Player.Auras.Contains(Aura.Whirlwinding);
 
     public static void Use(SimulationState state) => state.Events.Add(new WhirlwindStartedEvent(state.CurrentTime));
 

@@ -5,9 +5,9 @@ namespace BarbarianSim.StatCalculators;
 
 public class TotalDamageMultiplierCalculator : BaseStatCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy) => Calculate<TotalDamageMultiplierCalculator>(state, damageType, enemy);
+    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType) => Calculate<TotalDamageMultiplierCalculator>(state, damageType, enemy, skillType);
 
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy)
+    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType)
     {
         var damageBonus = AdditiveDamageBonusCalculator.Calculate(state, damageType, enemy);
         damageBonus *= VulnerableDamageBonusCalculator.Calculate(state, enemy);
@@ -16,6 +16,14 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
         if (state.Player.Auras.Contains(Aura.WarCry))
         {
             damageBonus *= WarCry.GetDamageBonus(state);
+        }
+
+        if (state.Config.Skills.ContainsKey(Skill.UnbridledRage))
+        {
+            if (skillType == SkillType.Core)
+            {
+                damageBonus *= 2;
+            }
         }
 
         return damageBonus;

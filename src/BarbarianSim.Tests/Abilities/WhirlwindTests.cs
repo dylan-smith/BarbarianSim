@@ -2,13 +2,24 @@
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
+using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
-public sealed class WhirlwindTests
+public sealed class WhirlwindTests : IDisposable
 {
+    public void Dispose()
+    {
+        BaseStatCalculator.ClearMocks();
+    }
+
+    public WhirlwindTests()
+    {
+        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(1.0, SkillType.Core));
+    }
+
     [Fact]
     public void CanUse_Returns_True_When_Enough_Fury()
     {
@@ -48,6 +59,16 @@ public sealed class WhirlwindTests
     }
 
     [Fact]
+    public void CanUse_Considers_FuryCostReduction()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Fury = 20;
+        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(0.8, SkillType.Core));
+
+        Whirlwind.CanUse(state).Should().BeTrue();
+    }
+
+    [Fact]
     public void CanRefresh_When_Enough_Fury_And_Whirlwinding_Aura_Applied_Should_Return_True()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -74,6 +95,17 @@ public sealed class WhirlwindTests
         state.Player.Fury = 100;
 
         Whirlwind.CanRefresh(state).Should().BeFalse();
+    }
+
+    [Fact]
+    public void CanRefresh_Considers_FuryCostReduction()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Fury = 20;
+        state.Player.Auras.Add(Aura.Whirlwinding);
+        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(0.8, SkillType.Core));
+
+        Whirlwind.CanRefresh(state).Should().BeTrue();
     }
 
     [Fact]

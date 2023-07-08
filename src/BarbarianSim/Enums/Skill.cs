@@ -2,6 +2,8 @@
 
 public enum Skill
 {
+    None,
+
     // Basic
     LungingStrike, // Lunge forward and strike an enemy for 33% damage
     EnhancedLungingStrike, // Lunging strike deals 30%[x] increased damage and Heals you for 2% Maximum Life when it damages a Healthy enemy
@@ -136,7 +138,7 @@ public enum Skill
 
     // Key Passives
     GushingWounds,
-    UnbridledRage,
+    UnbridledRage, // Core skills deal 135%[x] increased damage, but cost 100%[x] more Fury
     WalkingArsenal,
     Unconstrained,
 }

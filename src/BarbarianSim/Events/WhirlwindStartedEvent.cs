@@ -36,7 +36,7 @@ public class WhirlwindStartedEvent : EventInfo
 
         foreach (var enemy in state.Enemies)
         {
-            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy);
+            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy, SkillType.Core);
 
             var damage = weaponDamage * skillMultiplier * damageMultiplier * violentWhirlwindMultiplier;
 
@@ -79,7 +79,7 @@ public class WhirlwindStartedEvent : EventInfo
             }
         }
 
-        FurySpentEvent = new FurySpentEvent(Timestamp, Whirlwind.FURY_COST);
+        FurySpentEvent = new FurySpentEvent(Timestamp, Whirlwind.FURY_COST, SkillType.Core);
         state.Events.Add(FurySpentEvent);
 
         var weaponSpeed = 1 / Whirlwind.Weapon.AttacksPerSecond;

@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
@@ -15,8 +16,8 @@ public sealed class FurySpentEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 29.0;
-        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(1.0));
-        var e = new FurySpentEvent(123.0, 12.0);
+        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(1.0, SkillType.Basic));
+        var e = new FurySpentEvent(123.0, 12.0, SkillType.Basic);
 
         e.ProcessEvent(state);
 
@@ -28,9 +29,9 @@ public sealed class FurySpentEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 29.0;
-        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(0.8));
+        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(0.8, SkillType.Core));
 
-        var e = new FurySpentEvent(123.0, 12.0);
+        var e = new FurySpentEvent(123.0, 12.0, SkillType.Core);
 
         e.ProcessEvent(state);
 
@@ -42,8 +43,8 @@ public sealed class FurySpentEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 10.0;
-        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(1.0));
-        var e = new FurySpentEvent(123.0, 12.0);
+        BaseStatCalculator.InjectMock(typeof(FuryCostReductionCalculator), new FakeStatCalculator(1.0, SkillType.Basic));
+        var e = new FurySpentEvent(123.0, 12.0, SkillType.Basic);
 
         var act = () => e.ProcessEvent(state);
 

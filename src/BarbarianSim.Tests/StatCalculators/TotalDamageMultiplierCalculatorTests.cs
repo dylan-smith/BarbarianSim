@@ -22,7 +22,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic);
 
         result.Should().Be(1.0);
     }
@@ -34,7 +34,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.12));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic);
 
         result.Should().Be(1.12);
     }
@@ -46,7 +46,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.12));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic);
 
         result.Should().Be(1.12);
     }
@@ -58,7 +58,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(42.0));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic);
 
         result.Should().Be(1.042);
     }
@@ -71,9 +71,33 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
         state.Player.Auras.Add(Aura.WarCry);
         state.Config.Skills.Add(Skill.WarCry, 5);
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic);
 
         result.Should().Be(1.21);
+    }
+
+    [Fact]
+    public void Includes_UnbridledRage_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        state.Config.Skills.Add(Skill.UnbridledRage, 1);
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
+
+        result.Should().Be(2);
+    }
+
+    [Fact]
+    public void UnbridledRage_Only_Applies_To_Core_Skills()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        state.Config.Skills.Add(Skill.UnbridledRage, 1);
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic);
+
+        result.Should().Be(1);
     }
 
     [Fact]
@@ -83,13 +107,14 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         state.Player.Auras.Add(Aura.WarCry);
         state.Config.Skills.Add(Skill.WarCry, 5);
+        state.Config.Skills.Add(Skill.UnbridledRage, 1);
 
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.2));
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.2));
         BaseStatCalculator.InjectMock(typeof(StrengthCalculator), new FakeStatCalculator(50.0));
 
-        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First());
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
 
-        result.Should().Be(1.82952);
+        result.Should().Be(3.65904);
     }
 }

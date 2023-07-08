@@ -2,6 +2,7 @@
 
 public enum DamageType
 {
+    None = 0,
     Direct,
     DirectCrit,
     DirectOverpower,

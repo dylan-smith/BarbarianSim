@@ -2,6 +2,7 @@
 
 public enum SkillType
 {
+    None,
     Basic,
     Core,
     Defensive,
