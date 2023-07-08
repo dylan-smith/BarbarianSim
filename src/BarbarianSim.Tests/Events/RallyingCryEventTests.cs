@@ -136,4 +136,22 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.RallyingCryExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
     }
+
+    [Fact]
+    public void Creates_RaidLeaderProcEvent()
+    {
+        var config = new SimulationConfig();
+        config.Skills.Add(Skill.RaidLeader, 1);
+        config.Skills.Add(Skill.BoomingVoice, 2);
+        var state = new SimulationState(config);
+        var rallyingCryEvent = new RallyingCryEvent(123);
+
+        rallyingCryEvent.ProcessEvent(state);
+
+        rallyingCryEvent.RaidLeaderProcEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.RaidLeaderProcEvent);
+        state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
+        rallyingCryEvent.RaidLeaderProcEvent.Timestamp.Should().Be(123);
+        rallyingCryEvent.RaidLeaderProcEvent.Duration.Should().BeApproximately(6.96, 0.000000001);
+    }
 }

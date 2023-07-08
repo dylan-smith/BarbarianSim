@@ -12,6 +12,7 @@ public class ChallengingShoutEvent : EventInfo
 
     public ChallengingShoutCooldownCompletedEvent ChallengingShoutCooldownCompletedEvent { get; set; }
     public ChallengingShoutExpiredEvent ChallengingShoutExpiredEvent { get; set; }
+    public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -29,6 +30,12 @@ public class ChallengingShoutEvent : EventInfo
         foreach (var enemy in state.Enemies)
         {
             enemy.Auras.Add(Aura.Taunt);
+        }
+
+        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
+        {
+            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, duration);
+            state.Events.Add(RaidLeaderProcEvent);
         }
     }
 }

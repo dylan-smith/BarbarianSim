@@ -14,6 +14,7 @@ public class WarCryEvent : EventInfo
     public AuraExpiredEvent WarCryExpiredEvent { get; set; }
     public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
+    public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -38,6 +39,12 @@ public class WarCryEvent : EventInfo
         {
             FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, WarCry.FORTIFY_FROM_MIGHTY * state.Player.BaseLife);
             state.Events.Add(FortifyGeneratedEvent);
+        }
+
+        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
+        {
+            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, duration);
+            state.Events.Add(RaidLeaderProcEvent);
         }
     }
 }

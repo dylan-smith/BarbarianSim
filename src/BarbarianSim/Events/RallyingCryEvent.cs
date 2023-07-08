@@ -15,6 +15,7 @@ public class RallyingCryEvent : EventInfo
     public UnstoppableExpiredEvent UnstoppableExpiredEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
+    public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -47,5 +48,11 @@ public class RallyingCryEvent : EventInfo
 
         RallyingCryExpiredEvent = new RallyingCryExpiredEvent(Timestamp + duration);
         state.Events.Add(RallyingCryExpiredEvent);
+
+        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
+        {
+            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, duration);
+            state.Events.Add(RaidLeaderProcEvent);
+        }
     }
 }

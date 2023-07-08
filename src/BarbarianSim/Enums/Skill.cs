@@ -76,7 +76,7 @@ public enum Skill
     MightyWarCry, // War Cry grants you 15%[x] Base Life (15%[x] HP) as Fortify
     PowerWarCry, // If at least 6 enemies are Nearby when you use War Cry, your damage bonus is increased by an additional 10%[x]
     BoomingVoice, // Your Shout skill effect durations are increased by 24%[x]
-    RaidLeader,
+    RaidLeader, // Your Shouts also heal Allies for 1% of their Maximum Life per second
     GutteralYell, // Your Shout skills cause enemies to deal 4% less damage for 5 seconds
     Charge,
     EnhancedCharge,

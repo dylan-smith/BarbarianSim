@@ -91,4 +91,22 @@ public class ChallengingShoutEventTests
 
         challengingShoutEvent.ChallengingShoutExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
     }
+
+    [Fact]
+    public void Creates_RaidLeaderProcEvent()
+    {
+        var config = new SimulationConfig();
+        config.Skills.Add(Skill.RaidLeader, 1);
+        config.Skills.Add(Skill.BoomingVoice, 2);
+        var state = new SimulationState(config);
+        var challengingShoutEvent = new ChallengingShoutEvent(123);
+
+        challengingShoutEvent.ProcessEvent(state);
+
+        challengingShoutEvent.RaidLeaderProcEvent.Should().NotBeNull();
+        state.Events.Should().Contain(challengingShoutEvent.RaidLeaderProcEvent);
+        state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
+        challengingShoutEvent.RaidLeaderProcEvent.Timestamp.Should().Be(123);
+        challengingShoutEvent.RaidLeaderProcEvent.Duration.Should().BeApproximately(6.96, 0.000000001);
+    }
 }
