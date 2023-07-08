@@ -154,8 +154,11 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
-        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(124);
+        lungingStrikeEvent.WeaponCooldownCompletedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(lungingStrikeEvent.WeaponCooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(124);
+        lungingStrikeEvent.WeaponCooldownCompletedEvent.Aura.Should().Be(Aura.WeaponCooldown);
     }
 
     [Fact]
@@ -171,8 +174,7 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
-        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.5);
+        lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.5);
     }
 
     [Fact]
@@ -190,8 +192,7 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
-        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.6);
+        lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.6);
     }
 
     [Fact]

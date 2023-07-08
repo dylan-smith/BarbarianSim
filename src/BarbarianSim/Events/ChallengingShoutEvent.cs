@@ -10,7 +10,7 @@ public class ChallengingShoutEvent : EventInfo
     {
     }
 
-    public ChallengingShoutCooldownCompletedEvent ChallengingShoutCooldownCompletedEvent { get; set; }
+    public CooldownCompletedEvent ChallengingShoutCooldownCompletedEvent { get; set; }
     public ChallengingShoutExpiredEvent ChallengingShoutExpiredEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
 
@@ -19,7 +19,7 @@ public class ChallengingShoutEvent : EventInfo
         state.Player.Auras.Add(Aura.ChallengingShout);
         state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
 
-        ChallengingShoutCooldownCompletedEvent = new ChallengingShoutCooldownCompletedEvent(Timestamp + ChallengingShout.COOLDOWN);
+        ChallengingShoutCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
         state.Events.Add(ChallengingShoutCooldownCompletedEvent);
 
         var duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);

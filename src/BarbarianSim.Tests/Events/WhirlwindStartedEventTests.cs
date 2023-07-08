@@ -153,8 +153,11 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
-        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(124);
+        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(whirlwindStartedEvent.WeaponCooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(124);
+        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Aura.Should().Be(Aura.WeaponCooldown);
     }
 
     [Fact]
@@ -170,8 +173,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
-        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.5);
+        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.5);
     }
 
     [Fact]
@@ -189,8 +191,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is WeaponAuraCooldownCompletedEvent).Should().BeTrue();
-        state.Events.Single(e => e is WeaponAuraCooldownCompletedEvent).Timestamp.Should().Be(123.6);
+        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.6);
     }
 
     [Fact]

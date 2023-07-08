@@ -242,6 +242,8 @@ internal class Program
         var lungingStrikeCount = state.ProcessedEvents.Count(e => e is LungingStrikeEvent);
         var whirlwindCount = state.ProcessedEvents.Count(e => e is WhirlwindStartedEvent);
         var rallyingCryCount = state.ProcessedEvents.Count(e => e is RallyingCryEvent);
+        var warCryCount = state.ProcessedEvents.Count(e => e is WarCryEvent);
+        var challengingShoutCount = state.ProcessedEvents.Count(e => e is ChallengingShoutEvent);
 
         var aspectOfTheProtectorCount = state.ProcessedEvents.Count(e => e is AspectOfTheProtectorProcEvent);
         var gohrsCount = state.ProcessedEvents.Count(e => e is GohrsDevastatingGripsProcEvent);
@@ -251,6 +253,8 @@ internal class Program
         Console.WriteLine($"Lunging Strikes: {lungingStrikeCount}");
         Console.WriteLine($"Whirlwinds: {whirlwindCount}");
         Console.WriteLine($"Rallying Cries: {rallyingCryCount}");
+        Console.WriteLine($"War Cries: {warCryCount}");
+        Console.WriteLine($"Challenging Shouts: {challengingShoutCount}");
 
         Console.WriteLine("");
         Console.WriteLine($"Aspect of the Protector Procs: {aspectOfTheProtectorCount}");

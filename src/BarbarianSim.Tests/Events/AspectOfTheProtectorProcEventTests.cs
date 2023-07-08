@@ -28,8 +28,9 @@ public class AspectOfTheProtectorProcEventTests
         e.ProcessEvent(state);
 
         state.Events.Should().Contain(e.AspectOfTheProtectorCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is AspectOfTheProtectorCooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
         e.AspectOfTheProtectorCooldownCompletedEvent.Timestamp.Should().Be(153.0);
+        e.AspectOfTheProtectorCooldownCompletedEvent.Aura.Should().Be(Aura.AspectOfTheProtectorCooldown);
     }
 
     [Fact]

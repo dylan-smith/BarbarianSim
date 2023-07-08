@@ -10,7 +10,7 @@ public class RallyingCryEvent : EventInfo
     {
     }
 
-    public RallyingCryCooldownCompletedEvent RallyingCryCooldownCompletedEvent { get; set; }
+    public CooldownCompletedEvent RallyingCryCooldownCompletedEvent { get; set; }
     public RallyingCryExpiredEvent RallyingCryExpiredEvent { get; set; }
     public UnstoppableExpiredEvent UnstoppableExpiredEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
@@ -43,7 +43,7 @@ public class RallyingCryEvent : EventInfo
             state.Events.Add(FortifyGeneratedEvent);
         }
 
-        RallyingCryCooldownCompletedEvent = new RallyingCryCooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN);
+        RallyingCryCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
         state.Events.Add(RallyingCryCooldownCompletedEvent);
 
         RallyingCryExpiredEvent = new RallyingCryExpiredEvent(Timestamp + duration);
