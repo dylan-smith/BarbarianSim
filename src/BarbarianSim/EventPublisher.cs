@@ -25,6 +25,7 @@ public static class EventPublisher
                                          .ToList()
                                          .ForEach(a => a.ProcessEvent(ev, state));
                 RallyingCry.ProcessEvent(ev, state);
+                WrathOfTheBerserker.ProcessEvent(ev, state);
                 break;
             case WhirlwindStoppedEvent ev:
                 state.Config.Gear.AllGear.Select(g => g.Aspect)

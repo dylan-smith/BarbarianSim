@@ -25,5 +25,7 @@ public class GohrsDevastatingGripsProcEventTests
         e.DamageEvents[1].Damage.Should().Be(1200.0);
         e.DamageEvents[0].DamageSource.Should().Be(DamageSource.GohrsDevastatingGrips);
         e.DamageEvents[1].DamageSource.Should().Be(DamageSource.GohrsDevastatingGrips);
+        e.DamageEvents[0].SkillType.Should().Be(SkillType.None);
+        e.DamageEvents[1].SkillType.Should().Be(SkillType.None);
     }
 }

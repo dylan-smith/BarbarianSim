@@ -73,7 +73,7 @@ public class RallyingCryTests
         state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First());
 
         RallyingCry.ProcessEvent(damageEvent, state);
 
@@ -88,7 +88,7 @@ public class RallyingCryTests
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First());
 
         RallyingCry.ProcessEvent(damageEvent, state);
 
@@ -102,7 +102,7 @@ public class RallyingCryTests
         state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.DamageOverTime, DamageSource.Bleeding, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, state.Enemies.First());
 
         RallyingCry.ProcessEvent(damageEvent, state);
 
@@ -115,7 +115,7 @@ public class RallyingCryTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First());
 
         RallyingCry.ProcessEvent(damageEvent, state);
 

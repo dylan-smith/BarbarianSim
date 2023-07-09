@@ -23,6 +23,11 @@ public class SpinToWin : IRotation
             WarCry.Use(state);
         }
 
+        if (WrathOfTheBerserker.CanUse(state))
+        {
+            WrathOfTheBerserker.Use(state);
+        }
+
         if (Whirlwind.CanUse(state))
         {
             Whirlwind.Use(state);

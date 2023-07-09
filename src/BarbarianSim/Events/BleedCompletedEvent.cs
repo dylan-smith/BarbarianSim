@@ -21,7 +21,7 @@ public class BleedCompletedEvent : EventInfo
             Target.Auras.Remove(Aura.Bleeding);
         }
 
-        DamageEvent = new DamageEvent(Timestamp, Damage, DamageType.DamageOverTime, DamageSource.Bleeding, Target);
+        DamageEvent = new DamageEvent(Timestamp, Damage, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, Target);
         state.Events.Add(DamageEvent);
     }
 }

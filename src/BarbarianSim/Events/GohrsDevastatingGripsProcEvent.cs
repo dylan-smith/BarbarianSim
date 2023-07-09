@@ -13,7 +13,7 @@ public class GohrsDevastatingGripsProcEvent : EventInfo
     {
         foreach (var enemy in state.Enemies)
         {
-            var damageEvent = new DamageEvent(Timestamp, Damage, DamageType.Fire, DamageSource.GohrsDevastatingGrips, enemy);
+            var damageEvent = new DamageEvent(Timestamp, Damage, DamageType.Fire, DamageSource.GohrsDevastatingGrips, SkillType.None, enemy);
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
         }

@@ -33,4 +33,6 @@ public enum Aura
     IronSkin,
     IronSkinCooldown,
     GutteralYell,
+    WrathOfTheBerserker,
+    WrathOfTheBerserkerCooldown,
 }

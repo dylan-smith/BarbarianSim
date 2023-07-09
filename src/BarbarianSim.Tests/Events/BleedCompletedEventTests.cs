@@ -48,5 +48,6 @@ public class BleedCompletedEventTests
         e.DamageEvent.DamageType.Should().Be(DamageType.DamageOverTime);
         e.DamageEvent.DamageSource.Should().Be(DamageSource.Bleeding);
         e.DamageEvent.Target.Should().Be(state.Enemies.First());
+        e.DamageEvent.SkillType.Should().Be(SkillType.None);
     }
 }

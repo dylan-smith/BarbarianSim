@@ -128,7 +128,7 @@ public enum Skill
     TemperedFury, // Increase your Maximum Fury by 3
     FuriousImpulse,
     InvigoratingFury, // Heal for 3% of your Maximum Life for each 100 Fury spent
-    WrathOfTheBerserker,
+    WrathOfTheBerserker, // Explode into rage, Knocking Back surrounding enemies and gaining Berserking and Unstoppable for 5 seconds. For the next 10 seconds dealing Direct Damage with Basic Skills grants Berserking for 5 seconds. (Cooldown: 60 seconds)
     PrimeWrathOfTheBerserker,
     SupremeWrathOfTheBerserker,
     Wallop,

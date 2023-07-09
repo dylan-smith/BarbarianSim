@@ -65,7 +65,18 @@ public class SpinToWinTests
     }
 
     [Fact]
-    public void Does_Nothing_When_Shouts_On_Cooldown_And_No_Fury()
+    public void Uses_WrathOfTheBerserker_When_Not_On_Cooldown()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        var rotation = new SpinToWin();
+
+        rotation.Execute(state);
+
+        state.Events.Any(e => e is WrathOfTheBerserkerEvent).Should().BeTrue();
+    }
+
+    [Fact]
+    public void Does_Nothing_When_Shouts_On_Cooldown_Wrath_On_Cooldown_And_No_Fury()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 0;
@@ -73,6 +84,7 @@ public class SpinToWinTests
         state.Player.Auras.Add(Aura.RallyingCryCooldown);
         state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
         state.Player.Auras.Add(Aura.WarCryCooldown);
+        state.Player.Auras.Add(Aura.WrathOfTheBerserkerCooldown);
         var rotation = new SpinToWin();
 
         rotation.Execute(state);

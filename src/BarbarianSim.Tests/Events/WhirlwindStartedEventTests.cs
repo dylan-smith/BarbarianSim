@@ -46,6 +46,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         damageEvent.Timestamp.Should().Be(123);
         damageEvent.DamageType.Should().Be(DamageType.Direct);
         damageEvent.DamageSource.Should().Be(DamageSource.Whirlwind);
+        damageEvent.SkillType.Should().Be(SkillType.Core);
         damageEvent.Damage.Should().Be(0.17); // 1 [WeaponDmg] * 0.17 [SkillModifier]
     }
 

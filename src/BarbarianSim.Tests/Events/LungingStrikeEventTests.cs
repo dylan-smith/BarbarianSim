@@ -47,6 +47,7 @@ public sealed class LungingStrikeEventTests : IDisposable
         damageEvent.Timestamp.Should().Be(123);
         damageEvent.DamageType.Should().Be(DamageType.Direct);
         damageEvent.DamageSource.Should().Be(DamageSource.LungingStrike);
+        damageEvent.SkillType.Should().Be(SkillType.Basic);
         damageEvent.Damage.Should().Be(0.33); // 1 [WeaponDmg] * 0.33 [SkillModifier]
     }
 

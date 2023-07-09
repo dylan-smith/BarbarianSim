@@ -52,7 +52,7 @@ public class WhirlwindStartedEvent : EventInfo
                 damageType = DamageType.DirectCrit;
             }
 
-            var damageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, enemy);
+            var damageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, SkillType.Core, enemy);
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
 

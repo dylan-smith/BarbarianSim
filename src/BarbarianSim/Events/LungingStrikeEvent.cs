@@ -59,7 +59,7 @@ public class LungingStrikeEvent : EventInfo
             }
         }
 
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, target);
+        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, SkillType.Basic, target);
         state.Events.Add(DamageEvent);
 
         FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, FURY_GENERATED);
