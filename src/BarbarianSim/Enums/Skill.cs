@@ -130,7 +130,7 @@ public enum Skill
     InvigoratingFury, // Heal for 3% of your Maximum Life for each 100 Fury spent
     WrathOfTheBerserker, // Explode into rage, Knocking Back surrounding enemies and gaining Berserking and Unstoppable for 5 seconds. For the next 10 seconds dealing Direct Damage with Basic Skills grants Berserking for 5 seconds. (Cooldown: 60 seconds)
     PrimeWrathOfTheBerserker, // While Wrath of the Berserker is active, gain 20%[+] increased Movement Speed and increase Fury Generation by 30%[x]
-    SupremeWrathOfTheBerserker,
+    SupremeWrathOfTheBerserker, // While Wrath of the Berserker is active, every 50 Fury you spend increases Berserk's damage bonus by 25%[x]
     Wallop,
     HeavyHanded, // While using 2-Handed weapons you deal 5%[x] increased Critical Strike Damage
     BruteForce,

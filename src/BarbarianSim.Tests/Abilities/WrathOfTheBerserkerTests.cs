@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Abilities;
+﻿using System.Diagnostics.Eventing.Reader;
+using BarbarianSim.Abilities;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
@@ -103,5 +104,96 @@ public class WrathOfTheBerserkerTests
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
         state.Events.Should().NotContain(e => e is BerserkingAppliedEvent);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Returns_3x_When_157_Fury_Spent()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.25 * 1.25 * 1.25);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Sums_All_FurySpentEvents()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(123.5, 46, SkillType.None) { FurySpent = 46 });
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.25 * 1.25 * 1.25 * 1.25);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Excludes_Fury_Spent_Before_Wrath()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(122, 157, SkillType.None) { FurySpent = 157 });
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.25 * 1.25 * 1.25);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Returns_1_When_FurySpent_Less_Than_50()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(123.5, 12, SkillType.None) { FurySpent = 12 });
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 25, SkillType.None) { FurySpent = 25 });
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Returns_1_When_Wrath_Not_Active()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Returns_1_When_Not_Berserking()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetBerserkDamageBonus_Returns_1_When_Not_Skilled_In_SupremeWrathOfTheBerserker()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Player.Auras.Add(Aura.Berserking);
+
+        WrathOfTheBerserker.GetBerserkDamageBonus(state).Should().Be(1.0);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
@@ -110,6 +111,21 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
         var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
 
         result.Should().Be(1.03);
+    }
+
+    [Fact]
+    public void Includes_SupremeWrathOfTheBerserker_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Config.Skills.Add(Skill.SupremeWrathOfTheBerserker, 1);
+        state.ProcessedEvents.Add(new WrathOfTheBerserkerEvent(123));
+        state.ProcessedEvents.Add(new FurySpentEvent(127, 157, SkillType.None) { FurySpent = 157 });
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
+
+        result.Should().Be(1.25 * 1.25 * 1.25);
     }
 
     [Fact]

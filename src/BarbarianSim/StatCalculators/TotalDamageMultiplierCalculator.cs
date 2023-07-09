@@ -28,6 +28,8 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
             }
         }
 
+        damageBonus *= WrathOfTheBerserker.GetBerserkDamageBonus(state);
+
         return damageBonus;
     }
 }
