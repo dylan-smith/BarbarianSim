@@ -132,7 +132,7 @@ public enum Skill
     PrimeWrathOfTheBerserker,
     SupremeWrathOfTheBerserker,
     Wallop,
-    HeavyHanded,
+    HeavyHanded, // While using 2-Handed weapons you deal 5%[x] increased Critical Strike Damage
     BruteForce,
     Concussion,
 

@@ -63,6 +63,7 @@ internal class Program
         config.Skills.Add(Skill.TemperedFury, 3);
         config.Skills.Add(Skill.ProlificFury, 3);
         config.Skills.Add(Skill.AggressiveResistance, 3);
+        config.Skills.Add(Skill.HeavyHanded, 3);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;

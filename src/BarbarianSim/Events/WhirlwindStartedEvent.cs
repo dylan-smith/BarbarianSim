@@ -48,7 +48,7 @@ public class WhirlwindStartedEvent : EventInfo
 
             if (critRoll <= critChance)
             {
-                damage *= CritDamageCalculator.Calculate(state);
+                damage *= CritDamageCalculator.Calculate(state, Whirlwind.Weapon.Expertise);
                 damageType = DamageType.DirectCrit;
             }
 

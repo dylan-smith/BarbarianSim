@@ -49,7 +49,7 @@ public class LungingStrikeEvent : EventInfo
 
         if (critRoll <= critChance)
         {
-            damage *= CritDamageCalculator.Calculate(state);
+            damage *= CritDamageCalculator.Calculate(state, LungingStrike.Weapon.Expertise);
             damageType = DamageType.DirectCrit;
 
             if (state.Config.Skills.ContainsKey(Skill.CombatLungingStrike))

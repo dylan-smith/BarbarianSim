@@ -9,6 +9,7 @@ public class FakeStatCalculator : BaseStatCalculator
     private readonly DamageType _damageType;
     private readonly EnemyState _enemyState;
     private readonly SkillType _skillType;
+    private readonly Expertise _expertise;
 
     public FakeStatCalculator(double returnValue) => _value = returnValue;
 
@@ -28,6 +29,12 @@ public class FakeStatCalculator : BaseStatCalculator
     {
         _value = returnValue;
         _skillType = skillType;
+    }
+
+    public FakeStatCalculator(double returnValue, Expertise expertise)
+    {
+        _value = returnValue;
+        _expertise = expertise;
     }
 
     public FakeStatCalculator(double returnValue, DamageType damageType, EnemyState enemyState)
@@ -69,6 +76,9 @@ public class FakeStatCalculator : BaseStatCalculator
 
     protected override double InstanceCalculate(SimulationState state, SkillType skillType) =>
         (_skillType == default || _skillType == skillType) ? _value : 0.0;
+
+    protected override double InstanceCalculate(SimulationState state, Expertise expertise) =>
+        (_expertise == default || _expertise == expertise) ? _value : 0.0;
 
     protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy) =>
         (_damageType == default || _damageType == damageType) &&

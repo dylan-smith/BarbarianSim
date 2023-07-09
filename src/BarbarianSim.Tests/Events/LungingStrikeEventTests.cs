@@ -399,4 +399,21 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
     }
+
+    [Fact]
+    public void Uses_Weapon_Expertise_For_CritDamageCalculator()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.LungingStrike] = 1 },
+        });
+        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1, Expertise = Expertise.Polearm };
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
+        BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(3.5, Expertise.Polearm));
+        var lungingStrikeEvent = new LungingStrikeEvent(123);
+
+        lungingStrikeEvent.ProcessEvent(state);
+
+        lungingStrikeEvent.DamageEvent.Damage.Should().Be(1.155); // 1 [Weapon Damage] * 0.33 [Skill Multiplier] * 3.5 [Crit Damage]
+    }
 }

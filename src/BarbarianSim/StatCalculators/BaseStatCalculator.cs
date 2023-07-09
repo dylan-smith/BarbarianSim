@@ -46,6 +46,16 @@ public abstract class BaseStatCalculator
         return _instances[typeof(T)].InstanceCalculate(state, skillType);
     }
 
+    protected static double Calculate<T>(SimulationState state, Expertise expertise) where T : BaseStatCalculator
+    {
+        if (!_instances.ContainsKey(typeof(T)))
+        {
+            _instances.Add(typeof(T), Activator.CreateInstance<T>());
+        }
+
+        return _instances[typeof(T)].InstanceCalculate(state, expertise);
+    }
+
     protected static double Calculate<T>(SimulationState state, DamageType damageType, EnemyState enemy) where T : BaseStatCalculator
     {
         if (!_instances.ContainsKey(typeof(T)))
@@ -85,6 +95,10 @@ public abstract class BaseStatCalculator
     protected virtual double InstanceCalculate(SimulationState state, EnemyState enemy) => 0.0;
 
     protected virtual double InstanceCalculate(SimulationState state, SkillType skillType) => 0.0;
+
+    protected virtual double InstanceCalculate(SimulationState state, Expertise expertise) => 0.0;
+
+    protected virtual double InstanceCalculate(SimulationState state, SkillType skillType, Expertise expertise) => 0.0;
 
     protected virtual double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy) => 0.0;
 

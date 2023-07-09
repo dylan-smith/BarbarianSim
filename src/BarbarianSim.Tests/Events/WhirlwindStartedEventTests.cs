@@ -490,4 +490,21 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         whirlwindStartedEvent.LuckyHitEvents.First().Target.Should().Be(state.Enemies.First());
         whirlwindStartedEvent.LuckyHitEvents.Last().Target.Should().Be(state.Enemies.Last());
     }
+
+    [Fact]
+    public void Uses_Weapon_Expertise_For_CritDamageCalculator()
+    {
+        var state = new SimulationState(new SimulationConfig
+        {
+            Skills = { [Skill.Whirlwind] = 1 },
+        });
+        Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1, Expertise = Expertise.TwoHandedAxe };
+        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
+        BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(3.5, Expertise.TwoHandedAxe));
+        var whirlwindStartedEvent = new WhirlwindStartedEvent(123);
+
+        whirlwindStartedEvent.ProcessEvent(state);
+
+        whirlwindStartedEvent.DamageEvents.First().Damage.Should().BeApproximately(0.595, 0.0000001); // 1 [Weapon Damage] * 0.17 [Skill Multiplier] * 3.5 [Crit Damage]
+    }
 }
