@@ -88,7 +88,7 @@ public enum Skill
     EnhancedLeap,
     MightyLeap,
     PowerLeap,
-    AggressiveResistance,
+    AggressiveResistance, // Gain 3% Damage Reduction while Berserking
     BattleFervor,
     ProlificFury, // While Berserking, Fury generation is increased by 6%[x]
     Swiftness,

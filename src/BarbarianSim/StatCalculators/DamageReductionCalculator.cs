@@ -16,6 +16,7 @@ public class DamageReductionCalculator : BaseStatCalculator
         damageReduction *= 1 - (DamageReductionFromCloseCalculator.Calculate(state) / 100.0);
         damageReduction *= 1 - (DamageReductionWhileFortifiedCalculator.Calculate(state) / 100.0);
         damageReduction *= 1 - (DamageReductionWhileInjuredCalculator.Calculate(state) / 100.0);
+        damageReduction *= 1 - (AggressiveResistance.GetDamageReduction(state) / 100.0);
 
         if (state.Player.Auras.Contains(Aura.ChallengingShout))
         {

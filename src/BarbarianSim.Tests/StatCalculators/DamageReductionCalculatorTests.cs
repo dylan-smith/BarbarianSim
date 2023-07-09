@@ -88,7 +88,7 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     }
 
     [Fact]
-    public void Includes_Bonus_From_Challenging_Shout()
+    public void Includes_Bonus_From_ChallengingShout()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.ChallengingShout);
@@ -100,7 +100,7 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     }
 
     [Fact]
-    public void Includes_Bonus_From_Gutteral_Yell()
+    public void Includes_Bonus_From_GutteralYell()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.GutteralYell);
@@ -112,6 +112,18 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     }
 
     [Fact]
+    public void Includes_Bonus_From_AggressiveResistance()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Skills.Add(Skill.AggressiveResistance, 3);
+
+        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+
+        result.Should().BeApproximately(0.819, 0.0000001); // 0.88 * 0.9
+    }
+
+    [Fact]
     public void Multiplies_All_Damage_Reduction_Bonuses()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -119,6 +131,8 @@ public sealed class DamageReductionCalculatorTests : IDisposable
         state.Config.Skills.Add(Skill.ChallengingShout, 2);
         state.Player.Auras.Add(Aura.GutteralYell);
         state.Config.Skills.Add(Skill.GutteralYell, 3);
+        state.Config.Skills.Add(Skill.AggressiveResistance, 1);
+        state.Player.Auras.Add(Aura.Berserking);
 
         state.Config.Gear.Helm.DamageReduction = 8.0;
 
@@ -129,6 +143,6 @@ public sealed class DamageReductionCalculatorTests : IDisposable
 
         var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
 
-        result.Should().BeApproximately(0.3027557, 0.0000001); // 0.9 * 0.58 * 0.92 * 0.92 * 0.92 * 0.92 * 0.92 * 0.88
+        result.Should().BeApproximately(0.293673, 0.000001); // 0.9 * 0.58 * 0.92 * 0.92 * 0.92 * 0.92 * 0.92 * 0.88 * 0.97
     }
 }
