@@ -127,7 +127,7 @@ public enum Skill
     SupremeIronMaelstrom,
     TemperedFury,
     FuriousImpulse,
-    InvigoratingFury,
+    InvigoratingFury, // Heal for 3% of your Maximum Life for each 100 Fury spent
     WrathOfTheBerserker,
     PrimeWrathOfTheBerserker,
     SupremeWrathOfTheBerserker,

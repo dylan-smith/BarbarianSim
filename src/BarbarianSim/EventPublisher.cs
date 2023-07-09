@@ -48,6 +48,9 @@ public static class EventPublisher
             case BleedAppliedEvent ev:
                 Hamstring.ProcessEvent(ev, state);
                 break;
+            case FurySpentEvent ev:
+                InvigoratingFury.ProcessEvent(ev, state);
+                break;
             default:
                 break;
         }

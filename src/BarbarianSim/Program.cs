@@ -59,6 +59,7 @@ internal class Program
         config.Skills.Add(Skill.RaidLeader, 3);
         config.Skills.Add(Skill.UnbridledRage, 1);
         config.Skills.Add(Skill.Hamstring, 1);
+        config.Skills.Add(Skill.InvigoratingFury, 3);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;
