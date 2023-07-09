@@ -15,18 +15,19 @@ public class WarCryEvent : EventInfo
     public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
+    public double Duration { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
         state.Player.Auras.Add(Aura.WarCry);
         state.Player.Auras.Add(Aura.WarCryCooldown);
 
-        var duration = WarCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+        Duration = WarCry.DURATION * BoomingVoice.GetDurationIncrease(state);
 
         WarCryCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + WarCry.COOLDOWN, Aura.WarCryCooldown);
         state.Events.Add(WarCryCooldownCompletedEvent);
 
-        WarCryExpiredEvent = new AuraExpiredEvent(Timestamp + duration, Aura.WarCry);
+        WarCryExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Aura.WarCry);
         state.Events.Add(WarCryExpiredEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedWarCry))
@@ -43,7 +44,7 @@ public class WarCryEvent : EventInfo
 
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
         {
-            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, duration);
+            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, Duration);
             state.Events.Add(RaidLeaderProcEvent);
         }
     }

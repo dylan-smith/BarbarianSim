@@ -13,6 +13,7 @@ public class ChallengingShoutEvent : EventInfo
     public CooldownCompletedEvent ChallengingShoutCooldownCompletedEvent { get; set; }
     public ChallengingShoutExpiredEvent ChallengingShoutExpiredEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
+    public double Duration { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -22,9 +23,9 @@ public class ChallengingShoutEvent : EventInfo
         ChallengingShoutCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
         state.Events.Add(ChallengingShoutCooldownCompletedEvent);
 
-        var duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);
+        Duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);
 
-        ChallengingShoutExpiredEvent = new ChallengingShoutExpiredEvent(Timestamp + duration);
+        ChallengingShoutExpiredEvent = new ChallengingShoutExpiredEvent(Timestamp + Duration);
         state.Events.Add(ChallengingShoutExpiredEvent);
 
         foreach (var enemy in state.Enemies)
@@ -34,7 +35,7 @@ public class ChallengingShoutEvent : EventInfo
 
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
         {
-            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, duration);
+            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, Duration);
             state.Events.Add(RaidLeaderProcEvent);
         }
     }

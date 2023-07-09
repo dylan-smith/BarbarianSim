@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Aspects;
+using BarbarianSim.Config;
 using BarbarianSim.Gems;
 using FluentAssertions;
 using Xunit;
@@ -31,6 +32,29 @@ public class GearTests
         gear.Amulet.Gems.Add(new RoyalSapphire());
 
         gear.GetAllGems().Should().HaveCount(4);
+    }
+
+    [Fact]
+    public void GetAllAspects_Returns_All_Aspects()
+    {
+        var gear = new Gear();
+        gear.Helm.Aspect = new AspectOfEchoingFury(2);
+        gear.Chest.Aspect = new AspectOfNumbingWraith(12);
+        gear.Amulet.Aspect = null;
+
+        gear.GetAllAspects<Aspect>().Should().HaveCount(2);
+    }
+
+    [Fact]
+    public void GetAllAspects_Filters_To_A_Specific_Aspect()
+    {
+        var gear = new Gear();
+        gear.Helm.Aspect = new AspectOfEchoingFury(2);
+        gear.Chest.Aspect = new AspectOfNumbingWraith(12);
+        gear.Amulet.Aspect = null;
+
+        gear.GetAllAspects<AspectOfNumbingWraith>().Should().HaveCount(1);
+        gear.GetAllAspects<AspectOfNumbingWraith>().First().Fortify.Should().Be(12);
     }
 
     [Fact]

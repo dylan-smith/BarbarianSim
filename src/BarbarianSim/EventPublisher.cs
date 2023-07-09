@@ -14,25 +14,13 @@ public static class EventPublisher
         switch (e)
         {
             case DamageEvent ev:
-                state.Config.Gear.AllGear.Select(g => g.Aspect)
-                                         .Where(a => a is AspectOfTheProtector)
-                                         .Cast<AspectOfTheProtector>()
-                                         .ToList()
-                                         .ForEach(a => a.ProcessEvent(ev, state));
-                state.Config.Gear.AllGear.Select(g => g.Aspect)
-                                         .Where(a => a is GohrsDevastatingGrips)
-                                         .Cast<GohrsDevastatingGrips>()
-                                         .ToList()
-                                         .ForEach(a => a.ProcessEvent(ev, state));
+                state.Config.Gear.GetAllAspects<AspectOfTheProtector>().ForEach(a => a.ProcessEvent(ev, state));
+                state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));
                 RallyingCry.ProcessEvent(ev, state);
                 WrathOfTheBerserker.ProcessEvent(ev, state);
                 break;
             case WhirlwindStoppedEvent ev:
-                state.Config.Gear.AllGear.Select(g => g.Aspect)
-                                         .Where(a => a is GohrsDevastatingGrips)
-                                         .Cast<GohrsDevastatingGrips>()
-                                         .ToList()
-                                         .ForEach(a => a.ProcessEvent(ev, state));
+                state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));
                 break;
             case LuckyHitEvent ev:
                 PressurePoint.ProcessEvent(ev, state);
@@ -42,6 +30,7 @@ public static class EventPublisher
                 break;
             case ChallengingShoutEvent ev:
                 GutteralYell.ProcessEvent(ev, state);
+                state.Config.Gear.GetAllAspects<AspectOfEchoingFury>().ForEach(a => a.ProcessEvent(ev, state));
                 break;
             case RallyingCryEvent ev:
                 GutteralYell.ProcessEvent(ev, state);
