@@ -27,6 +27,11 @@ public class ResourceGenerationCalculator : BaseStatCalculator
 
         result *= ProlificFury.GetFuryGeneration(state);
 
+        if (state.Config.Skills.ContainsKey(Skill.PrimeWrathOfTheBerserker) && state.Player.Auras.Contains(Aura.WrathOfTheBerserker))
+        {
+            result *= WrathOfTheBerserker.RESOURCE_GENERATION_FROM_PRIME;
+        }
+
         return result;
     }
 }

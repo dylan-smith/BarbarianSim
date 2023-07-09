@@ -100,4 +100,44 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
 
         result.Should().Be(1.534); // (1 + 30%) * 1.18
     }
+
+    [Fact]
+    public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Config.Gear.Helm.ResourceGeneration = 30;
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().BeApproximately(1.69, 0.0000001); // (1 + 30%) * 1.3
+    }
+
+    [Fact]
+    public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In_Only_When_Skilled()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        state.Config.Gear.Helm.ResourceGeneration = 30;
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().BeApproximately(1.3, 0.0000001); // (1 + 30%) * 1.3
+    }
+
+    [Fact]
+    public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In_Only_When_Active()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        state.Config.Gear.Helm.ResourceGeneration = 30;
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().BeApproximately(1.3, 0.0000001); // (1 + 30%) * 1.3
+    }
 }
