@@ -86,4 +86,18 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
 
         result.Should().BeApproximately(2.4336, 0.00000001); // (1 + 30%) * 1.56 * 1.2
     }
+
+    [Fact]
+    public void ProlificFury_Bonus_Multiplied_In()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        state.Config.Skills.Add(Skill.ProlificFury, 3);
+        state.Player.Auras.Add(Aura.Berserking);
+        state.Config.Gear.Helm.ResourceGeneration = 30;
+
+        var result = ResourceGenerationCalculator.Calculate(state);
+
+        result.Should().Be(1.534); // (1 + 30%) * 1.18
+    }
 }

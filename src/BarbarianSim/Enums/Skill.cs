@@ -90,7 +90,7 @@ public enum Skill
     PowerLeap,
     AggressiveResistance,
     BattleFervor,
-    ProlificFury,
+    ProlificFury, // While Berserking, Fury generation is increased by 6%[x]
     Swiftness,
     QuickImpulses,
 

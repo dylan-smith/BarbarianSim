@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
 
@@ -23,6 +24,8 @@ public class ResourceGenerationCalculator : BaseStatCalculator
                 result *= RallyingCry.RESOURCE_GENERATION_FROM_TACTICAL_RALLYING_CRY;
             }
         }
+
+        result *= ProlificFury.GetFuryGeneration(state);
 
         return result;
     }
