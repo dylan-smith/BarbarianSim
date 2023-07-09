@@ -6,6 +6,7 @@ namespace BarbarianSim.Skills;
 
 public static class InvigoratingFury
 {
+    // Heal for 3% of your Maximum Life for each 100 Fury spent
     public static void ProcessEvent(FurySpentEvent furySpentEvent, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.InvigoratingFury))
