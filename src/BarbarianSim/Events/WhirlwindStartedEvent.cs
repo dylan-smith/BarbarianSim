@@ -22,6 +22,9 @@ public class WhirlwindStartedEvent : EventInfo
     {
         state.Player.Auras.Add(Aura.Whirlwinding);
 
+        FurySpentEvent = new FurySpentEvent(Timestamp, Whirlwind.FURY_COST, SkillType.Core);
+        state.Events.Add(FurySpentEvent);
+
         var weaponDamage = (Whirlwind.Weapon.MinDamage + Whirlwind.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
         var violentWhirlwindMultiplier = state.Player.Auras.Contains(Aura.ViolentWhirlwind) ? 1.3 : 1.0;
@@ -78,9 +81,6 @@ public class WhirlwindStartedEvent : EventInfo
                 state.Events.Add(luckyHitEvent);
             }
         }
-
-        FurySpentEvent = new FurySpentEvent(Timestamp, Whirlwind.FURY_COST, SkillType.Core);
-        state.Events.Add(FurySpentEvent);
 
         var weaponSpeed = 1 / Whirlwind.Weapon.AttacksPerSecond;
         weaponSpeed *= AttackSpeedCalculator.Calculate(state);
