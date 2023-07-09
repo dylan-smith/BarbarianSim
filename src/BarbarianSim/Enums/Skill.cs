@@ -95,7 +95,7 @@ public enum Skill
     QuickImpulses,
 
     // Weapon Mastery
-    PitFighter,
+    PitFighter, // You deal 3%[x] increased damage to Close enemies and gain 2% Distant Damage Reduction
     NomMercy,
     SlayingStrike,
     ExposeVulnerability,

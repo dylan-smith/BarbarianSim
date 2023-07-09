@@ -101,6 +101,18 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
     }
 
     [Fact]
+    public void Includes_PitFighter_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+
+        state.Config.Skills.Add(Skill.PitFighter, 1);
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
+
+        result.Should().Be(1.03);
+    }
+
+    [Fact]
     public void Multiplies_All_Bonuses_Together()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -108,6 +120,7 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
         state.Player.Auras.Add(Aura.WarCry);
         state.Config.Skills.Add(Skill.WarCry, 5);
         state.Config.Skills.Add(Skill.UnbridledRage, 1);
+        state.Config.Skills.Add(Skill.PitFighter, 3);
 
         BaseStatCalculator.InjectMock(typeof(AdditiveDamageBonusCalculator), new FakeStatCalculator(1.2));
         BaseStatCalculator.InjectMock(typeof(VulnerableDamageBonusCalculator), new FakeStatCalculator(1.2));
@@ -115,6 +128,6 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
 
         var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
 
-        result.Should().Be(3.65904);
+        result.Should().BeApproximately(3.9883536, 0.0000001); // 1.2 * 1.2 * 1.05 * 1.09 * 1.21 * 2.0
     }
 }
