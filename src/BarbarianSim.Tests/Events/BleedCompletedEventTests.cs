@@ -12,25 +12,25 @@ public class BleedCompletedEventTests
     public void Removes_Bleeding_Aura()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.Bleeding);
+        state.Enemies.First().Auras.Add(Aura.Bleeding);
         var e = new BleedCompletedEvent(123.0, 500.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 
-        state.Player.Auras.Should().NotContain(Aura.Bleeding);
+        state.Enemies.First().Auras.Should().NotContain(Aura.Bleeding);
     }
 
     [Fact]
     public void Leaves_Bleeding_Aura_If_Other_BleedCompletedEvents_Exist()
     {
         var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.Bleeding);
+        state.Enemies.First().Auras.Add(Aura.Bleeding);
         state.Events.Add(new BleedCompletedEvent(126.0, 300.0, state.Enemies.First()));
         var e = new BleedCompletedEvent(123.0, 500.0, state.Enemies.First());
 
         e.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.Bleeding);
+        state.Enemies.First().Auras.Should().Contain(Aura.Bleeding);
     }
 
     [Fact]
@@ -47,5 +47,6 @@ public class BleedCompletedEventTests
         e.DamageEvent.Damage.Should().Be(500.0);
         e.DamageEvent.DamageType.Should().Be(DamageType.DamageOverTime);
         e.DamageEvent.DamageSource.Should().Be(DamageSource.Bleeding);
+        e.DamageEvent.Target.Should().Be(state.Enemies.First());
     }
 }

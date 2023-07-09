@@ -16,7 +16,7 @@ public class BleedAppliedEventTests
 
         e.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.Bleeding);
+        state.Enemies.First().Auras.Should().Contain(Aura.Bleeding);
     }
 
     [Fact]
@@ -31,5 +31,6 @@ public class BleedAppliedEventTests
         state.Events.Should().ContainSingle(e => e is BleedCompletedEvent);
         e.BleedCompletedEvent.Timestamp.Should().Be(128.0);
         e.BleedCompletedEvent.Damage.Should().Be(500.0);
+        e.BleedCompletedEvent.Target.Should().Be(state.Enemies.First());
     }
 }

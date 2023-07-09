@@ -18,7 +18,7 @@ public class BleedAppliedEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        state.Player.Auras.Add(Aura.Bleeding);
+        Target.Auras.Add(Aura.Bleeding);
         BleedCompletedEvent = new BleedCompletedEvent(Timestamp + Duration, Damage, Target);
         state.Events.Add(BleedCompletedEvent);
     }

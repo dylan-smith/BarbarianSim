@@ -25,7 +25,7 @@ internal class Program
     {
         var config = new SimulationConfig();
 
-        config.EnemySettings.Life = 1000000;
+        config.EnemySettings.Life = 2000000;
         config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;
@@ -58,6 +58,7 @@ internal class Program
         config.Skills.Add(Skill.GutteralYell, 3);
         config.Skills.Add(Skill.RaidLeader, 3);
         config.Skills.Add(Skill.UnbridledRage, 1);
+        config.Skills.Add(Skill.Hamstring, 1);
 
         config.Gear.Helm.Armor = 904;
         config.Gear.Helm.CooldownReduction = 11.0;

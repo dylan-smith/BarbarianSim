@@ -45,6 +45,9 @@ public static class EventPublisher
             case RallyingCryEvent ev:
                 GutteralYell.ProcessEvent(ev, state);
                 break;
+            case BleedAppliedEvent ev:
+                Hamstring.ProcessEvent(ev, state);
+                break;
             default:
                 break;
         }

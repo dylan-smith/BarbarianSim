@@ -18,7 +18,7 @@ public class BleedCompletedEvent : EventInfo
     {
         if (!state.Events.Any(e => e is BleedCompletedEvent))
         {
-            state.Player.Auras.Remove(Aura.Bleeding);
+            Target.Auras.Remove(Aura.Bleeding);
         }
 
         DamageEvent = new DamageEvent(Timestamp, Damage, DamageType.DamageOverTime, DamageSource.Bleeding, Target);
