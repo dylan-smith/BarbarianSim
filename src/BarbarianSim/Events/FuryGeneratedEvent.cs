@@ -15,7 +15,7 @@ public class FuryGeneratedEvent : EventInfo
         FuryGenerated += BaseFury * multiplier;
         state.Player.Fury += FuryGenerated;
 
-        state.Player.Fury = Math.Min(state.Player.MaxFury, state.Player.Fury);
+        state.Player.Fury = Math.Min(MaxFuryCalculator.Calculate(state), state.Player.Fury);
     }
 
     public override string ToString() => $"{base.ToString()} - {FuryGenerated} fury generated";

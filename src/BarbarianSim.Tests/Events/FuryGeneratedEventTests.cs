@@ -40,11 +40,12 @@ public sealed class FuryGeneratedEventTests : IDisposable
     {
         var state = new SimulationState(new SimulationConfig());
         BaseStatCalculator.InjectMock(typeof(ResourceGenerationCalculator), new FakeStatCalculator(1.0));
-        state.Player.Fury = 95;
+        BaseStatCalculator.InjectMock(typeof(MaxFuryCalculator), new FakeStatCalculator(130.0));
+        state.Player.Fury = 125;
         var e = new FuryGeneratedEvent(123.0, 12.0);
 
         e.ProcessEvent(state);
 
-        state.Player.Fury.Should().Be(100.0);
+        state.Player.Fury.Should().Be(130.0);
     }
 }

@@ -10,7 +10,6 @@ public class PlayerState
     public ISet<Aura> Auras { get; init; } = new HashSet<Aura>();
     public ICollection<Barrier> Barriers { get; init; } = new List<Barrier>();
     public double Fury { get; set; }
-    public double MaxFury { get; set; } = 100;
 
     public bool IsFortified() => Fortify > Life;
 

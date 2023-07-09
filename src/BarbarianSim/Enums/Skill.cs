@@ -125,7 +125,7 @@ public enum Skill
     IronMaelstrom,
     PrimeIronMaelstrom,
     SupremeIronMaelstrom,
-    TemperedFury,
+    TemperedFury, // Increase your Maximum Fury by 3
     FuriousImpulse,
     InvigoratingFury, // Heal for 3% of your Maximum Life for each 100 Fury spent
     WrathOfTheBerserker,

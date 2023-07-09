@@ -18,6 +18,7 @@ public class GearItem
     public double PoisonResistance { get; set; }
     public double TotalArmor { get; set; }
     public int MaxLife { get; set; }
+    public int MaxFury { get; set; }
     public double PhysicalDamage { get; set; }
     public double CritChancePhysicalAgainstElites { get; set; }
     public double DamageReductionFromBleeding { get; set; }
