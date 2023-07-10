@@ -45,7 +45,7 @@ public class WarCryEventTests
 
         warCryEvent.WarCryCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(warCryEvent.WarCryCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         warCryEvent.WarCryCooldownCompletedEvent.Timestamp.Should().Be(148);
     }
 

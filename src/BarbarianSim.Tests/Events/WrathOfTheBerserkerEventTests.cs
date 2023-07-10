@@ -59,7 +59,7 @@ public class WrathOfTheBerserkerEvenTests
 
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent.Timestamp.Should().Be(183);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent.Aura.Should().Be(Aura.WrathOfTheBerserkerCooldown);
     }

@@ -46,7 +46,7 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.RallyingCryCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(rallyingCryEvent.RallyingCryCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         rallyingCryEvent.RallyingCryCooldownCompletedEvent.Timestamp.Should().Be(148);
         rallyingCryEvent.RallyingCryCooldownCompletedEvent.Aura.Should().Be(Aura.RallyingCryCooldown);
     }

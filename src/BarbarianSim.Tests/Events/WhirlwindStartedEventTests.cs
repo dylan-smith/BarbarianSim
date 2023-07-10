@@ -156,7 +156,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.WeaponCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(whirlwindStartedEvent.WeaponCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(124);
         whirlwindStartedEvent.WeaponCooldownCompletedEvent.Aura.Should().Be(Aura.WeaponCooldown);
     }

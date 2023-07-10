@@ -10,12 +10,12 @@ namespace BarbarianSim.Events
 
         public int BarrierAmount { get; init; }
         public BarrierAppliedEvent BarrierAppliedEvent { get; set; }
-        public CooldownCompletedEvent AspectOfTheProtectorCooldownCompletedEvent { get; set; }
+        public AuraExpiredEvent AspectOfTheProtectorCooldownCompletedEvent { get; set; }
 
         public override void ProcessEvent(SimulationState state)
         {
             BarrierAppliedEvent = new BarrierAppliedEvent(Timestamp, BarrierAmount, BARRIER_EXPIRY);
-            AspectOfTheProtectorCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + 30, Aura.AspectOfTheProtectorCooldown);
+            AspectOfTheProtectorCooldownCompletedEvent = new AuraExpiredEvent(Timestamp + 30, Aura.AspectOfTheProtectorCooldown);
 
             state.Player.Auras.Add(Aura.AspectOfTheProtectorCooldown);
             state.Events.Add(BarrierAppliedEvent);

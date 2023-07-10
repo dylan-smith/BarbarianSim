@@ -29,7 +29,7 @@ public class ChallengingShoutEventTests
 
         challengingShoutEvent.ChallengingShoutCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         challengingShoutEvent.ChallengingShoutCooldownCompletedEvent.Timestamp.Should().Be(148);
         challengingShoutEvent.ChallengingShoutCooldownCompletedEvent.Aura.Should().Be(Aura.ChallengingShoutCooldown);
     }

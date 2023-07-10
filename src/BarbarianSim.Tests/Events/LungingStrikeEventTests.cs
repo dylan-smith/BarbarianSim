@@ -157,7 +157,7 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.WeaponCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(lungingStrikeEvent.WeaponCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(124);
         lungingStrikeEvent.WeaponCooldownCompletedEvent.Aura.Should().Be(Aura.WeaponCooldown);
     }

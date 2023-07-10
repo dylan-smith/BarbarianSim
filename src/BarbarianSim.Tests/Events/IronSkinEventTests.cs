@@ -32,7 +32,7 @@ public sealed class IronSkinEventTests : IDisposable
 
         ironSkinEvent.IronSkinCooldownCompletedEvent.Should().NotBeNull();
         state.Events.Should().Contain(ironSkinEvent.IronSkinCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         ironSkinEvent.IronSkinCooldownCompletedEvent.Timestamp.Should().Be(137);
     }
 

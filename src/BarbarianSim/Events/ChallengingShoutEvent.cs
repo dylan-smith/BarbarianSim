@@ -10,7 +10,7 @@ public class ChallengingShoutEvent : EventInfo
     {
     }
 
-    public CooldownCompletedEvent ChallengingShoutCooldownCompletedEvent { get; set; }
+    public AuraExpiredEvent ChallengingShoutCooldownCompletedEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
     public double Duration { get; set; }
     public AuraAppliedEvent ChallengingShoutAuraAppliedEvent { get; set; }
@@ -24,7 +24,7 @@ public class ChallengingShoutEvent : EventInfo
         state.Events.Add(ChallengingShoutAuraAppliedEvent);
 
         state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
-        ChallengingShoutCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
+        ChallengingShoutCooldownCompletedEvent = new AuraExpiredEvent(Timestamp + ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
         state.Events.Add(ChallengingShoutCooldownCompletedEvent);
 
         foreach (var enemy in state.Enemies)
