@@ -41,6 +41,9 @@ public static class EventPublisher
             case FurySpentEvent ev:
                 InvigoratingFury.ProcessEvent(ev, state);
                 break;
+            case AuraAppliedEvent ev:
+                state.Config.Gear.GetAllAspects<GhostwalkerAspect>().ForEach(a => a.ProcessEvent(ev, state));
+                break;
             default:
                 break;
         }

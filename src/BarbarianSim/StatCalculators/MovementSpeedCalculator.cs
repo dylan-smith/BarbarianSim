@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Abilities;
+using BarbarianSim.Aspects;
 using BarbarianSim.Enums;
 
 namespace BarbarianSim.StatCalculators;
@@ -18,6 +19,11 @@ public class MovementSpeedCalculator : BaseStatCalculator
             movementSpeed += WrathOfTheBerserker.MOVEMENT_SPEED_FROM_PRIME;
         }
 
-        return movementSpeed;
+        if (state.Player.Auras.Contains(Aura.Ghostwalker))
+        {
+            movementSpeed += state.Config.Gear.GetAllAspects<GhostwalkerAspect>().Single().Speed;
+        }
+
+        return 1.0 + (movementSpeed / 100.0);
     }
 }
