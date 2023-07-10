@@ -8,6 +8,7 @@ namespace BarbarianSim.Events
         public double Duration { get; init; }
         public Barrier Barrier { get; set; }
         public BarrierExpiredEvent BarrierExpiredEvent { get; set; }
+        public AuraAppliedEvent BarrierAuraAppliedEvent { get; set; }
 
         public BarrierAppliedEvent(double timestamp, double barrierAmount, double duration) : base(timestamp)
         {
@@ -19,8 +20,10 @@ namespace BarbarianSim.Events
         {
             Barrier = new Barrier(BarrierAmount);
 
+            BarrierAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Barrier);
+            state.Events.Add(BarrierAuraAppliedEvent);
+
             state.Player.Barriers.Add(Barrier);
-            state.Player.Auras.Add(Aura.Barrier);
 
             BarrierExpiredEvent = new BarrierExpiredEvent(Timestamp + Duration, Barrier);
             state.Events.Add(BarrierExpiredEvent);

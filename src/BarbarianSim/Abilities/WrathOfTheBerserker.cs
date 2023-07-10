@@ -26,7 +26,7 @@ public static class WrathOfTheBerserker
             damageEvent.DamageType != DamageType.DamageOverTime &&
             damageEvent.SkillType == SkillType.Basic)
         {
-            state.Events.Add(new BerserkingAppliedEvent(damageEvent.Timestamp, BERSERKING_DURATION));
+            state.Events.Add(new AuraAppliedEvent(damageEvent.Timestamp, BERSERKING_DURATION, Aura.Berserking));
         }
     }
 

@@ -10,14 +10,19 @@ namespace BarbarianSim.Tests.Events;
 public class RallyingCryEventTests
 {
     [Fact]
-    public void Adds_RallyingCry_Aura_To_Player()
+    public void Creates_RallyingCryAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var rallyingCryEvent = new RallyingCryEvent(123);
 
         rallyingCryEvent.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.RallyingCry);
+        rallyingCryEvent.RallyingCryAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.RallyingCryAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        rallyingCryEvent.RallyingCryAuraAppliedEvent.Timestamp.Should().Be(123);
+        rallyingCryEvent.RallyingCryAuraAppliedEvent.Duration.Should().Be(6);
+        rallyingCryEvent.RallyingCryAuraAppliedEvent.Aura.Should().Be(Aura.RallyingCry);
     }
 
     [Fact]
@@ -47,22 +52,7 @@ public class RallyingCryEventTests
     }
 
     [Fact]
-    public void Creates_RallyingCryExpiredEvent()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        rallyingCryEvent.ProcessEvent(state);
-
-        rallyingCryEvent.RallyingCryExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(rallyingCryEvent.RallyingCryExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        rallyingCryEvent.RallyingCryExpiredEvent.Timestamp.Should().Be(129);
-        rallyingCryEvent.RallyingCryExpiredEvent.Aura.Should().Be(Aura.RallyingCry);
-    }
-
-    [Fact]
-    public void EnhancedRallyingCry_Adds_Unstoppable_Aura()
+    public void EnhancedRallyingCry_Creates_UnstoppableAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.EnhancedRallyingCry, 1);
@@ -70,23 +60,12 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.Unstoppable);
-    }
-
-    [Fact]
-    public void EnhancedRallyingCry_Creates_UnstoppableExpiredEvent()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.EnhancedRallyingCry, 1);
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        rallyingCryEvent.ProcessEvent(state);
-
-        rallyingCryEvent.UnstoppableExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(rallyingCryEvent.UnstoppableExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent && ((AuraExpiredEvent)e).Aura == Aura.Unstoppable);
-        rallyingCryEvent.UnstoppableExpiredEvent.Timestamp.Should().Be(129);
-        rallyingCryEvent.UnstoppableExpiredEvent.Aura.Should().Be(Aura.Unstoppable);
+        rallyingCryEvent.UnstoppableAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.UnstoppableAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Unstoppable);
+        rallyingCryEvent.UnstoppableAuraAppliedEvent.Timestamp.Should().Be(123);
+        rallyingCryEvent.UnstoppableAuraAppliedEvent.Aura.Should().Be(Aura.Unstoppable);
+        rallyingCryEvent.UnstoppableAuraAppliedEvent.Duration.Should().Be(6);
     }
 
     [Fact]
@@ -137,7 +116,7 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.ProcessEvent(state);
 
-        rallyingCryEvent.RallyingCryExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
+        rallyingCryEvent.RallyingCryAuraAppliedEvent.Duration.Should().BeApproximately(expectedDuration, 0.0000001);
     }
 
     [Fact]

@@ -9,18 +9,20 @@ public class WhirlwindStartedEvent : EventInfo
     public WhirlwindStartedEvent(double timestamp) : base(timestamp)
     { }
 
+    public AuraAppliedEvent WhirlwindingAuraAppliedEvent { get; set; }
     public IList<DamageEvent> DamageEvents { get; init; } = new List<DamageEvent>();
     public IList<FuryGeneratedEvent> FuryGeneratedEvents { get; init; } = new List<FuryGeneratedEvent>();
     public IList<BleedAppliedEvent> BleedAppliedEvents { get; init; } = new List<BleedAppliedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
-    public ViolentWhirlwindAppliedEvent ViolentWhirlwindAppliedEvent { get; set; }
+    public AuraAppliedEvent ViolentWhirlwindAppliedEvent { get; set; }
     public IList<LuckyHitEvent> LuckyHitEvents { get; init; } = new List<LuckyHitEvent>();
     public CooldownCompletedEvent WeaponCooldownCompletedEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
-        state.Player.Auras.Add(Aura.Whirlwinding);
+        WhirlwindingAuraAppliedEvent = new AuraAppliedEvent(Timestamp, 0, Aura.Whirlwinding);
+        state.Events.Add(WhirlwindingAuraAppliedEvent);
 
         FurySpentEvent = new FurySpentEvent(Timestamp, Whirlwind.FURY_COST, SkillType.Core);
         state.Events.Add(FurySpentEvent);
@@ -31,7 +33,7 @@ public class WhirlwindStartedEvent : EventInfo
 
         if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
         {
-            ViolentWhirlwindAppliedEvent = new ViolentWhirlwindAppliedEvent(Timestamp + 2);
+            ViolentWhirlwindAppliedEvent = new AuraAppliedEvent(Timestamp + 2, 0, Aura.ViolentWhirlwind);
             state.Events.Add(ViolentWhirlwindAppliedEvent);
         }
 

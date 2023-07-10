@@ -11,26 +11,27 @@ public class ChallengingShoutEvent : EventInfo
     }
 
     public CooldownCompletedEvent ChallengingShoutCooldownCompletedEvent { get; set; }
-    public ChallengingShoutExpiredEvent ChallengingShoutExpiredEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
     public double Duration { get; set; }
+    public AuraAppliedEvent ChallengingShoutAuraAppliedEvent { get; set; }
+    public IList<AuraAppliedEvent> TauntAuraAppliedEvent { get; init; } = new List<AuraAppliedEvent>();
 
     public override void ProcessEvent(SimulationState state)
     {
-        state.Player.Auras.Add(Aura.ChallengingShout);
-        state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
+        Duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);
 
+        ChallengingShoutAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.ChallengingShout);
+        state.Events.Add(ChallengingShoutAuraAppliedEvent);
+
+        state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
         ChallengingShoutCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
         state.Events.Add(ChallengingShoutCooldownCompletedEvent);
 
-        Duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);
-
-        ChallengingShoutExpiredEvent = new ChallengingShoutExpiredEvent(Timestamp + Duration);
-        state.Events.Add(ChallengingShoutExpiredEvent);
-
         foreach (var enemy in state.Enemies)
         {
-            enemy.Auras.Add(Aura.Taunt);
+            var tauntAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Taunt, enemy);
+            TauntAuraAppliedEvent.Add(tauntAppliedEvent);
+            state.Events.Add(tauntAppliedEvent);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader))

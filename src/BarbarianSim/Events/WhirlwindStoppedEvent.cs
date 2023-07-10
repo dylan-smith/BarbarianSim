@@ -8,11 +8,17 @@ public class WhirlwindStoppedEvent : EventInfo
     {
     }
 
+    public AuraExpiredEvent WhirlwindingAuraExpiredEvent { get; set; }
+    public AuraExpiredEvent ViolentWhirlwindAuraExpiredEvent { get; set; }
+
     public override void ProcessEvent(SimulationState state)
     {
-        state.Player.Auras.Remove(Aura.Whirlwinding);
-        state.Player.Auras.Remove(Aura.ViolentWhirlwind);
+        WhirlwindingAuraExpiredEvent = new AuraExpiredEvent(Timestamp, Aura.Whirlwinding);
+        state.Events.Add(WhirlwindingAuraExpiredEvent);
 
-        state.Events.RemoveAll(e => e is ViolentWhirlwindAppliedEvent);
+        ViolentWhirlwindAuraExpiredEvent = new AuraExpiredEvent(Timestamp, Aura.ViolentWhirlwind);
+        state.Events.Add(ViolentWhirlwindAuraExpiredEvent);
+
+        state.Events.RemoveAll(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.ViolentWhirlwind);
     }
 }

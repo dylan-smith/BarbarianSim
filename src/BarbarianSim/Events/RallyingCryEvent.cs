@@ -10,9 +10,9 @@ public class RallyingCryEvent : EventInfo
     {
     }
 
+    public AuraAppliedEvent RallyingCryAuraAppliedEvent { get; set; }
     public CooldownCompletedEvent RallyingCryCooldownCompletedEvent { get; set; }
-    public AuraExpiredEvent RallyingCryExpiredEvent { get; set; }
-    public AuraExpiredEvent UnstoppableExpiredEvent { get; set; }
+    public AuraAppliedEvent UnstoppableAuraAppliedEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
@@ -20,16 +20,17 @@ public class RallyingCryEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        state.Player.Auras.Add(Aura.RallyingCry);
-        state.Player.Auras.Add(Aura.RallyingCryCooldown);
-
         Duration = RallyingCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+
+        RallyingCryAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.RallyingCry);
+        state.Events.Add(RallyingCryAuraAppliedEvent);
+
+        state.Player.Auras.Add(Aura.RallyingCryCooldown);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
         {
-            state.Player.Auras.Add(Aura.Unstoppable);
-            UnstoppableExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Aura.Unstoppable);
-            state.Events.Add(UnstoppableExpiredEvent);
+            UnstoppableAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Unstoppable);
+            state.Events.Add(UnstoppableAuraAppliedEvent);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.TacticalRallyingCry))
@@ -46,9 +47,6 @@ public class RallyingCryEvent : EventInfo
 
         RallyingCryCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
         state.Events.Add(RallyingCryCooldownCompletedEvent);
-
-        RallyingCryExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Aura.RallyingCry);
-        state.Events.Add(RallyingCryExpiredEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
         {

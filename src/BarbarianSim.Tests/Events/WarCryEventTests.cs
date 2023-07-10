@@ -9,14 +9,19 @@ namespace BarbarianSim.Tests.Events;
 public class WarCryEventTests
 {
     [Fact]
-    public void Adds_WarCry_Aura_To_Player()
+    public void Creates_WarCryAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var warCryEvent = new WarCryEvent(123);
 
         warCryEvent.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.WarCry);
+        warCryEvent.WarCryAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(warCryEvent.WarCryAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WarCry);
+        warCryEvent.WarCryAuraAppliedEvent.Timestamp.Should().Be(123);
+        warCryEvent.WarCryAuraAppliedEvent.Aura.Should().Be(Aura.WarCry);
+        warCryEvent.WarCryAuraAppliedEvent.Duration.Should().Be(6);
     }
 
     [Fact]
@@ -45,21 +50,7 @@ public class WarCryEventTests
     }
 
     [Fact]
-    public void Creates_AuraExpiredEvent()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var warCryEvent = new WarCryEvent(123);
-
-        warCryEvent.ProcessEvent(state);
-
-        warCryEvent.WarCryExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(warCryEvent.WarCryExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        warCryEvent.WarCryExpiredEvent.Timestamp.Should().Be(129);
-    }
-
-    [Fact]
-    public void EnhancedWarCry_Creates_BerserkingAppliedEvent()
+    public void EnhancedWarCry_Creates_BerserkingAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.EnhancedWarCry, 1);
@@ -67,10 +58,12 @@ public class WarCryEventTests
 
         warCryEvent.ProcessEvent(state);
 
-        warCryEvent.BerserkingAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(warCryEvent.BerserkingAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is BerserkingAppliedEvent);
-        warCryEvent.BerserkingAppliedEvent.Timestamp.Should().Be(123);
+        warCryEvent.BerserkingAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(warCryEvent.BerserkingAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
+        warCryEvent.BerserkingAuraAppliedEvent.Timestamp.Should().Be(123);
+        warCryEvent.BerserkingAuraAppliedEvent.Duration.Should().Be(4.0);
+        warCryEvent.BerserkingAuraAppliedEvent.Aura.Should().Be(Aura.Berserking);
     }
 
     [Fact]
@@ -105,7 +98,7 @@ public class WarCryEventTests
 
         warCryEvent.ProcessEvent(state);
 
-        warCryEvent.WarCryExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
+        warCryEvent.WarCryAuraAppliedEvent.Duration.Should().BeApproximately(expectedDuration, 0.0000001);
     }
 
     [Fact]

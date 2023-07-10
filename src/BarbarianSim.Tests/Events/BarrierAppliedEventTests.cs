@@ -9,14 +9,19 @@ namespace BarbarianSim.Tests.Events;
 public class BarrierAppliedEventTests
 {
     [Fact]
-    public void Adds_Barrier_Aura()
+    public void Creates_AuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
-        var e = new BarrierAppliedEvent(123.0, 1000, 10.0);
+        var barrierAppliedEvent = new BarrierAppliedEvent(123.0, 1000, 10.0);
 
-        e.ProcessEvent(state);
+        barrierAppliedEvent.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.Barrier);
+        barrierAppliedEvent.BarrierAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(barrierAppliedEvent.BarrierAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        barrierAppliedEvent.BarrierAuraAppliedEvent.Timestamp.Should().Be(123.0);
+        barrierAppliedEvent.BarrierAuraAppliedEvent.Duration.Should().Be(10.0);
+        barrierAppliedEvent.BarrierAuraAppliedEvent.Aura.Should().Be(Aura.Barrier);
     }
 
     [Fact]

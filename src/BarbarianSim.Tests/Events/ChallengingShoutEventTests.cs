@@ -9,17 +9,6 @@ namespace BarbarianSim.Tests.Events;
 public class ChallengingShoutEventTests
 {
     [Fact]
-    public void Adds_ChallengingShout_Aura_To_Player()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var challengingShoutEvent = new ChallengingShoutEvent(123);
-
-        challengingShoutEvent.ProcessEvent(state);
-
-        state.Player.Auras.Should().Contain(Aura.ChallengingShout);
-    }
-
-    [Fact]
     public void Adds_ChallengingShoutCooldown_Aura_To_Player()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -46,33 +35,37 @@ public class ChallengingShoutEventTests
     }
 
     [Fact]
-    public void Creates_ChallengingShoutExpiredEvent()
+    public void Creates_ChallengingShoutAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
         challengingShoutEvent.ProcessEvent(state);
 
-        challengingShoutEvent.ChallengingShoutExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is ChallengingShoutExpiredEvent);
-        challengingShoutEvent.ChallengingShoutExpiredEvent.Timestamp.Should().Be(129);
+        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ChallengingShout);
+        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Timestamp.Should().Be(123);
+        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Aura.Should().Be(Aura.ChallengingShout);
+        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Duration.Should().Be(6);
     }
 
     [Fact]
-    public void Adds_Taunt_Aura_To_Enemies()
+    public void Creates_TauntAuraAppliedEvents()
     {
         var config = new SimulationConfig();
-        config.EnemySettings.NumberOfEnemies = 2;
+        config.EnemySettings.NumberOfEnemies = 3;
         var state = new SimulationState(config);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
         challengingShoutEvent.ProcessEvent(state);
 
-        foreach (var enemy in state.Enemies)
-        {
-            enemy.Auras.Should().Contain(Aura.Taunt);
-        }
+        challengingShoutEvent.TauntAuraAppliedEvent.Should().HaveCount(3);
+        state.Events.Count(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Should().Be(3);
+        state.Events.Where(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Cast<AuraAppliedEvent>().All(e => e.Timestamp == 123).Should().BeTrue();
+        state.Events.Where(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Cast<AuraAppliedEvent>().All(e => e.Duration == 6).Should().BeTrue();
+        state.Events.Where(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Cast<AuraAppliedEvent>().First().Target.Should().Be(state.Enemies.First());
+        state.Events.Where(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Cast<AuraAppliedEvent>().Last().Target.Should().Be(state.Enemies.Last());
     }
 
     [Theory]
@@ -90,7 +83,7 @@ public class ChallengingShoutEventTests
 
         challengingShoutEvent.ProcessEvent(state);
 
-        challengingShoutEvent.ChallengingShoutExpiredEvent.Timestamp.Should().Be(123 + expectedDuration);
+        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Duration.Should().BeApproximately(expectedDuration, 0.000001);
     }
 
     [Fact]

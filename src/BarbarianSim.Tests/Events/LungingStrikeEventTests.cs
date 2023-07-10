@@ -300,9 +300,11 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        state.Events.Should().Contain(lungingStrikeEvent.BerserkingAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is BerserkingAppliedEvent);
-        lungingStrikeEvent.BerserkingAppliedEvent.Duration.Should().Be(1.5);
+        state.Events.Should().Contain(lungingStrikeEvent.BerserkingAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        lungingStrikeEvent.BerserkingAuraAppliedEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.BerserkingAuraAppliedEvent.Duration.Should().Be(1.5);
+        lungingStrikeEvent.BerserkingAuraAppliedEvent.Aura.Should().Be(Aura.Berserking);
     }
 
     [Fact]

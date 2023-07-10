@@ -10,30 +10,29 @@ public class WarCryEvent : EventInfo
     {
     }
 
+    public AuraAppliedEvent WarCryAuraAppliedEvent { get; set; }
     public CooldownCompletedEvent WarCryCooldownCompletedEvent { get; set; }
-    public AuraExpiredEvent WarCryExpiredEvent { get; set; }
-    public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
+    public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
     public double Duration { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
-        state.Player.Auras.Add(Aura.WarCry);
-        state.Player.Auras.Add(Aura.WarCryCooldown);
-
         Duration = WarCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+
+        WarCryAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.WarCry);
+        state.Events.Add(WarCryAuraAppliedEvent);
+
+        state.Player.Auras.Add(Aura.WarCryCooldown);
 
         WarCryCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + WarCry.COOLDOWN, Aura.WarCryCooldown);
         state.Events.Add(WarCryCooldownCompletedEvent);
 
-        WarCryExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Aura.WarCry);
-        state.Events.Add(WarCryExpiredEvent);
-
         if (state.Config.Skills.ContainsKey(Skill.EnhancedWarCry))
         {
-            BerserkingAppliedEvent = new BerserkingAppliedEvent(Timestamp, WarCry.BERSERKING_DURATION_FROM_ENHANCED);
-            state.Events.Add(BerserkingAppliedEvent);
+            BerserkingAuraAppliedEvent = new AuraAppliedEvent(Timestamp, WarCry.BERSERKING_DURATION_FROM_ENHANCED, Aura.Berserking);
+            state.Events.Add(BerserkingAuraAppliedEvent);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.MightyWarCry))

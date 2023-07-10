@@ -39,6 +39,7 @@ public class SpinToWinTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.Whirlwinding);
+        state.CurrentTime = 123;
         var aspect = new GohrsDevastatingGrips(20.0)
         {
             HitCount = GohrsDevastatingGrips.MAX_HIT_COUNT
@@ -48,7 +49,8 @@ public class SpinToWinTests
 
         rotation.Execute(state);
 
-        state.Player.Auras.Should().NotContain(Aura.Whirlwinding);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent && ((AuraExpiredEvent)e).Aura == Aura.Whirlwinding);
+        state.Events.Single(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Whirlwinding).Timestamp.Should().Be(123);
     }
 
     [Fact]

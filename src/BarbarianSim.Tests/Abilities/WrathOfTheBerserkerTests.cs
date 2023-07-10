@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using BarbarianSim.Abilities;
+﻿using BarbarianSim.Abilities;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
@@ -51,9 +50,9 @@ public class WrathOfTheBerserkerTests
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
-        state.Events.Should().ContainSingle(e => e is BerserkingAppliedEvent);
-        state.Events.OfType<BerserkingAppliedEvent>().First().Timestamp.Should().Be(123);
-        state.Events.OfType<BerserkingAppliedEvent>().First().Duration.Should().Be(5);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
+        state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
+        state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(5);
     }
 
     [Fact]
@@ -65,7 +64,7 @@ public class WrathOfTheBerserkerTests
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
-        state.Events.Should().NotContain(e => e is BerserkingAppliedEvent);
+        state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }
 
     [Fact]
@@ -78,7 +77,7 @@ public class WrathOfTheBerserkerTests
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
-        state.Events.Should().NotContain(e => e is BerserkingAppliedEvent);
+        state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }
 
     [Fact]
@@ -91,7 +90,7 @@ public class WrathOfTheBerserkerTests
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
-        state.Events.Should().NotContain(e => e is BerserkingAppliedEvent);
+        state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }
 
     [Fact]
@@ -103,7 +102,7 @@ public class WrathOfTheBerserkerTests
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
-        state.Events.Should().NotContain(e => e is BerserkingAppliedEvent);
+        state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }
 
     [Fact]

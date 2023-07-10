@@ -9,27 +9,18 @@ namespace BarbarianSim.Tests.Events;
 public class GutteralYellProcEventTests
 {
     [Fact]
-    public void Adds_Aura_To_Player()
+    public void Creates_AuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var gutteralYellProcEvent = new GutteralYellProcEvent(123);
 
         gutteralYellProcEvent.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.GutteralYell);
-    }
-
-    [Fact]
-    public void Creates_AuraExpiredEvent()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var gutteralYellProcEvent = new GutteralYellProcEvent(123);
-
-        gutteralYellProcEvent.ProcessEvent(state);
-
-        gutteralYellProcEvent.GutteralYellExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(gutteralYellProcEvent.GutteralYellExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        gutteralYellProcEvent.GutteralYellExpiredEvent.Timestamp.Should().Be(128);
+        gutteralYellProcEvent.GutteralYellAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(gutteralYellProcEvent.GutteralYellAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        gutteralYellProcEvent.GutteralYellAuraAppliedEvent.Timestamp.Should().Be(123);
+        gutteralYellProcEvent.GutteralYellAuraAppliedEvent.Duration.Should().Be(5);
+        gutteralYellProcEvent.GutteralYellAuraAppliedEvent.Aura.Should().Be(Aura.GutteralYell);
     }
 }

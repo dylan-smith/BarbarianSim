@@ -1,6 +1,4 @@
-﻿using BarbarianSim.Enums;
-
-namespace BarbarianSim.Events
+﻿namespace BarbarianSim.Events
 {
     public class BarrierExpiredEvent : EventInfo
     {
@@ -11,11 +9,6 @@ namespace BarbarianSim.Events
         public override void ProcessEvent(SimulationState state)
         {
             state.Player.Barriers.Remove(Barrier);
-
-            if (!state.Player.Barriers.Any())
-            {
-                state.Player.Auras.Remove(Aura.Barrier);
-            }
         }
     }
 }

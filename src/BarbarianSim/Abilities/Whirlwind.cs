@@ -21,7 +21,10 @@ public static class Whirlwind
 
     public static void Use(SimulationState state) => state.Events.Add(new WhirlwindStartedEvent(state.CurrentTime));
 
-    public static void StopSpinning(SimulationState state) => state.Player.Auras.Remove(Aura.Whirlwinding);
+    public static void StopSpinning(SimulationState state)
+    {
+        state.Events.Add(new AuraExpiredEvent(state.CurrentTime, Aura.Whirlwinding));
+    }
 
     public static GearItem Weapon { get; set; }
 

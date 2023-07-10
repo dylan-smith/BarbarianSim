@@ -124,14 +124,18 @@ public sealed class WhirlwindTests : IDisposable
     }
 
     [Fact]
-    public void StopSpinning_Applies_Whirlwinding_Aura()
+    public void StopSpinning_Creates_AuraExpiredEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.Whirlwinding);
+        var state = new SimulationState(new SimulationConfig())
+        {
+            CurrentTime = 123
+        };
 
         Whirlwind.StopSpinning(state);
 
-        state.Player.Auras.Should().NotContain(Aura.Whirlwinding);
+        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
+        state.Events.OfType<AuraExpiredEvent>().First().Timestamp.Should().Be(123);
+        state.Events.OfType<AuraExpiredEvent>().First().Aura.Should().Be(Aura.Whirlwinding);
     }
 
     [Theory]

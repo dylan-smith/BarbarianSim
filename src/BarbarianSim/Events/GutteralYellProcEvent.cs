@@ -9,14 +9,12 @@ namespace BarbarianSim.Events
         {
         }
 
-        public AuraExpiredEvent GutteralYellExpiredEvent { get; set; }
+        public AuraAppliedEvent GutteralYellAuraAppliedEvent { get; set; }
 
         public override void ProcessEvent(SimulationState state)
         {
-            state.Player.Auras.Add(Aura.GutteralYell);
-
-            GutteralYellExpiredEvent = new AuraExpiredEvent(Timestamp + GutteralYell.DURATION, Aura.GutteralYell);
-            state.Events.Add(GutteralYellExpiredEvent);
+            GutteralYellAuraAppliedEvent = new AuraAppliedEvent(Timestamp, GutteralYell.DURATION, Aura.GutteralYell);
+            state.Events.Add(GutteralYellAuraAppliedEvent);
         }
     }
 }

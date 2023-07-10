@@ -12,17 +12,6 @@ public sealed class IronSkinEventTests : IDisposable
     public void Dispose() => BaseStatCalculator.ClearMocks();
 
     [Fact]
-    public void Adds_IronSkin_Aura_To_Player()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var ironSkinEvent = new IronSkinEvent(123);
-
-        ironSkinEvent.ProcessEvent(state);
-
-        state.Player.Auras.Should().Contain(Aura.IronSkin);
-    }
-
-    [Fact]
     public void Adds_IronSkinCooldown_Aura_To_Player()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -48,17 +37,19 @@ public sealed class IronSkinEventTests : IDisposable
     }
 
     [Fact]
-    public void Creates_AuraExpiredEvent()
+    public void Creates_AuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var ironSkinEvent = new IronSkinEvent(123);
 
         ironSkinEvent.ProcessEvent(state);
 
-        ironSkinEvent.IronSkinExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(ironSkinEvent.IronSkinExpiredEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        ironSkinEvent.IronSkinExpiredEvent.Timestamp.Should().Be(128);
+        ironSkinEvent.IronSkinAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(ironSkinEvent.IronSkinAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        ironSkinEvent.IronSkinAuraAppliedEvent.Timestamp.Should().Be(123);
+        ironSkinEvent.IronSkinAuraAppliedEvent.Duration.Should().Be(5);
+        ironSkinEvent.IronSkinAuraAppliedEvent.Aura.Should().Be(Aura.IronSkin);
     }
 
     [Fact]

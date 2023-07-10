@@ -31,7 +31,7 @@ public class VulnerableAppliedEventTests
         state.Events.Should().Contain(vulnerableAppliedEvent.VulnerableExpiredEvent);
         state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
         vulnerableAppliedEvent.VulnerableExpiredEvent.Timestamp.Should().Be(125);
-        vulnerableAppliedEvent.VulnerableExpiredEvent.Enemy.Should().Be(state.Enemies.First());
+        vulnerableAppliedEvent.VulnerableExpiredEvent.Target.Should().Be(state.Enemies.First());
         vulnerableAppliedEvent.VulnerableExpiredEvent.Aura.Should().Be(Aura.Vulnerable);
     }
 }

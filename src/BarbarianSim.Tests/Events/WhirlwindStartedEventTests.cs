@@ -413,7 +413,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
         whirlwindStartedEvent.ProcessEvent(state);
 
         state.Events.Should().Contain(whirlwindStartedEvent.ViolentWhirlwindAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is ViolentWhirlwindAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ViolentWhirlwind);
         whirlwindStartedEvent.ViolentWhirlwindAppliedEvent.Timestamp.Should().Be(125);
     }
 

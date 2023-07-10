@@ -6,18 +6,18 @@ public class AuraExpiredEvent : EventInfo
 {
     public AuraExpiredEvent(double timestamp, Aura aura) : base(timestamp) => Aura = aura;
 
-    public AuraExpiredEvent(double timestamp, EnemyState enemy, Aura aura) : base(timestamp)
+    public AuraExpiredEvent(double timestamp, EnemyState target, Aura aura) : base(timestamp)
     {
         Aura = aura;
-        Enemy = enemy;
+        Target = target;
     }
 
     public Aura Aura { get; set; }
-    public EnemyState Enemy { get; set; }
+    public EnemyState Target { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
-        if (Enemy == null)
+        if (Target == null)
         {
             // if there are other events it means there's an Aura been applied with a later expiration time
             if (!state.Events.Any(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura))
@@ -27,9 +27,9 @@ public class AuraExpiredEvent : EventInfo
         }
         else
         {
-            if (!state.Events.Any(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Enemy == Enemy && expiredEvent.Aura == Aura))
+            if (!state.Events.Any(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Target == Target && expiredEvent.Aura == Aura))
             {
-                Enemy.Auras.Remove(Aura);
+                Target.Auras.Remove(Aura);
             }
         }
     }

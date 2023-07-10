@@ -350,7 +350,7 @@ internal class Program
             var count = vulnerableEvents.Where(x => x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy).Count();
 
             var enemyEvents = vulnerableEvents.Where(x => (x is VulnerableAppliedEvent appliedEvent && appliedEvent.Target == enemy) ||
-                                                           (x is AuraExpiredEvent expiredEvent && expiredEvent.Enemy == enemy));
+                                                           (x is AuraExpiredEvent expiredEvent && expiredEvent.Target == enemy));
 
             var timestamp = 0.0;
             var uptime = 0.0;
@@ -393,9 +393,9 @@ internal class Program
 
     private static (int count, double uptime, double percentage) GetBerserkingStats(IEnumerable<EventInfo> events)
     {
-        var count = events.Where(x => x is BerserkingAppliedEvent).Count();
+        var count = events.Where(x => x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Berserking).Count();
 
-        var berserkingEvents = events.Where(x => x is BerserkingAppliedEvent || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Berserking));
+        var berserkingEvents = events.Where(x => (x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Berserking) || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Berserking));
         var endOfFight = events.Max(x => x.Timestamp);
 
         var timestamp = 0.0;
@@ -411,7 +411,7 @@ internal class Program
 
             timestamp = e.Timestamp;
 
-            if (e is BerserkingAppliedEvent)
+            if (e is AuraAppliedEvent)
             {
                 active = true;
             }

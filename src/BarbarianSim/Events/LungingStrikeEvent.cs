@@ -12,7 +12,7 @@ public class LungingStrikeEvent : EventInfo
     public DamageEvent DamageEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public HealingEvent HealingEvent { get; set; }
-    public BerserkingAppliedEvent BerserkingAppliedEvent { get; set; }
+    public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
     public BleedAppliedEvent BleedAppliedEvent { get; set; }
     public LuckyHitEvent LuckyHitEvent { get; set; }
     public CooldownCompletedEvent WeaponCooldownCompletedEvent { get; set; }
@@ -54,8 +54,8 @@ public class LungingStrikeEvent : EventInfo
 
             if (state.Config.Skills.ContainsKey(Skill.CombatLungingStrike))
             {
-                BerserkingAppliedEvent = new BerserkingAppliedEvent(Timestamp, 1.5);
-                state.Events.Add(BerserkingAppliedEvent);
+                BerserkingAuraAppliedEvent = new AuraAppliedEvent(Timestamp, 1.5, Aura.Berserking);
+                state.Events.Add(BerserkingAuraAppliedEvent);
             }
         }
 
