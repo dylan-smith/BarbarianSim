@@ -12,17 +12,6 @@ public sealed class IronSkinEventTests : IDisposable
     public void Dispose() => BaseStatCalculator.ClearMocks();
 
     [Fact]
-    public void Adds_IronSkinCooldown_Aura_To_Player()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var ironSkinEvent = new IronSkinEvent(123);
-
-        ironSkinEvent.ProcessEvent(state);
-
-        state.Player.Auras.Should().Contain(Aura.IronSkinCooldown);
-    }
-
-    [Fact]
     public void Creates_CooldownCompletedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -30,10 +19,12 @@ public sealed class IronSkinEventTests : IDisposable
 
         ironSkinEvent.ProcessEvent(state);
 
-        ironSkinEvent.IronSkinCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(ironSkinEvent.IronSkinCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
-        ironSkinEvent.IronSkinCooldownCompletedEvent.Timestamp.Should().Be(137);
+        ironSkinEvent.IronSkinCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(ironSkinEvent.IronSkinCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.IronSkinCooldown);
+        ironSkinEvent.IronSkinCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        ironSkinEvent.IronSkinCooldownAuraAppliedEvent.Duration.Should().Be(14);
+        ironSkinEvent.IronSkinCooldownAuraAppliedEvent.Aura.Should().Be(Aura.IronSkinCooldown);
     }
 
     [Fact]
@@ -46,7 +37,7 @@ public sealed class IronSkinEventTests : IDisposable
 
         ironSkinEvent.IronSkinAuraAppliedEvent.Should().NotBeNull();
         state.Events.Should().Contain(ironSkinEvent.IronSkinAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.IronSkin);
         ironSkinEvent.IronSkinAuraAppliedEvent.Timestamp.Should().Be(123);
         ironSkinEvent.IronSkinAuraAppliedEvent.Duration.Should().Be(5);
         ironSkinEvent.IronSkinAuraAppliedEvent.Aura.Should().Be(Aura.IronSkin);
