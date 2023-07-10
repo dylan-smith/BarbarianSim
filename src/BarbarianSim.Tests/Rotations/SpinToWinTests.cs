@@ -31,7 +31,7 @@ public class SpinToWinTests
 
         rotation.Execute(state);
 
-        state.Events.Any(e => e is WhirlwindStartedEvent).Should().BeTrue();
+        state.Events.Any(e => e is WhirlwindSpinEvent).Should().BeTrue();
     }
 
     [Fact]

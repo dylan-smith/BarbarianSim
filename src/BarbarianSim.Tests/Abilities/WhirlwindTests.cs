@@ -119,7 +119,7 @@ public sealed class WhirlwindTests : IDisposable
         Whirlwind.Use(state);
 
         state.Events.Count.Should().Be(1);
-        state.Events[0].Should().BeOfType<WhirlwindStartedEvent>();
+        state.Events[0].Should().BeOfType<WhirlwindSpinEvent>();
         state.Events[0].Timestamp.Should().Be(123);
     }
 
