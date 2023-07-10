@@ -9,7 +9,7 @@ namespace BarbarianSim.Tests.Events;
 public class WhirlwindRefreshEventTests
 {
     [Fact]
-    public void Creates_WhirlwindStartedEvent_If_CanRefresh_Is_True()
+    public void Creates_WhirlwindSpinEvent_If_CanRefresh_Is_True()
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Fury = 100;
@@ -18,8 +18,8 @@ public class WhirlwindRefreshEventTests
         var whirlwindRefreshEvent = new WhirlwindRefreshEvent(123.0);
         whirlwindRefreshEvent.ProcessEvent(state);
 
-        state.Events.Should().Contain(whirlwindRefreshEvent.WhirlwindStartedEvent);
-        state.Events.Should().ContainSingle(e => e is WhirlwindStartedEvent);
+        state.Events.Should().Contain(whirlwindRefreshEvent.WhirlwindSpinEvent);
+        state.Events.Should().ContainSingle(e => e is WhirlwindSpinEvent);
         state.Events.First().Timestamp.Should().Be(123.0);
     }
 

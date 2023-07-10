@@ -256,7 +256,7 @@ internal class Program
         Console.WriteLine($"Gutteral Yell: Applied {count} times for {uptime:F1} seconds ({percentage:F1}%)");
 
         var lungingStrikeCount = state.ProcessedEvents.Count(e => e is LungingStrikeEvent);
-        var whirlwindCount = state.ProcessedEvents.Count(e => e is WhirlwindStartedEvent);
+        var whirlwindCount = state.ProcessedEvents.Count(e => e is WhirlwindSpinEvent);
         var rallyingCryCount = state.ProcessedEvents.Count(e => e is RallyingCryEvent);
         var warCryCount = state.ProcessedEvents.Count(e => e is WarCryEvent);
         var challengingShoutCount = state.ProcessedEvents.Count(e => e is ChallengingShoutEvent);

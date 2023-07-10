@@ -4,9 +4,9 @@ using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Events;
 
-public class WhirlwindStartedEvent : EventInfo
+public class WhirlwindSpinEvent : EventInfo
 {
-    public WhirlwindStartedEvent(double timestamp) : base(timestamp)
+    public WhirlwindSpinEvent(double timestamp) : base(timestamp)
     { }
 
     public AuraAppliedEvent WhirlwindingAuraAppliedEvent { get; set; }
