@@ -19,7 +19,7 @@ public static class Whirlwind
 
     public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state, SkillType.Core)) && state.Player.Auras.Contains(Aura.Whirlwinding);
 
-    public static void Use(SimulationState state) => state.Events.Add(new WhirlwindStartedEvent(state.CurrentTime));
+    public static void Use(SimulationState state) => state.Events.Add(new WhirlwindSpinEvent(state.CurrentTime));
 
     public static void StopSpinning(SimulationState state)
     {
