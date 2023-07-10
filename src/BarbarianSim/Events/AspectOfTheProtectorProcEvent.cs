@@ -10,16 +10,15 @@ namespace BarbarianSim.Events
 
         public int BarrierAmount { get; init; }
         public BarrierAppliedEvent BarrierAppliedEvent { get; set; }
-        public CooldownCompletedEvent AspectOfTheProtectorCooldownCompletedEvent { get; set; }
+        public AuraAppliedEvent AspectOfTheProtectorCooldownAuraAppliedEvent { get; set; }
 
         public override void ProcessEvent(SimulationState state)
         {
-            BarrierAppliedEvent = new BarrierAppliedEvent(Timestamp, BarrierAmount, BARRIER_EXPIRY);
-            AspectOfTheProtectorCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + 30, Aura.AspectOfTheProtectorCooldown);
+            AspectOfTheProtectorCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, 30, Aura.AspectOfTheProtectorCooldown);
+            state.Events.Add(AspectOfTheProtectorCooldownAuraAppliedEvent);
 
-            state.Player.Auras.Add(Aura.AspectOfTheProtectorCooldown);
+            BarrierAppliedEvent = new BarrierAppliedEvent(Timestamp, BarrierAmount, BARRIER_EXPIRY);
             state.Events.Add(BarrierAppliedEvent);
-            state.Events.Add(AspectOfTheProtectorCooldownCompletedEvent);
         }
 
         public override string ToString() => $"[{Timestamp:F1}] Aspect of the Protector proc for {BarrierAmount} barrier";

@@ -11,7 +11,7 @@ public class IronSkinEvent : EventInfo
     }
 
     public AuraAppliedEvent IronSkinAuraAppliedEvent { get; set; }
-    public CooldownCompletedEvent IronSkinCooldownCompletedEvent { get; set; }
+    public AuraAppliedEvent IronSkinCooldownAuraAppliedEvent { get; set; }
     public BarrierAppliedEvent BarrierAppliedEvent { get; set; }
     public IList<HealingEvent> HealingEvents { get; init; } = new List<HealingEvent>();
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
@@ -21,10 +21,8 @@ public class IronSkinEvent : EventInfo
         IronSkinAuraAppliedEvent = new AuraAppliedEvent(Timestamp, IronSkin.DURATION, Aura.IronSkin);
         state.Events.Add(IronSkinAuraAppliedEvent);
 
-        state.Player.Auras.Add(Aura.IronSkinCooldown);
-
-        IronSkinCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + IronSkin.COOLDOWN, Aura.IronSkinCooldown);
-        state.Events.Add(IronSkinCooldownCompletedEvent);
+        IronSkinCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, IronSkin.COOLDOWN, Aura.IronSkinCooldown);
+        state.Events.Add(IronSkinCooldownAuraAppliedEvent);
 
         var maxLife = MaxLifeCalculator.Calculate(state);
         var missingLife = state.Player.GetMissingLife(maxLife);

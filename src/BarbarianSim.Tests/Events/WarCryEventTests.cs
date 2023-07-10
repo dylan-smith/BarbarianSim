@@ -25,17 +25,6 @@ public class WarCryEventTests
     }
 
     [Fact]
-    public void Adds_WarCryCooldown_Aura_To_Player()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var warCryEvent = new WarCryEvent(123);
-
-        warCryEvent.ProcessEvent(state);
-
-        state.Player.Auras.Should().Contain(Aura.WarCryCooldown);
-    }
-
-    [Fact]
     public void Creates_CooldownCompletedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -43,10 +32,12 @@ public class WarCryEventTests
 
         warCryEvent.ProcessEvent(state);
 
-        warCryEvent.WarCryCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(warCryEvent.WarCryCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
-        warCryEvent.WarCryCooldownCompletedEvent.Timestamp.Should().Be(148);
+        warCryEvent.WarCryCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(warCryEvent.WarCryCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WarCryCooldown);
+        warCryEvent.WarCryCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        warCryEvent.WarCryCooldownAuraAppliedEvent.Aura.Should().Be(Aura.WarCryCooldown);
+        warCryEvent.WarCryCooldownAuraAppliedEvent.Duration.Should().Be(25);
     }
 
     [Fact]

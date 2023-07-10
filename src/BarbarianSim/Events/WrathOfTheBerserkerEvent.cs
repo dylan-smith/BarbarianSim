@@ -11,7 +11,7 @@ public class WrathOfTheBerserkerEvent : EventInfo
 
     public AuraAppliedEvent WrathOfTheBerserkerAuraAppliedEvent { get; set; }
     public AuraAppliedEvent UnstoppableAuraAppliedEvent { get; set; }
-    public CooldownCompletedEvent WrathOfTheBerserkerCooldownCompletedEvent { get; set; }
+    public AuraAppliedEvent WrathOfTheBerserkerCooldownAuraAppliedEvent { get; set; }
     public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
@@ -25,9 +25,7 @@ public class WrathOfTheBerserkerEvent : EventInfo
         BerserkingAuraAppliedEvent = new AuraAppliedEvent(Timestamp, WrathOfTheBerserker.BERSERKING_DURATION, Aura.Berserking);
         state.Events.Add(BerserkingAuraAppliedEvent);
 
-        state.Player.Auras.Add(Aura.WrathOfTheBerserkerCooldown);
-
-        WrathOfTheBerserkerCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + WrathOfTheBerserker.COOLDOWN, Aura.WrathOfTheBerserkerCooldown);
-        state.Events.Add(WrathOfTheBerserkerCooldownCompletedEvent);
+        WrathOfTheBerserkerCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, WrathOfTheBerserker.COOLDOWN, Aura.WrathOfTheBerserkerCooldown);
+        state.Events.Add(WrathOfTheBerserkerCooldownAuraAppliedEvent);
     }
 }

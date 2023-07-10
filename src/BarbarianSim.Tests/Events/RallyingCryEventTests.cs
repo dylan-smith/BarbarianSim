@@ -19,21 +19,10 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.RallyingCryAuraAppliedEvent.Should().NotBeNull();
         state.Events.Should().Contain(rallyingCryEvent.RallyingCryAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.RallyingCry);
         rallyingCryEvent.RallyingCryAuraAppliedEvent.Timestamp.Should().Be(123);
         rallyingCryEvent.RallyingCryAuraAppliedEvent.Duration.Should().Be(6);
         rallyingCryEvent.RallyingCryAuraAppliedEvent.Aura.Should().Be(Aura.RallyingCry);
-    }
-
-    [Fact]
-    public void Adds_RallyingCryCooldown_Aura_To_Player()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        rallyingCryEvent.ProcessEvent(state);
-
-        state.Player.Auras.Should().Contain(Aura.RallyingCryCooldown);
     }
 
     [Fact]
@@ -44,11 +33,12 @@ public class RallyingCryEventTests
 
         rallyingCryEvent.ProcessEvent(state);
 
-        rallyingCryEvent.RallyingCryCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(rallyingCryEvent.RallyingCryCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
-        rallyingCryEvent.RallyingCryCooldownCompletedEvent.Timestamp.Should().Be(148);
-        rallyingCryEvent.RallyingCryCooldownCompletedEvent.Aura.Should().Be(Aura.RallyingCryCooldown);
+        rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.RallyingCryCooldown);
+        rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Aura.Should().Be(Aura.RallyingCryCooldown);
+        rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Duration.Should().Be(25);
     }
 
     [Fact]

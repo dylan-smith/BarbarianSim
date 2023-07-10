@@ -9,29 +9,19 @@ namespace BarbarianSim.Tests.Events;
 public class ChallengingShoutEventTests
 {
     [Fact]
-    public void Adds_ChallengingShoutCooldown_Aura_To_Player()
+    public void Creates_ChallengingShoutCooldownAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
         challengingShoutEvent.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.ChallengingShoutCooldown);
-    }
-
-    [Fact]
-    public void Creates_ChallengingShoutCooldownCompletedEvent()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var challengingShoutEvent = new ChallengingShoutEvent(123);
-
-        challengingShoutEvent.ProcessEvent(state);
-
-        challengingShoutEvent.ChallengingShoutCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is CooldownCompletedEvent);
-        challengingShoutEvent.ChallengingShoutCooldownCompletedEvent.Timestamp.Should().Be(148);
-        challengingShoutEvent.ChallengingShoutCooldownCompletedEvent.Aura.Should().Be(Aura.ChallengingShoutCooldown);
+        challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ChallengingShoutCooldown);
+        challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Duration.Should().Be(25);
+        challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Aura.Should().Be(Aura.ChallengingShoutCooldown);
     }
 
     [Fact]

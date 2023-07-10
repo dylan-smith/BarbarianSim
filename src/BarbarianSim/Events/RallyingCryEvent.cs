@@ -11,7 +11,7 @@ public class RallyingCryEvent : EventInfo
     }
 
     public AuraAppliedEvent RallyingCryAuraAppliedEvent { get; set; }
-    public CooldownCompletedEvent RallyingCryCooldownCompletedEvent { get; set; }
+    public AuraAppliedEvent RallyingCryCooldownAuraAppliedEvent { get; set; }
     public AuraAppliedEvent UnstoppableAuraAppliedEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
@@ -25,7 +25,8 @@ public class RallyingCryEvent : EventInfo
         RallyingCryAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.RallyingCry);
         state.Events.Add(RallyingCryAuraAppliedEvent);
 
-        state.Player.Auras.Add(Aura.RallyingCryCooldown);
+        RallyingCryCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
+        state.Events.Add(RallyingCryCooldownAuraAppliedEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
         {
@@ -44,9 +45,6 @@ public class RallyingCryEvent : EventInfo
             FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife);
             state.Events.Add(FortifyGeneratedEvent);
         }
-
-        RallyingCryCooldownCompletedEvent = new CooldownCompletedEvent(Timestamp + RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
-        state.Events.Add(RallyingCryCooldownCompletedEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
         {
