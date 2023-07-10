@@ -17,7 +17,7 @@ public class WhirlwindStartedEvent : EventInfo
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
     public AuraAppliedEvent ViolentWhirlwindAppliedEvent { get; set; }
     public IList<LuckyHitEvent> LuckyHitEvents { get; init; } = new List<LuckyHitEvent>();
-    public AuraExpiredEvent WeaponCooldownCompletedEvent { get; set; }
+    public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -86,9 +86,8 @@ public class WhirlwindStartedEvent : EventInfo
 
         var weaponSpeed = 1 / Whirlwind.Weapon.AttacksPerSecond;
         weaponSpeed *= AttackSpeedCalculator.Calculate(state);
-        state.Player.Auras.Add(Aura.WeaponCooldown);
-        WeaponCooldownCompletedEvent = new AuraExpiredEvent(Timestamp + weaponSpeed, Aura.WeaponCooldown);
-        state.Events.Add(WeaponCooldownCompletedEvent);
+        WeaponCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, weaponSpeed, Aura.WeaponCooldown);
+        state.Events.Add(WeaponCooldownAuraAppliedEvent);
 
         WhirlwindRefreshEvent = new WhirlwindRefreshEvent(Timestamp + weaponSpeed);
         state.Events.Add(WhirlwindRefreshEvent);

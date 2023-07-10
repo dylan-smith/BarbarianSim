@@ -11,7 +11,7 @@ public class WarCryEvent : EventInfo
     }
 
     public AuraAppliedEvent WarCryAuraAppliedEvent { get; set; }
-    public AuraExpiredEvent WarCryCooldownCompletedEvent { get; set; }
+    public AuraAppliedEvent WarCryCooldownAuraAppliedEvent { get; set; }
     public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
@@ -24,10 +24,8 @@ public class WarCryEvent : EventInfo
         WarCryAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.WarCry);
         state.Events.Add(WarCryAuraAppliedEvent);
 
-        state.Player.Auras.Add(Aura.WarCryCooldown);
-
-        WarCryCooldownCompletedEvent = new AuraExpiredEvent(Timestamp + WarCry.COOLDOWN, Aura.WarCryCooldown);
-        state.Events.Add(WarCryCooldownCompletedEvent);
+        WarCryCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, WarCry.COOLDOWN, Aura.WarCryCooldown);
+        state.Events.Add(WarCryCooldownAuraAppliedEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedWarCry))
         {

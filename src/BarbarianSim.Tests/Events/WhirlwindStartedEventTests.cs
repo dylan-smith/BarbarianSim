@@ -142,7 +142,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
     }
 
     [Fact]
-    public void Adds_WeaponAuraCooldownCompletedEvent_To_Queue()
+    public void Creates_WeaponAuraCooldownAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig
         {
@@ -154,15 +154,16 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.ProcessEvent(state);
 
-        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(whirlwindStartedEvent.WeaponCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(124);
-        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Aura.Should().Be(Aura.WeaponCooldown);
+        whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WeaponCooldown);
+        whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent.Aura.Should().Be(Aura.WeaponCooldown);
+        whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(1);
     }
 
     [Fact]
-    public void Considers_Weapon_AttacksPerSecond_When_Creating_WeaponAuraCooldownCompletedEvent()
+    public void Considers_Weapon_AttacksPerSecond_When_Creating_WeaponAuraCooldownAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig
         {
@@ -174,7 +175,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.ProcessEvent(state);
 
-        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.5);
+        whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(0.5);
     }
 
     [Fact]
@@ -192,7 +193,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
         whirlwindStartedEvent.ProcessEvent(state);
 
-        whirlwindStartedEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.6);
+        whirlwindStartedEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(0.6);
     }
 
     [Fact]

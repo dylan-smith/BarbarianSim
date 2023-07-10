@@ -24,17 +24,6 @@ public class WrathOfTheBerserkerEvenTests
     }
 
     [Fact]
-    public void Adds_WrathOfTheBerserkerCooldown_Aura_To_Player()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var wrathOfTheBerserkerEvent = new WrathOfTheBerserkerEvent(123);
-
-        wrathOfTheBerserkerEvent.ProcessEvent(state);
-
-        state.Player.Auras.Should().Contain(Aura.WrathOfTheBerserkerCooldown);
-    }
-
-    [Fact]
     public void Creates_UnstoppableAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
@@ -50,18 +39,19 @@ public class WrathOfTheBerserkerEvenTests
     }
 
     [Fact]
-    public void Creates_WrathOfTheBerserkerCooldownCompletedEvent()
+    public void Creates_WrathOfTheBerserkerCooldownAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var wrathOfTheBerserkerEvent = new WrathOfTheBerserkerEvent(123);
 
         wrathOfTheBerserkerEvent.ProcessEvent(state);
 
-        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent.Timestamp.Should().Be(183);
-        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownCompletedEvent.Aura.Should().Be(Aura.WrathOfTheBerserkerCooldown);
+        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WrathOfTheBerserkerCooldown);
+        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Aura.Should().Be(Aura.WrathOfTheBerserkerCooldown);
+        wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Duration.Should().Be(60);
     }
 
     [Fact]

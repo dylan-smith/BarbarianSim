@@ -9,28 +9,18 @@ namespace BarbarianSim.Tests.Events;
 public class AspectOfTheProtectorProcEventTests
 {
     [Fact]
-    public void Adds_AspectOfTheProtectorCooldown_Aura()
+    public void Creates_AspectOfTheProtectorCooldownAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig());
         var e = new AspectOfTheProtectorProcEvent(123.0, 1000);
 
         e.ProcessEvent(state);
 
-        state.Player.Auras.Should().Contain(Aura.AspectOfTheProtectorCooldown);
-    }
-
-    [Fact]
-    public void Creates_AspectOfTheProtectorCooldownCompletedEvent()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        var e = new AspectOfTheProtectorProcEvent(123.0, 1000);
-
-        e.ProcessEvent(state);
-
-        state.Events.Should().Contain(e.AspectOfTheProtectorCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        e.AspectOfTheProtectorCooldownCompletedEvent.Timestamp.Should().Be(153.0);
-        e.AspectOfTheProtectorCooldownCompletedEvent.Aura.Should().Be(Aura.AspectOfTheProtectorCooldown);
+        state.Events.Should().Contain(e.AspectOfTheProtectorCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        e.AspectOfTheProtectorCooldownAuraAppliedEvent.Timestamp.Should().Be(123.0);
+        e.AspectOfTheProtectorCooldownAuraAppliedEvent.Duration.Should().Be(30.0);
+        e.AspectOfTheProtectorCooldownAuraAppliedEvent.Aura.Should().Be(Aura.AspectOfTheProtectorCooldown);
     }
 
     [Fact]

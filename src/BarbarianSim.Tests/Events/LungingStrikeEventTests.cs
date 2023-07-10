@@ -143,7 +143,7 @@ public sealed class LungingStrikeEventTests : IDisposable
     }
 
     [Fact]
-    public void Adds_WeaponAuraCooldownCompletedEvent_To_Queue()
+    public void Creates_WeaponAuraCooldownAuraAppliedEvent()
     {
         var state = new SimulationState(new SimulationConfig
         {
@@ -155,11 +155,12 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        lungingStrikeEvent.WeaponCooldownCompletedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(lungingStrikeEvent.WeaponCooldownCompletedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(124);
-        lungingStrikeEvent.WeaponCooldownCompletedEvent.Aura.Should().Be(Aura.WeaponCooldown);
+        lungingStrikeEvent.WeaponCooldownAuraAppliedEvent.Should().NotBeNull();
+        state.Events.Should().Contain(lungingStrikeEvent.WeaponCooldownAuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WeaponCooldown);
+        lungingStrikeEvent.WeaponCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(1.0);
+        lungingStrikeEvent.WeaponCooldownAuraAppliedEvent.Aura.Should().Be(Aura.WeaponCooldown);
     }
 
     [Fact]
@@ -175,7 +176,7 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.5);
+        lungingStrikeEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(0.5);
     }
 
     [Fact]
@@ -193,7 +194,7 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        lungingStrikeEvent.WeaponCooldownCompletedEvent.Timestamp.Should().Be(123.6);
+        lungingStrikeEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(0.6);
     }
 
     [Fact]
@@ -301,7 +302,7 @@ public sealed class LungingStrikeEventTests : IDisposable
         lungingStrikeEvent.ProcessEvent(state);
 
         state.Events.Should().Contain(lungingStrikeEvent.BerserkingAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
         lungingStrikeEvent.BerserkingAuraAppliedEvent.Timestamp.Should().Be(123);
         lungingStrikeEvent.BerserkingAuraAppliedEvent.Duration.Should().Be(1.5);
         lungingStrikeEvent.BerserkingAuraAppliedEvent.Aura.Should().Be(Aura.Berserking);
