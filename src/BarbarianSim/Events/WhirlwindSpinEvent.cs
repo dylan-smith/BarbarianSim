@@ -6,6 +6,7 @@ namespace BarbarianSim.Events;
 
 public class WhirlwindSpinEvent : EventInfo
 {
+    // Rapidly attack surrounding enemies for 17%[x] damage (Fury Cost: 11, Lucky Hit: 20%)
     public WhirlwindSpinEvent(double timestamp) : base(timestamp)
     { }
 
@@ -15,7 +16,6 @@ public class WhirlwindSpinEvent : EventInfo
     public IList<BleedAppliedEvent> BleedAppliedEvents { get; init; } = new List<BleedAppliedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
-    public AuraAppliedEvent ViolentWhirlwindAppliedEvent { get; set; }
     public IList<LuckyHitEvent> LuckyHitEvents { get; init; } = new List<LuckyHitEvent>();
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
 
@@ -29,12 +29,6 @@ public class WhirlwindSpinEvent : EventInfo
 
         var weaponDamage = (Whirlwind.Weapon.MinDamage + Whirlwind.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
-
-        if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
-        {
-            ViolentWhirlwindAppliedEvent = new AuraAppliedEvent(Timestamp + 2, 0, Aura.ViolentWhirlwind);
-            state.Events.Add(ViolentWhirlwindAppliedEvent);
-        }
 
         var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
 

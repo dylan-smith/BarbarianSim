@@ -32,7 +32,7 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
 
         if (damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind))
         {
-            damageBonus *= 1.3;
+            damageBonus *= ViolentWhirlwind.DAMAGE_MULTIPLIER;
         }
 
         damageBonus *= WrathOfTheBerserker.GetBerserkDamageBonus(state);

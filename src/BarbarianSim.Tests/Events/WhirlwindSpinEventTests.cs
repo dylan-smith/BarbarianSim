@@ -401,24 +401,6 @@ public sealed class WhirlwindSpinEventTests : IDisposable
     }
 
     [Fact]
-    public void ViolentWhirlwind_Creates_ViolentWhirlwindAppliedEvent()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.Whirlwind] = 1, [Skill.ViolentWhirlwind] = 1, },
-        });
-        Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
-
-        var whirlwindStartedEvent = new WhirlwindSpinEvent(123.0);
-
-        whirlwindStartedEvent.ProcessEvent(state);
-
-        state.Events.Should().Contain(whirlwindStartedEvent.ViolentWhirlwindAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ViolentWhirlwind);
-        whirlwindStartedEvent.ViolentWhirlwindAppliedEvent.Timestamp.Should().Be(125);
-    }
-
-    [Fact]
     public void LuckyHit_20_Percent_Chance()
     {
         var state = new SimulationState(new SimulationConfig

@@ -44,6 +44,9 @@ public static class EventPublisher
             case AuraAppliedEvent ev:
                 state.Config.Gear.GetAllAspects<GhostwalkerAspect>().ForEach(a => a.ProcessEvent(ev, state));
                 break;
+            case WhirlwindSpinEvent ev:
+                ViolentWhirlwind.ProcessEvent(ev, state);
+                break;
             default:
                 break;
         }
