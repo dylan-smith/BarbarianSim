@@ -76,6 +76,16 @@ public abstract class BaseStatCalculator
         return _instances[typeof(T)].InstanceCalculate(state, damageType, enemy, skillType);
     }
 
+    protected static double Calculate<T>(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource) where T : BaseStatCalculator
+    {
+        if (!_instances.ContainsKey(typeof(T)))
+        {
+            _instances.Add(typeof(T), Activator.CreateInstance<T>());
+        }
+
+        return _instances[typeof(T)].InstanceCalculate(state, damageType, enemy, skillType, damageSource);
+    }
+
     public static void InjectMock(Type type, BaseStatCalculator mock)
     {
         if (_instances.ContainsKey(type))
@@ -103,4 +113,6 @@ public abstract class BaseStatCalculator
     protected virtual double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy) => 0.0;
 
     protected virtual double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType) => 0.0;
+
+    protected virtual double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource) => 0.0;
 }

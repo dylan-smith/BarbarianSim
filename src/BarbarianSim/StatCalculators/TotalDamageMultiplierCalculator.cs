@@ -7,9 +7,10 @@ namespace BarbarianSim.StatCalculators;
 
 public class TotalDamageMultiplierCalculator : BaseStatCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType) => Calculate<TotalDamageMultiplierCalculator>(state, damageType, enemy, skillType);
+    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
+        => Calculate<TotalDamageMultiplierCalculator>(state, damageType, enemy, skillType, damageSource);
 
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType)
+    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
         var damageBonus = AdditiveDamageBonusCalculator.Calculate(state, damageType, enemy);
         damageBonus *= VulnerableDamageBonusCalculator.Calculate(state, enemy);
@@ -27,6 +28,11 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
             {
                 damageBonus *= 2;
             }
+        }
+
+        if (damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind))
+        {
+            damageBonus *= 1.3;
         }
 
         damageBonus *= WrathOfTheBerserker.GetBerserkDamageBonus(state);

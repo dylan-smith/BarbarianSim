@@ -25,7 +25,7 @@ public class LungingStrikeEvent : EventInfo
 
         var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, target, SkillType.Basic);
+        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, target, SkillType.Basic, DamageSource.LungingStrike);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) && target.IsHealthy())
         {

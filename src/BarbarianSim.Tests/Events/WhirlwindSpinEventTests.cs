@@ -419,23 +419,6 @@ public sealed class WhirlwindSpinEventTests : IDisposable
     }
 
     [Fact]
-    public void When_ViolentWhirlwind_Active_Damage_Increased_By_30_Percent()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.Whirlwind] = 1, [Skill.ViolentWhirlwind] = 1, },
-        });
-        state.Player.Auras.Add(Aura.ViolentWhirlwind);
-        Whirlwind.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
-
-        var whirlwindStartedEvent = new WhirlwindSpinEvent(123.0);
-
-        whirlwindStartedEvent.ProcessEvent(state);
-
-        whirlwindStartedEvent.DamageEvents.First().Damage.Should().Be(221); // 1000 [WeaponDmg] * 0.17 [SkillModifier] * 1.3 [ViolentWhirlwind]
-    }
-
-    [Fact]
     public void LuckyHit_20_Percent_Chance()
     {
         var state = new SimulationState(new SimulationConfig

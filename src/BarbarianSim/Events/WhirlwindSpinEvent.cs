@@ -29,7 +29,6 @@ public class WhirlwindSpinEvent : EventInfo
 
         var weaponDamage = (Whirlwind.Weapon.MinDamage + Whirlwind.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
-        var violentWhirlwindMultiplier = state.Player.Auras.Contains(Aura.ViolentWhirlwind) ? 1.3 : 1.0;
 
         if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
         {
@@ -41,9 +40,9 @@ public class WhirlwindSpinEvent : EventInfo
 
         foreach (var enemy in state.Enemies)
         {
-            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy, SkillType.Core);
+            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy, SkillType.Core, DamageSource.Whirlwind);
 
-            var damage = weaponDamage * skillMultiplier * damageMultiplier * violentWhirlwindMultiplier;
+            var damage = weaponDamage * skillMultiplier * damageMultiplier;
 
             var damageType = DamageType.Direct;
             var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
