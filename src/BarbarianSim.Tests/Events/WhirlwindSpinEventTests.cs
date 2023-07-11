@@ -8,7 +8,7 @@ using Xunit;
 
 namespace BarbarianSim.Tests.Events;
 
-public sealed class WhirlwindStartedEventTests : IDisposable
+public sealed class WhirlwindSpinEventTests : IDisposable
 {
     public void Dispose()
     {
@@ -18,7 +18,7 @@ public sealed class WhirlwindStartedEventTests : IDisposable
 
     private readonly FakeRandomGenerator _fakeRandomGenerator = new();
 
-    public WhirlwindStartedEventTests()
+    public WhirlwindSpinEventTests()
     {
         BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0, DamageType.Physical, SkillType.Core));
         BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0, DamageType.Physical));

@@ -109,7 +109,7 @@ public sealed class WhirlwindTests : IDisposable
     }
 
     [Fact]
-    public void Use_Adds_WhirlwindStartedEvent_To_Events()
+    public void Use_Adds_WhirlwindSpinEvent_To_Events()
     {
         var state = new SimulationState(new SimulationConfig())
         {

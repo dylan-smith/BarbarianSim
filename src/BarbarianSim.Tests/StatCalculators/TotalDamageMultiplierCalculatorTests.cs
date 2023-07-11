@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Aspects;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
@@ -129,7 +130,20 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
     }
 
     [Fact]
-    public void Multiplies_All_Bonuses_Together()
+    public void Includes_EdgemastersAspect_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        MaxFuryCalculator.InjectMock(typeof(MaxFuryCalculator), new FakeStatCalculator(100));
+        state.Player.Fury = 80;
+        state.Config.Gear.Chest.Aspect = new EdgemastersAspect(20);
+
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Core);
+
+        result.Should().BeApproximately(1.16, 0.0000001);
+    }
+
+    [Fact]
+    public void Multiplies_Bonuses_Together()
     {
         var state = new SimulationState(new SimulationConfig());
 

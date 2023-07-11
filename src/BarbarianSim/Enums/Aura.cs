@@ -35,4 +35,5 @@ public enum Aura
     GutteralYell,
     WrathOfTheBerserker,
     WrathOfTheBerserkerCooldown,
+    Ghostwalker,
 }

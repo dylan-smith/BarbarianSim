@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Aspects;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
@@ -16,7 +17,7 @@ public class MovementSpeedCalculatorTests
 
         var result = MovementSpeedCalculator.Calculate(state);
 
-        result.Should().Be(12.0);
+        result.Should().Be(1.12);
     }
 
     [Fact]
@@ -28,7 +29,7 @@ public class MovementSpeedCalculatorTests
 
         var result = MovementSpeedCalculator.Calculate(state);
 
-        result.Should().Be(27.0);
+        result.Should().Be(1.27);
     }
 
     [Fact]
@@ -40,7 +41,7 @@ public class MovementSpeedCalculatorTests
 
         var result = MovementSpeedCalculator.Calculate(state);
 
-        result.Should().Be(42);
+        result.Should().Be(1.42);
     }
 
     [Fact]
@@ -53,7 +54,7 @@ public class MovementSpeedCalculatorTests
 
         var result = MovementSpeedCalculator.Calculate(state);
 
-        result.Should().Be(32);
+        result.Should().Be(1.32);
     }
 
     [Fact]
@@ -65,7 +66,7 @@ public class MovementSpeedCalculatorTests
 
         var result = MovementSpeedCalculator.Calculate(state);
 
-        result.Should().Be(12);
+        result.Should().Be(1.12);
     }
 
     [Fact]
@@ -77,6 +78,19 @@ public class MovementSpeedCalculatorTests
 
         var result = MovementSpeedCalculator.Calculate(state);
 
-        result.Should().Be(12);
+        result.Should().Be(1.12);
+    }
+
+    [Fact]
+    public void Bonus_From_Ghostwalker()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Gear.Helm.MovementSpeed = 12.0;
+        state.Config.Gear.Helm.Aspect = new GhostwalkerAspect(20);
+        state.Player.Auras.Add(Aura.Ghostwalker);
+
+        var result = MovementSpeedCalculator.Calculate(state);
+
+        result.Should().Be(1.32);
     }
 }
