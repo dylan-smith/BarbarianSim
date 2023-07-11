@@ -51,15 +51,6 @@ public class WhirlwindSpinEvent : EventInfo
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
 
-            if (state.Config.Skills.ContainsKey(Skill.EnhancedWhirlwind))
-            {
-                var furyGenerated = state.Config.EnemySettings.IsElite ? 4 : 1;
-
-                var furyGeneratedEvent = new FuryGeneratedEvent(Timestamp, furyGenerated);
-                FuryGeneratedEvents.Add(furyGeneratedEvent);
-                state.Events.Add(furyGeneratedEvent);
-            }
-
             if (state.Config.Skills.ContainsKey(Skill.FuriousWhirlwind) && Whirlwind.Weapon == state.Config.Gear.TwoHandSlashing)
             {
                 var bleedAppliedEvent = new BleedAppliedEvent(Timestamp, weaponDamage * damageMultiplier * 0.4, 5, enemy);

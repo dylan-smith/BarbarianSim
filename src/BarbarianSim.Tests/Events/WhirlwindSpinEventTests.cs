@@ -281,49 +281,7 @@ public sealed class WhirlwindSpinEventTests : IDisposable
         whirlwindStartedEvent.DamageEvents[1].DamageType.Should().Be(DamageType.DirectCrit);
     }
 
-    [Fact]
-    public void EnhancedWhirlwind_Generates_1_Fury_For_Non_Elites()
-    {
-        var config = new SimulationConfig()
-        {
-            Skills = { [Skill.Whirlwind] = 1, [Skill.EnhancedWhirlwind] = 1, },
-        };
-        config.EnemySettings.NumberOfEnemies = 2;
-        var state = new SimulationState(config);
-        Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
-
-        var whirlwindStartedEvent = new WhirlwindSpinEvent(123.0);
-
-        whirlwindStartedEvent.ProcessEvent(state);
-
-        state.Events.Should().Contain(whirlwindStartedEvent.FuryGeneratedEvents[0]);
-        state.Events.Should().Contain(whirlwindStartedEvent.FuryGeneratedEvents[1]);
-        state.Events.Count(e => e is FuryGeneratedEvent).Should().Be(2);
-        whirlwindStartedEvent.FuryGeneratedEvents[0].BaseFury.Should().Be(1);
-        whirlwindStartedEvent.FuryGeneratedEvents[1].BaseFury.Should().Be(1);
-        whirlwindStartedEvent.FuryGeneratedEvents[0].Timestamp.Should().Be(123);
-        whirlwindStartedEvent.FuryGeneratedEvents[1].Timestamp.Should().Be(123);
-    }
-
-    [Fact]
-    public void EnhancedWhirlwind_Generates_4_Fury_For_Elites()
-    {
-        var config = new SimulationConfig()
-        {
-            Skills = { [Skill.Whirlwind] = 1, [Skill.EnhancedWhirlwind] = 1, },
-        };
-        config.EnemySettings.NumberOfEnemies = 2;
-        config.EnemySettings.IsElite = true;
-        var state = new SimulationState(config);
-        Whirlwind.Weapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 };
-
-        var whirlwindStartedEvent = new WhirlwindSpinEvent(123.0);
-
-        whirlwindStartedEvent.ProcessEvent(state);
-
-        whirlwindStartedEvent.FuryGeneratedEvents[0].BaseFury.Should().Be(4);
-        whirlwindStartedEvent.FuryGeneratedEvents[1].BaseFury.Should().Be(4);
-    }
+    
 
     [Fact]
     public void FuriousWhirlwind_Applies_Bleeds()
