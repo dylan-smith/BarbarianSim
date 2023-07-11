@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Abilities;
+using BarbarianSim.Aspects;
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 
@@ -29,6 +30,12 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
         }
 
         damageBonus *= WrathOfTheBerserker.GetBerserkDamageBonus(state);
+
+        var edgemasters = state.Config.Gear.GetAspect<EdgemastersAspect>();
+        if (edgemasters != null)
+        {
+            damageBonus *= edgemasters.GetDamageBonus(state, skillType);
+        }
 
         return damageBonus;
     }

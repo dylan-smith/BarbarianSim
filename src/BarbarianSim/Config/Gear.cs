@@ -38,6 +38,8 @@ public class Gear
 
     public IEnumerable<T> GetAllAspects<T>() => AllGear.Select(g => g.Aspect).OfType<T>().Where(a => a != null);
 
+    public T GetAspect<T>() => GetAllAspects<T>().FirstOrDefault();
+
     public double GetStatTotal(Func<GearItem, double> stat) => AllGear.Sum(g => g.GetStatWithGems(stat));
 
     public double GetStatTotalMultiplied(Func<GearItem, double> stat) => AllGear.Multiply(g => g.GetStatWithGemsMultiplied(stat));
