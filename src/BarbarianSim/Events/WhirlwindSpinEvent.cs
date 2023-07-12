@@ -13,11 +13,11 @@ public class WhirlwindSpinEvent : EventInfo
     public AuraAppliedEvent WhirlwindingAuraAppliedEvent { get; set; }
     public IList<DamageEvent> DamageEvents { get; init; } = new List<DamageEvent>();
     public IList<FuryGeneratedEvent> FuryGeneratedEvents { get; init; } = new List<FuryGeneratedEvent>();
-    public IList<BleedAppliedEvent> BleedAppliedEvents { get; init; } = new List<BleedAppliedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
     public IList<LuckyHitEvent> LuckyHitEvents { get; init; } = new List<LuckyHitEvent>();
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
+    public double BaseDamage { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
@@ -29,6 +29,7 @@ public class WhirlwindSpinEvent : EventInfo
 
         var weaponDamage = (Whirlwind.Weapon.MinDamage + Whirlwind.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
+        BaseDamage = weaponDamage * skillMultiplier;
 
         var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
 
@@ -36,7 +37,7 @@ public class WhirlwindSpinEvent : EventInfo
         {
             var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy, SkillType.Core, DamageSource.Whirlwind);
 
-            var damage = weaponDamage * skillMultiplier * damageMultiplier;
+            var damage = BaseDamage * damageMultiplier;
 
             var damageType = DamageType.Direct;
             var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
@@ -50,13 +51,6 @@ public class WhirlwindSpinEvent : EventInfo
             var damageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, SkillType.Core, enemy);
             DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
-
-            if (state.Config.Skills.ContainsKey(Skill.FuriousWhirlwind) && Whirlwind.Weapon == state.Config.Gear.TwoHandSlashing)
-            {
-                var bleedAppliedEvent = new BleedAppliedEvent(Timestamp, weaponDamage * damageMultiplier * 0.4, 5, enemy);
-                BleedAppliedEvents.Add(bleedAppliedEvent);
-                state.Events.Add(bleedAppliedEvent);
-            }
 
             var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
 
