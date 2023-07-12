@@ -11,7 +11,6 @@ public class LungingStrikeEvent : EventInfo
 
     public DamageEvent DamageEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
-    public HealingEvent HealingEvent { get; set; }
     public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
     public BleedAppliedEvent BleedAppliedEvent { get; set; }
     public LuckyHitEvent LuckyHitEvent { get; set; }
@@ -26,13 +25,6 @@ public class LungingStrikeEvent : EventInfo
         var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
         var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, target, SkillType.Basic, DamageSource.LungingStrike);
-
-        if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) && target.IsHealthy())
-        {
-            damageMultiplier *= 1.3;
-            HealingEvent = new HealingEvent(Timestamp, MaxLifeCalculator.Calculate(state) * 0.02);
-            state.Events.Add(HealingEvent);
-        }
 
         var damage = weaponDamage * skillMultiplier * damageMultiplier;
         var damageType = DamageType.Direct;

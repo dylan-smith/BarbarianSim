@@ -35,6 +35,13 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
             damageBonus *= ViolentWhirlwind.DAMAGE_MULTIPLIER;
         }
 
+        if (damageSource == DamageSource.LungingStrike && 
+            state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) &&
+            enemy.IsHealthy())
+        {
+            damageBonus *= EnhancedLungingStrike.DAMAGE_MULTIPLIER;
+        }
+
         damageBonus *= WrathOfTheBerserker.GetBerserkDamageBonus(state);
 
         var edgemasters = state.Config.Gear.GetAspect<EdgemastersAspect>();

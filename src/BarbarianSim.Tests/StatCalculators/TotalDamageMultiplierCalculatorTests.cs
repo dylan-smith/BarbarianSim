@@ -153,6 +153,30 @@ public sealed class TotalDamageMultiplierCalculatorTests : IDisposable
     }
 
     [Fact]
+    public void Includes_EnhancedLungingStrike_Bonus()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        state.Enemies.First().MaxLife = 1000;
+        state.Enemies.First().Life = 1000;
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+
+        result.Should().Be(1.3);
+    }
+
+    [Fact]
+    public void EnhancedLungingStrike_Bonus_Only_Applies_When_Enemy_Healthy()
+    {
+        var state = new SimulationState(new SimulationConfig());
+        state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        state.Enemies.First().MaxLife = 1000;
+        state.Enemies.First().Life = 500;
+        var result = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+
+        result.Should().Be(1.0);
+    }
+
+    [Fact]
     public void Multiplies_Bonuses_Together()
     {
         var state = new SimulationState(new SimulationConfig());
