@@ -20,9 +20,9 @@ public sealed class EnhancedLungingStrikeTests : IDisposable
         state.Enemies.First().Life = 1000;
         state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
         BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
-        var damageEvent = new DamageEvent(123, 1200, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
 
-        EnhancedLungingStrike.ProcessEvent(damageEvent, state);
+        EnhancedLungingStrike.ProcessEvent(lungingStrikeEvent, state);
 
         state.Events.Should().ContainSingle(e => e is HealingEvent);
         state.Events.OfType<HealingEvent>().First().BaseAmountHealed.Should().Be(20);
@@ -37,9 +37,9 @@ public sealed class EnhancedLungingStrikeTests : IDisposable
         state.Enemies.First().Life = 600;
         state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
         BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
-        var damageEvent = new DamageEvent(123, 1200, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
 
-        EnhancedLungingStrike.ProcessEvent(damageEvent, state);
+        EnhancedLungingStrike.ProcessEvent(lungingStrikeEvent, state);
 
         state.Events.Should().NotContain(e => e is HealingEvent);
     }

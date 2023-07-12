@@ -19,7 +19,6 @@ public static class EventPublisher
                 RallyingCry.ProcessEvent(ev, state);
                 WrathOfTheBerserker.ProcessEvent(ev, state);
                 EnhancedWhirlwind.ProcessEvent(ev, state);
-                EnhancedLungingStrike.ProcessEvent(ev, state);
                 break;
             case WhirlwindStoppedEvent ev:
                 state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));
@@ -48,6 +47,9 @@ public static class EventPublisher
                 break;
             case WhirlwindSpinEvent ev:
                 ViolentWhirlwind.ProcessEvent(ev, state);
+                break;
+            case LungingStrikeEvent ev:
+                EnhancedLungingStrike.ProcessEvent(ev, state);
                 break;
             default:
                 break;
