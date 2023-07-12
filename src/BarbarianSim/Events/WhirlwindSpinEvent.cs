@@ -11,11 +11,11 @@ public class WhirlwindSpinEvent : EventInfo
     { }
 
     public AuraAppliedEvent WhirlwindingAuraAppliedEvent { get; set; }
-    public IList<DamageEvent> DamageEvents { get; init; } = new List<DamageEvent>();
+    public IList<DirectDamageEvent> DirectDamageEvents { get; init; } = new List<DirectDamageEvent>();
     public IList<FuryGeneratedEvent> FuryGeneratedEvents { get; init; } = new List<FuryGeneratedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
-    public IList<LuckyHitEvent> LuckyHitEvents { get; init; } = new List<LuckyHitEvent>();
+
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
     public double BaseDamage { get; set; }
 
@@ -31,35 +31,11 @@ public class WhirlwindSpinEvent : EventInfo
         var skillMultiplier = Whirlwind.GetSkillMultiplier(state);
         BaseDamage = weaponDamage * skillMultiplier;
 
-        var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
-
         foreach (var enemy in state.Enemies)
         {
-            var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, enemy, SkillType.Core, DamageSource.Whirlwind);
-
-            var damage = BaseDamage * damageMultiplier;
-
-            var damageType = DamageType.Direct;
-            var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
-
-            if (critRoll <= critChance)
-            {
-                damage *= CritDamageCalculator.Calculate(state, Whirlwind.Weapon.Expertise);
-                damageType = DamageType.DirectCrit;
-            }
-
-            var damageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, SkillType.Core, enemy);
-            DamageEvents.Add(damageEvent);
-            state.Events.Add(damageEvent);
-
-            var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
-
-            if (luckyRoll <= (Whirlwind.LUCKY_HIT_CHANCE + LuckyHitChanceCalculator.Calculate(state)))
-            {
-                var luckyHitEvent = new LuckyHitEvent(Timestamp, SkillType.Core, enemy);
-                LuckyHitEvents.Add(luckyHitEvent);
-                state.Events.Add(luckyHitEvent);
-            }
+            var directDamageEvent = new DirectDamageEvent(Timestamp, BaseDamage, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, Whirlwind.LUCKY_HIT_CHANCE, Whirlwind.Weapon.Expertise, enemy);
+            DirectDamageEvents.Add(directDamageEvent);
+            state.Events.Add(directDamageEvent);
         }
 
         var weaponSpeed = 1 / Whirlwind.Weapon.AttacksPerSecond;
