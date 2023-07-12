@@ -44,7 +44,7 @@ public class FuriousWhirlwindTests
         state.Config.Skills.Add(Skill.FuriousWhirlwind, 1);
 
         FuriousWhirlwind.ProcessEvent(whirlwindSpinEvent, state);
-        
+
         state.Events.OfType<BleedAppliedEvent>().Should().HaveCount(3);
         state.Events.OfType<BleedAppliedEvent>().First().Target.Should().Be(state.Enemies.First());
         state.Events.OfType<BleedAppliedEvent>().Last().Target.Should().Be(state.Enemies.Last());
