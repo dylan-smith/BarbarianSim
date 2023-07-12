@@ -39,4 +39,6 @@ public class AuraAppliedEvent : EventInfo
             state.Events.Add(AuraExpiredEvent);
         }
     }
+
+    public override string ToString() => $"[{Timestamp:F1}] {Aura} Aura Applied";
 }

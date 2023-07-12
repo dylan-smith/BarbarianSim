@@ -33,4 +33,6 @@ public class AuraExpiredEvent : EventInfo
             }
         }
     }
+
+    public override string ToString() => $"[{Timestamp:F1}] {Aura} Aura Expired";
 }
