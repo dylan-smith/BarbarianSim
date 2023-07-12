@@ -6,9 +6,12 @@ namespace BarbarianSim.Events;
 
 public class LungingStrikeEvent : EventInfo
 {
-    public LungingStrikeEvent(double timestamp) : base(timestamp)
-    { }
+    public LungingStrikeEvent(double timestamp, EnemyState target) : base(timestamp)
+    {
+        Target = target;
+    }
 
+    public EnemyState Target { get; init; }
     public DamageEvent DamageEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
@@ -20,11 +23,9 @@ public class LungingStrikeEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        var target = state.Enemies.First();
-
         var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, target, SkillType.Basic, DamageSource.LungingStrike);
+        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, Target, SkillType.Basic, DamageSource.LungingStrike);
 
         var damage = weaponDamage * skillMultiplier * damageMultiplier;
         var damageType = DamageType.Direct;
@@ -32,7 +33,7 @@ public class LungingStrikeEvent : EventInfo
         if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
         {
             var bleedDamage = damage * 0.2;
-            BleedAppliedEvent = new BleedAppliedEvent(Timestamp, bleedDamage, 5.0, target);
+            BleedAppliedEvent = new BleedAppliedEvent(Timestamp, bleedDamage, 5.0, Target);
             state.Events.Add(BleedAppliedEvent);
         }
 
@@ -51,7 +52,7 @@ public class LungingStrikeEvent : EventInfo
             }
         }
 
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, SkillType.Basic, target);
+        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, SkillType.Basic, Target);
         state.Events.Add(DamageEvent);
 
         FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, FURY_GENERATED);
@@ -66,7 +67,7 @@ public class LungingStrikeEvent : EventInfo
 
         if (luckyRoll <= (LungingStrike.LUCKY_HIT_CHANCE + LuckyHitChanceCalculator.Calculate(state)))
         {
-            LuckyHitEvent = new LuckyHitEvent(Timestamp, SkillType.Basic, target);
+            LuckyHitEvent = new LuckyHitEvent(Timestamp, SkillType.Basic, Target);
             state.Events.Add(LuckyHitEvent);
         }
     }

@@ -34,7 +34,7 @@ public sealed class LungingStrikeTests
             CurrentTime = 123
         };
 
-        LungingStrike.Use(state);
+        LungingStrike.Use(state, state.Enemies.First());
 
         state.Events.Count.Should().Be(1);
         state.Events[0].Should().BeOfType<LungingStrikeEvent>();

@@ -11,7 +11,7 @@ public static class LungingStrike
     // Lunge forward and strike an enemy for 33% damage
     public static bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WeaponCooldown);
 
-    public static void Use(SimulationState state) => state.Events.Add(new LungingStrikeEvent(state.CurrentTime));
+    public static void Use(SimulationState state, EnemyState target) => state.Events.Add(new LungingStrikeEvent(state.CurrentTime, target));
 
     public static GearItem Weapon { get; set; }
 

@@ -50,7 +50,7 @@ public class SpinToWin : IRotation
             {
                 if (LungingStrike.CanUse(state))
                 {
-                    LungingStrike.Use(state);
+                    LungingStrike.Use(state, state.Enemies.First());
                 }
             }
         }
