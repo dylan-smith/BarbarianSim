@@ -46,9 +46,9 @@ public class WrathOfTheBerserkerTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, 0, Expertise.Polearm, state.Enemies.First());
 
-        WrathOfTheBerserker.ProcessEvent(damageEvent, state);
+        WrathOfTheBerserker.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
         state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
@@ -60,9 +60,9 @@ public class WrathOfTheBerserkerTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, 0, Expertise.Polearm, state.Enemies.First());
 
-        WrathOfTheBerserker.ProcessEvent(damageEvent, state);
+        WrathOfTheBerserker.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }
@@ -73,22 +73,9 @@ public class WrathOfTheBerserkerTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Core, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
 
-        WrathOfTheBerserker.ProcessEvent(damageEvent, state);
-
-        state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
-    }
-
-    [Fact]
-    public void Does_Not_Berserk_If_Bleeding_Damage()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
-        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, state.Enemies.First());
-
-        WrathOfTheBerserker.ProcessEvent(damageEvent, state);
+        WrathOfTheBerserker.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }
@@ -98,9 +85,9 @@ public class WrathOfTheBerserkerTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, 0, Expertise.Polearm, state.Enemies.First());
 
-        WrathOfTheBerserker.ProcessEvent(damageEvent, state);
+        WrathOfTheBerserker.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().NotContain(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
     }

@@ -15,11 +15,13 @@ public static class EventPublisher
         {
             case DamageEvent ev:
                 state.Config.Gear.GetAllAspects<AspectOfTheProtector>().ForEach(a => a.ProcessEvent(ev, state));
+                EnhancedWhirlwind.ProcessEvent(ev, state);
+                CombatLungingStrike.ProcessEvent(ev, state);
+                break;
+            case DirectDamageEvent ev:
                 state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));
                 RallyingCry.ProcessEvent(ev, state);
                 WrathOfTheBerserker.ProcessEvent(ev, state);
-                EnhancedWhirlwind.ProcessEvent(ev, state);
-                CombatLungingStrike.ProcessEvent(ev, state);
                 break;
             case WhirlwindStoppedEvent ev:
                 state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));

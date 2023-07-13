@@ -7,6 +7,7 @@ namespace BarbarianSim.Abilities;
 public static class LungingStrike
 {
     public const double LUCKY_HIT_CHANCE = 0.5;
+    public const double FURY_GENERATED = 10;
 
     // Lunge forward and strike an enemy for 33% damage
     public static bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WeaponCooldown);

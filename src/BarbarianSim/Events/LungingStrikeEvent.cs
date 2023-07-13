@@ -6,57 +6,29 @@ namespace BarbarianSim.Events;
 
 public class LungingStrikeEvent : EventInfo
 {
-    public LungingStrikeEvent(double timestamp, EnemyState target) : base(timestamp)
-    {
-        Target = target;
-    }
+    public LungingStrikeEvent(double timestamp, EnemyState target) : base(timestamp) => Target = target;
 
     public EnemyState Target { get; init; }
-    public DamageEvent DamageEvent { get; set; }
+    public DirectDamageEvent DirectDamageEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
-    public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
-    public BleedAppliedEvent BleedAppliedEvent { get; set; }
-    public LuckyHitEvent LuckyHitEvent { get; set; }
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
-
-    private const double FURY_GENERATED = 10.0;
+    public double BaseDamage { get; set; }
 
     public override void ProcessEvent(SimulationState state)
     {
-        var damageType = DamageType.Physical | DamageType.Direct;
+        FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, LungingStrike.FURY_GENERATED);
+        state.Events.Add(FuryGeneratedEvent);
 
         var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, damageType, Target, SkillType.Basic, DamageSource.LungingStrike);
+        BaseDamage = weaponDamage * skillMultiplier;
 
-        var damage = weaponDamage * skillMultiplier * damageMultiplier;
-
-        var critChance = CritChanceCalculator.Calculate(state, damageType);
-        var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
-
-        if (critRoll <= critChance)
-        {
-            damage *= CritDamageCalculator.Calculate(state, LungingStrike.Weapon.Expertise);
-            damageType |= DamageType.CriticalStrike;
-        }
-
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, SkillType.Basic, Target);
-        state.Events.Add(DamageEvent);
-
-        FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, FURY_GENERATED);
-        state.Events.Add(FuryGeneratedEvent);
+        DirectDamageEvent = new DirectDamageEvent(Timestamp, BaseDamage, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, LungingStrike.LUCKY_HIT_CHANCE, LungingStrike.Weapon.Expertise, Target);
+        state.Events.Add(DirectDamageEvent);
 
         var weaponSpeed = 1 / LungingStrike.Weapon.AttacksPerSecond;
         weaponSpeed *= AttackSpeedCalculator.Calculate(state);
         WeaponCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, weaponSpeed, Aura.WeaponCooldown);
         state.Events.Add(WeaponCooldownAuraAppliedEvent);
-
-        var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
-
-        if (luckyRoll <= (LungingStrike.LUCKY_HIT_CHANCE + LuckyHitChanceCalculator.Calculate(state)))
-        {
-            LuckyHitEvent = new LuckyHitEvent(Timestamp, SkillType.Basic, Target);
-            state.Events.Add(LuckyHitEvent);
-        }
     }
 }

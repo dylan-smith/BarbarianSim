@@ -31,24 +31,27 @@ public sealed class LungingStrikeEventTests : IDisposable
     }
 
     [Fact]
-    public void Adds_DamageEvent_To_Queue()
+    public void Creates_DirectDamageEvent()
     {
         var state = new SimulationState(new SimulationConfig
         {
             Skills = { [Skill.LungingStrike] = 1 },
         });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
+        LungingStrike.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 2000, AttacksPerSecond = 1, Expertise = Expertise.Polearm };
         var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        state.Events.Any(e => e is DamageEvent).Should().BeTrue();
-        var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        damageEvent.Timestamp.Should().Be(123);
-        damageEvent.DamageType.Should().Be(DamageType.Direct | DamageType.Physical);
-        damageEvent.DamageSource.Should().Be(DamageSource.LungingStrike);
-        damageEvent.SkillType.Should().Be(SkillType.Basic);
-        damageEvent.Damage.Should().Be(0.33); // 1 [WeaponDmg] * 0.33 [SkillModifier]
+        lungingStrikeEvent.DirectDamageEvent.Should().NotBeNull();
+        state.Events.Should().ContainSingle(e => e is DirectDamageEvent);
+        lungingStrikeEvent.DirectDamageEvent.Timestamp.Should().Be(123);
+        lungingStrikeEvent.DirectDamageEvent.BaseDamage.Should().Be(495); // 1500 [WeaponDmg] * 0.33 [SkillModifier]
+        lungingStrikeEvent.DirectDamageEvent.DamageType.Should().Be(DamageType.Physical);
+        lungingStrikeEvent.DirectDamageEvent.DamageSource.Should().Be(DamageSource.LungingStrike);
+        lungingStrikeEvent.DirectDamageEvent.SkillType.Should().Be(SkillType.Basic);
+        lungingStrikeEvent.DirectDamageEvent.LuckyHitChance.Should().Be(0.5);
+        lungingStrikeEvent.DirectDamageEvent.Expertise.Should().Be(Expertise.Polearm);
+        lungingStrikeEvent.DirectDamageEvent.Enemy.Should().Be(state.Enemies.First());
     }
 
     [Fact]
@@ -59,13 +62,11 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 300, MaxDamage = 500, AttacksPerSecond = 1 };
-
         var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        damageEvent.Damage.Should().Be(132); // 400 [WeaponDmg] * 0.33 [SkillModifier]
+        lungingStrikeEvent.DirectDamageEvent.BaseDamage.Should().Be(132); // 400 [WeaponDmg] * 0.33 [SkillModifier]
     }
 
     [Fact]
@@ -81,65 +82,7 @@ public sealed class LungingStrikeEventTests : IDisposable
 
         lungingStrikeEvent.ProcessEvent(state);
 
-        var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        damageEvent.Damage.Should().Be(0.42); // 1 [WeaponDmg] * 0.42 [SkillModifier]
-    }
-
-    [Fact]
-    public void Applies_TotalDamageMultiplier_To_Damage()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1 },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-
-        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(4.5, DamageType.Physical | DamageType.Direct, SkillType.Basic));
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        damageEvent.Damage.Should().Be(1.485); // 1 [WeaponDmg] * 4.5 [DmgMultiplier] * 0.33 [SkillModifier]
-    }
-
-    [Fact]
-    public void Critical_Strike_Applies_CritChance_Bonus()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1 },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7, DamageType.Physical | DamageType.Direct));
-        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.69);
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        state.Events.Any(e => e is DamageEvent).Should().BeTrue();
-        var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        damageEvent.Timestamp.Should().Be(123);
-        damageEvent.DamageType.Should().Be(DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike);
-        damageEvent.Damage.Should().Be(0.495); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 1.5 [Crit]
-    }
-
-    [Fact]
-    public void Critical_Strike_Applies_CritDamaage_Bonus()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1 },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
-        BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(3.5));
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
-        damageEvent.Damage.Should().Be(1.155); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 3.5 [Crit]
+        lungingStrikeEvent.DirectDamageEvent.BaseDamage.Should().Be(0.42); // 1 [WeaponDmg] * 0.42 [SkillModifier]
     }
 
     [Fact]
@@ -214,59 +157,5 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Events.Should().ContainSingle(e => e is FuryGeneratedEvent);
         lungingStrikeEvent.FuryGeneratedEvent.Timestamp.Should().Be(123);
         lungingStrikeEvent.FuryGeneratedEvent.BaseFury.Should().Be(10);
-    }
-
-    [Fact]
-    public void LuckyHit_50_Percent_Chance()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1, },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.49);
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        state.Events.Should().Contain(lungingStrikeEvent.LuckyHitEvent);
-        state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
-        lungingStrikeEvent.LuckyHitEvent.Timestamp.Should().Be(123);
-        lungingStrikeEvent.LuckyHitEvent.SkillType.Should().Be(SkillType.Basic);
-        lungingStrikeEvent.LuckyHitEvent.Target.Should().Be(state.Enemies.First());
-    }
-
-    [Fact]
-    public void LuckyHit_Includes_Increased_Chance_From_Gear()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1, },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1000, MaxDamage = 1000, AttacksPerSecond = 1 };
-        BaseStatCalculator.InjectMock(typeof(LuckyHitChanceCalculator), new FakeStatCalculator(20));
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-        _fakeRandomGenerator.FakeRoll(RollType.LuckyHit, 0.69);
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        state.Events.Should().ContainSingle(e => e is LuckyHitEvent);
-    }
-
-    [Fact]
-    public void Uses_Weapon_Expertise_For_CritDamageCalculator()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1 },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1, Expertise = Expertise.Polearm };
-        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
-        BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(3.5, Expertise.Polearm));
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        lungingStrikeEvent.DamageEvent.Damage.Should().Be(1.155); // 1 [Weapon Damage] * 0.33 [Skill Multiplier] * 3.5 [Crit Damage]
     }
 }

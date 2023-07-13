@@ -15,7 +15,6 @@ public class WhirlwindSpinEvent : EventInfo
     public IList<FuryGeneratedEvent> FuryGeneratedEvents { get; init; } = new List<FuryGeneratedEvent>();
     public FurySpentEvent FurySpentEvent { get; set; }
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
-
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
     public double BaseDamage { get; set; }
 

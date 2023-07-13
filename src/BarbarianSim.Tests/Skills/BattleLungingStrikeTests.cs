@@ -16,7 +16,7 @@ public class BattleLungingStrikeTests
         state.Config.Skills.Add(Skill.BattleLungingStrike, 1);
         var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First())
         {
-            DamageEvent = new DamageEvent(123, 1200, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First())
+            BaseDamage = 1200,
         };
 
         BattleLungingStrike.ProcessEvent(lungingStrikeEvent, state);
@@ -33,7 +33,7 @@ public class BattleLungingStrikeTests
         var state = new SimulationState(new SimulationConfig());
         var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First())
         {
-            DamageEvent = new DamageEvent(123, 1200, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First())
+            BaseDamage = 1200,
         };
 
         BattleLungingStrike.ProcessEvent(lungingStrikeEvent, state);

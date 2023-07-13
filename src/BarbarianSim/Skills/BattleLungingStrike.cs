@@ -13,7 +13,7 @@ public static class BattleLungingStrike
     {
         if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
         {
-            var bleedAppliedEvent = new BleedAppliedEvent(lungingStrikeEvent.Timestamp, lungingStrikeEvent.DamageEvent.Damage * BLEED_DAMAGE, BLEED_DURATION, lungingStrikeEvent.Target);
+            var bleedAppliedEvent = new BleedAppliedEvent(lungingStrikeEvent.Timestamp, lungingStrikeEvent.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, lungingStrikeEvent.Target);
             state.Events.Add(bleedAppliedEvent);
         }
     }

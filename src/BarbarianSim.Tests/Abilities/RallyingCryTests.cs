@@ -73,9 +73,9 @@ public class RallyingCryTests
         state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
 
-        RallyingCry.ProcessEvent(damageEvent, state);
+        RallyingCry.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
         state.Events.OfType<FortifyGeneratedEvent>().First().Timestamp.Should().Be(123);
@@ -88,23 +88,9 @@ public class RallyingCryTests
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.RallyingCry);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
 
-        RallyingCry.ProcessEvent(damageEvent, state);
-
-        state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
-    }
-
-    [Fact]
-    public void StrategicRallyingCry_Does_Not_Fortify_If_DamageOverTime()
-    {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
-        state.Player.Auras.Add(Aura.RallyingCry);
-        state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, state.Enemies.First());
-
-        RallyingCry.ProcessEvent(damageEvent, state);
+        RallyingCry.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
     }
@@ -115,9 +101,9 @@ public class RallyingCryTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         state.Player.BaseLife = 4000;
-        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
 
-        RallyingCry.ProcessEvent(damageEvent, state);
+        RallyingCry.ProcessEvent(directDamageEvent, state);
 
         state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
     }

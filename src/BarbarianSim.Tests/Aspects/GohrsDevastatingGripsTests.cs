@@ -10,27 +10,27 @@ namespace BarbarianSim.Tests.Aspects;
 public class GohrsDevastatingGripsTests
 {
     [Fact]
-    public void Increments_HitCount_Every_DamageEvent_From_Whirlwind()
+    public void Increments_HitCount_Every_DirectDamageEvent_From_Whirlwind()
     {
         var state = new SimulationState(new SimulationConfig());
         var aspect = new GohrsDevastatingGrips(20.0);
 
-        aspect.ProcessEvent(new DamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First()), state);
-        aspect.ProcessEvent(new DamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First()), state);
-        aspect.ProcessEvent(new DamageEvent(127.0, 300.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 0.0, Expertise.Polearm, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 0.0, Expertise.Polearm, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(127.0, 300.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 0.0, Expertise.Polearm, state.Enemies.First()), state);
 
         aspect.HitCount.Should().Be(2);
     }
 
     [Fact]
-    public void Tracks_TotalBaseDamage_Every_DamageEvent_From_Whirlwind()
+    public void Tracks_TotalBaseDamage_Every_DirectDamageEvent_From_Whirlwind()
     {
         var state = new SimulationState(new SimulationConfig());
         var aspect = new GohrsDevastatingGrips(20.0);
 
-        aspect.ProcessEvent(new DamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First()), state);
-        aspect.ProcessEvent(new DamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First()), state);
-        aspect.ProcessEvent(new DamageEvent(127.0, 300.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 0.0, Expertise.Polearm, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 0.0, Expertise.Polearm, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(127.0, 300.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 0.0, Expertise.Polearm, state.Enemies.First()), state);
 
         aspect.TotalBaseDamage.Should().Be(1500.0);
     }
@@ -44,8 +44,8 @@ public class GohrsDevastatingGripsTests
             HitCount = 99,
         };
 
-        aspect.ProcessEvent(new DamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First()), state);
-        aspect.ProcessEvent(new DamageEvent(127.0, 300.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(123.0, 1200.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 0.0, Expertise.Polearm, state.Enemies.First()), state);
+        aspect.ProcessEvent(new DirectDamageEvent(127.0, 300.0, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 0.0, Expertise.Polearm, state.Enemies.First()), state);
 
         aspect.TotalBaseDamage.Should().Be(1200.0);
     }

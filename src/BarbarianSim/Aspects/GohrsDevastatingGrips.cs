@@ -15,16 +15,16 @@ public class GohrsDevastatingGrips : Aspect
 
     public GohrsDevastatingGrips(double damagePercent) => DamagePercent = damagePercent;
 
-    public void ProcessEvent(DamageEvent damageEvent, SimulationState _)
+    public void ProcessEvent(DirectDamageEvent directDamageEvent, SimulationState _)
     {
-        if (damageEvent.DamageSource != DamageSource.Whirlwind)
+        if (directDamageEvent.DamageSource != DamageSource.Whirlwind)
         {
             return;
         }
 
         if (HitCount < MAX_HIT_COUNT)
         {
-            TotalBaseDamage += damageEvent.Damage;
+            TotalBaseDamage += directDamageEvent.BaseDamage;
             HitCount++;
         }
     }
