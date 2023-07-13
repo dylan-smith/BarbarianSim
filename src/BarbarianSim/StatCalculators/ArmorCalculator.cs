@@ -1,13 +1,15 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class ArmorCalculator : BaseStatCalculator
+public class ArmorCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<ArmorCalculator>(state);
+    public ArmorCalculator(StrengthCalculator strengthCalculator) => _strengthCalculator = strengthCalculator;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly StrengthCalculator _strengthCalculator;
+    
+    public double Calculate(SimulationState state)
     {
         var armor = state.Config.Gear.GetStatTotal(g => g.Armor);
-        armor += StrengthCalculator.Calculate(state);
+        armor += _strengthCalculator.Calculate(state);
 
         return armor;
     }

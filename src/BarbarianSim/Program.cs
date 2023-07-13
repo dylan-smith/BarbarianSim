@@ -2,8 +2,13 @@
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.Events;
 using BarbarianSim.Gems;
+using BarbarianSim.Rotations;
+using BarbarianSim.Skills;
+using BarbarianSim.StatCalculators;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BarbarianSim;
 
@@ -11,17 +16,125 @@ internal class Program
 {
     private static void Main()
     {
-        var config = CreateConfig();
+        var serviceCollection = new ServiceCollection();
 
-        RandomGenerator.Seed(123);
+        serviceCollection.AddSingleton<ChallengingShout>()
+                         .AddSingleton<IronSkin>()
+                         .AddSingleton<LungingStrike>()
+                         .AddSingleton<RallyingCry>()
+                         .AddSingleton<WarCry>()
+                         .AddSingleton<Whirlwind>()
+                         .AddSingleton<WrathOfTheBerserker>()
+                         .AddSingleton<AspectOfBerserkRippingFactory>()
+                         .AddSingleton<AspectOfEchoingFuryFactory>()
+                         .AddSingleton<AspectOfGraspingWhirlwindFactory>()
+                         .AddSingleton<AspectOfLimitlessRageFactory>()
+                         .AddSingleton<AspectOfNumbingWraithFactory>()
+                         .AddSingleton<AspectOfTheDireWhirlwindFactory>()
+                         .AddSingleton<AspectOfTheProtectorFactory>()
+                         .AddSingleton<BoldChieftainsAspectFactory>()
+                         .AddSingleton<ConceitedAspectFactory>()
+                         .AddSingleton<EdgemastersAspectFactory>()
+                         .AddSingleton<GhostwalkerAspectFactory>()
+                         .AddSingleton<GohrsDevastatingGripsFactory>()
+                         .AddSingleton<RageOfHarrogathFactory>()
+                         .AddSingleton<AspectOfEchoingFuryProcEventFactory>()
+                         .AddSingleton<AspectOfTheProtectorProcEventFactory>()
+                         .AddSingleton<AuraAppliedEventFactory>()
+                         .AddSingleton<AuraExpiredEventFactory>()
+                         .AddSingleton<BarrierAppliedEventFactory>()
+                         .AddSingleton<BarrierExpiredEventFactory>()
+                         .AddSingleton<BleedAppliedEventFactory>()
+                         .AddSingleton<BleedCompletedEventFactory>()
+                         .AddSingleton<ChallengingShoutEventFactory>()
+                         .AddSingleton<DamageEventFactory>()
+                         .AddSingleton<DirectDamageEventFactory>()
+                         .AddSingleton<FortifyGeneratedEventFactory>()
+                         .AddSingleton<FuryGeneratedEventFactory>()
+                         .AddSingleton<FurySpentEventFactory>()
+                         .AddSingleton<GohrsDevastatingGripsProcEventFactory>()
+                         .AddSingleton<GutteralYellProcEventFactory>()
+                         .AddSingleton<HealingEventFactory>()
+                         .AddSingleton<IronSkinEventFactory>()
+                         .AddSingleton<LuckyHitEventFactory>()
+                         .AddSingleton<LungingStrikeEventFactory>()
+                         .AddSingleton<RaidLeaderProcEventFactory>()
+                         .AddSingleton<RallyingCryEventFactory>()
+                         .AddSingleton<WarCryEventFactory>()
+                         .AddSingleton<WhirlwindRefreshEventFactory>()
+                         .AddSingleton<WhirlwindSpinEventFactory>()
+                         .AddSingleton<WhirlwindStoppedEventFactory>()
+                         .AddSingleton<WrathOfTheBerserkerEventFactory>()
+                         .AddSingleton<SpinToWin>()
+                         .AddSingleton<AggressiveResistance>()
+                         .AddSingleton<BattleLungingStrike>()
+                         .AddSingleton<BoomingVoice>()
+                         .AddSingleton<CombatLungingStrike>()
+                         .AddSingleton<EnhancedLungingStrike>()
+                         .AddSingleton<EnhancedWhirlwind>()
+                         .AddSingleton<FuriousWhirlwind>()
+                         .AddSingleton<GutteralYell>()
+                         .AddSingleton<Hamstring>()
+                         .AddSingleton<HeavyHanded>()
+                         .AddSingleton<InvigoratingFury>()
+                         .AddSingleton<PitFighter>()
+                         .AddSingleton<PressurePoint>()
+                         .AddSingleton<ProlificFury>()
+                         .AddSingleton<RaidLeader>()
+                         .AddSingleton<StrategicRallyingCry>()
+                         .AddSingleton<TemperedFury>()
+                         .AddSingleton<ViolentWhirlwind>()
+                         .AddSingleton<AdditiveDamageBonusCalculator>()
+                         .AddSingleton<ArmorCalculator>()
+                         .AddSingleton<AttackSpeedCalculator>()
+                         .AddSingleton<BerserkingDamageCalculator>()
+                         .AddSingleton<CritChanceCalculator>()
+                         .AddSingleton<CritChancePhysicalAgainstElitesCalculator>()
+                         .AddSingleton<CritDamageCalculator>()
+                         .AddSingleton<DamageReductionCalculator>()
+                         .AddSingleton<DamageReductionFromBleedingCalculator>()
+                         .AddSingleton<DamageReductionFromCloseCalculator>()
+                         .AddSingleton<DamageReductionWhileFortifiedCalculator>()
+                         .AddSingleton<DamageReductionWhileInjuredCalculator>()
+                         .AddSingleton<DamageToCloseCalculator>()
+                         .AddSingleton<DamageToCrowdControlledCalculator>()
+                         .AddSingleton<DamageToInjuredCalculator>()
+                         .AddSingleton<DamageToSlowedCalculator>()
+                         .AddSingleton<DexterityCalculator>()
+                         .AddSingleton<DodgeCalculator>()
+                         .AddSingleton<FuryCostReductionCalculator>()
+                         .AddSingleton<HealingReceivedCalculator>()
+                         .AddSingleton<IntelligenceCalculator>()
+                         .AddSingleton<LuckyHitChanceCalculator>()
+                         .AddSingleton<MaxFuryCalculator>()
+                         .AddSingleton<MaxLifeCalculator>()
+                         .AddSingleton<MovementSpeedCalculator>()
+                         .AddSingleton<OverpowerDamageCalculator>()
+                         .AddSingleton<PhysicalDamageCalculator>()
+                         .AddSingleton<ResistanceToAllCalculator>()
+                         .AddSingleton<ResourceGenerationCalculator>()
+                         .AddSingleton<StrengthCalculator>()
+                         .AddSingleton<ThornsCalculator>()
+                         .AddSingleton<TotalDamageMultiplierCalculator>()
+                         .AddSingleton<VulnerableDamageBonusCalculator>()
+                         .AddSingleton<WillpowerCalculator>();
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var config = CreateConfig(serviceProvider);
+        config.Rotation = serviceProvider.GetRequiredService<SpinToWin>();
+        serviceProvider.GetRequiredService<LungingStrike>().Weapon = config.Gear.TwoHandSlashing;
+        serviceProvider.GetRequiredService<Whirlwind>().Weapon = config.Gear.TwoHandSlashing;
+
+        serviceProvider.GetRequiredService<RandomGenerator>().Seed(123);
 
         var sim = new Simulation(config);
-        var state = sim.Run();
+        var state = sim.Run(serviceProvider);
 
         ReportResults(state);
     }
 
-    private static SimulationConfig CreateConfig()
+    private static SimulationConfig CreateConfig(ServiceProvider sp)
     {
         var config = new SimulationConfig();
 
@@ -74,7 +187,7 @@ internal class Program
         config.Gear.Helm.PoisonResistance = 45.2;
         config.Gear.Helm.TotalArmor = 6.8;
         config.Gear.Helm.MaxLife = 472;
-        config.Gear.Helm.Aspect = new AspectOfTheProtector(2000);
+        config.Gear.Helm.Aspect = sp.GetRequiredService<AspectOfTheProtectorFactory>().Create(2000);
         config.Gear.Helm.Gems.Add(new RoyalSapphire());
 
         config.Gear.Chest.Armor = 1195;
@@ -82,7 +195,7 @@ internal class Program
         config.Gear.Chest.CritChancePhysicalAgainstElites = 6.0;
         config.Gear.Chest.DamageReductionFromBleeding = 14.6;
         config.Gear.Chest.Thorns = 403;
-        config.Gear.Chest.Aspect = new RageOfHarrogath(26);
+        config.Gear.Chest.Aspect = sp.GetRequiredService<RageOfHarrogathFactory>().Create(26);
         config.Gear.Chest.Gems.Add(new RoyalSapphire());
         config.Gear.Chest.Gems.Add(new RoyalSapphire());
 
@@ -91,7 +204,7 @@ internal class Program
         config.Gear.Gloves.LuckyHitChance = 10.2;
         config.Gear.Gloves.NonPhysicalDamage = 18.0;
         config.Gear.Gloves.Whirlwind = 3;
-        config.Gear.Gloves.Aspect = new GohrsDevastatingGrips(24);
+        config.Gear.Gloves.Aspect = sp.GetRequiredService<GohrsDevastatingGripsFactory>().Create(24);
 
         config.Gear.Pants.Armor = 729;
         config.Gear.Pants.PotionSpeedWhileInjured = 45;
@@ -99,7 +212,7 @@ internal class Program
         config.Gear.Pants.Dodge = 7.4;
         config.Gear.Pants.DamageReductionFromClose = 23.0;
         config.Gear.Pants.DamageReductionWhileInjured = 39.5;
-        config.Gear.Pants.Aspect = new AspectOfNumbingWraith(12);
+        config.Gear.Pants.Aspect = sp.GetRequiredService<AspectOfNumbingWraithFactory>().Create(12);
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
 
@@ -109,7 +222,7 @@ internal class Program
         config.Gear.Boots.MovementSpeed = 15.8;
         config.Gear.Boots.DodgeAgainstDistant = 6.4;
         config.Gear.Boots.Dexterity = 51;
-        config.Gear.Boots.Aspect = new GhostwalkerAspect(10);
+        config.Gear.Boots.Aspect = sp.GetRequiredService<GhostwalkerAspectFactory>().Create(10);
 
         config.Gear.TwoHandBludgeoning.DPS = 2199;
         config.Gear.TwoHandBludgeoning.Expertise = Expertise.TwoHandedMace;
@@ -121,11 +234,7 @@ internal class Program
         config.Gear.TwoHandBludgeoning.CoreDamage = 58.5;
         config.Gear.TwoHandBludgeoning.Strength = 156;
         config.Gear.TwoHandBludgeoning.CritDamage = 57.0;
-        config.Gear.TwoHandBludgeoning.Aspect = new AspectOfLimitlessRage
-        {
-            Damage = 4,
-            MaxDamage = 60
-        };
+        config.Gear.TwoHandBludgeoning.Aspect = sp.GetRequiredService<AspectOfLimitlessRageFactory>().Create(4, 60);
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
 
@@ -139,7 +248,7 @@ internal class Program
         config.Gear.OneHandLeft.Strength = 77;
         config.Gear.OneHandLeft.DamageToInjured = 34.5;
         config.Gear.OneHandLeft.CoreDamage = 18.8;
-        config.Gear.OneHandLeft.Aspect = new ConceitedAspect(25);
+        config.Gear.OneHandLeft.Aspect = sp.GetRequiredService<ConceitedAspectFactory>().Create(25);
         config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald());
 
         config.Gear.OneHandRight.DPS = 650;
@@ -152,7 +261,7 @@ internal class Program
         config.Gear.OneHandRight.AllStats = 30;
         config.Gear.OneHandRight.DamageToSlowed = 22.5;
         config.Gear.OneHandRight.DamageToCrowdControlled = 13.5;
-        config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping(30);
+        config.Gear.OneHandRight.Aspect = sp.GetRequiredService<AspectOfBerserkRippingFactory>().Create(30);
         config.Gear.OneHandRight.Gems.Add(new RoyalEmerald());
 
         config.Gear.TwoHandSlashing.DPS = 2465;
@@ -165,11 +274,7 @@ internal class Program
         config.Gear.TwoHandSlashing.DamageToClose = 57.0;
         config.Gear.TwoHandSlashing.Strength = 174;
         config.Gear.TwoHandSlashing.DamageToInjured = 93.0;
-        config.Gear.TwoHandSlashing.Aspect = new AspectOfTheDireWhirlwind
-        {
-            CritChance = 14,
-            MaxCritChance = 42
-        };
+        config.Gear.TwoHandSlashing.Aspect = sp.GetRequiredService<AspectOfTheDireWhirlwindFactory>().Create(14, 42);
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
 
@@ -178,7 +283,7 @@ internal class Program
         config.Gear.Amulet.HealingReceived = 12.8;
         config.Gear.Amulet.DamageReductionFromClose = 12.5;
         config.Gear.Amulet.FuryCostReduction = 16.7;
-        config.Gear.Amulet.Aspect = new EdgemastersAspect(29);
+        config.Gear.Amulet.Aspect = sp.GetRequiredService<EdgemastersAspectFactory>().Create(29);
         config.Gear.Amulet.Gems.Add(new RoyalSkull());
 
         config.Gear.Ring1.LightningResistance = 35.0;
@@ -187,7 +292,7 @@ internal class Program
         config.Gear.Ring1.DamageToSlowed = 31.5;
         config.Gear.Ring1.CritChance = 6.9;
         config.Gear.Ring1.CritDamage = 23.3;
-        config.Gear.Ring1.Aspect = new BoldChieftainsAspect(1.9);
+        config.Gear.Ring1.Aspect = sp.GetRequiredService<BoldChieftainsAspectFactory>().Create(1.9);
         config.Gear.Ring1.Gems.Add(new RoyalSkull());
 
         config.Gear.Ring2.ColdResistance = 32.2;
@@ -196,11 +301,10 @@ internal class Program
         config.Gear.Ring2.CritChance = 6.0;
         config.Gear.Ring2.DamageToSlowed = 20.3;
         config.Gear.Ring2.CritDamage = 16.5;
-        config.Gear.Ring2.Aspect = new AspectOfEchoingFury(4);
+        config.Gear.Ring2.Aspect = sp.GetRequiredService<AspectOfEchoingFuryFactory>().Create(4);
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
 
-        LungingStrike.Weapon = config.Gear.TwoHandSlashing;
-        Whirlwind.Weapon = config.Gear.TwoHandSlashing;
+
 
         return config;
     }
@@ -342,14 +446,14 @@ internal class Program
         var totalUptime = 0.0;
         var totalPercentage = 0.0;
 
-        var vulnerableEvents = state.ProcessedEvents.Where(x => x is VulnerableAppliedEvent || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Vulnerable)).ToList();
+        var vulnerableEvents = state.ProcessedEvents.Where(x => (x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Berserking) || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Vulnerable)).ToList();
         var endOfFight = state.ProcessedEvents.Max(x => x.Timestamp);
 
         foreach (var enemy in state.Enemies)
         {
-            var count = vulnerableEvents.Where(x => x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy).Count();
+            var count = vulnerableEvents.Where(x => x is AuraAppliedEvent && (x as AuraAppliedEvent).Target == enemy).Count();
 
-            var enemyEvents = vulnerableEvents.Where(x => (x is VulnerableAppliedEvent appliedEvent && appliedEvent.Target == enemy) ||
+            var enemyEvents = vulnerableEvents.Where(x => (x is AuraAppliedEvent appliedEvent && appliedEvent.Target == enemy) ||
                                                            (x is AuraExpiredEvent expiredEvent && expiredEvent.Target == enemy));
 
             var timestamp = 0.0;
@@ -365,7 +469,7 @@ internal class Program
 
                 timestamp = e.Timestamp;
 
-                if (e is VulnerableAppliedEvent)
+                if (e is AuraAppliedEvent)
                 {
                     active = true;
                 }

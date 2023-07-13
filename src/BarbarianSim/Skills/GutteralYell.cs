@@ -1,29 +1,34 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public static class GutteralYell
+public class GutteralYell
 {
     // Your Shout skills cause enemies to deal 4% less damage for 5 seconds
     public const double DURATION = 5;
 
-    public static void ProcessEvent(WarCryEvent e, SimulationState state)
+    public GutteralYell(GutteralYellProcEventFactory gutteralYellProcEventFactory) => _gutteralYellProcEventFactory = gutteralYellProcEventFactory;
+
+    private readonly GutteralYellProcEventFactory _gutteralYellProcEventFactory;
+
+    public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
+        state.Events.Add(_gutteralYellProcEventFactory.Create(e.Timestamp));
     }
 
-    public static void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
+    public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
-        state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
+        state.Events.Add(_gutteralYellProcEventFactory.Create(e.Timestamp));
     }
 
-    public static void ProcessEvent(RallyingCryEvent e, SimulationState state)
+    public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
+        state.Events.Add(_gutteralYellProcEventFactory.Create(e.Timestamp));
     }
 
-    public static double GetDamageReduction(SimulationState state)
+    public double GetDamageReduction(SimulationState state)
     {
         var skillPoints = 0;
 

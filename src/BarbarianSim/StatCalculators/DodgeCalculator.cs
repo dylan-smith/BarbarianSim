@@ -1,13 +1,15 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class DodgeCalculator : BaseStatCalculator
+public class DodgeCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<DodgeCalculator>(state);
+    public DodgeCalculator(DexterityCalculator dexterityCalculator) => _dexterityCalculator = dexterityCalculator;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly DexterityCalculator _dexterityCalculator;
+
+    public double Calculate(SimulationState state)
     {
         var dodge = state.Config.Gear.GetStatTotal(g => g.Dodge);
-        dodge += DexterityCalculator.Calculate(state) * 0.01;
+        dodge += _dexterityCalculator.Calculate(state) * 0.01;
 
         return dodge / 100.0;
     }

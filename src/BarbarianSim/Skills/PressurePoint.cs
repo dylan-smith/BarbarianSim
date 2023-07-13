@@ -1,25 +1,35 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public static class PressurePoint
+public class PressurePoint
 {
     // Lucky Hit: Your Core skills have up to a 30% chance to make enemies Vulnerable for 2 seconds
-    public static void ProcessEvent(LuckyHitEvent e, SimulationState state)
+    public PressurePoint(RandomGenerator randomGenerator, PressurePointProcEventFactory pressurePointProcEventFactory)
+    {
+        _randomGenerator = randomGenerator;
+        _pressurePointProcEventFactory = pressurePointProcEventFactory;
+    }
+
+    private readonly RandomGenerator _randomGenerator;
+    private readonly PressurePointProcEventFactory _pressurePointProcEventFactory;
+
+    public void ProcessEvent(LuckyHitEvent e, SimulationState state)
     {
         if (e.SkillType == SkillType.Core)
         {
-            var roll = RandomGenerator.Roll(RollType.PressurePoint);
+            var roll = _randomGenerator.Roll(RollType.PressurePoint);
 
             if (roll <= GetProcPercentage(state))
             {
-                state.Events.Add(new PressurePointProcEvent(e.Timestamp, e.Target));
+                state.Events.Add(_pressurePointProcEventFactory.Create(e.Timestamp, e.Target));
             }
         }
     }
 
-    public static double GetProcPercentage(SimulationState state)
+    public double GetProcPercentage(SimulationState state)
     {
         if (state.Config.Skills.TryGetValue(Skill.PressurePoint, out var value))
         {

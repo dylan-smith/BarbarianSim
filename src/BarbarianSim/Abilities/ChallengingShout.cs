@@ -1,9 +1,10 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.Events;
 
 namespace BarbarianSim.Abilities;
 
-public static class ChallengingShout
+public class ChallengingShout
 {
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
@@ -11,12 +12,16 @@ public static class ChallengingShout
     public const double FURY_BONUS_FROM_TACTICAL = 3;
     public const double THORNS_BONUS_FROM_STRATEGIC = 0.3;
 
+    public ChallengingShout(ChallengingShoutEventFactory challengingShoutEventFactory) => _challengingShoutEventFactory = challengingShoutEventFactory;
+
+    private readonly ChallengingShoutEventFactory _challengingShoutEventFactory;
+
     // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)
-    public static bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
+    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
 
-    public static void Use(SimulationState state) => state.Events.Add(new ChallengingShoutEvent(state.CurrentTime));
+    public void Use(SimulationState state) => state.Events.Add(_challengingShoutEventFactory.Create(state.CurrentTime));
 
-    public static double GetDamageReduction(SimulationState state)
+    public double GetDamageReduction(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.ChallengingShout);
 

@@ -2,11 +2,11 @@
 
 namespace BarbarianSim.Skills;
 
-public static class TemperedFury
+public class TemperedFury
 {
     // Increase your Maximum Fury by 3
 
-    public static double GetMaximumFury(SimulationState state)
+    public double GetMaximumFury(SimulationState state)
     {
         var skillPoints = 0;
 

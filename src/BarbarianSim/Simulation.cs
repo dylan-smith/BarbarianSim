@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Events;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BarbarianSim;
 
@@ -9,7 +10,7 @@ public class Simulation
 
     public Simulation(SimulationConfig config) => State = new SimulationState(config);
 
-    public SimulationState Run()
+    public SimulationState Run(ServiceProvider sp)
     {
         if (!State.Validate())
         {
@@ -33,7 +34,7 @@ public class Simulation
                 State.Events.Remove(nextEvent);
                 nextEvent.ProcessEvent(State);
 
-                EventPublisher.PublishEvent(nextEvent, State);
+                EventPublisher.PublishEvent(nextEvent, State, sp);
 
                 nextEvent = GetNextEvent();
             }

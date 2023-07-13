@@ -1,21 +1,26 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 
 namespace BarbarianSim.Events;
 
 public class AuraAppliedEvent : EventInfo
 {
-    public AuraAppliedEvent(double timestamp, double duration, Aura aura) : base(timestamp)
+    public AuraAppliedEvent(AuraExpiredEventFactory auraExpiredEventFactory, double timestamp, double duration, Aura aura) : base(timestamp)
     {
+        _auraExpiredEventFactory = auraExpiredEventFactory;
         Duration = duration;
         Aura = aura;
     }
 
-    public AuraAppliedEvent(double timestamp, double duration, Aura aura, EnemyState target) : base(timestamp)
+    public AuraAppliedEvent(AuraExpiredEventFactory auraExpiredEventFactory, double timestamp, double duration, Aura aura, EnemyState target) : base(timestamp)
     {
+        _auraExpiredEventFactory = auraExpiredEventFactory;
         Duration = duration;
         Aura = aura;
         Target = target;
     }
+
+    private readonly AuraExpiredEventFactory _auraExpiredEventFactory;
 
     public double Duration { get; init; }
     public Aura Aura { get; init; }
@@ -35,7 +40,7 @@ public class AuraAppliedEvent : EventInfo
 
         if (Duration > 0)
         {
-            AuraExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Target, Aura);
+            AuraExpiredEvent = _auraExpiredEventFactory.Create(Timestamp + Duration, Target, Aura);
             state.Events.Add(AuraExpiredEvent);
         }
     }

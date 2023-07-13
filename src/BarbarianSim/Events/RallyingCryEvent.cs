@@ -1,14 +1,31 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.Skills;
 
 namespace BarbarianSim.Events;
 
 public class RallyingCryEvent : EventInfo
 {
-    public RallyingCryEvent(double timestamp) : base(timestamp)
+    public RallyingCryEvent(BoomingVoice boomingVoice,
+                            AuraAppliedEventFactory auraAppliedEventFactory,
+                            FuryGeneratedEventFactory furyGeneratedEventFactory,
+                            FortifyGeneratedEventFactory fortifyGeneratedEventFactory,
+                            RaidLeaderProcEventFactory raidLeaderProcEventFactory,
+                            double timestamp) : base(timestamp)
     {
+        _boomingVoice = boomingVoice;
+        _auraAppliedEventFactory = auraAppliedEventFactory;
+        _furyGeneratedEventFactory = furyGeneratedEventFactory;
+        _fortifyGeneratedEventFactory = fortifyGeneratedEventFactory;
+        _raidLeaderProcEventFactory = raidLeaderProcEventFactory;
     }
+
+    private readonly BoomingVoice _boomingVoice;
+    private readonly AuraAppliedEventFactory _auraAppliedEventFactory;
+    private readonly FuryGeneratedEventFactory _furyGeneratedEventFactory;
+    private readonly FortifyGeneratedEventFactory _fortifyGeneratedEventFactory;
+    private readonly RaidLeaderProcEventFactory _raidLeaderProcEventFactory;
 
     public AuraAppliedEvent RallyingCryAuraAppliedEvent { get; set; }
     public AuraAppliedEvent RallyingCryCooldownAuraAppliedEvent { get; set; }
@@ -20,35 +37,35 @@ public class RallyingCryEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        Duration = RallyingCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+        Duration = RallyingCry.DURATION * _boomingVoice.GetDurationIncrease(state);
 
-        RallyingCryAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.RallyingCry);
+        RallyingCryAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, Duration, Aura.RallyingCry);
         state.Events.Add(RallyingCryAuraAppliedEvent);
 
-        RallyingCryCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
+        RallyingCryCooldownAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
         state.Events.Add(RallyingCryCooldownAuraAppliedEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
         {
-            UnstoppableAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Unstoppable);
+            UnstoppableAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, Duration, Aura.Unstoppable);
             state.Events.Add(UnstoppableAuraAppliedEvent);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.TacticalRallyingCry))
         {
-            FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
+            FuryGeneratedEvent = _furyGeneratedEventFactory.Create(Timestamp, RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
             state.Events.Add(FuryGeneratedEvent);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry))
         {
-            FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife);
+            FortifyGeneratedEvent = _fortifyGeneratedEventFactory.Create(Timestamp, StrategicRallyingCry.FORTIFY * state.Player.BaseLife);
             state.Events.Add(FortifyGeneratedEvent);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
         {
-            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, Duration);
+            RaidLeaderProcEvent = _raidLeaderProcEventFactory.Create(Timestamp, Duration);
             state.Events.Add(RaidLeaderProcEvent);
         }
     }

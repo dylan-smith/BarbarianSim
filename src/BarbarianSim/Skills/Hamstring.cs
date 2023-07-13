@@ -1,17 +1,20 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public static class Hamstring
+public class Hamstring
 {
-    public static void ProcessEvent(BleedAppliedEvent bleedAppliedEvent, SimulationState state)
+    public Hamstring(AuraAppliedEventFactory auraAppliedEventFactory) => _auraAppliedEventFactory = auraAppliedEventFactory;
+
+    private readonly AuraAppliedEventFactory _auraAppliedEventFactory;
+
+    public void ProcessEvent(BleedAppliedEvent bleedAppliedEvent, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.Hamstring))
         {
-            bleedAppliedEvent.Target.Auras.Add(Aura.Slow);
-            var expiryTime = bleedAppliedEvent.BleedCompletedEvent.Timestamp;
-            state.Events.Add(new AuraExpiredEvent(expiryTime, Aura.Slow));
+            state.Events.Add(_auraAppliedEventFactory.Create(bleedAppliedEvent.Timestamp, bleedAppliedEvent.Duration, Aura.Slow, bleedAppliedEvent.Target));
         }
     }
 }

@@ -1,10 +1,22 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 
 namespace BarbarianSim.Events
 {
     public class AspectOfTheProtectorProcEvent : EventInfo
     {
-        public AspectOfTheProtectorProcEvent(double timestamp, int barrierAmount) : base(timestamp) => BarrierAmount = barrierAmount;
+        public AspectOfTheProtectorProcEvent(AuraAppliedEventFactory auraAppliedEventFactory,
+                                             BarrierAppliedEventFactory barrierAppliedEventFactory,
+                                             double timestamp,
+                                             int barrierAmount) : base(timestamp)
+        {
+            _auraAppliedEventFactory = auraAppliedEventFactory;
+            _barrierAppliedEventFactory = barrierAppliedEventFactory;
+            BarrierAmount = barrierAmount;
+        }
+
+        private readonly AuraAppliedEventFactory _auraAppliedEventFactory;
+        private readonly BarrierAppliedEventFactory _barrierAppliedEventFactory;
 
         private const double BARRIER_EXPIRY = 10.0;
 
@@ -14,10 +26,10 @@ namespace BarbarianSim.Events
 
         public override void ProcessEvent(SimulationState state)
         {
-            AspectOfTheProtectorCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, 30, Aura.AspectOfTheProtectorCooldown);
+            AspectOfTheProtectorCooldownAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, 30, Aura.AspectOfTheProtectorCooldown);
             state.Events.Add(AspectOfTheProtectorCooldownAuraAppliedEvent);
 
-            BarrierAppliedEvent = new BarrierAppliedEvent(Timestamp, BarrierAmount, BARRIER_EXPIRY);
+            BarrierAppliedEvent = _barrierAppliedEventFactory.Create(Timestamp, BarrierAmount, BARRIER_EXPIRY);
             state.Events.Add(BarrierAppliedEvent);
         }
 

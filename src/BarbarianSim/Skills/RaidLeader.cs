@@ -2,10 +2,10 @@
 
 namespace BarbarianSim.Skills;
 
-public static class RaidLeader
+public class RaidLeader
 {
     // Your Shouts also heal Allies for 1% of their Maximum Life per second
-    public static double GetHealPercentage(SimulationState state)
+    public double GetHealPercentage(SimulationState state)
     {
         var skillPoints = 0;
 

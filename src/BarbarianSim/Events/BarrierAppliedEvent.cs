@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 
 namespace BarbarianSim.Events
 {
@@ -10,22 +11,31 @@ namespace BarbarianSim.Events
         public BarrierExpiredEvent BarrierExpiredEvent { get; set; }
         public AuraAppliedEvent BarrierAuraAppliedEvent { get; set; }
 
-        public BarrierAppliedEvent(double timestamp, double barrierAmount, double duration) : base(timestamp)
+        public BarrierAppliedEvent(AuraAppliedEventFactory auraAppliedEventFactory,
+                                   BarrierExpiredEventFactory barrierExpiredEventFactory,
+                                   double timestamp,
+                                   double barrierAmount,
+                                   double duration) : base(timestamp)
         {
+            _auraAppliedEventFactory = auraAppliedEventFactory;
+            _barrierExpiredEventFactory = barrierExpiredEventFactory;
             BarrierAmount = barrierAmount;
             Duration = duration;
         }
+
+        private readonly AuraAppliedEventFactory _auraAppliedEventFactory;
+        private readonly BarrierExpiredEventFactory _barrierExpiredEventFactory;
 
         public override void ProcessEvent(SimulationState state)
         {
             Barrier = new Barrier(BarrierAmount);
 
-            BarrierAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Barrier);
+            BarrierAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, Duration, Aura.Barrier);
             state.Events.Add(BarrierAuraAppliedEvent);
 
             state.Player.Barriers.Add(Barrier);
 
-            BarrierExpiredEvent = new BarrierExpiredEvent(Timestamp + Duration, Barrier);
+            BarrierExpiredEvent = _barrierExpiredEventFactory.Create(Timestamp + Duration, Barrier);
             state.Events.Add(BarrierExpiredEvent);
         }
 

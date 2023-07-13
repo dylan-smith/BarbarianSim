@@ -1,14 +1,34 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Enums;
+using BarbarianSim.EventFactories;
 using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Events;
 
 public class IronSkinEvent : EventInfo
 {
-    public IronSkinEvent(double timestamp) : base(timestamp)
+    public IronSkinEvent(AuraAppliedEventFactory auraAppliedEventFactory,
+                         MaxLifeCalculator maxLifeCalculator,
+                         IronSkin ironSkin,
+                         BarrierAppliedEventFactory barrierAppliedEventFactory,
+                         HealingEventFactory healingEventFactory,
+                         FortifyGeneratedEventFactory fortifyGeneratedEventFactory,
+                         double timestamp) : base(timestamp)
     {
+        _auraAppliedEventFactory = auraAppliedEventFactory;
+        _maxLifeCalculator = maxLifeCalculator;
+        _ironSkin = ironSkin;
+        _barrierAppliedEventFactory = barrierAppliedEventFactory;
+        _healingEventFactory = healingEventFactory;
+        _fortifyGeneratedEventFactory = fortifyGeneratedEventFactory;
     }
+
+    private readonly AuraAppliedEventFactory _auraAppliedEventFactory;
+    private readonly MaxLifeCalculator _maxLifeCalculator;
+    private readonly IronSkin _ironSkin;
+    private readonly BarrierAppliedEventFactory _barrierAppliedEventFactory;
+    private readonly HealingEventFactory _healingEventFactory;
+    private readonly FortifyGeneratedEventFactory _fortifyGeneratedEventFactory;
 
     public AuraAppliedEvent IronSkinAuraAppliedEvent { get; set; }
     public AuraAppliedEvent IronSkinCooldownAuraAppliedEvent { get; set; }
@@ -18,15 +38,15 @@ public class IronSkinEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        IronSkinAuraAppliedEvent = new AuraAppliedEvent(Timestamp, IronSkin.DURATION, Aura.IronSkin);
+        IronSkinAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, IronSkin.DURATION, Aura.IronSkin);
         state.Events.Add(IronSkinAuraAppliedEvent);
 
-        IronSkinCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, IronSkin.COOLDOWN, Aura.IronSkinCooldown);
+        IronSkinCooldownAuraAppliedEvent = _auraAppliedEventFactory.Create(Timestamp, IronSkin.COOLDOWN, Aura.IronSkinCooldown);
         state.Events.Add(IronSkinCooldownAuraAppliedEvent);
 
-        var maxLife = MaxLifeCalculator.Calculate(state);
+        var maxLife = _maxLifeCalculator.Calculate(state);
         var missingLife = state.Player.GetMissingLife(maxLife);
-        var barrierPercent = IronSkin.GetBarrierPercentage(state);
+        var barrierPercent = _ironSkin.GetBarrierPercentage(state);
         var barrierAmount = missingLife * barrierPercent;
 
         if (state.Config.Skills.ContainsKey(Skill.EnhancedIronSkin))
@@ -34,14 +54,14 @@ public class IronSkinEvent : EventInfo
             barrierAmount += maxLife * IronSkin.BONUS_FROM_ENHANCED;
         }
 
-        BarrierAppliedEvent = new BarrierAppliedEvent(Timestamp, barrierAmount, IronSkin.DURATION);
+        BarrierAppliedEvent = _barrierAppliedEventFactory.Create(Timestamp, barrierAmount, IronSkin.DURATION);
         state.Events.Add(BarrierAppliedEvent);
 
         if (state.Config.Skills.ContainsKey(Skill.TacticalIronSkin))
         {
             for (var i = 0; i < IronSkin.DURATION; i++)
             {
-                var healEvent = new HealingEvent(Timestamp + i + 1, barrierAmount * IronSkin.HEAL_FROM_TACTICAL);
+                var healEvent = _healingEventFactory.Create(Timestamp + i + 1, barrierAmount * IronSkin.HEAL_FROM_TACTICAL);
                 HealingEvents.Add(healEvent);
                 state.Events.Add(healEvent);
             }
@@ -56,7 +76,7 @@ public class IronSkinEvent : EventInfo
                 fortifyAmount *= 2;
             }
 
-            FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, fortifyAmount);
+            FortifyGeneratedEvent = _fortifyGeneratedEventFactory.Create(Timestamp, fortifyAmount);
             state.Events.Add(FortifyGeneratedEvent);
         }
     }

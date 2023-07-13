@@ -4,25 +4,16 @@ namespace BarbarianSim;
 
 public class RandomGenerator
 {
-    private static RandomGenerator _instance;
-    private readonly Random _random;
-
-    public static void Seed(int seed) => _instance = new RandomGenerator(seed);
-
-    public static double Roll(RollType type)
-    {
-        _instance ??= new RandomGenerator();
-
-        return _instance.RollImplementation(type);
-    }
+    private Random _random;
 
     public RandomGenerator() => _random = new Random();
 
     public RandomGenerator(int seed) => _random = new Random(seed);
 
-    public static void InjectMock(RandomGenerator mock) => _instance = mock;
+    public double Roll(RollType type) => _random.NextDouble();
 
-    public static void ClearMock() => _instance = null;
-
-    protected virtual double RollImplementation(RollType type) => _random.NextDouble();
+    public void Seed(int seed)
+    {
+        _random = new Random(seed);
+    }
 }

@@ -1,34 +1,47 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
-using BarbarianSim.Events;
+using BarbarianSim.EventFactories;
 using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Abilities;
 
-public static class Whirlwind
+public class Whirlwind
 {
     public const double FURY_COST = 25.0;
     public const double LUCKY_HIT_CHANCE = 0.2;
 
-    public static bool CanUse(SimulationState state)
+    public Whirlwind(FuryCostReductionCalculator furyCostReductionCalculator,
+                     WhirlwindSpinEventFactory whirlwindSpinEventFactory,
+                     AuraExpiredEventFactory auraExpiredEventFactory)
+    {
+        _furyCostReductionCalculator = furyCostReductionCalculator;
+        _whirlwindSpinEventFactory = whirlwindSpinEventFactory;
+        _auraExpiredEventFactory = auraExpiredEventFactory;
+    }
+
+    private readonly FuryCostReductionCalculator _furyCostReductionCalculator;
+    private readonly WhirlwindSpinEventFactory _whirlwindSpinEventFactory;
+    private readonly AuraExpiredEventFactory _auraExpiredEventFactory;
+
+    public bool CanUse(SimulationState state)
     {
         return !state.Player.Auras.Contains(Aura.WeaponCooldown) &&
                !state.Player.Auras.Contains(Aura.Whirlwinding) &&
-               state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state, SkillType.Core));
+               state.Player.Fury >= (FURY_COST * _furyCostReductionCalculator.Calculate(state, SkillType.Core));
     }
 
-    public static bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * FuryCostReductionCalculator.Calculate(state, SkillType.Core)) && state.Player.Auras.Contains(Aura.Whirlwinding);
+    public bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * _furyCostReductionCalculator.Calculate(state, SkillType.Core)) && state.Player.Auras.Contains(Aura.Whirlwinding);
 
-    public static void Use(SimulationState state) => state.Events.Add(new WhirlwindSpinEvent(state.CurrentTime));
+    public void Use(SimulationState state) => state.Events.Add(_whirlwindSpinEventFactory.Create(state.CurrentTime));
 
-    public static void StopSpinning(SimulationState state)
+    public void StopSpinning(SimulationState state)
     {
-        state.Events.Add(new AuraExpiredEvent(state.CurrentTime, Aura.Whirlwinding));
+        state.Events.Add(_auraExpiredEventFactory.Create(state.CurrentTime, Aura.Whirlwinding));
     }
 
-    public static GearItem Weapon { get; set; }
+    public GearItem Weapon { get; set; }
 
-    public static double GetSkillMultiplier(SimulationState state)
+    public double GetSkillMultiplier(SimulationState state)
     {
         var skillPoints = state?.Config.Skills[Skill.Whirlwind];
         skillPoints += state?.Config.Gear.AllGear.Sum(g => g.Whirlwind);

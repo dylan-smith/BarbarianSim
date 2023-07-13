@@ -22,7 +22,7 @@ public class SimulationState
         config.EnemySettings.NumberOfEnemies.Times(() => Enemies.Add(new EnemyState() { MaxLife = config.EnemySettings.Life, Life = config.EnemySettings.Life }));
 
         Player.BaseLife = config.PlayerSettings.Life;
-        Player.Life = MaxLifeCalculator.Calculate(this);
+        Player.Life = Player.BaseLife;
     }
 
     public IEnumerable<DamageEvent> DamageEvents => ProcessedEvents.Where(e => e is DamageEvent).Cast<DamageEvent>();

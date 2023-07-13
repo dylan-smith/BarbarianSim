@@ -5,11 +5,14 @@ namespace BarbarianSim.Events;
 
 public class FurySpentEvent : EventInfo
 {
-    public FurySpentEvent(double timestamp, double furySpent, SkillType skillType) : base(timestamp)
+    public FurySpentEvent(FuryCostReductionCalculator furyCostReductionCalculator, double timestamp, double furySpent, SkillType skillType) : base(timestamp)
     {
+        _furyCostReductionCalculator = furyCostReductionCalculator;
         BaseFurySpent = furySpent;
         SkillType = skillType;
     }
+
+    private readonly FuryCostReductionCalculator _furyCostReductionCalculator;
 
     public double BaseFurySpent { get; init; }
     public double FurySpent { get; set; }
@@ -17,7 +20,7 @@ public class FurySpentEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
-        FurySpent = BaseFurySpent * FuryCostReductionCalculator.Calculate(state, SkillType);
+        FurySpent = BaseFurySpent * _furyCostReductionCalculator.Calculate(state, SkillType);
 
         if (FurySpent > state.Player.Fury)
         {

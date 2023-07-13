@@ -5,21 +5,40 @@ using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
 
-public class TotalDamageMultiplierCalculator : BaseStatCalculator
+public class TotalDamageMultiplierCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
-        => Calculate<TotalDamageMultiplierCalculator>(state, damageType, enemy, skillType, damageSource);
-
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
+    public TotalDamageMultiplierCalculator(AdditiveDamageBonusCalculator additiveDamageBonusCalculator,
+                                           VulnerableDamageBonusCalculator vulnerableDamageBonusCalculator,
+                                           StrengthCalculator strengthCalculator,
+                                           PitFighter pitFighter,
+                                           WarCry warCry,
+                                           WrathOfTheBerserker wrathOfTheBerserker)
     {
-        var damageBonus = AdditiveDamageBonusCalculator.Calculate(state, damageType, enemy);
-        damageBonus *= VulnerableDamageBonusCalculator.Calculate(state, enemy);
-        damageBonus *= 1 + (StrengthCalculator.Calculate(state) * 0.001);
-        damageBonus *= PitFighter.GetCloseDamageBonus(state);
+        _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
+        _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
+        _strengthCalculator = strengthCalculator;
+        _pitFighter = pitFighter;
+        _warCry = warCry;
+        _wrathOfTheBerserker = wrathOfTheBerserker;
+    }
+
+    private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
+    private readonly VulnerableDamageBonusCalculator _vulnerableDamageBonusCalculator;
+    private readonly StrengthCalculator _strengthCalculator;
+    private readonly PitFighter _pitFighter;
+    private readonly WarCry _warCry;
+    private readonly WrathOfTheBerserker _wrathOfTheBerserker;
+
+    public double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
+    {
+        var damageBonus = _additiveDamageBonusCalculator.Calculate(state, damageType, enemy);
+        damageBonus *= _vulnerableDamageBonusCalculator.Calculate(state, enemy);
+        damageBonus *= 1 + (_strengthCalculator.Calculate(state) * 0.001);
+        damageBonus *= _pitFighter.GetCloseDamageBonus(state);
 
         if (state.Player.Auras.Contains(Aura.WarCry))
         {
-            damageBonus *= WarCry.GetDamageBonus(state);
+            damageBonus *= _warCry.GetDamageBonus(state);
         }
 
         if (state.Config.Skills.ContainsKey(Skill.UnbridledRage))
@@ -42,7 +61,7 @@ public class TotalDamageMultiplierCalculator : BaseStatCalculator
             damageBonus *= EnhancedLungingStrike.DAMAGE_MULTIPLIER;
         }
 
-        damageBonus *= WrathOfTheBerserker.GetBerserkDamageBonus(state);
+        damageBonus *= _wrathOfTheBerserker.GetBerserkDamageBonus(state);
 
         var edgemasters = state.Config.Gear.GetAspect<EdgemastersAspect>();
         if (edgemasters != null)

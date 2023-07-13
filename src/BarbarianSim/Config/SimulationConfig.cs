@@ -10,7 +10,7 @@ public class SimulationConfig
     public EnemySettings EnemySettings { get; init; } = new();
     public SimulationSettings SimulationSettings { get; init; } = new();
     public IDictionary<Skill, int> Skills { get; init; } = new Dictionary<Skill, int>();
-    public IRotation Rotation { get; set; } = new SpinToWin();
+    public IRotation Rotation { get; set; }
 
     public virtual (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
     {

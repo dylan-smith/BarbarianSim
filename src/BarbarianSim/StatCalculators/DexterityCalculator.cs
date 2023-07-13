@@ -1,10 +1,8 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class DexterityCalculator : BaseStatCalculator
+public class DexterityCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<DexterityCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state)
+    public double Calculate(SimulationState state)
     {
         var dexterity = state.Config.Gear.GetStatTotal(g => g.Dexterity);
         dexterity += state.Config.Gear.GetStatTotal(g => g.AllStats);
