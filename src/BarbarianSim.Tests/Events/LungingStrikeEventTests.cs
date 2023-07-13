@@ -217,28 +217,6 @@ public sealed class LungingStrikeEventTests : IDisposable
     }
 
     [Fact]
-    public void CombatLungingStrike_Grants_Berserking_On_Crit()
-    {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1, [Skill.CombatLungingStrike] = 1 },
-        });
-        LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.0);
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
-
-        lungingStrikeEvent.ProcessEvent(state);
-
-        state.Events.Should().Contain(lungingStrikeEvent.BerserkingAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
-        lungingStrikeEvent.BerserkingAuraAppliedEvent.Timestamp.Should().Be(123);
-        lungingStrikeEvent.BerserkingAuraAppliedEvent.Duration.Should().Be(1.5);
-        lungingStrikeEvent.BerserkingAuraAppliedEvent.Aura.Should().Be(Aura.Berserking);
-    }
-
-
-
-    [Fact]
     public void LuckyHit_50_Percent_Chance()
     {
         var state = new SimulationState(new SimulationConfig

@@ -38,12 +38,6 @@ public class LungingStrikeEvent : EventInfo
         {
             damage *= CritDamageCalculator.Calculate(state, LungingStrike.Weapon.Expertise);
             damageType |= DamageType.CriticalStrike;
-
-            if (state.Config.Skills.ContainsKey(Skill.CombatLungingStrike))
-            {
-                BerserkingAuraAppliedEvent = new AuraAppliedEvent(Timestamp, 1.5, Aura.Berserking);
-                state.Events.Add(BerserkingAuraAppliedEvent);
-            }
         }
 
         DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.LungingStrike, SkillType.Basic, Target);
