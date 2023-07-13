@@ -30,13 +30,6 @@ public class LungingStrikeEvent : EventInfo
         var damage = weaponDamage * skillMultiplier * damageMultiplier;
         var damageType = DamageType.Direct;
 
-        if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
-        {
-            var bleedDamage = damage * 0.2;
-            BleedAppliedEvent = new BleedAppliedEvent(Timestamp, bleedDamage, 5.0, Target);
-            state.Events.Add(BleedAppliedEvent);
-        }
-
         var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
         var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
 

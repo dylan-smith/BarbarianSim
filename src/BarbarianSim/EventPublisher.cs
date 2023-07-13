@@ -50,6 +50,7 @@ public static class EventPublisher
                 break;
             case LungingStrikeEvent ev:
                 EnhancedLungingStrike.ProcessEvent(ev, state);
+                BattleLungingStrike.ProcessEvent(ev, state);
                 break;
             default:
                 break;
