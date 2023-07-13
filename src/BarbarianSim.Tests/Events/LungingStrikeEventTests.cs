@@ -20,8 +20,8 @@ public sealed class LungingStrikeEventTests : IDisposable
 
     public LungingStrikeEventTests()
     {
-        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0, DamageType.Physical, SkillType.Basic));
-        BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0, DamageType.Physical));
+        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(1.0, DamageType.Physical | DamageType.Direct, SkillType.Basic));
+        BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.0, DamageType.Physical | DamageType.Direct));
         BaseStatCalculator.InjectMock(typeof(CritDamageCalculator), new FakeStatCalculator(1.5));
         BaseStatCalculator.InjectMock(typeof(AttackSpeedCalculator), new FakeStatCalculator(1.0));
         BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
@@ -45,7 +45,7 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Events.Any(e => e is DamageEvent).Should().BeTrue();
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
         damageEvent.Timestamp.Should().Be(123);
-        damageEvent.DamageType.Should().Be(DamageType.Direct);
+        damageEvent.DamageType.Should().Be(DamageType.Direct | DamageType.Physical);
         damageEvent.DamageSource.Should().Be(DamageSource.LungingStrike);
         damageEvent.SkillType.Should().Be(SkillType.Basic);
         damageEvent.Damage.Should().Be(0.33); // 1 [WeaponDmg] * 0.33 [SkillModifier]
@@ -94,7 +94,7 @@ public sealed class LungingStrikeEventTests : IDisposable
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
 
-        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(4.5, DamageType.Physical, SkillType.Basic));
+        BaseStatCalculator.InjectMock(typeof(TotalDamageMultiplierCalculator), new FakeStatCalculator(4.5, DamageType.Physical | DamageType.Direct, SkillType.Basic));
         var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
 
         lungingStrikeEvent.ProcessEvent(state);
@@ -111,7 +111,7 @@ public sealed class LungingStrikeEventTests : IDisposable
             Skills = { [Skill.LungingStrike] = 1 },
         });
         LungingStrike.Weapon = new GearItem { MinDamage = 1, MaxDamage = 1, AttacksPerSecond = 1 };
-        BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7, DamageType.Physical));
+        BaseStatCalculator.InjectMock(typeof(CritChanceCalculator), new FakeStatCalculator(0.7, DamageType.Physical | DamageType.Direct));
         _fakeRandomGenerator.FakeRoll(RollType.CriticalStrike, 0.69);
         var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
 
@@ -120,7 +120,7 @@ public sealed class LungingStrikeEventTests : IDisposable
         state.Events.Any(e => e is DamageEvent).Should().BeTrue();
         var damageEvent = (DamageEvent)state.Events.Single(e => e is DamageEvent);
         damageEvent.Timestamp.Should().Be(123);
-        damageEvent.DamageType.Should().Be(DamageType.DirectCrit);
+        damageEvent.DamageType.Should().Be(DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike);
         damageEvent.Damage.Should().Be(0.495); // 1 [WeaponDmg] * 0.33 [SkillModifier] * 1.5 [Crit]
     }
 

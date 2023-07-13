@@ -23,20 +23,21 @@ public class LungingStrikeEvent : EventInfo
 
     public override void ProcessEvent(SimulationState state)
     {
+        var damageType = DamageType.Physical | DamageType.Direct;
+
         var weaponDamage = (LungingStrike.Weapon.MinDamage + LungingStrike.Weapon.MaxDamage) / 2.0;
         var skillMultiplier = LungingStrike.GetSkillMultiplier(state);
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType.Physical, Target, SkillType.Basic, DamageSource.LungingStrike);
+        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, damageType, Target, SkillType.Basic, DamageSource.LungingStrike);
 
         var damage = weaponDamage * skillMultiplier * damageMultiplier;
-        var damageType = DamageType.Direct;
 
-        var critChance = CritChanceCalculator.Calculate(state, DamageType.Physical);
+        var critChance = CritChanceCalculator.Calculate(state, damageType);
         var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
 
         if (critRoll <= critChance)
         {
             damage *= CritDamageCalculator.Calculate(state, LungingStrike.Weapon.Expertise);
-            damageType = DamageType.DirectCrit;
+            damageType |= DamageType.CriticalStrike;
 
             if (state.Config.Skills.ContainsKey(Skill.CombatLungingStrike))
             {

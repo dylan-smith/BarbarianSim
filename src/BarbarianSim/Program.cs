@@ -215,8 +215,8 @@ internal class Program
         Console.WriteLine("");
         Console.WriteLine($"Total Events: {state.ProcessedEvents.Count}");
 
-        var hits = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Where(x => x.DamageType == DamageType.Direct);
-        var crits = state.ProcessedEvents.Where(x => x is DamageEvent).Cast<DamageEvent>().Where(x => x.DamageType == DamageType.DirectCrit);
+        var hits = state.ProcessedEvents.OfType<DamageEvent>().Where(x => x.DamageType.HasFlag(DamageType.Direct) && !x.DamageType.HasFlag(DamageType.CriticalStrike));
+        var crits = state.ProcessedEvents.OfType<DamageEvent>().Where(x => x.DamageType.HasFlag(DamageType.Direct) & x.DamageType.HasFlag(DamageType.CriticalStrike));
 
         var avgHit = hits.Average(x => x.Damage);
         var avgCrit = crits.Average(x => x.Damage);

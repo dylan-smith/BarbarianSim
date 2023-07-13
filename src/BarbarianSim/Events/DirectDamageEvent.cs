@@ -36,12 +36,12 @@ public class DirectDamageEvent : EventInfo
         var critChance = CritChanceCalculator.Calculate(state, DamageType);
         var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
 
-        var damageType = DamageType.Direct;
+        var damageType = DamageType | DamageType.Direct;
 
         if (critRoll <= critChance)
         {
             damage *= CritDamageCalculator.Calculate(state, Expertise);
-            damageType = DamageType.DirectCrit;
+            damageType |= DamageType.CriticalStrike;
         }
 
         DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, SkillType.Core, Enemy);

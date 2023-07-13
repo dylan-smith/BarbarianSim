@@ -46,7 +46,7 @@ public class WrathOfTheBerserkerTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
@@ -60,7 +60,7 @@ public class WrathOfTheBerserkerTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
@@ -73,7 +73,7 @@ public class WrathOfTheBerserkerTests
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.LungingStrike, SkillType.Core, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Core, state.Enemies.First());
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 
@@ -98,7 +98,7 @@ public class WrathOfTheBerserkerTests
     {
         var state = new SimulationState(new SimulationConfig());
         state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
-        var damageEvent = new DamageEvent(123, 500, DamageType.DirectCrit, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
+        var damageEvent = new DamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, state.Enemies.First());
 
         WrathOfTheBerserker.ProcessEvent(damageEvent, state);
 

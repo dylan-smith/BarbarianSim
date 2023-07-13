@@ -38,7 +38,7 @@ public sealed class DirectDamageEventTests : IDisposable
         directDamageEvent.DamageEvent.Should().NotBeNull();
         state.Events.Should().Contain(directDamageEvent.DamageEvent);
         directDamageEvent.DamageEvent.Timestamp.Should().Be(123);
-        directDamageEvent.DamageEvent.DamageType.Should().Be(DamageType.Direct);
+        directDamageEvent.DamageEvent.DamageType.Should().Be(DamageType.Physical | DamageType.Direct);
         directDamageEvent.DamageEvent.DamageSource.Should().Be(DamageSource.Whirlwind);
         directDamageEvent.DamageEvent.SkillType.Should().Be(SkillType.Core);
         directDamageEvent.DamageEvent.Damage.Should().Be(1200);
@@ -69,7 +69,7 @@ public sealed class DirectDamageEventTests : IDisposable
 
         state.Events.Any(e => e is DamageEvent).Should().BeTrue();
         directDamageEvent.DamageEvent.Timestamp.Should().Be(123);
-        directDamageEvent.DamageEvent.DamageType.Should().Be(DamageType.DirectCrit);
+        directDamageEvent.DamageEvent.DamageType.Should().Be(DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike);
         directDamageEvent.DamageEvent.Damage.Should().Be(150);
     }
 
