@@ -9,6 +9,9 @@ public class AspectOfTheProtector : Aspect
     // Damaging an Elite enemy grants you a Barrier absorbing up to [X] damage for 10 seconds. This effect can only happen once every 30 seconds.
     public int BarrierAmount { get; init; }
 
+    public const double BARRIER_EXPIRY = 10.0;
+    public const double COOLDOWN = 30;
+
     public AspectOfTheProtector(int barrierAmount) => BarrierAmount = barrierAmount;
 
     public void ProcessEvent(DamageEvent _, SimulationState state)

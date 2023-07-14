@@ -6,6 +6,8 @@ namespace BarbarianSim.Skills;
 public static class PressurePoint
 {
     // Lucky Hit: Your Core skills have up to a 30% chance to make enemies Vulnerable for 2 seconds
+    public const double VULNERABLE_DURATION = 2.0;
+
     public static void ProcessEvent(LuckyHitEvent e, SimulationState state)
     {
         if (e.SkillType == SkillType.Core)
