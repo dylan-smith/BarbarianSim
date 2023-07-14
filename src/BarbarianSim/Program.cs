@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Abilities;
-using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.EventFactories;

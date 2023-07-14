@@ -5,7 +5,7 @@ public class ArmorCalculator
     public ArmorCalculator(StrengthCalculator strengthCalculator) => _strengthCalculator = strengthCalculator;
 
     private readonly StrengthCalculator _strengthCalculator;
-    
+
     public double Calculate(SimulationState state)
     {
         var armor = state.Config.Gear.GetStatTotal(g => g.Armor);

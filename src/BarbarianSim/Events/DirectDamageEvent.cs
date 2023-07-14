@@ -13,13 +13,13 @@ public class DirectDamageEvent : EventInfo
                              DamageEventFactory damageEventFactory,
                              LuckyHitChanceCalculator luckyHitChanceCalculator,
                              LuckyHitEventFactory luckyHitEventFactory,
-                             double timestamp, 
-                             double baseDamage, 
-                             DamageType damageType, 
-                             DamageSource damageSource, 
-                             SkillType skillType, 
-                             double luckyHitChance, 
-                             Expertise expertise, 
+                             double timestamp,
+                             double baseDamage,
+                             DamageType damageType,
+                             DamageSource damageSource,
+                             SkillType skillType,
+                             double luckyHitChance,
+                             Expertise expertise,
                              EnemyState enemy) : base(timestamp)
     {
         _totalDamageMultiplierCalculator = totalDamageMultiplierCalculator;

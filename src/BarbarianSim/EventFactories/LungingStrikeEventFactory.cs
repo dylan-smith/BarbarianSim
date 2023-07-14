@@ -20,7 +20,7 @@ public class LungingStrikeEventFactory
     private readonly DirectDamageEventFactory _directDamageEventFactory;
     private readonly AttackSpeedCalculator _attackSpeedCalculator;
     private readonly AuraAppliedEventFactory _auraAppliedEventFactory;
-    
-    public LungingStrikeEvent Create(double timestamp, EnemyState target) => 
+
+    public LungingStrikeEvent Create(double timestamp, EnemyState target) =>
         new(_furyGeneratedEventFactory, _directDamageEventFactory, _attackSpeedCalculator, _auraAppliedEventFactory, timestamp, target);
 }

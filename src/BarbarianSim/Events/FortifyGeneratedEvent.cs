@@ -13,7 +13,7 @@ public class FortifyGeneratedEvent : EventInfo
     }
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
-    
+
     public override void ProcessEvent(SimulationState state)
     {
         state.Player.Fortify += Amount;

@@ -1,6 +1,5 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Aspects;
-using BarbarianSim.Enums;
 using BarbarianSim.Events;
 
 namespace BarbarianSim.Rotations;

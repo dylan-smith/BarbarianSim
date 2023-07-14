@@ -17,7 +17,7 @@ public class AspectOfTheProtector : Aspect
     }
 
     private readonly AspectOfTheProtectorProcEventFactory _aspectOfTheProtectorProcEventFactory;
-    
+
     public void ProcessEvent(DamageEvent _, SimulationState state)
     {
         if (!state.Config.EnemySettings.IsElite)

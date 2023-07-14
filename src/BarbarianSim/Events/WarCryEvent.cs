@@ -7,10 +7,10 @@ namespace BarbarianSim.Events;
 
 public class WarCryEvent : EventInfo
 {
-    public WarCryEvent(BoomingVoice boomingVoice, 
-                       AuraAppliedEventFactory auraAppliedEventFactory, 
-                       FortifyGeneratedEventFactory fortifyGeneratedEventFactory, 
-                       RaidLeaderProcEventFactory raidLeaderProcEventFactory, 
+    public WarCryEvent(BoomingVoice boomingVoice,
+                       AuraAppliedEventFactory auraAppliedEventFactory,
+                       FortifyGeneratedEventFactory fortifyGeneratedEventFactory,
+                       RaidLeaderProcEventFactory raidLeaderProcEventFactory,
                        double timestamp) : base(timestamp)
     {
         _boomingVoice = boomingVoice;

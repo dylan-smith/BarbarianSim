@@ -18,6 +18,6 @@ public class WarCryEventFactory
     private readonly FortifyGeneratedEventFactory _fortifyGeneratedEventFactory;
     private readonly RaidLeaderProcEventFactory _raidLeaderProcEventFactory;
 
-    public WarCryEvent Create(double timestamp) => 
+    public WarCryEvent Create(double timestamp) =>
         new(_boomingVoice, _auraAppliedEventFactory, _fortifyGeneratedEventFactory, _raidLeaderProcEventFactory, timestamp);
 }

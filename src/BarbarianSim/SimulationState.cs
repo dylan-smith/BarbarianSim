@@ -1,6 +1,5 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Events;
-using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim;
 

@@ -20,6 +20,6 @@ public class RallyingCryEventFactory
     private readonly FortifyGeneratedEventFactory _fortifyGeneratedEventFactory;
     private readonly RaidLeaderProcEventFactory _raidLeaderProcEventFactory;
 
-    public RallyingCryEvent Create(double timestamp) => 
+    public RallyingCryEvent Create(double timestamp) =>
         new(_boomingVoice, _auraAppliedEventFactory, _furyGeneratedEventFactory, _fortifyGeneratedEventFactory, _raidLeaderProcEventFactory, timestamp);
 }

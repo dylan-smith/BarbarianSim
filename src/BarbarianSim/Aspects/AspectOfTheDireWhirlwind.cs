@@ -9,7 +9,7 @@ public class AspectOfTheDireWhirlwind : Aspect
         CritChance = critChance;
         MaxCritChance = maxCritChance;
     }
-    
+
     public int CritChance { get; init; }
     public int MaxCritChance { get; init; }
 }
