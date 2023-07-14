@@ -7,9 +7,13 @@ namespace BarbarianSim.EventHandlers;
 
 public class ChallengingShoutEventHandler : EventHandler<ChallengingShoutEvent>
 {
+    public ChallengingShoutEventHandler(BoomingVoice boomingVoice) => _boomingVoice = boomingVoice;
+
+    private readonly BoomingVoice _boomingVoice;
+
     public override void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
-        e.Duration = ChallengingShout.DURATION * BoomingVoice.GetDurationIncrease(state);
+        e.Duration = ChallengingShout.DURATION * _boomingVoice.GetDurationIncrease(state);
 
         e.ChallengingShoutAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.ChallengingShout);
         state.Events.Add(e.ChallengingShoutAuraAppliedEvent);

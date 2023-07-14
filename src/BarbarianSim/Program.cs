@@ -4,6 +4,8 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Gems;
+using BarbarianSim.Rotations;
+using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,9 +17,31 @@ internal class Program
     {
         var serviceCollection = new ServiceCollection();
 
+        // Abilities
+        serviceCollection.AddSingleton<ChallengingShout>();
+        serviceCollection.AddSingleton<IronSkin>();
+        serviceCollection.AddSingleton<LungingStrike>();
+        serviceCollection.AddSingleton<RallyingCry>();
+        serviceCollection.AddSingleton<WarCry>();
+        serviceCollection.AddSingleton<Whirlwind>();
+        serviceCollection.AddSingleton<WrathOfTheBerserker>();
+
+        // Aspects
+        serviceCollection.AddSingleton<AspectOfBerserkRipping>();
+        serviceCollection.AddSingleton<AspectOfEchoingFury>();
+        serviceCollection.AddSingleton<AspectOfGraspingWhirlwind>();
+        serviceCollection.AddSingleton<AspectOfLimitlessRage>();
+        serviceCollection.AddSingleton<AspectOfNumbingWraith>();
+        serviceCollection.AddSingleton<AspectOfTheDireWhirlwind>();
+        serviceCollection.AddSingleton<AspectOfTheProtector>();
+        serviceCollection.AddSingleton<BoldChieftainsAspect>();
+        serviceCollection.AddSingleton<ConceitedAspect>();
+        serviceCollection.AddSingleton<EdgemastersAspect>();
+        serviceCollection.AddSingleton<GhostwalkerAspect>();
+        serviceCollection.AddSingleton<GohrsDevastatingGrips>();
+        serviceCollection.AddSingleton<RageOfHarrogath>();
+
         // Event Handlers
-        serviceCollection.AddSingleton<EventHandlers.EventHandler<BarrierExpiredEvent>, EventHandlers.BarrierExpiredEventHandler>();
-        
         serviceCollection.AddSingleton<EventHandlers.EventHandler<AspectOfEchoingFuryProcEvent>, EventHandlers.AspectOfEchoingFuryProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<AspectOfTheProtectorProcEvent>, EventHandlers.AspectOfTheProtectorProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<AuraAppliedEvent>, EventHandlers.AuraAppliedEventHandler>();
@@ -47,6 +71,28 @@ internal class Program
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindSpinEvent>, EventHandlers.WhirlwindSpinEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindStoppedEvent>, EventHandlers.WhirlwindStoppedEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WrathOfTheBerserkerEvent>, EventHandlers.WrathOfTheBerserkerEventHandler>();
+
+        // Rotations
+        serviceCollection.AddSingleton<SpinToWin>();
+
+        // Skills
+        serviceCollection.AddSingleton<AggressiveResistance>();
+        serviceCollection.AddSingleton<BattleLungingStrike>();
+        serviceCollection.AddSingleton<BoomingVoice>();
+        serviceCollection.AddSingleton<CombatLungingStrike>();
+        serviceCollection.AddSingleton<EnhancedLungingStrike>();
+        serviceCollection.AddSingleton<EnhancedWhirlwind>();
+        serviceCollection.AddSingleton<FuriousWhirlwind>();
+        serviceCollection.AddSingleton<GutteralYell>();
+        serviceCollection.AddSingleton<Hamstring>();
+        serviceCollection.AddSingleton<HeavyHanded>();
+        serviceCollection.AddSingleton<InvigoratingFury>();
+        serviceCollection.AddSingleton<PitFighter>();
+        serviceCollection.AddSingleton<PressurePoint>();
+        serviceCollection.AddSingleton<ProlificFury>();
+        serviceCollection.AddSingleton<RaidLeader>();
+        serviceCollection.AddSingleton<TemperedFury>();
+        serviceCollection.AddSingleton<ViolentWhirlwind>();
 
         // Stat Calculators
         serviceCollection.AddSingleton<AdditiveDamageBonusCalculator>();
@@ -84,9 +130,11 @@ internal class Program
         serviceCollection.AddSingleton<VulnerableDamageBonusCalculator>();
         serviceCollection.AddSingleton<WillpowerCalculator>();
 
+        
+
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
-        var config = CreateConfig();
+        var config = CreateConfig(serviceProvider);
 
         RandomGenerator.Seed(123);
 
@@ -96,9 +144,14 @@ internal class Program
         ReportResults(state);
     }
 
-    private static SimulationConfig CreateConfig()
+    private static T CreateAspect<T>(IServiceProvider serviceProvider) where T : Aspect => serviceProvider.GetRequiredService<T>();
+
+    private static SimulationConfig CreateConfig(IServiceProvider sp)
     {
-        var config = new SimulationConfig();
+        var config = new SimulationConfig
+        {
+            Rotation = sp.GetRequiredService<SpinToWin>()
+        };
 
         config.EnemySettings.Life = 4000000;
         config.EnemySettings.NumberOfEnemies = 3;
@@ -107,6 +160,9 @@ internal class Program
 
         config.PlayerSettings.Level = 100;
         config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedAxe;
+
+        config.PlayerSettings.SkillWeapons.Add(Skill.LungingStrike, config.Gear.TwoHandSlashing);
+        config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, config.Gear.TwoHandSlashing);
 
         config.Skills.Add(Skill.LungingStrike, 1);
         config.Skills.Add(Skill.EnhancedLungingStrike, 1);
@@ -149,7 +205,8 @@ internal class Program
         config.Gear.Helm.PoisonResistance = 45.2;
         config.Gear.Helm.TotalArmor = 6.8;
         config.Gear.Helm.MaxLife = 472;
-        config.Gear.Helm.Aspect = new AspectOfTheProtector(2000);
+        config.Gear.Helm.Aspect = CreateAspect<AspectOfTheProtector>(sp);
+        (config.Gear.Helm.Aspect as AspectOfTheProtector).BarrierAmount = 2000;
         config.Gear.Helm.Gems.Add(new RoyalSapphire());
 
         config.Gear.Chest.Armor = 1195;
@@ -157,7 +214,8 @@ internal class Program
         config.Gear.Chest.CritChancePhysicalAgainstElites = 6.0;
         config.Gear.Chest.DamageReductionFromBleeding = 14.6;
         config.Gear.Chest.Thorns = 403;
-        config.Gear.Chest.Aspect = new RageOfHarrogath(26);
+        config.Gear.Chest.Aspect = CreateAspect<RageOfHarrogath>(sp);
+        (config.Gear.Chest.Aspect as RageOfHarrogath).Chance = 26;
         config.Gear.Chest.Gems.Add(new RoyalSapphire());
         config.Gear.Chest.Gems.Add(new RoyalSapphire());
 
@@ -166,7 +224,8 @@ internal class Program
         config.Gear.Gloves.LuckyHitChance = 10.2;
         config.Gear.Gloves.NonPhysicalDamage = 18.0;
         config.Gear.Gloves.Whirlwind = 3;
-        config.Gear.Gloves.Aspect = new GohrsDevastatingGrips(24);
+        config.Gear.Gloves.Aspect = CreateAspect<GohrsDevastatingGrips>(sp);
+        (config.Gear.Gloves.Aspect as GohrsDevastatingGrips).DamagePercent = 24; ;
 
         config.Gear.Pants.Armor = 729;
         config.Gear.Pants.PotionSpeedWhileInjured = 45;
@@ -174,7 +233,8 @@ internal class Program
         config.Gear.Pants.Dodge = 7.4;
         config.Gear.Pants.DamageReductionFromClose = 23.0;
         config.Gear.Pants.DamageReductionWhileInjured = 39.5;
-        config.Gear.Pants.Aspect = new AspectOfNumbingWraith(12);
+        config.Gear.Pants.Aspect = CreateAspect<AspectOfNumbingWraith>(sp);
+        (config.Gear.Pants.Aspect as AspectOfNumbingWraith).Fortify = 12;
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
 
@@ -184,7 +244,8 @@ internal class Program
         config.Gear.Boots.MovementSpeed = 15.8;
         config.Gear.Boots.DodgeAgainstDistant = 6.4;
         config.Gear.Boots.Dexterity = 51;
-        config.Gear.Boots.Aspect = new GhostwalkerAspect(10);
+        config.Gear.Boots.Aspect = CreateAspect<GhostwalkerAspect>(sp);
+        (config.Gear.Boots.Aspect as GhostwalkerAspect).Speed = 10;
 
         config.Gear.TwoHandBludgeoning.DPS = 2199;
         config.Gear.TwoHandBludgeoning.Expertise = Expertise.TwoHandedMace;
@@ -196,11 +257,9 @@ internal class Program
         config.Gear.TwoHandBludgeoning.CoreDamage = 58.5;
         config.Gear.TwoHandBludgeoning.Strength = 156;
         config.Gear.TwoHandBludgeoning.CritDamage = 57.0;
-        config.Gear.TwoHandBludgeoning.Aspect = new AspectOfLimitlessRage
-        {
-            Damage = 4,
-            MaxDamage = 60
-        };
+        config.Gear.TwoHandBludgeoning.Aspect = CreateAspect<AspectOfLimitlessRage>(sp);
+        (config.Gear.TwoHandBludgeoning.Aspect as AspectOfLimitlessRage).Damage = 4;
+        (config.Gear.TwoHandBludgeoning.Aspect as AspectOfLimitlessRage).MaxDamage = 60;
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
 
@@ -214,7 +273,8 @@ internal class Program
         config.Gear.OneHandLeft.Strength = 77;
         config.Gear.OneHandLeft.DamageToInjured = 34.5;
         config.Gear.OneHandLeft.CoreDamage = 18.8;
-        config.Gear.OneHandLeft.Aspect = new ConceitedAspect(25);
+        config.Gear.OneHandLeft.Aspect = CreateAspect<ConceitedAspect>(sp);
+        (config.Gear.OneHandLeft.Aspect as ConceitedAspect).Damage = 25;
         config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald());
 
         config.Gear.OneHandRight.DPS = 650;
@@ -227,7 +287,8 @@ internal class Program
         config.Gear.OneHandRight.AllStats = 30;
         config.Gear.OneHandRight.DamageToSlowed = 22.5;
         config.Gear.OneHandRight.DamageToCrowdControlled = 13.5;
-        config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping(30);
+        config.Gear.OneHandRight.Aspect = CreateAspect<AspectOfBerserkRipping>(sp);
+        (config.Gear.OneHandRight.Aspect as AspectOfBerserkRipping).Damage = 30;
         config.Gear.OneHandRight.Gems.Add(new RoyalEmerald());
 
         config.Gear.TwoHandSlashing.DPS = 2465;
@@ -240,11 +301,9 @@ internal class Program
         config.Gear.TwoHandSlashing.DamageToClose = 57.0;
         config.Gear.TwoHandSlashing.Strength = 174;
         config.Gear.TwoHandSlashing.DamageToInjured = 93.0;
-        config.Gear.TwoHandSlashing.Aspect = new AspectOfTheDireWhirlwind
-        {
-            CritChance = 14,
-            MaxCritChance = 42
-        };
+        config.Gear.TwoHandSlashing.Aspect = CreateAspect<AspectOfTheDireWhirlwind>(sp);
+        (config.Gear.TwoHandSlashing.Aspect as AspectOfTheDireWhirlwind).CritChance = 14;
+        (config.Gear.TwoHandSlashing.Aspect as AspectOfTheDireWhirlwind).MaxCritChance = 42;
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
 
@@ -253,7 +312,8 @@ internal class Program
         config.Gear.Amulet.HealingReceived = 12.8;
         config.Gear.Amulet.DamageReductionFromClose = 12.5;
         config.Gear.Amulet.FuryCostReduction = 16.7;
-        config.Gear.Amulet.Aspect = new EdgemastersAspect(29);
+        config.Gear.Amulet.Aspect = CreateAspect<EdgemastersAspect>(sp);
+        (config.Gear.Amulet.Aspect as EdgemastersAspect).Damage = 29;
         config.Gear.Amulet.Gems.Add(new RoyalSkull());
 
         config.Gear.Ring1.LightningResistance = 35.0;
@@ -262,7 +322,8 @@ internal class Program
         config.Gear.Ring1.DamageToSlowed = 31.5;
         config.Gear.Ring1.CritChance = 6.9;
         config.Gear.Ring1.CritDamage = 23.3;
-        config.Gear.Ring1.Aspect = new BoldChieftainsAspect(1.9);
+        config.Gear.Ring1.Aspect = CreateAspect<BoldChieftainsAspect>(sp);
+        (config.Gear.Ring1.Aspect as BoldChieftainsAspect).Cooldown = 1.9;
         config.Gear.Ring1.Gems.Add(new RoyalSkull());
 
         config.Gear.Ring2.ColdResistance = 32.2;
@@ -271,11 +332,9 @@ internal class Program
         config.Gear.Ring2.CritChance = 6.0;
         config.Gear.Ring2.DamageToSlowed = 20.3;
         config.Gear.Ring2.CritDamage = 16.5;
-        config.Gear.Ring2.Aspect = new AspectOfEchoingFury(4);
+        config.Gear.Ring2.Aspect = CreateAspect<AspectOfEchoingFury>(sp);
+        (config.Gear.Ring2.Aspect as AspectOfEchoingFury).Fury = 4;
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
-
-        LungingStrike.Weapon = config.Gear.TwoHandSlashing;
-        Whirlwind.Weapon = config.Gear.TwoHandSlashing;
 
         return config;
     }

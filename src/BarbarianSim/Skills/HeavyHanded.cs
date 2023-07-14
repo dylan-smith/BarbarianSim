@@ -2,11 +2,11 @@
 
 namespace BarbarianSim.Skills;
 
-public static class HeavyHanded
+public class HeavyHanded
 {
     // While using 2-Handed weapons you deal 5%[x] increased Critical Strike Damage
 
-    public static double GetCriticalStrikeDamage(SimulationState state, Expertise expertise)
+    public double GetCriticalStrikeDamage(SimulationState state, Expertise expertise)
     {
         var skillPoints = 0;
 

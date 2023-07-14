@@ -7,9 +7,13 @@ namespace BarbarianSim.EventHandlers;
 
 public class WarCryEventHandler : EventHandler<WarCryEvent>
 {
+    public WarCryEventHandler(BoomingVoice boomingVoice) => _boomingVoice = boomingVoice;
+
+    private readonly BoomingVoice _boomingVoice;
+
     public override void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        e.Duration = WarCry.DURATION * BoomingVoice.GetDurationIncrease(state);
+        e.Duration = WarCry.DURATION * _boomingVoice.GetDurationIncrease(state);
 
         e.WarCryAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.WarCry);
         state.Events.Add(e.WarCryAuraAppliedEvent);

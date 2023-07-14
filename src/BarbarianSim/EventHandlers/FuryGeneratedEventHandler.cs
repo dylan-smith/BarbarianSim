@@ -13,7 +13,7 @@ public class FuryGeneratedEventHandler : EventHandler<FuryGeneratedEvent>
 
     private readonly ResourceGenerationCalculator _resourceGenerationCalculator;
     private readonly MaxFuryCalculator _maxFuryCalculator;
-    
+
     public override void ProcessEvent(FuryGeneratedEvent e, SimulationState state)
     {
         var multiplier = _resourceGenerationCalculator.Calculate(state);

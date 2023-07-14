@@ -2,11 +2,11 @@
 
 namespace BarbarianSim.Skills;
 
-public static class AggressiveResistance
+public class AggressiveResistance
 {
     // Gain 3% Damage Reduction while Berserking
 
-    public static double GetDamageReduction(SimulationState state)
+    public double GetDamageReduction(SimulationState state)
     {
         var skillPoints = 0;
 

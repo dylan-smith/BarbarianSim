@@ -6,9 +6,7 @@ namespace BarbarianSim.Aspects;
 public class AspectOfEchoingFury : Aspect
 {
     // Your Shout skills generate 2-4 Fury per second while active
-    public double Fury { get; init; }
-
-    public AspectOfEchoingFury(int fury) => Fury = fury;
+    public double Fury { get; set; }
 
     public void ProcessEvent(ChallengingShoutEvent challengingShoutEvent, SimulationState state)
     {

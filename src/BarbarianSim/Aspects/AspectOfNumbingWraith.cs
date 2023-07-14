@@ -4,7 +4,5 @@ namespace BarbarianSim.Aspects;
 
 public class AspectOfNumbingWraith : Aspect
 {
-    public int Fortify { get; init; }
-
-    public AspectOfNumbingWraith(int fortify) => Fortify = fortify;
+    public int Fortify { get; set; }
 }

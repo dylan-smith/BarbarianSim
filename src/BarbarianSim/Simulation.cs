@@ -40,7 +40,7 @@ public class Simulation
                 State.Events.Remove(nextEvent);
                 ProcessEvent(nextEvent, State);
 
-                EventPublisher.PublishEvent(nextEvent, State);
+                EventPublisher.PublishEvent(nextEvent, State, _sp);
 
                 nextEvent = GetNextEvent();
             }

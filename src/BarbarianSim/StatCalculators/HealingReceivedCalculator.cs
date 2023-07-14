@@ -5,7 +5,7 @@ public class HealingReceivedCalculator
     public HealingReceivedCalculator(WillpowerCalculator willpowerCalculator) => _willpowerCalculator = willpowerCalculator;
 
     private readonly WillpowerCalculator _willpowerCalculator;
-    
+
     public double Calculate(SimulationState state)
     {
         var healingReceived = state.Config.Gear.GetStatTotal(g => g.HealingReceived);

@@ -2,11 +2,11 @@
 
 namespace BarbarianSim.Skills;
 
-public static class ProlificFury
+public class ProlificFury
 {
     // While Berserking, Fury generation is increased by 6%[x]
 
-    public static double GetFuryGeneration(SimulationState state)
+    public double GetFuryGeneration(SimulationState state)
     {
         var skillPoints = 0;
 

@@ -5,10 +5,14 @@ namespace BarbarianSim.StatCalculators;
 
 public class CritDamageCalculator
 {
+    public CritDamageCalculator(HeavyHanded heavyHanded) => _heavyHanded = heavyHanded;
+
+    private readonly HeavyHanded _heavyHanded;
+
     public double Calculate(SimulationState state, Expertise expertise)
     {
         var critDamage = state.Config.Gear.AllGear.Sum(g => g.CritDamage);
-        critDamage += HeavyHanded.GetCriticalStrikeDamage(state, expertise);
+        critDamage += _heavyHanded.GetCriticalStrikeDamage(state, expertise);
 
         return 1.5 + (critDamage / 100.0);
     }

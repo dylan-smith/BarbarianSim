@@ -8,7 +8,7 @@ public class ThornsCalculator
     public ThornsCalculator(MaxLifeCalculator maxLifeCalculator) => _maxLifeCalculator = maxLifeCalculator;
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
-    
+
     public double Calculate(SimulationState state)
     {
         var thorns = state.Config.Gear.GetStatTotal(g => g.Thorns);

@@ -6,31 +6,53 @@ namespace BarbarianSim.Rotations;
 
 public class SpinToWin : IRotation
 {
+    public SpinToWin(RallyingCry rallyingCry,
+                     ChallengingShout challengingShout,
+                     WarCry warCry,
+                     WrathOfTheBerserker wrathOfTheBerserker,
+                     Whirlwind whirlwind,
+                     LungingStrike lungingStrike)
+    {
+        _rallyingCry = rallyingCry;
+        _challengingShout = challengingShout;
+        _warCry = warCry;
+        _wrathOfTheBerserker = wrathOfTheBerserker;
+        _whirlwind = whirlwind;
+        _lungingStrike = lungingStrike;
+    }
+
+    private readonly RallyingCry _rallyingCry;
+    private readonly ChallengingShout _challengingShout;
+    private readonly WarCry _warCry;
+    private readonly WrathOfTheBerserker _wrathOfTheBerserker;
+    private readonly Whirlwind _whirlwind;
+    private readonly LungingStrike _lungingStrike;
+
     public void Execute(SimulationState state)
     {
-        if (RallyingCry.CanUse(state))
+        if (_rallyingCry.CanUse(state))
         {
-            RallyingCry.Use(state);
+            _rallyingCry.Use(state);
         }
 
-        if (ChallengingShout.CanUse(state))
+        if (_challengingShout.CanUse(state))
         {
-            ChallengingShout.Use(state);
+            _challengingShout.Use(state);
         }
 
-        if (WarCry.CanUse(state))
+        if (_warCry.CanUse(state))
         {
-            WarCry.Use(state);
+            _warCry.Use(state);
         }
 
-        if (WrathOfTheBerserker.CanUse(state))
+        if (_wrathOfTheBerserker.CanUse(state))
         {
-            WrathOfTheBerserker.Use(state);
+            _wrathOfTheBerserker.Use(state);
         }
 
-        if (Whirlwind.CanUse(state))
+        if (_whirlwind.CanUse(state))
         {
-            Whirlwind.Use(state);
+            _whirlwind.Use(state);
         }
         else
         {
@@ -42,15 +64,15 @@ public class SpinToWin : IRotation
 
                     if (gohrsDevastatingGrips.HitCount >= GohrsDevastatingGrips.MAX_HIT_COUNT)
                     {
-                        Whirlwind.StopSpinning(state);
+                        _whirlwind.StopSpinning(state);
                     }
                 }
             }
             else
             {
-                if (LungingStrike.CanUse(state))
+                if (_lungingStrike.CanUse(state))
                 {
-                    LungingStrike.Use(state, state.Enemies.First());
+                    _lungingStrike.Use(state, state.Enemies.First());
                 }
             }
         }

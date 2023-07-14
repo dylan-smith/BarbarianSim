@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Abilities;
 
-public static class WarCry
+public class WarCry
 {
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
@@ -16,11 +16,11 @@ public static class WarCry
     // Enhanced: War Cry grants you Berserking for 4 seconds
     // Mighty: War Cry grants you 15%[x] Base Life (15%[x] HP) as Fortify
     // Power: If at least 6 enemies are Nearby when you use War Cry, your damage bonus is increased by an additional 10%[x]
-    public static bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WarCryCooldown);
+    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WarCryCooldown);
 
-    public static void Use(SimulationState state) => state.Events.Add(new WarCryEvent(state.CurrentTime));
+    public void Use(SimulationState state) => state.Events.Add(new WarCryEvent(state.CurrentTime));
 
-    public static double GetDamageBonus(SimulationState state)
+    public double GetDamageBonus(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.WarCry);
 
