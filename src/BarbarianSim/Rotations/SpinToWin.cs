@@ -1,6 +1,7 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Aspects;
 using BarbarianSim.Enums;
+using BarbarianSim.Events;
 
 namespace BarbarianSim.Rotations;
 
@@ -56,7 +57,7 @@ public class SpinToWin : IRotation
         }
         else
         {
-            if (state.Player.Auras.Contains(Aura.Whirlwinding))
+            if (state.Events.Any(e => e is WhirlwindRefreshEvent))
             {
                 if (state.Config.Gear.AllGear.Select(g => g.Aspect).Any(a => a is GohrsDevastatingGrips))
                 {

@@ -58,6 +58,7 @@ internal class Program
                          .AddSingleton<IronSkinEventFactory>()
                          .AddSingleton<LuckyHitEventFactory>()
                          .AddSingleton<LungingStrikeEventFactory>()
+                         .AddSingleton<PressurePointProcEventFactory>()
                          .AddSingleton<RaidLeaderProcEventFactory>()
                          .AddSingleton<RallyingCryEventFactory>()
                          .AddSingleton<WarCryEventFactory>()
@@ -117,14 +118,13 @@ internal class Program
                          .AddSingleton<ThornsCalculator>()
                          .AddSingleton<TotalDamageMultiplierCalculator>()
                          .AddSingleton<VulnerableDamageBonusCalculator>()
-                         .AddSingleton<WillpowerCalculator>();
+                         .AddSingleton<WillpowerCalculator>()
+                         .AddSingleton<RandomGenerator>();
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         var config = CreateConfig(serviceProvider);
         config.Rotation = serviceProvider.GetRequiredService<SpinToWin>();
-        serviceProvider.GetRequiredService<LungingStrike>().Weapon = config.Gear.TwoHandSlashing;
-        serviceProvider.GetRequiredService<Whirlwind>().Weapon = config.Gear.TwoHandSlashing;
 
         serviceProvider.GetRequiredService<RandomGenerator>().Seed(123);
 
@@ -145,6 +145,9 @@ internal class Program
 
         config.PlayerSettings.Level = 100;
         config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedAxe;
+
+        config.PlayerSettings.SkillWeapons.Add(Skill.LungingStrike, config.Gear.TwoHandSlashing);
+        config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, config.Gear.TwoHandSlashing);
 
         config.Skills.Add(Skill.LungingStrike, 1);
         config.Skills.Add(Skill.EnhancedLungingStrike, 1);
@@ -303,8 +306,6 @@ internal class Program
         config.Gear.Ring2.CritDamage = 16.5;
         config.Gear.Ring2.Aspect = sp.GetRequiredService<AspectOfEchoingFuryFactory>().Create(4);
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
-
-
 
         return config;
     }

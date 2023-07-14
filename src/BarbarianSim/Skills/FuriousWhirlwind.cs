@@ -22,7 +22,7 @@ public class FuriousWhirlwind
 
     public void ProcessEvent(WhirlwindSpinEvent whirlwindSpinEvent, SimulationState state)
     {
-        if (state.Config.Skills.ContainsKey(Skill.FuriousWhirlwind) && _whirlwind.Weapon == state.Config.Gear.TwoHandSlashing)
+        if (state.Config.Skills.ContainsKey(Skill.FuriousWhirlwind) && state.Config.PlayerSettings.SkillWeapons[Skill.Whirlwind] == state.Config.Gear.TwoHandSlashing)
         {
             foreach (var enemy in state.Enemies)
             {

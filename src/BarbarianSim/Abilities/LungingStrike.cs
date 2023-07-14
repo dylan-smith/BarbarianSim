@@ -17,22 +17,4 @@ public class LungingStrike
     public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WeaponCooldown);
 
     public void Use(SimulationState state, EnemyState target) => state.Events.Add(_lungingStrikeEventFactory.Create(state.CurrentTime, target));
-
-    public GearItem Weapon { get; set; }
-
-    public double GetSkillMultiplier(SimulationState state)
-    {
-        var skillPoints = state?.Config.Skills[Skill.LungingStrike];
-        skillPoints += state?.Config.Gear.AllGear.Sum(g => g.LungingStrike);
-
-        return skillPoints switch
-        {
-            1 => 0.33,
-            2 => 0.36,
-            3 => 0.39,
-            4 => 0.42,
-            >= 5 => 0.45,
-            _ => 0.0,
-        };
-    }
 }

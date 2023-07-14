@@ -19,7 +19,6 @@ public enum Aura
     Stagger,
     AspectOfTheProtectorCooldown,
     Barrier,
-    Whirlwinding,
     Berserking,
     Bleeding,
     ViolentWhirlwind,
@@ -36,4 +35,5 @@ public enum Aura
     WrathOfTheBerserker,
     WrathOfTheBerserkerCooldown,
     Ghostwalker,
+    StoppingWhirlwind,
 }
