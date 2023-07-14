@@ -1,8 +1,4 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Enums;
-using BarbarianSim.Skills;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class RallyingCryEvent : EventInfo
 {

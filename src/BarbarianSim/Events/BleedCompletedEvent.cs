@@ -1,6 +1,4 @@
-﻿using BarbarianSim.Enums;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class BleedCompletedEvent : EventInfo
 {

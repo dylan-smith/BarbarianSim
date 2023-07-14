@@ -1,7 +1,4 @@
-﻿using BarbarianSim.Skills;
-using BarbarianSim.StatCalculators;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class RaidLeaderProcEvent : EventInfo
 {

@@ -1,6 +1,4 @@
-﻿using BarbarianSim.Abilities;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class WhirlwindRefreshEvent : EventInfo
 {

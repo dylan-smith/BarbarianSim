@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Enums;
-using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Events;
 
