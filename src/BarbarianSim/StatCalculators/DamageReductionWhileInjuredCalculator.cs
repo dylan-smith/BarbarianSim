@@ -1,13 +1,18 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class DamageReductionWhileInjuredCalculator : BaseStatCalculator
+public class DamageReductionWhileInjuredCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<DamageReductionWhileInjuredCalculator>(state);
+    public DamageReductionWhileInjuredCalculator(MaxLifeCalculator maxLifeCalculator)
+    {
+        _maxLifeCalculator = maxLifeCalculator;
+    }
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly MaxLifeCalculator _maxLifeCalculator;
+
+    public double Calculate(SimulationState state)
     {
         var damageReduction = state.Config.Gear.GetStatTotalMultiplied(g => 1 - (g.DamageReductionWhileInjured / 100.0));
 
-        return state.Player.IsInjured(MaxLifeCalculator.Calculate(state)) ? damageReduction : 1;
+        return state.Player.IsInjured(_maxLifeCalculator.Calculate(state)) ? damageReduction : 1;
     }
 }

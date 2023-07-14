@@ -7,6 +7,10 @@ namespace BarbarianSim.EventHandlers;
 
 public class WhirlwindSpinEventHandler : EventHandler<WhirlwindSpinEvent>
 {
+    public WhirlwindSpinEventHandler(AttackSpeedCalculator attackSpeedCalculator) => _attackSpeedCalculator = attackSpeedCalculator;
+
+    private readonly AttackSpeedCalculator _attackSpeedCalculator;
+    
     // Rapidly attack surrounding enemies for 17%[x] damage (Fury Cost: 11, Lucky Hit: 20%)
     public override void ProcessEvent(WhirlwindSpinEvent e, SimulationState state)
     {
@@ -28,7 +32,7 @@ public class WhirlwindSpinEventHandler : EventHandler<WhirlwindSpinEvent>
         }
 
         var weaponSpeed = 1 / Whirlwind.Weapon.AttacksPerSecond;
-        weaponSpeed *= AttackSpeedCalculator.Calculate(state);
+        weaponSpeed *= _attackSpeedCalculator.Calculate(state);
         e.WeaponCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, weaponSpeed, Aura.WeaponCooldown);
         state.Events.Add(e.WeaponCooldownAuraAppliedEvent);
 

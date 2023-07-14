@@ -1,13 +1,15 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class ResistanceToAllCalculator : BaseStatCalculator
+public class ResistanceToAllCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<ResistanceToAllCalculator>(state);
+    public ResistanceToAllCalculator(IntelligenceCalculator intelligenceCalculator) => _intelligenceCalculator = intelligenceCalculator;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly IntelligenceCalculator _intelligenceCalculator;
+
+    public double Calculate(SimulationState state)
     {
         var resistance = state.Config.Gear.GetStatTotal(g => g.ResistanceToAll);
-        resistance += IntelligenceCalculator.Calculate(state) * 0.05;
+        resistance += _intelligenceCalculator.Calculate(state) * 0.05;
 
         return resistance / 100.0;
     }

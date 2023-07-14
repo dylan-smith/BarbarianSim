@@ -7,6 +7,10 @@ namespace BarbarianSim.EventHandlers;
 
 public class LungingStrikeEventHandler : EventHandler<LungingStrikeEvent>
 {
+    public LungingStrikeEventHandler(AttackSpeedCalculator attackSpeedCalculator) => _attackSpeedCalculator = attackSpeedCalculator;
+
+    private readonly AttackSpeedCalculator _attackSpeedCalculator;
+    
     public override void ProcessEvent(LungingStrikeEvent e, SimulationState state)
     {
         e.FuryGeneratedEvent = new FuryGeneratedEvent(e.Timestamp, LungingStrike.FURY_GENERATED);
@@ -20,7 +24,7 @@ public class LungingStrikeEventHandler : EventHandler<LungingStrikeEvent>
         state.Events.Add(e.DirectDamageEvent);
 
         var weaponSpeed = 1 / LungingStrike.Weapon.AttacksPerSecond;
-        weaponSpeed *= AttackSpeedCalculator.Calculate(state);
+        weaponSpeed *= _attackSpeedCalculator.Calculate(state);
         e.WeaponCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, weaponSpeed, Aura.WeaponCooldown);
         state.Events.Add(e.WeaponCooldownAuraAppliedEvent);
     }

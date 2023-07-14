@@ -1,13 +1,15 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class OverpowerDamageCalculator : BaseStatCalculator
+public class OverpowerDamageCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<OverpowerDamageCalculator>(state);
+    public OverpowerDamageCalculator(WillpowerCalculator willpowerCalculator) => _willpowerCalculator = willpowerCalculator;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly WillpowerCalculator _willpowerCalculator;
+
+    public double Calculate(SimulationState state)
     {
         var overpowerDamage = state.Config.Gear.GetStatTotal(g => g.OverpowerDamage);
-        overpowerDamage += WillpowerCalculator.Calculate(state) * 0.25;
+        overpowerDamage += _willpowerCalculator.Calculate(state) * 0.25;
 
         return 1.0 + (overpowerDamage / 100.0);
     }

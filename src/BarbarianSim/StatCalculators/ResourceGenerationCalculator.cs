@@ -4,14 +4,16 @@ using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
 
-public class ResourceGenerationCalculator : BaseStatCalculator
+public class ResourceGenerationCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<ResourceGenerationCalculator>(state);
+    public ResourceGenerationCalculator(WillpowerCalculator willpowerCalculator) => _willpowerCalculator = willpowerCalculator;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly WillpowerCalculator _willpowerCalculator;
+
+    public double Calculate(SimulationState state)
     {
         var resourceGeneration = state.Config.Gear.GetStatTotal(g => g.ResourceGeneration);
-        resourceGeneration += WillpowerCalculator.Calculate(state) * 0.03;
+        resourceGeneration += _willpowerCalculator.Calculate(state) * 0.03;
 
         var result = 1.0 + (resourceGeneration / 100.0);
 

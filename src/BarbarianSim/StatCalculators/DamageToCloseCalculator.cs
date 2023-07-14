@@ -1,8 +1,6 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class DamageToCloseCalculator : BaseStatCalculator
+public class DamageToCloseCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<DamageToCloseCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state) => state.Config.Gear.GetStatTotal(g => g.DamageToClose);
+    public double Calculate(SimulationState state) => state.Config.Gear.GetStatTotal(g => g.DamageToClose);
 }

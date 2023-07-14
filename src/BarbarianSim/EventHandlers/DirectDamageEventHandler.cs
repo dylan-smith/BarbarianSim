@@ -6,20 +6,36 @@ namespace BarbarianSim.EventHandlers;
 
 public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 {
+    public DirectDamageEventHandler(TotalDamageMultiplierCalculator totalDamageMultiplierCalculator,
+                                    CritChanceCalculator critChanceCalculator,
+                                    CritDamageCalculator critDamageCalculator,
+                                    LuckyHitChanceCalculator luckyHitChanceCalculator)
+    {
+        _totalDamageMultiplierCalculator = totalDamageMultiplierCalculator;
+        _critChanceCalculator = critChanceCalculator;
+        _critDamageCalculator = critDamageCalculator;
+        _luckyHitChanceCalculator = luckyHitChanceCalculator;
+    }
+
+    private readonly TotalDamageMultiplierCalculator _totalDamageMultiplierCalculator;
+    private readonly CritChanceCalculator _critChanceCalculator;
+    private readonly CritDamageCalculator _critDamageCalculator;
+    private readonly LuckyHitChanceCalculator _luckyHitChanceCalculator;
+
     public override void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, e.DamageType, e.Enemy, e.SkillType, e.DamageSource);
+        var damageMultiplier = _totalDamageMultiplierCalculator.Calculate(state, e.DamageType, e.Enemy, e.SkillType, e.DamageSource);
 
         var damage = e.BaseDamage * damageMultiplier;
 
-        var critChance = CritChanceCalculator.Calculate(state, e.DamageType);
+        var critChance = _critChanceCalculator.Calculate(state, e.DamageType);
         var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
 
         var damageType = e.DamageType | DamageType.Direct;
 
         if (critRoll <= critChance)
         {
-            damage *= CritDamageCalculator.Calculate(state, e.Expertise);
+            damage *= _critDamageCalculator.Calculate(state, e.Expertise);
             damageType |= DamageType.CriticalStrike;
         }
 
@@ -28,7 +44,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
         var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
 
-        if (luckyRoll <= (e.LuckyHitChance + LuckyHitChanceCalculator.Calculate(state)))
+        if (luckyRoll <= (e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state)))
         {
             e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.SkillType, e.Enemy);
             state.Events.Add(e.LuckyHitEvent);

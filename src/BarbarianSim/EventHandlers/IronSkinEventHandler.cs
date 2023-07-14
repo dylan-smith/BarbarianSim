@@ -7,6 +7,10 @@ namespace BarbarianSim.EventHandlers;
 
 public class IronSkinEventHandler : EventHandler<IronSkinEvent>
 {
+    public IronSkinEventHandler(MaxLifeCalculator maxLifeCalculator) => _maxLifeCalculator = maxLifeCalculator;
+
+    private readonly MaxLifeCalculator _maxLifeCalculator;
+    
     public override void ProcessEvent(IronSkinEvent e, SimulationState state)
     {
         e.IronSkinAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, IronSkin.DURATION, Aura.IronSkin);
@@ -15,7 +19,7 @@ public class IronSkinEventHandler : EventHandler<IronSkinEvent>
         e.IronSkinCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, IronSkin.COOLDOWN, Aura.IronSkinCooldown);
         state.Events.Add(e.IronSkinCooldownAuraAppliedEvent);
 
-        var maxLife = MaxLifeCalculator.Calculate(state);
+        var maxLife = _maxLifeCalculator.Calculate(state);
         var missingLife = state.Player.GetMissingLife(maxLife);
         var barrierPercent = IronSkin.GetBarrierPercentage(state);
         var barrierAmount = missingLife * barrierPercent;

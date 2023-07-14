@@ -1,10 +1,8 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class AttackSpeedCalculator : BaseStatCalculator
+public class AttackSpeedCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<AttackSpeedCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state)
+    public double Calculate(SimulationState state)
     {
         var attackSpeed = state.Config.Gear.AllGear.Sum(g => g.AttackSpeed);
 

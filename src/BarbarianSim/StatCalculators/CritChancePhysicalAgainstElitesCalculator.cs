@@ -2,11 +2,9 @@
 
 namespace BarbarianSim.StatCalculators;
 
-public class CritChancePhysicalAgainstElitesCalculator : BaseStatCalculator
+public class CritChancePhysicalAgainstElitesCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType) => Calculate<CritChancePhysicalAgainstElitesCalculator>(state, damageType);
-
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType)
+    public double Calculate(SimulationState state, DamageType damageType)
     {
         if (state.Config.EnemySettings.IsElite && damageType == DamageType.Physical)
         {

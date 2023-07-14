@@ -1,10 +1,8 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class VulnerableDamageBonusCalculator : BaseStatCalculator
+public class VulnerableDamageBonusCalculator
 {
-    public static double Calculate(SimulationState state, EnemyState target) => Calculate<VulnerableDamageBonusCalculator>(state, target);
-
-    protected override double InstanceCalculate(SimulationState state, EnemyState enemy)
+    public double Calculate(SimulationState state, EnemyState enemy)
     {
         var vulnerableDamage = state.Config.Gear.AllGear.Sum(g => g.VulnerableDamage);
 
