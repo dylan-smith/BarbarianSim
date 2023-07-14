@@ -15,24 +15,5 @@ public class AuraExpiredEvent : EventInfo
     public Aura Aura { get; set; }
     public EnemyState Target { get; set; }
 
-    public override void ProcessEvent(SimulationState state)
-    {
-        if (Target == null)
-        {
-            // if there are other events it means there's an Aura been applied with a later expiration time
-            if (!state.Events.Any(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura))
-            {
-                state.Player.Auras.Remove(Aura);
-            }
-        }
-        else
-        {
-            if (!state.Events.Any(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Target == Target && expiredEvent.Aura == Aura))
-            {
-                Target.Auras.Remove(Aura);
-            }
-        }
-    }
-
     public override string ToString() => $"[{Timestamp:F1}] {Aura} Aura Expired";
 }

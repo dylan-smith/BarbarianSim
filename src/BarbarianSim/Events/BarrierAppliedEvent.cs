@@ -16,19 +16,6 @@ namespace BarbarianSim.Events
             Duration = duration;
         }
 
-        public override void ProcessEvent(SimulationState state)
-        {
-            Barrier = new Barrier(BarrierAmount);
-
-            BarrierAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Barrier);
-            state.Events.Add(BarrierAuraAppliedEvent);
-
-            state.Player.Barriers.Add(Barrier);
-
-            BarrierExpiredEvent = new BarrierExpiredEvent(Timestamp + Duration, Barrier);
-            state.Events.Add(BarrierExpiredEvent);
-        }
-
         public override string ToString() => $"{base.ToString()} - {BarrierAmount} barrier applied for {Duration} seconds";
     }
 }

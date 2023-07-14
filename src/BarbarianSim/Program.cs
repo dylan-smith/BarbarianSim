@@ -4,6 +4,7 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Gems;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BarbarianSim;
 
@@ -11,11 +12,45 @@ internal class Program
 {
     private static void Main()
     {
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<AspectOfEchoingFuryProcEvent>>(new EventHandlers.AspectOfEchoingFuryProcEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<AspectOfTheProtectorProcEvent>>(new EventHandlers.AspectOfTheProtectorProcEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<AuraAppliedEvent>>(new EventHandlers.AuraAppliedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<AuraExpiredEvent>>(new EventHandlers.AuraExpiredEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<BarrierAppliedEvent>>(new EventHandlers.BarrierAppliedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<BarrierExpiredEvent>>(new EventHandlers.BarrierExpiredEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<BleedAppliedEvent>>(new EventHandlers.BleedAppliedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<BleedCompletedEvent>>(new EventHandlers.BleedCompletedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<ChallengingShoutEvent>>(new EventHandlers.ChallengingShoutEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<DamageEvent>>(new EventHandlers.DamageEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<DirectDamageEvent>>(new EventHandlers.DirectDamageEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<FortifyGeneratedEvent>>(new EventHandlers.FortifyGeneratedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<FuryGeneratedEvent>>(new EventHandlers.FuryGeneratedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<FurySpentEvent>>(new EventHandlers.FurySpentEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<GohrsDevastatingGripsProcEvent>>(new EventHandlers.GohrsDevastatingGripsProcEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<GutteralYellProcEvent>>(new EventHandlers.GutteralYellProcEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<HealingEvent>>(new EventHandlers.HealingEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<IronSkinEvent>>(new EventHandlers.IronSkinEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<LuckyHitEvent>>(new EventHandlers.LuckyHitEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<LungingStrikeEvent>>(new EventHandlers.LungingStrikeEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<PressurePointProcEvent>>(new EventHandlers.PressurePointProcEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<RaidLeaderProcEvent>>(new EventHandlers.RaidLeaderProcEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<RallyingCryEvent>>(new EventHandlers.RallyingCryEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<VulnerableAppliedEvent>>(new EventHandlers.VulnerableAppliedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<WarCryEvent>>(new EventHandlers.WarCryEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindRefreshEvent>>(new EventHandlers.WhirlwindRefreshEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindSpinEvent>>(new EventHandlers.WhirlwindSpinEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindStoppedEvent>>(new EventHandlers.WhirlwindStoppedEventHandler());
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<WrathOfTheBerserkerEvent>>(new EventHandlers.WrathOfTheBerserkerEventHandler());
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
         var config = CreateConfig();
 
         RandomGenerator.Seed(123);
 
-        var sim = new Simulation(config);
+        var sim = new Simulation(config, serviceProvider);
         var state = sim.Run();
 
         ReportResults(state);

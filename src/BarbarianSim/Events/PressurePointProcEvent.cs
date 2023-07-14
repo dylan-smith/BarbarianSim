@@ -8,12 +8,5 @@
 
         public EnemyState Target { get; init; }
         public VulnerableAppliedEvent VulnerableAppliedEvent { get; set; }
-
-        public override void ProcessEvent(SimulationState state)
-        {
-            VulnerableAppliedEvent = new VulnerableAppliedEvent(Timestamp, Target, VULNERABLE_DURATION);
-
-            state.Events.Add(VulnerableAppliedEvent);
-        }
     }
 }

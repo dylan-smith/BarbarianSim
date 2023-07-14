@@ -10,11 +10,5 @@ namespace BarbarianSim.Events
         }
 
         public AuraAppliedEvent GutteralYellAuraAppliedEvent { get; set; }
-
-        public override void ProcessEvent(SimulationState state)
-        {
-            GutteralYellAuraAppliedEvent = new AuraAppliedEvent(Timestamp, GutteralYell.DURATION, Aura.GutteralYell);
-            state.Events.Add(GutteralYellAuraAppliedEvent);
-        }
     }
 }

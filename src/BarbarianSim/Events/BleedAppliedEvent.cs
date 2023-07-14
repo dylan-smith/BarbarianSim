@@ -15,11 +15,4 @@ public class BleedAppliedEvent : EventInfo
     public double Duration { get; init; }
     public EnemyState Target { get; init; }
     public BleedCompletedEvent BleedCompletedEvent { get; set; }
-
-    public override void ProcessEvent(SimulationState state)
-    {
-        Target.Auras.Add(Aura.Bleeding);
-        BleedCompletedEvent = new BleedCompletedEvent(Timestamp + Duration, Damage, Target);
-        state.Events.Add(BleedCompletedEvent);
-    }
 }

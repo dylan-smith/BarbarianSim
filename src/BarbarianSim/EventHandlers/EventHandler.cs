@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using BarbarianSim.Events;
+﻿using BarbarianSim.Events;
 
 namespace BarbarianSim.EventHandlers;
 
