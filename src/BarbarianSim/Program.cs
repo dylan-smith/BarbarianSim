@@ -130,8 +130,6 @@ internal class Program
         serviceCollection.AddSingleton<VulnerableDamageBonusCalculator>();
         serviceCollection.AddSingleton<WillpowerCalculator>();
 
-        
-
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         var config = CreateConfig(serviceProvider);
