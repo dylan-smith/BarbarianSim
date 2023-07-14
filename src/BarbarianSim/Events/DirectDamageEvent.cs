@@ -44,7 +44,7 @@ public class DirectDamageEvent : EventInfo
             damageType |= DamageType.CriticalStrike;
         }
 
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource.Whirlwind, SkillType.Core, Enemy);
+        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource, SkillType, Enemy);
         state.Events.Add(DamageEvent);
 
         var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
