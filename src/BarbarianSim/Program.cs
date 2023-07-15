@@ -130,11 +130,12 @@ internal class Program
         serviceCollection.AddSingleton<VulnerableDamageBonusCalculator>();
         serviceCollection.AddSingleton<WillpowerCalculator>();
 
+        // Other
+        serviceCollection.AddSingleton(new RandomGenerator(123));
+
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         var config = CreateConfig(serviceProvider);
-
-        RandomGenerator.Seed(123);
 
         var sim = new Simulation(config, serviceProvider);
         var state = sim.Run();
