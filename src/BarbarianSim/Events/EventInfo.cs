@@ -1,6 +1,8 @@
-﻿namespace BarbarianSim.Events;
+﻿using MediatR;
 
-public abstract class EventInfo
+namespace BarbarianSim.Events;
+
+public abstract class EventInfo : IRequest
 {
     public double Timestamp { get; set; }
 

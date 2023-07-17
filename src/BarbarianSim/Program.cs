@@ -132,6 +132,8 @@ internal class Program
         // Other
         serviceCollection.AddSingleton(new RandomGenerator(123));
 
+        serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         var config = CreateConfig(serviceProvider);
