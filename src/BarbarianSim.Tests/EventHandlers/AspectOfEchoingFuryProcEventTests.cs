@@ -2,6 +2,7 @@
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using System;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
@@ -23,6 +24,7 @@ public class AspectOfEchoingFuryProcEventHandlerTests
         aspectProcEvent.FuryGeneratedEvents.First().Timestamp.Should().Be(124);
         aspectProcEvent.FuryGeneratedEvents.Last().Timestamp.Should().Be(129);
         _state.Events.OfType<FuryGeneratedEvent>().All(e => e.BaseFury == 4.0).Should().BeTrue();
+        _state.Events.OfType<FuryGeneratedEvent>().All(e => Math.Abs(e.BaseFury - 4) < 0.000001).Should().BeTrue();
     }
 
     [Fact]

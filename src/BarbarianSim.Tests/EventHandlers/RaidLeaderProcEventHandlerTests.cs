@@ -49,7 +49,7 @@ public class RaidLeaderProcEventHandlerTests
 
         _handler.ProcessEvent(raidLeaderProcEvent, _state);
 
-        raidLeaderProcEvent.HealingEvents.All(e => e.BaseAmountHealed == 24.0).Should().BeTrue();
+        raidLeaderProcEvent.HealingEvents.All(e => Math.Abs(e.BaseAmountHealed - 24.0) < 0.00001).Should().BeTrue();
     }
 
     [Fact]
