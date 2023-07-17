@@ -106,7 +106,6 @@ public class DirectDamageEventHandlerTests
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
-        var damageEvent = (DamageEvent)_state.Events.Single(e => e is DamageEvent);
         directDamageEvent.DamageEvent.Damage.Should().Be(350);
     }
 
