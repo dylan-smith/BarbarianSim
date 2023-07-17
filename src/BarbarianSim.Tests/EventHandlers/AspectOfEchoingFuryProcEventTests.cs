@@ -2,7 +2,6 @@
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
