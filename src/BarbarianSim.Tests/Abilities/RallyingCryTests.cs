@@ -97,6 +97,6 @@ public class RallyingCryTests
 
         _rallyingCry.ProcessEvent(directDamageEvent, _state);
 
-        _state.Events.Should().NotContain(e => e is FortifyGeneratedEvent); 
+        _state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
     }
 }

@@ -2,7 +2,6 @@
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
-using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
