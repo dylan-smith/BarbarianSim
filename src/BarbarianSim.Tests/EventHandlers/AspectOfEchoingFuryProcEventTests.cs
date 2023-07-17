@@ -22,7 +22,6 @@ public class AspectOfEchoingFuryProcEventHandlerTests
         _state.Events.OfType<FuryGeneratedEvent>().Should().HaveCount(6);
         aspectProcEvent.FuryGeneratedEvents.First().Timestamp.Should().Be(124);
         aspectProcEvent.FuryGeneratedEvents.Last().Timestamp.Should().Be(129);
-        _state.Events.OfType<FuryGeneratedEvent>().All(e => e.BaseFury == 4.0).Should().BeTrue();
         _state.Events.OfType<FuryGeneratedEvent>().All(e => Math.Abs(e.BaseFury - 4) < 0.000001).Should().BeTrue();
     }
 
