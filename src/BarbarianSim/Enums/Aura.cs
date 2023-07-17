@@ -18,7 +18,6 @@ public enum Aura
     Freeze,
     Stagger,
     AspectOfTheProtectorCooldown,
-    Barrier,
     Whirlwinding,
     Berserking,
     Bleeding,
