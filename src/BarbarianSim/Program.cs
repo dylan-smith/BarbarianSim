@@ -65,7 +65,6 @@ internal class Program
         serviceCollection.AddSingleton<EventHandlers.EventHandler<PressurePointProcEvent>, EventHandlers.PressurePointProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<RaidLeaderProcEvent>, EventHandlers.RaidLeaderProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<RallyingCryEvent>, EventHandlers.RallyingCryEventHandler>();
-        serviceCollection.AddSingleton<EventHandlers.EventHandler<VulnerableAppliedEvent>, EventHandlers.VulnerableAppliedEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WarCryEvent>, EventHandlers.WarCryEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindRefreshEvent>, EventHandlers.WhirlwindRefreshEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindSpinEvent>, EventHandlers.WhirlwindSpinEventHandler>();
@@ -475,15 +474,15 @@ internal class Program
         var totalUptime = 0.0;
         var totalPercentage = 0.0;
 
-        var vulnerableEvents = state.ProcessedEvents.Where(x => x is VulnerableAppliedEvent || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Vulnerable)).ToList();
+        var vulnerableEvents = state.ProcessedEvents.Where(x => (x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Vulnerable) || (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Vulnerable)).ToList();
         var endOfFight = state.ProcessedEvents.Max(x => x.Timestamp);
 
         foreach (var enemy in state.Enemies)
         {
-            var count = vulnerableEvents.Where(x => x is VulnerableAppliedEvent && (x as VulnerableAppliedEvent).Target == enemy).Count();
+            var count = vulnerableEvents.Where(x => x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Vulnerable && appliedEvent.Target == enemy).Count();
 
-            var enemyEvents = vulnerableEvents.Where(x => (x is VulnerableAppliedEvent appliedEvent && appliedEvent.Target == enemy) ||
-                                                           (x is AuraExpiredEvent expiredEvent && expiredEvent.Target == enemy));
+            var enemyEvents = vulnerableEvents.Where(x => (x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Vulnerable && appliedEvent.Target == enemy) ||
+                                                           (x is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Vulnerable && expiredEvent.Target == enemy));
 
             var timestamp = 0.0;
             var uptime = 0.0;
@@ -498,7 +497,7 @@ internal class Program
 
                 timestamp = e.Timestamp;
 
-                if (e is VulnerableAppliedEvent)
+                if (e is AuraAppliedEvent)
                 {
                     active = true;
                 }

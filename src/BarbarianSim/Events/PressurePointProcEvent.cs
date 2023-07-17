@@ -5,5 +5,5 @@ public class PressurePointProcEvent : EventInfo
     public PressurePointProcEvent(double timestamp, EnemyState target) : base(timestamp) => Target = target;
 
     public EnemyState Target { get; init; }
-    public VulnerableAppliedEvent VulnerableAppliedEvent { get; set; }
+    public AuraAppliedEvent VulnerableAppliedEvent { get; set; }
 }

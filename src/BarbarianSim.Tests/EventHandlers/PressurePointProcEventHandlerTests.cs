@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
@@ -20,9 +21,10 @@ public class PressurePointProcEventHandlerTests
 
         pressurePointProcEvent.VulnerableAppliedEvent.Should().NotBeNull();
         _state.Events.Should().Contain(pressurePointProcEvent.VulnerableAppliedEvent);
-        _state.Events.Should().ContainSingle(e => e is VulnerableAppliedEvent);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
         pressurePointProcEvent.VulnerableAppliedEvent.Timestamp.Should().Be(123);
         pressurePointProcEvent.VulnerableAppliedEvent.Target.Should().Be(_state.Enemies.First());
         pressurePointProcEvent.VulnerableAppliedEvent.Duration.Should().Be(2.0);
+        pressurePointProcEvent.VulnerableAppliedEvent.Aura.Should().Be(Aura.Vulnerable);
     }
 }

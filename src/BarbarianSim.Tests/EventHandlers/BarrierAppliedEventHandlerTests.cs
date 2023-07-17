@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Config;
-using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
@@ -11,21 +10,6 @@ public class BarrierAppliedEventHandlerTests
 {
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly BarrierAppliedEventHandler _handler = new();
-
-    [Fact]
-    public void Creates_AuraAppliedEvent()
-    {
-        var barrierAppliedEvent = new BarrierAppliedEvent(123.0, 1000, 10.0);
-
-        _handler.ProcessEvent(barrierAppliedEvent, _state);
-
-        barrierAppliedEvent.BarrierAuraAppliedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(barrierAppliedEvent.BarrierAuraAppliedEvent);
-        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
-        barrierAppliedEvent.BarrierAuraAppliedEvent.Timestamp.Should().Be(123.0);
-        barrierAppliedEvent.BarrierAuraAppliedEvent.Duration.Should().Be(10.0);
-        barrierAppliedEvent.BarrierAuraAppliedEvent.Aura.Should().Be(Aura.Barrier);
-    }
 
     [Fact]
     public void Adds_Barrier_To_Player()
