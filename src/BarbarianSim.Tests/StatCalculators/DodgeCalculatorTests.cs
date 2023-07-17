@@ -1,21 +1,28 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class DodgeCalculatorTests : IDisposable
+public class DodgeCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<DexterityCalculator> _mockDexterityCalculator = TestHelpers.CreateMock<DexterityCalculator>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DodgeCalculator _calculator;
+
+    public DodgeCalculatorTests()
+    {
+        _mockDexterityCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _calculator = new DodgeCalculator(_mockDexterityCalculator.Object);
+    }
 
     [Fact]
     public void Returns_0_By_Default()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(0.0));
 
-        var result = DodgeCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(0.0);
     }
@@ -23,12 +30,9 @@ public sealed class DodgeCalculatorTests : IDisposable
     [Fact]
     public void Includes_Dodge_Gear_Bonus()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.Dodge = 42;
-        var state = new SimulationState(config);
-        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(0.0));
+        _state.Config.Gear.Helm.Dodge = 42;
 
-        var result = DodgeCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(0.42);
     }
@@ -36,10 +40,9 @@ public sealed class DodgeCalculatorTests : IDisposable
     [Fact]
     public void Includes_Dexterity_Bonus()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(DexterityCalculator), new FakeStatCalculator(400.0));
+        _mockDexterityCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);
 
-        var result = DodgeCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(0.04);
     }

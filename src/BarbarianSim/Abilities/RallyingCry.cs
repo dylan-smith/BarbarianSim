@@ -14,11 +14,11 @@ public class RallyingCry
     public const double DIRECT_DAMAGE_FORTIFY_FROM_STRATEGIC_RALLYING_CRY = 0.02;
 
     // Bellow a Rallying Cry, increasing your Movement Speed by 30%[+] and Resource Generation by 40%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
-    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.RallyingCryCooldown);
+    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.RallyingCryCooldown);
 
-    public void Use(SimulationState state) => state.Events.Add(new RallyingCryEvent(state.CurrentTime));
+    public virtual void Use(SimulationState state) => state.Events.Add(new RallyingCryEvent(state.CurrentTime));
 
-    public double GetResourceGeneration(SimulationState state)
+    public virtual double GetResourceGeneration(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.RallyingCry);
 

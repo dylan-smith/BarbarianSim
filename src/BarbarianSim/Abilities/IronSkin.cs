@@ -15,11 +15,11 @@ public class IronSkin
     // Enhanced: Ironskin's Barrier absorbs 20% more of your Maximum Life
     // Tactical: While Ironskin is active Heal for 10% of the Barrier's original amount as Life per second
     // Strategic: Ironskin also grants 15% Base Life (15%[x] HP) as Fortify. Double this amount if cast while below 50% Life
-    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.IronSkinCooldown);
+    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.IronSkinCooldown);
 
-    public void Use(SimulationState state) => state.Events.Add(new IronSkinEvent(state.CurrentTime));
+    public virtual void Use(SimulationState state) => state.Events.Add(new IronSkinEvent(state.CurrentTime));
 
-    public double GetBarrierPercentage(SimulationState state)
+    public virtual double GetBarrierPercentage(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.IronSkin);
 

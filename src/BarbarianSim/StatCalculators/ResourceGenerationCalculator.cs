@@ -17,7 +17,7 @@ public class ResourceGenerationCalculator
     private readonly RallyingCry _rallyingCry;
     private readonly ProlificFury _prolificFury;
 
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var resourceGeneration = state.Config.Gear.GetStatTotal(g => g.ResourceGeneration);
         resourceGeneration += _willpowerCalculator.Calculate(state) * 0.03;

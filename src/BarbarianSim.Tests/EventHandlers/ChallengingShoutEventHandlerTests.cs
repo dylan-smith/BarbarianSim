@@ -1,24 +1,39 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
+using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
-namespace BarbarianSim.Tests.Events;
+namespace BarbarianSim.Tests.EventHandlers;
 
-public class ChallengingShoutEventTests
+public class ChallengingShoutEventHandlerTests
 {
+    private readonly Mock<BoomingVoice> _mockBoomingVoice = TestHelpers.CreateMock<BoomingVoice>();
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly ChallengingShoutEventHandler _handler;
+
+    public ChallengingShoutEventHandlerTests()
+    {
+        _mockBoomingVoice.Setup(m => m.GetDurationIncrease(It.IsAny<SimulationState>()))
+                         .Returns(1.0);
+
+        _handler = new ChallengingShoutEventHandler(_mockBoomingVoice.Object);
+    }
+
     [Fact]
     public void Creates_ChallengingShoutCooldownAuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
-        challengingShoutEvent.ProcessEvent(state);
+        _handler.ProcessEvent(challengingShoutEvent, _state);
 
         challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ChallengingShoutCooldown);
+        _state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ChallengingShoutCooldown);
         challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
         challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Duration.Should().Be(25);
         challengingShoutEvent.ChallengingShoutCooldownAuraAppliedEvent.Aura.Should().Be(Aura.ChallengingShoutCooldown);
@@ -27,14 +42,13 @@ public class ChallengingShoutEventTests
     [Fact]
     public void Creates_ChallengingShoutAuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
-        challengingShoutEvent.ProcessEvent(state);
+        _handler.ProcessEvent(challengingShoutEvent, _state);
 
         challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ChallengingShout);
+        _state.Events.Should().Contain(challengingShoutEvent.ChallengingShoutAuraAppliedEvent);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ChallengingShout);
         challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Timestamp.Should().Be(123);
         challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Aura.Should().Be(Aura.ChallengingShout);
         challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Duration.Should().Be(6);
@@ -48,7 +62,7 @@ public class ChallengingShoutEventTests
         var state = new SimulationState(config);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
-        challengingShoutEvent.ProcessEvent(state);
+        _handler.ProcessEvent(challengingShoutEvent, state);
 
         challengingShoutEvent.TauntAuraAppliedEvent.Should().HaveCount(3);
         state.Events.Count(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Should().Be(3);
@@ -58,39 +72,31 @@ public class ChallengingShoutEventTests
         state.Events.Where(e => e is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.Taunt).Cast<AuraAppliedEvent>().Last().Target.Should().Be(state.Enemies.Last());
     }
 
-    [Theory]
-    [InlineData(0, 6)]
-    [InlineData(1, 6.48)]
-    [InlineData(2, 6.96)]
-    [InlineData(3, 7.44)]
-    [InlineData(4, 7.44)]
-    public void BoomingVoice_Increases_Duration(int skillPoints, double expectedDuration)
+    [Fact]
+    public void BoomingVoice_Increases_Duration()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.BoomingVoice, skillPoints);
+        _mockBoomingVoice.Setup(m => m.GetDurationIncrease(_state)).Returns(1.24);
 
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
-        challengingShoutEvent.ProcessEvent(state);
+        _handler.ProcessEvent(challengingShoutEvent, _state);
 
-        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Duration.Should().BeApproximately(expectedDuration, 0.000001);
+        challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Duration.Should().Be(6.0 * 1.24);
     }
 
     [Fact]
     public void Creates_RaidLeaderProcEvent()
     {
-        var config = new SimulationConfig();
-        config.Skills.Add(Skill.RaidLeader, 1);
-        config.Skills.Add(Skill.BoomingVoice, 2);
-        var state = new SimulationState(config);
+        _state.Config.Skills.Add(Skill.RaidLeader, 1);
+        _mockBoomingVoice.Setup(m => m.GetDurationIncrease(_state)).Returns(1.24);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
-        challengingShoutEvent.ProcessEvent(state);
+        _handler.ProcessEvent(challengingShoutEvent, _state);
 
         challengingShoutEvent.RaidLeaderProcEvent.Should().NotBeNull();
-        state.Events.Should().Contain(challengingShoutEvent.RaidLeaderProcEvent);
-        state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
+        _state.Events.Should().Contain(challengingShoutEvent.RaidLeaderProcEvent);
+        _state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
         challengingShoutEvent.RaidLeaderProcEvent.Timestamp.Should().Be(123);
-        challengingShoutEvent.RaidLeaderProcEvent.Duration.Should().BeApproximately(6.96, 0.000000001);
+        challengingShoutEvent.RaidLeaderProcEvent.Duration.Should().Be(6.0 * 1.24);
     }
 }

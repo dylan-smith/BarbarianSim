@@ -8,6 +8,9 @@ namespace BarbarianSim.Tests.Skills;
 
 public class PitFighterTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly PitFighter _skill = new();
+
     [Theory]
     [InlineData(0, 1)]
     [InlineData(1, 1.03)]
@@ -16,9 +19,8 @@ public class PitFighterTests
     [InlineData(4, 1.09)]
     public void Skill_Points_Determines_CloseDamageBonus(int skillPoints, double damageBonus)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.PitFighter, skillPoints);
+        _state.Config.Skills.Add(Skill.PitFighter, skillPoints);
 
-        PitFighter.GetCloseDamageBonus(state).Should().Be(damageBonus);
+        _skill.GetCloseDamageBonus(_state).Should().Be(damageBonus);
     }
 }

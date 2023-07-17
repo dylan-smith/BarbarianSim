@@ -38,8 +38,8 @@ public class GearTests
     public void GetAllAspects_Returns_All_Aspects()
     {
         var gear = new Gear();
-        gear.Helm.Aspect = new AspectOfEchoingFury(2);
-        gear.Chest.Aspect = new AspectOfNumbingWraith(12);
+        gear.Helm.Aspect = new AspectOfEchoingFury();
+        gear.Chest.Aspect = new AspectOfNumbingWraith();
         gear.Amulet.Aspect = null;
 
         gear.GetAllAspects<Aspect>().Should().HaveCount(2);
@@ -49,8 +49,8 @@ public class GearTests
     public void GetAllAspects_Filters_To_A_Specific_Aspect()
     {
         var gear = new Gear();
-        gear.Helm.Aspect = new AspectOfEchoingFury(2);
-        gear.Chest.Aspect = new AspectOfNumbingWraith(12);
+        gear.Helm.Aspect = new AspectOfEchoingFury();
+        gear.Chest.Aspect = new AspectOfNumbingWraith() { Fortify = 12 };
         gear.Amulet.Aspect = null;
 
         gear.GetAllAspects<AspectOfNumbingWraith>().Should().HaveCount(1);

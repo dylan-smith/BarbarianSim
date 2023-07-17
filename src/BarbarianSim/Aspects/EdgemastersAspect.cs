@@ -13,7 +13,7 @@ public class EdgemastersAspect : Aspect
 
     public int Damage { get; set; }
 
-    public double GetDamageBonus(SimulationState state, SkillType skillType)
+    public virtual double GetDamageBonus(SimulationState state, SkillType skillType)
     {
         if (skillType != SkillType.None)
         {

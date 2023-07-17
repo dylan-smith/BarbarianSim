@@ -2,7 +2,7 @@
 
 public class DexterityCalculator
 {
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var dexterity = state.Config.Gear.GetStatTotal(g => g.Dexterity);
         dexterity += state.Config.Gear.GetStatTotal(g => g.AllStats);

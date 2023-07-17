@@ -8,6 +8,9 @@ namespace BarbarianSim.Tests.Abilities;
 
 public class BoomingVoiceTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly BoomingVoice _skill = new();
+
     [Theory]
     [InlineData(0, 1)]
     [InlineData(1, 1.08)]
@@ -16,9 +19,8 @@ public class BoomingVoiceTests
     [InlineData(4, 1.24)]
     public void Skill_Points_Determines_DurationIncrease(int skillPoints, double durationIncrease)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.BoomingVoice, skillPoints);
+        _state.Config.Skills.Add(Skill.BoomingVoice, skillPoints);
 
-        BoomingVoice.GetDurationIncrease(state).Should().Be(durationIncrease);
+        _skill.GetDurationIncrease(_state).Should().Be(durationIncrease);
     }
 }

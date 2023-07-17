@@ -13,7 +13,7 @@ public class CritChanceCalculator
     private readonly CritChancePhysicalAgainstElitesCalculator _critChancePhysicalAgainstElitesCalculator;
     private readonly DexterityCalculator _dexterityCalculator;
 
-    public double Calculate(SimulationState state, DamageType damageType)
+    public virtual double Calculate(SimulationState state, DamageType damageType)
     {
         var critChance = 5.0; // base chance to crit
         critChance += state.Config.Gear.AllGear.Sum(g => g.CritChance);

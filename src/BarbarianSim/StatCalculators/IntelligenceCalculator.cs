@@ -2,7 +2,7 @@
 
 public class IntelligenceCalculator
 {
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var intelligence = state.Config.Gear.GetStatTotal(g => g.Intelligence);
         intelligence += state.Config.Gear.GetStatTotal(g => g.AllStats);

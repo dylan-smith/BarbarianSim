@@ -1,21 +1,27 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class OverpowerDamageCalculatorTests : IDisposable
+public class OverpowerDamageCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<WillpowerCalculator> _mockWillpowerCalculator = TestHelpers.CreateMock<WillpowerCalculator>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly OverpowerDamageCalculator _calculator;
+
+    public OverpowerDamageCalculatorTests()
+    {
+        _mockWillpowerCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _calculator = new OverpowerDamageCalculator(_mockWillpowerCalculator.Object);
+    }
 
     [Fact]
     public void Returns_1_By_Default()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-
-        var result = OverpowerDamageCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.0);
     }
@@ -23,12 +29,9 @@ public sealed class OverpowerDamageCalculatorTests : IDisposable
     [Fact]
     public void Includes_OverpowerDamage_Gear_Bonus()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.OverpowerDamage = 42;
-        var state = new SimulationState(config);
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        _state.Config.Gear.Helm.OverpowerDamage = 42;
 
-        var result = OverpowerDamageCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.42);
     }
@@ -36,10 +39,9 @@ public sealed class OverpowerDamageCalculatorTests : IDisposable
     [Fact]
     public void Includes_Willpower_Bonus()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(400.0));
+        _mockWillpowerCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);
 
-        var result = OverpowerDamageCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(2.0);
     }

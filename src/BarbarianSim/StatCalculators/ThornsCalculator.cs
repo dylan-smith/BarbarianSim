@@ -9,7 +9,7 @@ public class ThornsCalculator
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
 
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var thorns = state.Config.Gear.GetStatTotal(g => g.Thorns);
 

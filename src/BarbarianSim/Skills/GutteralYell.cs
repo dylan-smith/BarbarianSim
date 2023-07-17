@@ -5,7 +5,7 @@ namespace BarbarianSim.Skills;
 
 public class GutteralYell
 {
-    // Your Shout skills cause enemies to deal 4% less damage for 5 seconds
+    // Your Shout skills cause enemies to deal X% less damage for 5 seconds
     public const double DURATION = 5;
 
     public void ProcessEvent(WarCryEvent e, SimulationState state)
@@ -23,7 +23,7 @@ public class GutteralYell
         state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
     }
 
-    public double GetDamageReduction(SimulationState state)
+    public virtual double GetDamageReduction(SimulationState state)
     {
         var skillPoints = 0;
 

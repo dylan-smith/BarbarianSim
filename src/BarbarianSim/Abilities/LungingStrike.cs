@@ -10,13 +10,13 @@ public class LungingStrike
     public const double FURY_GENERATED = 10;
 
     // Lunge forward and strike an enemy for 33% damage
-    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WeaponCooldown);
+    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WeaponCooldown);
 
-    public void Use(SimulationState state, EnemyState target) => state.Events.Add(new LungingStrikeEvent(state.CurrentTime, target));
+    public virtual void Use(SimulationState state, EnemyState target) => state.Events.Add(new LungingStrikeEvent(state.CurrentTime, target));
 
     public GearItem Weapon { get; set; }
 
-    public double GetSkillMultiplier(SimulationState state)
+    public virtual double GetSkillMultiplier(SimulationState state)
     {
         var skillPoints = state?.Config.Skills[Skill.LungingStrike];
         skillPoints += state?.Config.Gear.AllGear.Sum(g => g.LungingStrike);

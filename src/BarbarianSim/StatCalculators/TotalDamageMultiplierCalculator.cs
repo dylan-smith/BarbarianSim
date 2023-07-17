@@ -29,7 +29,7 @@ public class TotalDamageMultiplierCalculator
     private readonly WarCry _warCry;
     private readonly WrathOfTheBerserker _wrathOfTheBerserker;
 
-    public double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
+    public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
         var damageBonus = _additiveDamageBonusCalculator.Calculate(state, damageType, enemy);
         damageBonus *= _vulnerableDamageBonusCalculator.Calculate(state, enemy);

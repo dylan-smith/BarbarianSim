@@ -1,23 +1,26 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
 using Xunit;
 
-namespace BarbarianSim.Tests.Events;
+namespace BarbarianSim.Tests.EventHandlers;
 
-public class WrathOfTheBerserkerEvenTests
+public class WrathOfTheBerserkerEventHandlerTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly WrathOfTheBerserkerEventHandler _handler = new();
+
     [Fact]
     public void Creates_WrathOfTheBerserkerAuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var wrathOfTheBerserkerEvent = new WrathOfTheBerserkerEvent(123);
 
-        wrathOfTheBerserkerEvent.ProcessEvent(state);
+        _handler.ProcessEvent(wrathOfTheBerserkerEvent, _state);
 
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerAuraAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerAuraAppliedEvent);
+        _state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerAuraAppliedEvent);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerAuraAppliedEvent.Timestamp.Should().Be(123);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerAuraAppliedEvent.Aura.Should().Be(Aura.WrathOfTheBerserker);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerAuraAppliedEvent.Duration.Should().Be(10);
@@ -26,13 +29,12 @@ public class WrathOfTheBerserkerEvenTests
     [Fact]
     public void Creates_UnstoppableAuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var wrathOfTheBerserkerEvent = new WrathOfTheBerserkerEvent(123);
 
-        wrathOfTheBerserkerEvent.ProcessEvent(state);
+        _handler.ProcessEvent(wrathOfTheBerserkerEvent, _state);
 
         wrathOfTheBerserkerEvent.UnstoppableAuraAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(wrathOfTheBerserkerEvent.UnstoppableAuraAppliedEvent);
+        _state.Events.Should().Contain(wrathOfTheBerserkerEvent.UnstoppableAuraAppliedEvent);
         wrathOfTheBerserkerEvent.UnstoppableAuraAppliedEvent.Timestamp.Should().Be(123);
         wrathOfTheBerserkerEvent.UnstoppableAuraAppliedEvent.Aura.Should().Be(Aura.Unstoppable);
         wrathOfTheBerserkerEvent.UnstoppableAuraAppliedEvent.Duration.Should().Be(5);
@@ -41,14 +43,13 @@ public class WrathOfTheBerserkerEvenTests
     [Fact]
     public void Creates_WrathOfTheBerserkerCooldownAuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var wrathOfTheBerserkerEvent = new WrathOfTheBerserkerEvent(123);
 
-        wrathOfTheBerserkerEvent.ProcessEvent(state);
+        _handler.ProcessEvent(wrathOfTheBerserkerEvent, _state);
 
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WrathOfTheBerserkerCooldown);
+        _state.Events.Should().Contain(wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.WrathOfTheBerserkerCooldown);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Aura.Should().Be(Aura.WrathOfTheBerserkerCooldown);
         wrathOfTheBerserkerEvent.WrathOfTheBerserkerCooldownAuraAppliedEvent.Duration.Should().Be(60);
@@ -57,14 +58,13 @@ public class WrathOfTheBerserkerEvenTests
     [Fact]
     public void Creates_BerserkingAuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var wrathOfTheBerserkerEvent = new WrathOfTheBerserkerEvent(123);
 
-        wrathOfTheBerserkerEvent.ProcessEvent(state);
+        _handler.ProcessEvent(wrathOfTheBerserkerEvent, _state);
 
         wrathOfTheBerserkerEvent.BerserkingAuraAppliedEvent.Should().NotBeNull();
-        state.Events.Should().Contain(wrathOfTheBerserkerEvent.BerserkingAuraAppliedEvent);
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
+        _state.Events.Should().Contain(wrathOfTheBerserkerEvent.BerserkingAuraAppliedEvent);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
         wrathOfTheBerserkerEvent.BerserkingAuraAppliedEvent.Timestamp.Should().Be(123);
         wrathOfTheBerserkerEvent.BerserkingAuraAppliedEvent.Duration.Should().Be(5);
         wrathOfTheBerserkerEvent.BerserkingAuraAppliedEvent.Aura.Should().Be(Aura.Berserking);

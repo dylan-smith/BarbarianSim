@@ -2,7 +2,7 @@
 
 public class AttackSpeedCalculator
 {
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var attackSpeed = state.Config.Gear.AllGear.Sum(g => g.AttackSpeed);
 

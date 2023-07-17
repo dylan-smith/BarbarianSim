@@ -31,7 +31,7 @@ public class DamageReductionCalculator
     private readonly ChallengingShout _challengingShout;
     private readonly GutteralYell _gutteralYell;
 
-    public double Calculate(SimulationState state, EnemyState enemy)
+    public virtual double Calculate(SimulationState state, EnemyState enemy)
     {
         var damageReduction = 0.9; // Base DR for Barbarians (https://maxroll.gg/d4/getting-started/defenses-for-beginners)
         damageReduction *= state.Config.Gear.GetStatTotalMultiplied(g => 1 - (g.DamageReduction / 100.0));

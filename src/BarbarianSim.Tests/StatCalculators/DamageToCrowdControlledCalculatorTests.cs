@@ -8,15 +8,16 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageToCrowdControlledCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DamageToCrowdControlledCalculator _calculator = new();
+
     [Fact]
     public void Includes_Damage_To_Crowd_Controlled_When_Enemy_Is_Slowed()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageToCrowdControlled = 12.0;
-        var state = new SimulationState(config);
-        state.Enemies.First().Auras.Add(Aura.Slow);
+        _state.Config.Gear.Helm.DamageToCrowdControlled = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Slow);
 
-        var result = DamageToCrowdControlledCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(12);
     }
@@ -24,11 +25,9 @@ public class DamageToCrowdControlledCalculatorTests
     [Fact]
     public void Returns_0_When_Enemy_Is_Not_Crowd_Controlled()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageToCrowdControlled = 12.0;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.DamageToCrowdControlled = 12.0;
 
-        var result = DamageToCrowdControlledCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0);
     }

@@ -9,7 +9,7 @@ public class DodgeCalculator
 
     private readonly DexterityCalculator _dexterityCalculator;
 
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var dodge = state.Config.Gear.GetStatTotal(g => g.Dodge);
         dodge += _dexterityCalculator.Calculate(state) * 0.01;

@@ -2,7 +2,7 @@
 
 public class StrengthCalculator
 {
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var strength = state.Config.Gear.GetStatTotal(g => g.Strength);
         strength += state.Config.Gear.GetStatTotal(g => g.AllStats);

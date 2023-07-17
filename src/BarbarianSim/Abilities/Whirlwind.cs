@@ -14,25 +14,25 @@ public class Whirlwind
 
     private readonly FuryCostReductionCalculator _furyCostReductionCalculator;
 
-    public bool CanUse(SimulationState state)
+    public virtual bool CanUse(SimulationState state)
     {
         return !state.Player.Auras.Contains(Aura.WeaponCooldown) &&
                !state.Player.Auras.Contains(Aura.Whirlwinding) &&
                state.Player.Fury >= (FURY_COST * _furyCostReductionCalculator.Calculate(state, SkillType.Core));
     }
 
-    public bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * _furyCostReductionCalculator.Calculate(state, SkillType.Core)) && state.Player.Auras.Contains(Aura.Whirlwinding);
+    public virtual bool CanRefresh(SimulationState state) => state.Player.Fury >= (FURY_COST * _furyCostReductionCalculator.Calculate(state, SkillType.Core)) && state.Player.Auras.Contains(Aura.Whirlwinding);
 
-    public void Use(SimulationState state) => state.Events.Add(new WhirlwindSpinEvent(state.CurrentTime));
+    public virtual void Use(SimulationState state) => state.Events.Add(new WhirlwindSpinEvent(state.CurrentTime));
 
-    public void StopSpinning(SimulationState state)
+    public virtual void StopSpinning(SimulationState state)
     {
         state.Events.Add(new AuraExpiredEvent(state.CurrentTime, Aura.Whirlwinding));
     }
 
     public GearItem Weapon { get; set; }
 
-    public double GetSkillMultiplier(SimulationState state)
+    public virtual double GetSkillMultiplier(SimulationState state)
     {
         var skillPoints = state?.Config.Skills[Skill.Whirlwind];
         skillPoints += state?.Config.Gear.AllGear.Sum(g => g.Whirlwind);

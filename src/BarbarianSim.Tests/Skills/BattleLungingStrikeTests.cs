@@ -9,35 +9,36 @@ namespace BarbarianSim.Tests.Skills;
 
 public class BattleLungingStrikeTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly BattleLungingStrike _skill = new();
+
     [Fact]
     public void BattleLungingStrike_Applies_Bleed()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.BattleLungingStrike, 1);
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First())
+        _state.Config.Skills.Add(Skill.BattleLungingStrike, 1);
+        var lungingStrikeEvent = new LungingStrikeEvent(123, _state.Enemies.First())
         {
             BaseDamage = 1200,
         };
 
-        BattleLungingStrike.ProcessEvent(lungingStrikeEvent, state);
+        _skill.ProcessEvent(lungingStrikeEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
-        state.Events.OfType<BleedAppliedEvent>().Single().Timestamp.Should().Be(123);
-        state.Events.OfType<BleedAppliedEvent>().Single().Duration.Should().Be(5);
-        state.Events.OfType<BleedAppliedEvent>().Single().Damage.Should().Be(240);
+        _state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Timestamp.Should().Be(123);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Duration.Should().Be(5);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Damage.Should().Be(240);
     }
 
     [Fact]
     public void BattleLungingStrike_Does_Nothing_If_Not_Skilled()
     {
-        var state = new SimulationState(new SimulationConfig());
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First())
+        var lungingStrikeEvent = new LungingStrikeEvent(123, _state.Enemies.First())
         {
             BaseDamage = 1200,
         };
 
-        BattleLungingStrike.ProcessEvent(lungingStrikeEvent, state);
+        _skill.ProcessEvent(lungingStrikeEvent, _state);
 
-        state.Events.Should().BeEmpty();
+        _state.Events.Should().BeEmpty();
     }
 }

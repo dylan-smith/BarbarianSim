@@ -51,28 +51,28 @@ public class SimulationConfigTests
         config.Gear.Helm.Aspect = new AspectOfGraspingWhirlwind();
         config.Gear.Helm.Gems.Add(new RoyalSapphire());
 
-        config.Gear.Chest.Aspect = new RageOfHarrogath(26);
+        config.Gear.Chest.Aspect = new RageOfHarrogath();
         config.Gear.Chest.Gems.Add(new RoyalSapphire());
         config.Gear.Chest.Gems.Add(new RoyalSapphire());
 
-        config.Gear.Gloves.Aspect = new GohrsDevastatingGrips(24);
+        config.Gear.Gloves.Aspect = new GohrsDevastatingGrips();
 
-        config.Gear.Pants.Aspect = new AspectOfNumbingWraith(12);
+        config.Gear.Pants.Aspect = new AspectOfNumbingWraith();
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
 
-        config.Gear.Boots.Aspect = new GhostwalkerAspect(10);
+        config.Gear.Boots.Aspect = new GhostwalkerAspect();
 
         config.Gear.TwoHandBludgeoning.Aspect = new AspectOfGraspingWhirlwind();
         config.Gear.TwoHandBludgeoning.Expertise = Expertise.TwoHandedMace;
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
 
-        config.Gear.OneHandLeft.Aspect = new ConceitedAspect(25);
+        config.Gear.OneHandLeft.Aspect = new ConceitedAspect();
         config.Gear.OneHandLeft.Expertise = Expertise.OneHandedSword;
         config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald());
 
-        config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping(30);
+        config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping();
         config.Gear.OneHandRight.Expertise = Expertise.OneHandedSword;
         config.Gear.OneHandRight.Gems.Add(new RoyalEmerald());
 
@@ -81,13 +81,13 @@ public class SimulationConfigTests
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
 
-        config.Gear.Amulet.Aspect = new EdgemastersAspect(29);
+        config.Gear.Amulet.Aspect = new GhostwalkerAspect();
         config.Gear.Amulet.Gems.Add(new RoyalSkull());
 
-        config.Gear.Ring1.Aspect = new BoldChieftainsAspect(1.9);
+        config.Gear.Ring1.Aspect = new BoldChieftainsAspect();
         config.Gear.Ring1.Gems.Add(new RoyalSkull());
 
-        config.Gear.Ring2.Aspect = new AspectOfEchoingFury(4);
+        config.Gear.Ring2.Aspect = new AspectOfEchoingFury();
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
 
         return config;

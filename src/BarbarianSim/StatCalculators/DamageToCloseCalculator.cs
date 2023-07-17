@@ -2,5 +2,5 @@
 
 public class DamageToCloseCalculator
 {
-    public double Calculate(SimulationState state) => state.Config.Gear.GetStatTotal(g => g.DamageToClose);
+    public virtual double Calculate(SimulationState state) => state.Config.Gear.GetStatTotal(g => g.DamageToClose);
 }

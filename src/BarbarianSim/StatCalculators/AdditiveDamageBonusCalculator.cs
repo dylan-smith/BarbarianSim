@@ -26,7 +26,7 @@ public class AdditiveDamageBonusCalculator
     private readonly DamageToCrowdControlledCalculator _damageToCrowdControlledCalculator;
     private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
 
-    public double Calculate(SimulationState state, DamageType damageType, EnemyState enemy)
+    public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy)
     {
         var physicalDamage = _physicalDamageCalculator.Calculate(state, damageType);
         var damageToClose = _damageToCloseCalculator.Calculate(state);

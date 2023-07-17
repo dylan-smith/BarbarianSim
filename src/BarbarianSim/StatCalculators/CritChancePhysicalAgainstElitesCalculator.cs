@@ -4,11 +4,11 @@ namespace BarbarianSim.StatCalculators;
 
 public class CritChancePhysicalAgainstElitesCalculator
 {
-    public double Calculate(SimulationState state, DamageType damageType)
+    public virtual double Calculate(SimulationState state, DamageType damageType)
     {
         if (state.Config.EnemySettings.IsElite && damageType == DamageType.Physical)
         {
-            var critChance = state.Config.Gear.AllGear.Sum(g => g.CritChancePhysicalAgainstElites);
+            var critChance = state.Config.Gear.GetStatTotal(g => g.CritChancePhysicalAgainstElites);
             return critChance / 100.0;
         }
 

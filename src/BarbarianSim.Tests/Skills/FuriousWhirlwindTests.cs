@@ -1,5 +1,4 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Config;
+﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
@@ -10,24 +9,26 @@ namespace BarbarianSim.Tests.Skills;
 
 public class FuriousWhirlwindTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly FuriousWhirlwind _skill = new();
+
     [Fact]
     public void Creates_BleedAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
         var whirlwindSpinEvent = new WhirlwindSpinEvent(123)
         {
             BaseDamage = 3500,
         };
-        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
-        state.Config.Skills.Add(Skill.FuriousWhirlwind, 1);
+        _state.Config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, _state.Config.Gear.TwoHandSlashing);
+        _state.Config.Skills.Add(Skill.FuriousWhirlwind, 1);
 
-        FuriousWhirlwind.ProcessEvent(whirlwindSpinEvent, state);
+        _skill.ProcessEvent(whirlwindSpinEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
-        state.Events.OfType<BleedAppliedEvent>().Single().Timestamp.Should().Be(123);
-        state.Events.OfType<BleedAppliedEvent>().Single().Damage.Should().Be(3500 * 0.4);
-        state.Events.OfType<BleedAppliedEvent>().Single().Duration.Should().Be(5);
-        state.Events.OfType<BleedAppliedEvent>().Single().Target.Should().Be(state.Enemies.First());
+        _state.Events.Should().ContainSingle(e => e is BleedAppliedEvent);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Timestamp.Should().Be(123);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Damage.Should().Be(3500 * 0.4);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Duration.Should().Be(5);
+        _state.Events.OfType<BleedAppliedEvent>().Single().Target.Should().Be(_state.Enemies.First());
     }
 
     [Fact]
@@ -40,10 +41,10 @@ public class FuriousWhirlwindTests
         {
             BaseDamage = 3500,
         };
-        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
+        state.Config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, state.Config.Gear.TwoHandSlashing);
         state.Config.Skills.Add(Skill.FuriousWhirlwind, 1);
 
-        FuriousWhirlwind.ProcessEvent(whirlwindSpinEvent, state);
+        _skill.ProcessEvent(whirlwindSpinEvent, state);
 
         state.Events.OfType<BleedAppliedEvent>().Should().HaveCount(3);
         state.Events.OfType<BleedAppliedEvent>().First().Target.Should().Be(state.Enemies.First());
@@ -53,32 +54,29 @@ public class FuriousWhirlwindTests
     [Fact]
     public void Only_Applies_For_Slashing_Weapon()
     {
-        var state = new SimulationState(new SimulationConfig());
         var whirlwindSpinEvent = new WhirlwindSpinEvent(123)
         {
             BaseDamage = 3500,
         };
-        Whirlwind.Weapon = state.Config.Gear.TwoHandBludgeoning;
-        state.Config.Skills.Add(Skill.FuriousWhirlwind, 1);
+        _state.Config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, _state.Config.Gear.TwoHandBludgeoning);
+        _state.Config.Skills.Add(Skill.FuriousWhirlwind, 1);
 
-        FuriousWhirlwind.ProcessEvent(whirlwindSpinEvent, state);
+        _skill.ProcessEvent(whirlwindSpinEvent, _state);
 
-        state.Events.Should().BeEmpty();
+        _state.Events.Should().BeEmpty();
     }
 
     [Fact]
     public void Only_Applies_If_Skilled()
     {
-        var state = new SimulationState(new SimulationConfig());
         var whirlwindSpinEvent = new WhirlwindSpinEvent(123)
         {
             BaseDamage = 3500,
         };
-        Whirlwind.Weapon = state.Config.Gear.TwoHandSlashing;
+        _state.Config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, _state.Config.Gear.TwoHandSlashing);
 
-        FuriousWhirlwind.ProcessEvent(whirlwindSpinEvent, state);
+        _skill.ProcessEvent(whirlwindSpinEvent, _state);
 
-        state.Events.Should().BeEmpty();
+        _state.Events.Should().BeEmpty();
     }
-
 }

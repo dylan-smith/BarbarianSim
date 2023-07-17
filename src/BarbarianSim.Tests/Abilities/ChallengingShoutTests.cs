@@ -9,35 +9,32 @@ namespace BarbarianSim.Tests.Abilities;
 
 public class ChallengingShoutTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly ChallengingShout _challengingShout = new();
+
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-
-        ChallengingShout.CanUse(state).Should().BeTrue();
+        _challengingShout.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void CanUse_Returns_False_If_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
+        _state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
 
-        ChallengingShout.CanUse(state).Should().BeFalse();
+        _challengingShout.CanUse(_state).Should().BeFalse();
     }
 
     [Fact]
     public void Use_Creates_ChallengingShoutEvent()
     {
-        var state = new SimulationState(new SimulationConfig())
-        {
-            CurrentTime = 123
-        };
+        _state.CurrentTime = 123;
 
-        ChallengingShout.Use(state);
+        _challengingShout.Use(_state);
 
-        state.Events.Should().ContainSingle(e => e is ChallengingShoutEvent);
-        state.Events.Cast<ChallengingShoutEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.Should().ContainSingle(e => e is ChallengingShoutEvent);
+        _state.Events.Cast<ChallengingShoutEvent>().First().Timestamp.Should().Be(123);
     }
 
     [Theory]
@@ -50,19 +47,17 @@ public class ChallengingShoutTests
     [InlineData(6, 48)]
     public void Skill_Points_Determines_ResourceGeneration(int skillPoints, double damageReduction)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.ChallengingShout, skillPoints);
+        _state.Config.Skills.Add(Skill.ChallengingShout, skillPoints);
 
-        ChallengingShout.GetDamageReduction(state).Should().Be(damageReduction);
+        _challengingShout.GetDamageReduction(_state).Should().Be(damageReduction);
     }
 
     [Fact]
     public void Skill_Points_From_Gear_Are_Included_In_When_Calculating_Damage_Reduction()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.ChallengingShout, 1);
-        state.Config.Gear.Helm.ChallengingShout = 2;
+        _state.Config.Skills.Add(Skill.ChallengingShout, 1);
+        _state.Config.Gear.Helm.ChallengingShout = 2;
 
-        ChallengingShout.GetDamageReduction(state).Should().Be(44);
+        _challengingShout.GetDamageReduction(_state).Should().Be(44);
     }
 }

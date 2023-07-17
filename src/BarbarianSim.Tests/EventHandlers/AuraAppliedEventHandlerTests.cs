@@ -1,24 +1,27 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
 using Xunit;
 
-namespace BarbarianSim.Tests.Events;
+namespace BarbarianSim.Tests.EventHandlers;
 
-public class AuraAppliedEventTests
+public class AuraAppliedEventHandlerTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly AuraAppliedEventHandler _handler = new();
+
     [Fact]
     public void Applies_Aura_To_Player()
     {
         var testAura = Aura.WarCry;
 
-        var state = new SimulationState(new SimulationConfig());
         var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, testAura);
 
-        auraAppliedEvent.ProcessEvent(state);
+        _handler.ProcessEvent(auraAppliedEvent, _state);
 
-        state.Player.Auras.Should().Contain(testAura);
+        _state.Player.Auras.Should().Contain(testAura);
     }
 
     [Fact]
@@ -26,14 +29,13 @@ public class AuraAppliedEventTests
     {
         var testAura = Aura.WarCry;
 
-        var state = new SimulationState(new SimulationConfig());
         var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, testAura);
 
-        auraAppliedEvent.ProcessEvent(state);
+        _handler.ProcessEvent(auraAppliedEvent, _state);
 
         auraAppliedEvent.AuraExpiredEvent.Should().NotBeNull();
-        state.Events.Should().Contain(auraAppliedEvent.AuraExpiredEvent);
-        state.Events.Should().Contain(e => e is AuraExpiredEvent);
+        _state.Events.Should().Contain(auraAppliedEvent.AuraExpiredEvent);
+        _state.Events.Should().Contain(e => e is AuraExpiredEvent);
         auraAppliedEvent.AuraExpiredEvent.Aura.Should().Be(testAura);
         auraAppliedEvent.AuraExpiredEvent.Timestamp.Should().Be(128);
     }
@@ -48,7 +50,7 @@ public class AuraAppliedEventTests
         var state = new SimulationState(config);
         var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, testAura, state.Enemies.Last());
 
-        auraAppliedEvent.ProcessEvent(state);
+        _handler.ProcessEvent(auraAppliedEvent, state);
 
         state.Enemies.Last().Auras.Should().Contain(testAura);
         state.Events.Should().ContainSingle(e => e is AuraExpiredEvent && ((AuraExpiredEvent)e).Target == state.Enemies.Last());
@@ -59,12 +61,11 @@ public class AuraAppliedEventTests
     {
         var testAura = Aura.WarCry;
 
-        var state = new SimulationState(new SimulationConfig());
         var auraAppliedEvent = new AuraAppliedEvent(123.0, 0, testAura);
 
-        auraAppliedEvent.ProcessEvent(state);
+        _handler.ProcessEvent(auraAppliedEvent, _state);
 
-        state.Player.Auras.Should().Contain(testAura);
-        state.Events.Should().NotContain(e => e is AuraExpiredEvent);
+        _state.Player.Auras.Should().Contain(testAura);
+        _state.Events.Should().NotContain(e => e is AuraExpiredEvent);
     }
 }

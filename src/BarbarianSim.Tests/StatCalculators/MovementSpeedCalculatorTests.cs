@@ -9,13 +9,15 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class MovementSpeedCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly MovementSpeedCalculator _calculator = new();
+
     [Fact]
     public void Includes_Bonus_From_Gear()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.12);
     }
@@ -23,11 +25,10 @@ public class MovementSpeedCalculatorTests
     [Fact]
     public void Bonus_From_Berserking()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
-        state.Player.Auras.Add(Aura.Berserking);
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Player.Auras.Add(Aura.Berserking);
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.27);
     }
@@ -35,11 +36,10 @@ public class MovementSpeedCalculatorTests
     [Fact]
     public void Bonus_From_RallyingCry()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
-        state.Player.Auras.Add(Aura.RallyingCry);
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Player.Auras.Add(Aura.RallyingCry);
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.42);
     }
@@ -47,12 +47,11 @@ public class MovementSpeedCalculatorTests
     [Fact]
     public void Bonus_From_PrimeWrathOfTheBerserker()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
-        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.32);
     }
@@ -60,11 +59,10 @@ public class MovementSpeedCalculatorTests
     [Fact]
     public void Bonus_From_PrimeWrathOfTheBerserker_Only_When_Skilled()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
-        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.12);
     }
@@ -72,11 +70,10 @@ public class MovementSpeedCalculatorTests
     [Fact]
     public void Bonus_From_PrimeWrathOfTheBerserker_Only_When_Active()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
-        state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.12);
     }
@@ -84,12 +81,11 @@ public class MovementSpeedCalculatorTests
     [Fact]
     public void Bonus_From_Ghostwalker()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.MovementSpeed = 12.0;
-        state.Config.Gear.Helm.Aspect = new GhostwalkerAspect(20);
-        state.Player.Auras.Add(Aura.Ghostwalker);
+        _state.Config.Gear.Helm.MovementSpeed = 12.0;
+        _state.Config.Gear.Helm.Aspect = new GhostwalkerAspect() { Speed = 20 };
+        _state.Player.Auras.Add(Aura.Ghostwalker);
 
-        var result = MovementSpeedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.32);
     }

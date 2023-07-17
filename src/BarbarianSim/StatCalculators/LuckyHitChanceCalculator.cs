@@ -2,5 +2,5 @@
 
 public class LuckyHitChanceCalculator
 {
-    public double Calculate(SimulationState state) => state.Config.Gear.AllGear.Sum(g => g.LuckyHitChance) / 100.0;
+    public virtual double Calculate(SimulationState state) => state.Config.Gear.GetStatTotal(g => g.LuckyHitChance) / 100.0;
 }

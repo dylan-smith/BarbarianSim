@@ -2,5 +2,5 @@
 
 public class DamageReductionFromCloseCalculator
 {
-    public double Calculate(SimulationState state) => state.Config.Gear.GetStatTotalMultiplied(g => 1 - (g.DamageReductionFromClose / 100));
+    public virtual double Calculate(SimulationState state) => state.Config.Gear.GetStatTotalMultiplied(g => 1 - (g.DamageReductionFromClose / 100));
 }

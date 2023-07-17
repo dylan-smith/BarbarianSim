@@ -26,7 +26,7 @@ public class InvigoratingFury
         }
     }
 
-    public double GetHealingPercentage(SimulationState state)
+    public virtual double GetHealingPercentage(SimulationState state)
     {
         var skillPoints = 0;
 

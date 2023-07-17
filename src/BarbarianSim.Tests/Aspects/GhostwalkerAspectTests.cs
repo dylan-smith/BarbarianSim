@@ -9,19 +9,21 @@ namespace BarbarianSim.Tests.Aspects;
 
 public class GhostwalkerAspectTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly GhostwalkerAspect _aspect = new();
+
     [Fact]
     public void Creates_AuraAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
-        var aspect = new GhostwalkerAspect(17);
+        _aspect.Speed = 17;
 
         var unstoppableAppliedEvent = new AuraAppliedEvent(123, 5, Aura.Unstoppable);
 
-        aspect.ProcessEvent(unstoppableAppliedEvent, state);
+        _aspect.ProcessEvent(unstoppableAppliedEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
-        state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
-        state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(9);
-        state.Events.OfType<AuraAppliedEvent>().First().Aura.Should().Be(Aura.Ghostwalker);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        _state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(9);
+        _state.Events.OfType<AuraAppliedEvent>().First().Aura.Should().Be(Aura.Ghostwalker);
     }
 }

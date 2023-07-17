@@ -8,15 +8,16 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageToSlowedCalculatorTests
 {
-    [Fact]
-    public void Includes_Damage_To_Slowed_When_Enemy_Is_Slowed()
-    {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageToSlowed = 12.0;
-        var state = new SimulationState(config);
-        state.Enemies.First().Auras.Add(Aura.Slow);
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DamageToSlowedCalculator _calculator = new();
 
-        var result = DamageToSlowedCalculator.Calculate(state, state.Enemies.First());
+    [Fact]
+    public void Includes_DamageToSlowed_When_Enemy_Is_Slowed()
+    {
+        _state.Config.Gear.Helm.DamageToSlowed = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Slow);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(12.0);
     }
@@ -24,12 +25,10 @@ public class DamageToSlowedCalculatorTests
     [Fact]
     public void Returns_0_When_Enemy_Is_Not_Slowed()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageToSlowed = 12.0;
-        var state = new SimulationState(config);
-        state.Enemies.First().Auras.Add(Aura.Stun);
+        _state.Config.Gear.Helm.DamageToSlowed = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Stun);
 
-        var result = DamageToSlowedCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.0);
     }

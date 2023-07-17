@@ -9,7 +9,7 @@ public class DamageReductionWhileInjuredCalculator
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
 
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var damageReduction = state.Config.Gear.GetStatTotalMultiplied(g => 1 - (g.DamageReductionWhileInjured / 100.0));
 

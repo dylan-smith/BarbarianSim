@@ -12,11 +12,11 @@ public class ChallengingShout
     public const double THORNS_BONUS_FROM_STRATEGIC = 0.3;
 
     // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)
-    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
+    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
 
-    public void Use(SimulationState state) => state.Events.Add(new ChallengingShoutEvent(state.CurrentTime));
+    public virtual void Use(SimulationState state) => state.Events.Add(new ChallengingShoutEvent(state.CurrentTime));
 
-    public double GetDamageReduction(SimulationState state)
+    public virtual double GetDamageReduction(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.ChallengingShout);
 

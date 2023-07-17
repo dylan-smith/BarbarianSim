@@ -6,7 +6,7 @@ public class ResistanceToAllCalculator
 
     private readonly IntelligenceCalculator _intelligenceCalculator;
 
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var resistance = state.Config.Gear.GetStatTotal(g => g.ResistanceToAll);
         resistance += _intelligenceCalculator.Calculate(state) * 0.05;

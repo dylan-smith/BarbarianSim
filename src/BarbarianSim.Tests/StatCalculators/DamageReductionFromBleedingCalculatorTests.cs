@@ -8,16 +8,17 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageReductionFromBleedingCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DamageReductionFromBleedingCalculator _calculator = new();
+
     [Fact]
     public void Multiplies_DamageReduction_When_Enemy_Is_Bleeding()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageReductionFromBleeding = 12.0;
-        config.Gear.Chest.DamageReductionFromBleeding = 12.0;
-        var state = new SimulationState(config);
-        state.Enemies.First().Auras.Add(Aura.Bleeding);
+        _state.Config.Gear.Helm.DamageReductionFromBleeding = 12.0;
+        _state.Config.Gear.Chest.DamageReductionFromBleeding = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Bleeding);
 
-        var result = DamageReductionFromBleedingCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.7744);
     }
@@ -25,11 +26,9 @@ public class DamageReductionFromBleedingCalculatorTests
     [Fact]
     public void Returns_1_When_Enemy_Is_Not_Bleeding()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageReductionFromBleeding = 12.0;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.DamageReductionFromBleeding = 12.0;
 
-        var result = DamageReductionFromBleedingCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(1);
     }

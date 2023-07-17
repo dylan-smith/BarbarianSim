@@ -4,7 +4,7 @@ namespace BarbarianSim.StatCalculators;
 
 public class FuryCostReductionCalculator
 {
-    public double Calculate(SimulationState state, SkillType skillType)
+    public virtual double Calculate(SimulationState state, SkillType skillType)
     {
         var furyCostReduction = state.Config.Gear.AllGear.Sum(g => g.FuryCostReduction);
 

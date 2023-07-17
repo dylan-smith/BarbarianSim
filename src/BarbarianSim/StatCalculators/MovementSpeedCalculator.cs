@@ -6,7 +6,7 @@ namespace BarbarianSim.StatCalculators;
 
 public class MovementSpeedCalculator
 {
-    public double Calculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var movementSpeed = state.Config.Gear.GetStatTotal(g => g.MovementSpeed);
         movementSpeed += state.Player.Auras.Contains(Aura.Berserking) ? 15 : 0;

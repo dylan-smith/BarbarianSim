@@ -8,13 +8,15 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class MaxLifeCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly MaxLifeCalculator _calculator = new();
+
     [Fact]
     public void Includes_Base_Life()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.BaseLife = 1000;
+        _state.Player.BaseLife = 1000;
 
-        var result = MaxLifeCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1000);
     }
@@ -22,13 +24,11 @@ public class MaxLifeCalculatorTests
     [Fact]
     public void Includes_Stats_From_Gear()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.MaxLife = 100;
-        config.Gear.Chest.MaxLife = 100;
-        var state = new SimulationState(config);
-        state.Player.BaseLife = 1000;
+        _state.Config.Gear.Helm.MaxLife = 100;
+        _state.Config.Gear.Chest.MaxLife = 100;
+        _state.Player.BaseLife = 1000;
 
-        var result = MaxLifeCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1200);
     }
@@ -36,13 +36,11 @@ public class MaxLifeCalculatorTests
     [Fact]
     public void Includes_Bonus_From_EnhancedChallengingShout()
     {
-        var config = new SimulationConfig();
-        config.Skills.Add(Skill.EnhancedChallengingShout, 1);
-        var state = new SimulationState(config);
-        state.Player.BaseLife = 1000;
-        state.Player.Auras.Add(Aura.ChallengingShout);
+        _state.Config.Skills.Add(Skill.EnhancedChallengingShout, 1);
+        _state.Player.BaseLife = 1000;
+        _state.Player.Auras.Add(Aura.ChallengingShout);
 
-        var result = MaxLifeCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1200);
     }

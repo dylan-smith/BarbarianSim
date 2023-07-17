@@ -25,7 +25,7 @@ public class PressurePoint
         }
     }
 
-    public double GetProcPercentage(SimulationState state)
+    public virtual double GetProcPercentage(SimulationState state)
     {
         if (state.Config.Skills.TryGetValue(Skill.PressurePoint, out var value))
         {

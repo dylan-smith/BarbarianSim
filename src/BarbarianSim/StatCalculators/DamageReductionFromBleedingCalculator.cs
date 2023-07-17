@@ -4,7 +4,7 @@ namespace BarbarianSim.StatCalculators;
 
 public class DamageReductionFromBleedingCalculator
 {
-    public double Calculate(SimulationState state, EnemyState enemy)
+    public virtual double Calculate(SimulationState state, EnemyState enemy)
     {
         return enemy.Auras.Contains(Aura.Bleeding) ?
             state.Config.Gear.GetStatTotalMultiplied(g => 1 - (g.DamageReductionFromBleeding / 100)) :

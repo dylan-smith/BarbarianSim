@@ -6,19 +6,18 @@ using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class CritChancePhysicalAgainstElitesCalculatorTests : IDisposable
+public class CritChancePhysicalAgainstElitesCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly CritChancePhysicalAgainstElitesCalculator _calculator = new();
 
     [Fact]
     public void Includes_Stats_From_Gear()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
-        config.EnemySettings.IsElite = true;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
+        _state.Config.EnemySettings.IsElite = true;
 
-        var result = CritChancePhysicalAgainstElitesCalculator.Calculate(state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical);
 
         result.Should().Be(0.12);
     }
@@ -26,12 +25,10 @@ public sealed class CritChancePhysicalAgainstElitesCalculatorTests : IDisposable
     [Fact]
     public void Returns_0_For_Non_Elites()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
-        config.EnemySettings.IsElite = false;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
+        _state.Config.EnemySettings.IsElite = false;
 
-        var result = CritChancePhysicalAgainstElitesCalculator.Calculate(state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical);
 
         result.Should().Be(0.0);
     }
@@ -39,12 +36,10 @@ public sealed class CritChancePhysicalAgainstElitesCalculatorTests : IDisposable
     [Fact]
     public void Returns_0_For_Non_Physical_Damage()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
-        config.EnemySettings.IsElite = false;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
+        _state.Config.EnemySettings.IsElite = true;
 
-        var result = CritChancePhysicalAgainstElitesCalculator.Calculate(state, DamageType.Direct);
+        var result = _calculator.Calculate(_state, DamageType.Fire);
 
         result.Should().Be(0.0);
     }

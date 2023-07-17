@@ -2,25 +2,30 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class ThornsCalculatorTests : IDisposable
+public class ThornsCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly ThornsCalculator _calculator;
 
-    public ThornsCalculatorTests() => BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
+    public ThornsCalculatorTests()
+    {
+        _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1000);
+        _calculator = new ThornsCalculator(_mockMaxLifeCalculator.Object);
+    }
 
     [Fact]
     public void Includes_Stats_From_Gear()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.Thorns = 100;
-        config.Gear.Chest.Thorns = 100;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.Thorns = 100;
+        _state.Config.Gear.Chest.Thorns = 100;
 
-        var result = ThornsCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(200);
     }
@@ -28,12 +33,10 @@ public sealed class ThornsCalculatorTests : IDisposable
     [Fact]
     public void Includes_Bonus_From_StrategicChallengingShout()
     {
-        var config = new SimulationConfig();
-        config.Skills.Add(Skill.StrategicChallengingShout, 1);
-        var state = new SimulationState(config);
-        state.Player.Auras.Add(Aura.ChallengingShout);
+        _state.Config.Skills.Add(Skill.StrategicChallengingShout, 1);
+        _state.Player.Auras.Add(Aura.ChallengingShout);
 
-        var result = ThornsCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(300);
     }
@@ -41,9 +44,7 @@ public sealed class ThornsCalculatorTests : IDisposable
     [Fact]
     public void Returns_0_When_No_Bonuses()
     {
-        var state = new SimulationState(new SimulationConfig());
-
-        var result = ThornsCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(0);
     }

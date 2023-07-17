@@ -15,9 +15,9 @@ public class WrathOfTheBerserker
     // Explode into rage, Knocking Back surrounding enemies and gaining Berserking and Unstoppable for 5 seconds. For the next 10 seconds dealing Direct Damage with Basic Skills grants Berserking for 5 seconds. (Cooldown: 60 seconds)
     // Prime: While Wrath of the Berserker is active, gain 20%[+] increased Movement Speed and increase Fury Generation by 30%[x]
     // Supreme: While Wrath of the Berserker is active, every 50 Fury you spend increases Berserk's damage bonus by 25%[x]
-    public bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WrathOfTheBerserkerCooldown);
+    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WrathOfTheBerserkerCooldown);
 
-    public void Use(SimulationState state) => state.Events.Add(new WrathOfTheBerserkerEvent(state.CurrentTime));
+    public virtual void Use(SimulationState state) => state.Events.Add(new WrathOfTheBerserkerEvent(state.CurrentTime));
 
     public void ProcessEvent(DirectDamageEvent damageEvent, SimulationState state)
     {
@@ -29,7 +29,7 @@ public class WrathOfTheBerserker
         }
     }
 
-    public double GetBerserkDamageBonus(SimulationState state)
+    public virtual double GetBerserkDamageBonus(SimulationState state)
     {
         if (state.Player.Auras.Contains(Aura.WrathOfTheBerserker) && state.Player.Auras.Contains(Aura.Berserking) && state.Config.Skills.ContainsKey(Skill.SupremeWrathOfTheBerserker))
         {

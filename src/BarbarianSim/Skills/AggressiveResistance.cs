@@ -6,7 +6,7 @@ public class AggressiveResistance
 {
     // Gain 3% Damage Reduction while Berserking
 
-    public double GetDamageReduction(SimulationState state)
+    public virtual double GetDamageReduction(SimulationState state)
     {
         var skillPoints = 0;
 
