@@ -8,6 +8,9 @@ namespace BarbarianSim.Tests.Skills;
 
 public class RaidLeaderTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly RaidLeader _skill = new();
+
     [Theory]
     [InlineData(0, 0)]
     [InlineData(1, 0.01)]
@@ -16,9 +19,8 @@ public class RaidLeaderTests
     [InlineData(4, 0.03)]
     public void Skill_Points_Determines_Percent_Heal(int skillPoints, double healPercent)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.RaidLeader, skillPoints);
+        _state.Config.Skills.Add(Skill.RaidLeader, skillPoints);
 
-        RaidLeader.GetHealPercentage(state).Should().Be(healPercent);
+        _skill.GetHealPercentage(_state).Should().Be(healPercent);
     }
 }

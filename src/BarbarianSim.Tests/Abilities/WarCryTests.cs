@@ -9,35 +9,32 @@ namespace BarbarianSim.Tests.Abilities;
 
 public class WarCryTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly WarCry _warCry = new();
+
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-
-        WarCry.CanUse(state).Should().BeTrue();
+        _warCry.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void CanUse_Returns_False_If_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.WarCryCooldown);
+        _state.Player.Auras.Add(Aura.WarCryCooldown);
 
-        WarCry.CanUse(state).Should().BeFalse();
+        _warCry.CanUse(_state).Should().BeFalse();
     }
 
     [Fact]
     public void Use_Creates_WarCryEvent()
     {
-        var state = new SimulationState(new SimulationConfig())
-        {
-            CurrentTime = 123
-        };
+        _state.CurrentTime = 123;
 
-        WarCry.Use(state);
+        _warCry.Use(_state);
 
-        state.Events.Should().ContainSingle(e => e is WarCryEvent);
-        state.Events.OfType<WarCryEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.Should().ContainSingle(e => e is WarCryEvent);
+        _state.Events.OfType<WarCryEvent>().First().Timestamp.Should().Be(123);
     }
 
     [Theory]
@@ -50,20 +47,18 @@ public class WarCryTests
     [InlineData(6, 1.21)]
     public void Skill_Points_Determines_DamageBonus(int skillPoints, double damageBonus)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.WarCry, skillPoints);
+        _state.Config.Skills.Add(Skill.WarCry, skillPoints);
 
-        WarCry.GetDamageBonus(state).Should().Be(damageBonus);
+        _warCry.GetDamageBonus(_state).Should().Be(damageBonus);
     }
 
     [Fact]
     public void Skill_Points_From_Gear_Are_Included()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.WarCry, 1);
-        state.Config.Gear.Helm.WarCry = 2;
+        _state.Config.Skills.Add(Skill.WarCry, 1);
+        _state.Config.Gear.Helm.WarCry = 2;
 
-        WarCry.GetDamageBonus(state).Should().Be(1.18);
+        _warCry.GetDamageBonus(_state).Should().Be(1.18);
     }
 
     [Fact]
@@ -75,6 +70,18 @@ public class WarCryTests
         state.Config.Skills.Add(Skill.WarCry, 1);
         state.Config.Skills.Add(Skill.PowerWarCry, 1);
 
-        WarCry.GetDamageBonus(state).Should().Be(1.25);
+        _warCry.GetDamageBonus(state).Should().Be(1.25);
+    }
+
+    [Fact]
+    public void PowerWarCry_Does_Nothing_When_Less_Than_6_Enemies_Nearby()
+    {
+        var config = new SimulationConfig();
+        config.EnemySettings.NumberOfEnemies = 5;
+        var state = new SimulationState(config);
+        state.Config.Skills.Add(Skill.WarCry, 1);
+        state.Config.Skills.Add(Skill.PowerWarCry, 1);
+
+        _warCry.GetDamageBonus(state).Should().Be(1.15);
     }
 }

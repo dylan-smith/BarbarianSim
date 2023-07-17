@@ -1,21 +1,31 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class CritDamageCalculatorTests
 {
+    private readonly Mock<HeavyHanded> _mockHeavyHanded = TestHelpers.CreateMock<HeavyHanded>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly CritDamageCalculator _calculator;
+
+    public CritDamageCalculatorTests()
+    {
+        _mockHeavyHanded.Setup(m => m.GetCriticalStrikeDamage(It.IsAny<SimulationState>(), It.IsAny<Expertise>())).Returns(0.0);
+        _calculator = new CritDamageCalculator(_mockHeavyHanded.Object);
+    }
+
     [Fact]
     public void Includes_Stats_From_Gear()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.CritDamage = 12.0;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.CritDamage = 12.0;
 
-        var result = CritDamageCalculator.Calculate(state, Expertise.NA);
+        var result = _calculator.Calculate(_state, Expertise.NA);
 
         // 1.5 base + 0.12 from helm == 1.62
         result.Should().Be(1.62);
@@ -24,10 +34,7 @@ public class CritDamageCalculatorTests
     [Fact]
     public void Base_Crit_Is_50()
     {
-        var config = new SimulationConfig();
-        var state = new SimulationState(config);
-
-        var result = CritDamageCalculator.Calculate(state, Expertise.NA);
+        var result = _calculator.Calculate(_state, Expertise.NA);
 
         result.Should().Be(1.50);
     }
@@ -35,11 +42,10 @@ public class CritDamageCalculatorTests
     [Fact]
     public void Includes_HeavyHanded_Bonus()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.HeavyHanded, 3);
+        _mockHeavyHanded.Setup(m => m.GetCriticalStrikeDamage(_state, Expertise.TwoHandedSword)).Returns(10);
 
-        var result = CritDamageCalculator.Calculate(state, Expertise.TwoHandedSword);
+        var result = _calculator.Calculate(_state, Expertise.TwoHandedSword);
 
-        result.Should().Be(1.59);
+        result.Should().Be(1.60);
     }
 }

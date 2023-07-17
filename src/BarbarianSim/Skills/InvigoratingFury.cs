@@ -4,10 +4,14 @@ using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Skills;
 
-public static class InvigoratingFury
+public class InvigoratingFury
 {
     // Heal for 3% of your Maximum Life for each 100 Fury spent
-    public static void ProcessEvent(FurySpentEvent furySpentEvent, SimulationState state)
+    public InvigoratingFury(MaxLifeCalculator maxLifeCalculator) => _maxLifeCalculator = maxLifeCalculator;
+
+    private readonly MaxLifeCalculator _maxLifeCalculator;
+
+    public void ProcessEvent(FurySpentEvent furySpentEvent, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.InvigoratingFury))
         {
@@ -17,12 +21,12 @@ public static class InvigoratingFury
             // but I don't think there's any way to spend more than 100 fury at once
             if (Math.Floor(totalFurySpent / 100) != Math.Floor((totalFurySpent - furySpentEvent.FurySpent) / 100))
             {
-                state.Events.Add(new HealingEvent(furySpentEvent.Timestamp, MaxLifeCalculator.Calculate(state) * GetHealingPercentage(state)));
+                state.Events.Add(new HealingEvent(furySpentEvent.Timestamp, _maxLifeCalculator.Calculate(state) * GetHealingPercentage(state)));
             }
         }
     }
 
-    public static double GetHealingPercentage(SimulationState state)
+    public virtual double GetHealingPercentage(SimulationState state)
     {
         var skillPoints = 0;
 

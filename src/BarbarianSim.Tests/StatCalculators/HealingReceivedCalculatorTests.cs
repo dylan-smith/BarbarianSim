@@ -1,21 +1,27 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class HealingReceivedCalculatorTests : IDisposable
+public class HealingReceivedCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<WillpowerCalculator> _mockWillpowerCalculator = TestHelpers.CreateMock<WillpowerCalculator>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly HealingReceivedCalculator _calculator;
+
+    public HealingReceivedCalculatorTests()
+    {
+        _mockWillpowerCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _calculator = new HealingReceivedCalculator(_mockWillpowerCalculator.Object);
+    }
 
     [Fact]
     public void Returns_1_By_Default()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-
-        var result = HealingReceivedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.0);
     }
@@ -23,12 +29,9 @@ public sealed class HealingReceivedCalculatorTests : IDisposable
     [Fact]
     public void Includes_HealingReceived_Gear_Bonus()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.HealingReceived = 20;
-        var state = new SimulationState(config);
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        _state.Config.Gear.Helm.HealingReceived = 20;
 
-        var result = HealingReceivedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.2);
     }
@@ -36,10 +39,9 @@ public sealed class HealingReceivedCalculatorTests : IDisposable
     [Fact]
     public void Includes_Willpower_Bonus()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(400.0));
+        _mockWillpowerCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);
 
-        var result = HealingReceivedCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.4);
     }

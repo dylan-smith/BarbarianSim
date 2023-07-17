@@ -4,6 +4,6 @@ namespace BarbarianSim.Aspects;
 
 public class AspectOfLimitlessRage : Aspect
 {
-    public int Damage { get; init; }
-    public int MaxDamage { get; init; }
+    public int Damage { get; set; }
+    public int MaxDamage { get; set; }
 }

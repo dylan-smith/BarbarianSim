@@ -1,22 +1,35 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class ResourceGenerationCalculatorTests : IDisposable
+public class ResourceGenerationCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<WillpowerCalculator> _mockWillpowerCalculator = TestHelpers.CreateMock<WillpowerCalculator>();
+    private readonly Mock<RallyingCry> _mockRallyingCry = TestHelpers.CreateMock<RallyingCry>();
+    private readonly Mock<ProlificFury> _mockProlificFury = TestHelpers.CreateMock<ProlificFury>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly ResourceGenerationCalculator _calculator;
+
+    public ResourceGenerationCalculatorTests()
+    {
+        _mockWillpowerCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockRallyingCry.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockProlificFury.Setup(m => m.GetFuryGeneration(It.IsAny<SimulationState>())).Returns(1.0);
+
+        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object, _mockRallyingCry.Object, _mockProlificFury.Object);
+    }
 
     [Fact]
     public void Returns_1_By_Default()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.0);
     }
@@ -24,12 +37,9 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
     [Fact]
     public void Includes_ResourceGeneration_Gear_Bonus()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.ResourceGeneration = 42;
-        var state = new SimulationState(config);
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
+        _state.Config.Gear.Helm.ResourceGeneration = 42;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.42);
     }
@@ -37,10 +47,9 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
     [Fact]
     public void Includes_Willpower_Bonus()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(400.0));
+        _mockWillpowerCalculator.Setup(m => m.Calculate(_state)).Returns(400.0);
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.12);
     }
@@ -48,12 +57,10 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
     [Fact]
     public void Includes_RallyingCry_Bonus()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Config.Skills.Add(Skill.RallyingCry, 5);
-        state.Player.Auras.Add(Aura.RallyingCry);
+        _state.Player.Auras.Add(Aura.RallyingCry);
+        _mockRallyingCry.Setup(m => m.GetResourceGeneration(_state)).Returns(1.56);
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(1.56);
     }
@@ -61,56 +68,47 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
     [Fact]
     public void RallyingCry_Bonus_And_Gear_Multiply_Together()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Config.Skills.Add(Skill.RallyingCry, 5);
-        state.Player.Auras.Add(Aura.RallyingCry);
-        state.Config.Gear.Helm.ResourceGeneration = 30;
+        _state.Player.Auras.Add(Aura.RallyingCry);
+        _mockRallyingCry.Setup(m => m.GetResourceGeneration(_state)).Returns(1.56);
+        _state.Config.Gear.Helm.ResourceGeneration = 30;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
-        result.Should().Be(2.028); // (1 + 30%) * 1.56
+        result.Should().Be(1.3 * 1.56);
     }
 
     [Fact]
     public void TacticalRallyingCry_Bonus_Multiplied_In()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Config.Skills.Add(Skill.RallyingCry, 5);
-        state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
-        state.Player.Auras.Add(Aura.RallyingCry);
-        state.Config.Gear.Helm.ResourceGeneration = 30;
+        _state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
+        _state.Player.Auras.Add(Aura.RallyingCry);
+        _mockRallyingCry.Setup(m => m.GetResourceGeneration(_state)).Returns(1.56);
+        _state.Config.Gear.Helm.ResourceGeneration = 30;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
-        result.Should().BeApproximately(2.4336, 0.00000001); // (1 + 30%) * 1.56 * 1.2
+        result.Should().Be(1.3 * 1.56 * 1.2); // (1 + 30%) * 1.56 * 1.2
     }
 
     [Fact]
     public void ProlificFury_Bonus_Multiplied_In()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Config.Skills.Add(Skill.ProlificFury, 3);
-        state.Player.Auras.Add(Aura.Berserking);
-        state.Config.Gear.Helm.ResourceGeneration = 30;
+        _mockProlificFury.Setup(m => m.GetFuryGeneration(_state)).Returns(1.18);
+        _state.Config.Gear.Helm.ResourceGeneration = 30;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
-        result.Should().Be(1.534); // (1 + 30%) * 1.18
+        result.Should().Be(1.3 * 1.18);
     }
 
     [Fact]
     public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
-        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        state.Config.Gear.Helm.ResourceGeneration = 30;
+        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        _state.Config.Gear.Helm.ResourceGeneration = 30;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().BeApproximately(1.69, 0.0000001); // (1 + 30%) * 1.3
     }
@@ -118,12 +116,10 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
     [Fact]
     public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In_Only_When_Skilled()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        state.Config.Gear.Helm.ResourceGeneration = 30;
+        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        _state.Config.Gear.Helm.ResourceGeneration = 30;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().BeApproximately(1.3, 0.0000001); // (1 + 30%) * 1.3
     }
@@ -131,12 +127,10 @@ public sealed class ResourceGenerationCalculatorTests : IDisposable
     [Fact]
     public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In_Only_When_Active()
     {
-        var state = new SimulationState(new SimulationConfig());
-        BaseStatCalculator.InjectMock(typeof(WillpowerCalculator), new FakeStatCalculator(0.0));
-        state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
-        state.Config.Gear.Helm.ResourceGeneration = 30;
+        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        _state.Config.Gear.Helm.ResourceGeneration = 30;
 
-        var result = ResourceGenerationCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().BeApproximately(1.3, 0.0000001); // (1 + 30%) * 1.3
     }

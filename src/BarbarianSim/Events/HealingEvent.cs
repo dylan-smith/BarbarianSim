@@ -1,6 +1,4 @@
-﻿using BarbarianSim.StatCalculators;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class HealingEvent : EventInfo
 {
@@ -9,17 +7,4 @@ public class HealingEvent : EventInfo
     public double BaseAmountHealed { get; set; }
     public double AmountHealed { get; set; }
     public double OverHeal { get; set; }
-
-    public override void ProcessEvent(SimulationState state)
-    {
-        AmountHealed = BaseAmountHealed * HealingReceivedCalculator.Calculate(state);
-
-        if (AmountHealed + state.Player.Life > MaxLifeCalculator.Calculate(state))
-        {
-            OverHeal = state.Player.Life + AmountHealed - MaxLifeCalculator.Calculate(state);
-            AmountHealed -= OverHeal;
-        }
-
-        state.Player.Life += AmountHealed;
-    }
 }

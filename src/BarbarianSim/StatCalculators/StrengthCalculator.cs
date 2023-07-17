@@ -1,10 +1,8 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class StrengthCalculator : BaseStatCalculator
+public class StrengthCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<StrengthCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var strength = state.Config.Gear.GetStatTotal(g => g.Strength);
         strength += state.Config.Gear.GetStatTotal(g => g.AllStats);

@@ -3,9 +3,9 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public static class Hamstring
+public class Hamstring
 {
-    public static void ProcessEvent(BleedAppliedEvent bleedAppliedEvent, SimulationState state)
+    public void ProcessEvent(BleedAppliedEvent bleedAppliedEvent, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.Hamstring))
         {

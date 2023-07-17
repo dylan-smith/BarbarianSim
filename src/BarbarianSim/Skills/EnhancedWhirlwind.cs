@@ -3,13 +3,13 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public static class EnhancedWhirlwind
+public class EnhancedWhirlwind
 {
     // Gain 1 Fury each time Whirlwind deals damage to an enemy, 4 Fury against Elite enemies
     public const double FURY_GAINED = 1;
     public const double ELITE_FURY_GAINED = 4;
 
-    public static void ProcessEvent(DamageEvent damageEvent, SimulationState state)
+    public void ProcessEvent(DamageEvent damageEvent, SimulationState state)
     {
         if (damageEvent.DamageSource == DamageSource.Whirlwind && state.Config.Skills.ContainsKey(Skill.EnhancedWhirlwind))
         {

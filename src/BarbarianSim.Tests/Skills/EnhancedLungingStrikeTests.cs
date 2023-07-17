@@ -4,43 +4,48 @@ using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
-public sealed class EnhancedLungingStrikeTests : IDisposable
+public class EnhancedLungingStrikeTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly EnhancedLungingStrike _skill;
+
+    public EnhancedLungingStrikeTests()
+    {
+        _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200);
+        _skill = new EnhancedLungingStrike(_mockMaxLifeCalculator.Object);
+    }
 
     [Fact]
     public void Creates_HealingEvent_When_Enemy_Healthy()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Enemies.First().MaxLife = 1000;
-        state.Enemies.First().Life = 1000;
-        state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
-        BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
+        _state.Enemies.First().MaxLife = 1000;
+        _state.Enemies.First().Life = 1000;
+        _state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        var lungingStrikeEvent = new LungingStrikeEvent(123, _state.Enemies.First());
 
-        EnhancedLungingStrike.ProcessEvent(lungingStrikeEvent, state);
+        _skill.ProcessEvent(lungingStrikeEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is HealingEvent);
-        state.Events.OfType<HealingEvent>().First().BaseAmountHealed.Should().Be(20);
-        state.Events.OfType<HealingEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.Should().ContainSingle(e => e is HealingEvent);
+        _state.Events.OfType<HealingEvent>().First().BaseAmountHealed.Should().Be(1200 * 0.02);
+        _state.Events.OfType<HealingEvent>().First().Timestamp.Should().Be(123);
     }
 
     [Fact]
     public void EnhancedLungingStrike_Does_Not_Create_HealingEvent_When_Enemy_Not_Healthy()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Enemies.First().MaxLife = 1000;
-        state.Enemies.First().Life = 600;
-        state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
-        BaseStatCalculator.InjectMock(typeof(MaxLifeCalculator), new FakeStatCalculator(1000));
-        var lungingStrikeEvent = new LungingStrikeEvent(123, state.Enemies.First());
+        _state.Enemies.First().MaxLife = 1000;
+        _state.Enemies.First().Life = 600;
+        _state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        var lungingStrikeEvent = new LungingStrikeEvent(123, _state.Enemies.First());
 
-        EnhancedLungingStrike.ProcessEvent(lungingStrikeEvent, state);
+        _skill.ProcessEvent(lungingStrikeEvent, _state);
 
-        state.Events.Should().NotContain(e => e is HealingEvent);
+        _state.Events.Should().NotContain(e => e is HealingEvent);
     }
 }

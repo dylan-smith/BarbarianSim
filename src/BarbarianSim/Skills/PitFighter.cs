@@ -2,11 +2,11 @@
 
 namespace BarbarianSim.Skills;
 
-public static class PitFighter
+public class PitFighter
 {
     // You deal 3%[x] increased damage to Close enemies and gain 2% Distant Damage Reduction
 
-    public static double GetCloseDamageBonus(SimulationState state)
+    public virtual double GetCloseDamageBonus(SimulationState state)
     {
         var skillPoints = 0;
 

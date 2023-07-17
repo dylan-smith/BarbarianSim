@@ -3,11 +3,9 @@ using BarbarianSim.Enums;
 
 namespace BarbarianSim.StatCalculators;
 
-public class MaxLifeCalculator : BaseStatCalculator
+public class MaxLifeCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<MaxLifeCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var maxLife = state.Player.BaseLife;
         maxLife += state.Config.Gear.GetStatTotal(g => g.MaxLife);

@@ -2,10 +2,10 @@
 
 namespace BarbarianSim.Skills;
 
-public static class BoomingVoice
+public class BoomingVoice
 {
     // Your Shout skill effect durations are increased by 24%[x]
-    public static double GetDurationIncrease(SimulationState state)
+    public virtual double GetDurationIncrease(SimulationState state)
     {
         var skillPoints = 0;
 

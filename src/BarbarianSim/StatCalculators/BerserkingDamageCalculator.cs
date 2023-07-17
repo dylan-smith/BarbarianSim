@@ -2,9 +2,7 @@
 
 namespace BarbarianSim.StatCalculators;
 
-public class BerserkingDamageCalculator : BaseStatCalculator
+public class BerserkingDamageCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<BerserkingDamageCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state) => state.Player.Auras.Contains(Aura.Berserking) ? 25.0 : 0.0;
+    public virtual double Calculate(SimulationState state) => state.Player.Auras.Contains(Aura.Berserking) ? 25.0 : 0.0;
 }

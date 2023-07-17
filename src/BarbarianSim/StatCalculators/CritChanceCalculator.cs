@@ -2,16 +2,23 @@
 
 namespace BarbarianSim.StatCalculators;
 
-public class CritChanceCalculator : BaseStatCalculator
+public class CritChanceCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType) => Calculate<CritChanceCalculator>(state, damageType);
+    public CritChanceCalculator(CritChancePhysicalAgainstElitesCalculator critChancePhysicalAgainstElitesCalculator, DexterityCalculator dexterityCalculator)
+    {
+        _critChancePhysicalAgainstElitesCalculator = critChancePhysicalAgainstElitesCalculator;
+        _dexterityCalculator = dexterityCalculator;
+    }
 
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType)
+    private readonly CritChancePhysicalAgainstElitesCalculator _critChancePhysicalAgainstElitesCalculator;
+    private readonly DexterityCalculator _dexterityCalculator;
+
+    public virtual double Calculate(SimulationState state, DamageType damageType)
     {
         var critChance = 5.0; // base chance to crit
         critChance += state.Config.Gear.AllGear.Sum(g => g.CritChance);
-        critChance += CritChancePhysicalAgainstElitesCalculator.Calculate(state, damageType);
-        critChance += DexterityCalculator.Calculate(state) * 0.02;
+        critChance += _critChancePhysicalAgainstElitesCalculator.Calculate(state, damageType);
+        critChance += _dexterityCalculator.Calculate(state) * 0.02;
 
         return critChance / 100.0;
     }

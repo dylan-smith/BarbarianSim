@@ -9,29 +9,30 @@ namespace BarbarianSim.Tests.Skills;
 
 public class ViolentWhirlwindTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly ViolentWhirlwind _skill = new();
+
     [Fact]
     public void Creates_ViolentWhirlwindAppliedEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.ViolentWhirlwind, 1);
+        _state.Config.Skills.Add(Skill.ViolentWhirlwind, 1);
         var whirlwindStartedEvent = new WhirlwindSpinEvent(123.0);
 
-        ViolentWhirlwind.ProcessEvent(whirlwindStartedEvent, state);
+        _skill.ProcessEvent(whirlwindStartedEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ViolentWhirlwind);
-        state.Events.OfType<AuraAppliedEvent>().Single().Timestamp.Should().Be(125);
-        state.Events.OfType<AuraAppliedEvent>().Single().Duration.Should().Be(0);
-        state.Events.OfType<AuraAppliedEvent>().Single().Aura.Should().Be(Aura.ViolentWhirlwind);
+        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.ViolentWhirlwind);
+        _state.Events.OfType<AuraAppliedEvent>().Single().Timestamp.Should().Be(125);
+        _state.Events.OfType<AuraAppliedEvent>().Single().Duration.Should().Be(0);
+        _state.Events.OfType<AuraAppliedEvent>().Single().Aura.Should().Be(Aura.ViolentWhirlwind);
     }
 
     [Fact]
     public void Does_Nothing_If_Not_Skilled()
     {
-        var state = new SimulationState(new SimulationConfig());
         var whirlwindStartedEvent = new WhirlwindSpinEvent(123.0);
 
-        ViolentWhirlwind.ProcessEvent(whirlwindStartedEvent, state);
+        _skill.ProcessEvent(whirlwindStartedEvent, _state);
 
-        state.Events.Should().BeEmpty();
+        _state.Events.Should().BeEmpty();
     }
 }

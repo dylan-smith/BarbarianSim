@@ -1,8 +1,4 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Enums;
-using BarbarianSim.Skills;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class RallyingCryEvent : EventInfo
 {
@@ -17,39 +13,4 @@ public class RallyingCryEvent : EventInfo
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
     public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
     public double Duration { get; set; }
-
-    public override void ProcessEvent(SimulationState state)
-    {
-        Duration = RallyingCry.DURATION * BoomingVoice.GetDurationIncrease(state);
-
-        RallyingCryAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.RallyingCry);
-        state.Events.Add(RallyingCryAuraAppliedEvent);
-
-        RallyingCryCooldownAuraAppliedEvent = new AuraAppliedEvent(Timestamp, RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
-        state.Events.Add(RallyingCryCooldownAuraAppliedEvent);
-
-        if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
-        {
-            UnstoppableAuraAppliedEvent = new AuraAppliedEvent(Timestamp, Duration, Aura.Unstoppable);
-            state.Events.Add(UnstoppableAuraAppliedEvent);
-        }
-
-        if (state.Config.Skills.ContainsKey(Skill.TacticalRallyingCry))
-        {
-            FuryGeneratedEvent = new FuryGeneratedEvent(Timestamp, RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
-            state.Events.Add(FuryGeneratedEvent);
-        }
-
-        if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry))
-        {
-            FortifyGeneratedEvent = new FortifyGeneratedEvent(Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife);
-            state.Events.Add(FortifyGeneratedEvent);
-        }
-
-        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
-        {
-            RaidLeaderProcEvent = new RaidLeaderProcEvent(Timestamp, Duration);
-            state.Events.Add(RaidLeaderProcEvent);
-        }
-    }
 }

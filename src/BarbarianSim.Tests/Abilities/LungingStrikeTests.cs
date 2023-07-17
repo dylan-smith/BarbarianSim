@@ -9,36 +9,33 @@ namespace BarbarianSim.Tests.Abilities;
 
 public sealed class LungingStrikeTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly LungingStrike _lungingStrike = new();
+
     [Fact]
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.WeaponCooldown);
+        _state.Player.Auras.Add(Aura.WeaponCooldown);
 
-        LungingStrike.CanUse(state).Should().BeFalse();
+        _lungingStrike.CanUse(_state).Should().BeFalse();
     }
 
     [Fact]
     public void CanUse_When_Weapon_Not_On_Cooldown_Returns_True()
     {
-        var state = new SimulationState(new SimulationConfig());
-
-        LungingStrike.CanUse(state).Should().BeTrue();
+        _lungingStrike.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void Use_Adds_LungingStrikeEvent_To_Events()
     {
-        var state = new SimulationState(new SimulationConfig())
-        {
-            CurrentTime = 123
-        };
+        _state.CurrentTime = 123;
 
-        LungingStrike.Use(state, state.Enemies.First());
+        _lungingStrike.Use(_state, _state.Enemies.First());
 
-        state.Events.Count.Should().Be(1);
-        state.Events[0].Should().BeOfType<LungingStrikeEvent>();
-        state.Events[0].Timestamp.Should().Be(123);
+        _state.Events.Count.Should().Be(1);
+        _state.Events[0].Should().BeOfType<LungingStrikeEvent>();
+        _state.Events[0].Timestamp.Should().Be(123);
     }
 
     [Theory]
@@ -51,9 +48,9 @@ public sealed class LungingStrikeTests
     [InlineData(6, 0.45)]
     public void GetSkillMultiplier_Converts_Skill_Points_To_Correct_Multiplier(int skillPoints, double expectedMultiplier)
     {
-        var state = new SimulationState(new SimulationConfig { Skills = { [Skill.LungingStrike] = skillPoints } });
+        _state.Config.Skills.Add(Skill.LungingStrike, skillPoints);
 
-        var result = LungingStrike.GetSkillMultiplier(state);
+        var result = _lungingStrike.GetSkillMultiplier(_state);
 
         result.Should().Be(expectedMultiplier);
     }
@@ -61,14 +58,11 @@ public sealed class LungingStrikeTests
     [Fact]
     public void GetSkillMultiplier_Includes_Skill_Points_And_Gear_Bonuses()
     {
-        var state = new SimulationState(new SimulationConfig
-        {
-            Skills = { [Skill.LungingStrike] = 1 },
-        });
+        _state.Config.Skills.Add(Skill.LungingStrike, 1);
 
-        state.Config.Gear.Helm.LungingStrike = 2;
+        _state.Config.Gear.Helm.LungingStrike = 2;
 
-        var result = LungingStrike.GetSkillMultiplier(state);
+        var result = _lungingStrike.GetSkillMultiplier(_state);
 
         result.Should().Be(0.39);
     }

@@ -7,16 +7,17 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageToInjuredCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DamageToInjuredCalculator _calculator = new();
+
     [Fact]
     public void Includes_Damage_To_Injured_When_Enemy_Is_Injured()
     {
-        var config = new SimulationConfig();
-        config.EnemySettings.Life = 1000;
-        config.Gear.Helm.DamageToInjured = 12.0;
-        var state = new SimulationState(config);
-        state.Enemies.First().Life = 300;
+        _state.Config.Gear.Helm.DamageToInjured = 12.0;
+        _state.Enemies.First().Life = 300;
+        _state.Enemies.First().MaxLife = 1000;
 
-        var result = DamageToInjuredCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(12.0);
     }
@@ -24,13 +25,11 @@ public class DamageToInjuredCalculatorTests
     [Fact]
     public void Returns_0_When_Enemy_Is_Not_Injured()
     {
-        var config = new SimulationConfig();
-        config.EnemySettings.Life = 1000;
-        config.Gear.Helm.DamageToInjured = 12.0;
-        var state = new SimulationState(config);
-        state.Enemies.First().Life = 1000;
+        _state.Config.EnemySettings.Life = 1000;
+        _state.Config.Gear.Helm.DamageToInjured = 12.0;
+        _state.Enemies.First().Life = 1000;
 
-        var result = DamageToInjuredCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.0);
     }

@@ -2,15 +2,17 @@
 
 namespace BarbarianSim.StatCalculators;
 
-public class MaxFuryCalculator : BaseStatCalculator
+public class MaxFuryCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<MaxFuryCalculator>(state);
+    public MaxFuryCalculator(TemperedFury temperedFury) => _temperedFury = temperedFury;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly TemperedFury _temperedFury;
+
+    public virtual double Calculate(SimulationState state)
     {
         var maxFury = 100.0;
         maxFury += state.Config.Gear.GetStatTotal(g => g.MaxFury);
-        maxFury += TemperedFury.GetMaximumFury(state);
+        maxFury += _temperedFury.GetMaximumFury(state);
 
         return maxFury;
     }

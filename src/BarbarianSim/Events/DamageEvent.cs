@@ -19,7 +19,5 @@ public class DamageEvent : EventInfo
         Target = target;
     }
 
-    public override void ProcessEvent(SimulationState state) => Target.Life -= (int)Damage;
-
     public override string ToString() => $"[{Timestamp:F1}] {DamageType} for {Damage:F2}";
 }

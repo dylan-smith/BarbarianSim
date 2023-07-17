@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Enums;
-using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Events;
 
@@ -26,33 +25,4 @@ public class DirectDamageEvent : EventInfo
 
     public DamageEvent DamageEvent { get; set; }
     public LuckyHitEvent LuckyHitEvent { get; set; }
-
-    public override void ProcessEvent(SimulationState state)
-    {
-        var damageMultiplier = TotalDamageMultiplierCalculator.Calculate(state, DamageType, Enemy, SkillType, DamageSource);
-
-        var damage = BaseDamage * damageMultiplier;
-
-        var critChance = CritChanceCalculator.Calculate(state, DamageType);
-        var critRoll = RandomGenerator.Roll(RollType.CriticalStrike);
-
-        var damageType = DamageType | DamageType.Direct;
-
-        if (critRoll <= critChance)
-        {
-            damage *= CritDamageCalculator.Calculate(state, Expertise);
-            damageType |= DamageType.CriticalStrike;
-        }
-
-        DamageEvent = new DamageEvent(Timestamp, damage, damageType, DamageSource, SkillType, Enemy);
-        state.Events.Add(DamageEvent);
-
-        var luckyRoll = RandomGenerator.Roll(RollType.LuckyHit);
-
-        if (luckyRoll <= (LuckyHitChance + LuckyHitChanceCalculator.Calculate(state)))
-        {
-            LuckyHitEvent = new LuckyHitEvent(Timestamp, SkillType, Enemy);
-            state.Events.Add(LuckyHitEvent);
-        }
-    }
 }

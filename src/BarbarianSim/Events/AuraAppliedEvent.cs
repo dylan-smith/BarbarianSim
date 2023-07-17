@@ -22,23 +22,5 @@ public class AuraAppliedEvent : EventInfo
     public EnemyState Target { get; init; }
     public AuraExpiredEvent AuraExpiredEvent { get; set; }
 
-    public override void ProcessEvent(SimulationState state)
-    {
-        if (Target == null)
-        {
-            state.Player.Auras.Add(Aura);
-        }
-        else
-        {
-            Target.Auras.Add(Aura);
-        }
-
-        if (Duration > 0)
-        {
-            AuraExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Target, Aura);
-            state.Events.Add(AuraExpiredEvent);
-        }
-    }
-
     public override string ToString() => $"[{Timestamp:F1}] {Aura} Aura Applied";
 }

@@ -1,96 +1,113 @@
-﻿using BarbarianSim.Aspects;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
-using BarbarianSim.Events;
 using BarbarianSim.Rotations;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Rotations;
 
 public class SpinToWinTests
 {
-    [Fact]
-    public void Uses_LungingStrike_When_Not_Enough_Fury_For_Whirlwind()
+    private readonly Mock<RallyingCry> _mockRallyingCry = TestHelpers.CreateMock<RallyingCry>();
+    private readonly Mock<ChallengingShout> _mockChallengingShout = TestHelpers.CreateMock<ChallengingShout>();
+    private readonly Mock<WarCry> _mockWarCry = TestHelpers.CreateMock<WarCry>();
+    private readonly Mock<WrathOfTheBerserker> _mockWrathOfTheBerserker = TestHelpers.CreateMock<WrathOfTheBerserker>();
+    private readonly Mock<Whirlwind> _mockWhirlwind = TestHelpers.CreateMock<Whirlwind>();
+    private readonly Mock<LungingStrike> _mockLungingStrike = TestHelpers.CreateMock<LungingStrike>();
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly SpinToWin _rotation;
+
+    public SpinToWinTests()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Fury = 0;
-        var rotation = new SpinToWin();
+        _mockRallyingCry.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(true);
+        _mockChallengingShout.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(true);
+        _mockWarCry.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(true);
+        _mockWrathOfTheBerserker.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(true);
+        _mockWhirlwind.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(true);
+        _mockLungingStrike.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(true);
 
-        rotation.Execute(state);
-
-        state.Events.Any(e => e is LungingStrikeEvent).Should().BeTrue();
+        _rotation = new SpinToWin(_mockRallyingCry.Object,
+                                  _mockChallengingShout.Object,
+                                  _mockWarCry.Object,
+                                  _mockWrathOfTheBerserker.Object,
+                                  _mockWhirlwind.Object,
+                                  _mockLungingStrike.Object);
     }
 
     [Fact]
-    public void Uses_Whirlwind_When_Enough_Fury()
+    public void Uses_LungingStrike_Whirlwind_Unavailable()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Fury = 25;
-        var rotation = new SpinToWin();
+        _mockWhirlwind.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
 
-        rotation.Execute(state);
+        _rotation.Execute(_state);
 
-        state.Events.Any(e => e is WhirlwindSpinEvent).Should().BeTrue();
+        _mockLungingStrike.Verify(m => m.Use(_state, _state.Enemies.First()));
+    }
+
+    [Fact]
+    public void Uses_Whirlwind_When_Available()
+    {
+        _rotation.Execute(_state);
+
+        _mockWhirlwind.Verify(m => m.Use(_state));
     }
 
     [Fact]
     public void Stops_Whirlwind_When_Gohrs_Reaches_Max_HitCount()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.Whirlwinding);
-        state.CurrentTime = 123;
-        var aspect = new GohrsDevastatingGrips(20.0)
+        _state.Player.Auras.Add(Aura.Whirlwinding);
+        _state.CurrentTime = 123;
+        var aspect = new GohrsDevastatingGrips()
         {
             HitCount = GohrsDevastatingGrips.MAX_HIT_COUNT
         };
-        state.Config.Gear.Helm.Aspect = aspect;
-        var rotation = new SpinToWin();
+        _state.Config.Gear.Helm.Aspect = aspect;
+        _mockWhirlwind.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
 
-        rotation.Execute(state);
+        _rotation.Execute(_state);
 
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent && ((AuraExpiredEvent)e).Aura == Aura.Whirlwinding);
-        state.Events.Single(e => e is AuraExpiredEvent expiredEvent && expiredEvent.Aura == Aura.Whirlwinding).Timestamp.Should().Be(123);
+        _mockWhirlwind.Verify(m => m.StopSpinning(_state));
     }
 
     [Fact]
     public void Uses_All_Shouts_When_Not_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-        var rotation = new SpinToWin();
+        _rotation.Execute(_state);
 
-        rotation.Execute(state);
-
-        state.Events.Any(e => e is RallyingCryEvent).Should().BeTrue();
-        state.Events.Any(e => e is ChallengingShoutEvent).Should().BeTrue();
-        state.Events.Any(e => e is WarCryEvent).Should().BeTrue();
+        _mockRallyingCry.Verify(m => m.Use(_state));
+        _mockChallengingShout.Verify(m => m.Use(_state));
+        _mockWarCry.Verify(m => m.Use(_state));
     }
 
     [Fact]
     public void Uses_WrathOfTheBerserker_When_Not_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-        var rotation = new SpinToWin();
+        _rotation.Execute(_state);
 
-        rotation.Execute(state);
-
-        state.Events.Any(e => e is WrathOfTheBerserkerEvent).Should().BeTrue();
+        _mockWrathOfTheBerserker.Verify(m => m.Use(_state));
     }
 
     [Fact]
     public void Does_Nothing_When_Shouts_On_Cooldown_Wrath_On_Cooldown_And_No_Fury()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Fury = 0;
-        state.Player.Auras.Add(Aura.WeaponCooldown);
-        state.Player.Auras.Add(Aura.RallyingCryCooldown);
-        state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
-        state.Player.Auras.Add(Aura.WarCryCooldown);
-        state.Player.Auras.Add(Aura.WrathOfTheBerserkerCooldown);
-        var rotation = new SpinToWin();
+        _mockRallyingCry.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
+        _mockChallengingShout.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
+        _mockWarCry.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
+        _mockWrathOfTheBerserker.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
+        _mockWhirlwind.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
+        _mockLungingStrike.Setup(m => m.CanUse(It.IsAny<SimulationState>())).Returns(false);
 
-        rotation.Execute(state);
+        _rotation.Execute(_state);
 
-        state.Events.Should().BeEmpty();
+        _state.Events.Should().BeEmpty();
+        _mockRallyingCry.Verify(m => m.Use(It.IsAny<SimulationState>()), Times.Never);
+        _mockChallengingShout.Verify(m => m.Use(It.IsAny<SimulationState>()), Times.Never);
+        _mockWarCry.Verify(m => m.Use(It.IsAny<SimulationState>()), Times.Never);
+        _mockWrathOfTheBerserker.Verify(m => m.Use(It.IsAny<SimulationState>()), Times.Never);
+        _mockWhirlwind.Verify(m => m.Use(It.IsAny<SimulationState>()), Times.Never);
+        _mockLungingStrike.Verify(m => m.Use(It.IsAny<SimulationState>(), It.IsAny<EnemyState>()), Times.Never);
     }
 }

@@ -9,35 +9,36 @@ namespace BarbarianSim.Tests.Skills;
 
 public class HamstringTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly Hamstring _skill = new();
+
     [Fact]
     public void Applies_Slow_Aura()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.Hamstring, 1);
-        var bleedEvent = new BleedAppliedEvent(123, 99, 12, state.Enemies.First())
+        _state.Config.Skills.Add(Skill.Hamstring, 1);
+        var bleedEvent = new BleedAppliedEvent(123, 99, 12, _state.Enemies.First())
         {
-            BleedCompletedEvent = new BleedCompletedEvent(135, 99, state.Enemies.First())
+            BleedCompletedEvent = new BleedCompletedEvent(135, 99, _state.Enemies.First())
         };
 
-        Hamstring.ProcessEvent(bleedEvent, state);
+        _skill.ProcessEvent(bleedEvent, _state);
 
-        state.Enemies.First().Auras.Should().Contain(Aura.Slow);
+        _state.Enemies.First().Auras.Should().Contain(Aura.Slow);
     }
 
     [Fact]
     public void Creates_AuraExpiredEvent()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.Hamstring, 1);
-        var bleedEvent = new BleedAppliedEvent(123, 99, 12, state.Enemies.First())
+        _state.Config.Skills.Add(Skill.Hamstring, 1);
+        var bleedEvent = new BleedAppliedEvent(123, 99, 12, _state.Enemies.First())
         {
-            BleedCompletedEvent = new BleedCompletedEvent(135, 99, state.Enemies.First())
+            BleedCompletedEvent = new BleedCompletedEvent(135, 99, _state.Enemies.First())
         };
 
-        Hamstring.ProcessEvent(bleedEvent, state);
+        _skill.ProcessEvent(bleedEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
-        state.Events.OfType<AuraExpiredEvent>().First().Aura.Should().Be(Aura.Slow);
-        state.Events.OfType<AuraExpiredEvent>().First().Timestamp.Should().Be(135);
+        _state.Events.Should().ContainSingle(e => e is AuraExpiredEvent);
+        _state.Events.OfType<AuraExpiredEvent>().First().Aura.Should().Be(Aura.Slow);
+        _state.Events.OfType<AuraExpiredEvent>().First().Timestamp.Should().Be(135);
     }
 }

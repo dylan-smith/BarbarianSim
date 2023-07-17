@@ -7,15 +7,16 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageReductionFromCloseCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DamageReductionFromCloseCalculator _calculator = new();
+
     [Fact]
     public void Multiplies_Stats_From_Gear()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.DamageReductionFromClose = 12.0;
-        config.Gear.Chest.DamageReductionFromClose = 12.0;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.DamageReductionFromClose = 12.0;
+        _state.Config.Gear.Chest.DamageReductionFromClose = 12.0;
 
-        var result = DamageReductionFromCloseCalculator.Calculate(state);
+        var result = _calculator.Calculate(_state);
 
         result.Should().Be(0.7744);
     }

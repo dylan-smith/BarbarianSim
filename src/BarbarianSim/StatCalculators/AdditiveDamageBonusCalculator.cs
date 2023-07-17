@@ -2,18 +2,38 @@
 
 namespace BarbarianSim.StatCalculators;
 
-public class AdditiveDamageBonusCalculator : BaseStatCalculator
+public class AdditiveDamageBonusCalculator
 {
-    public static double Calculate(SimulationState state, DamageType damageType, EnemyState enemy) => Calculate<AdditiveDamageBonusCalculator>(state, damageType, enemy);
-
-    protected override double InstanceCalculate(SimulationState state, DamageType damageType, EnemyState enemy)
+    public AdditiveDamageBonusCalculator(PhysicalDamageCalculator physicalDamageCalculator,
+                                         DamageToCloseCalculator damageToCloseCalculator,
+                                         DamageToInjuredCalculator damageToInjuredCalculator,
+                                         DamageToSlowedCalculator damageToSlowedCalculator,
+                                         DamageToCrowdControlledCalculator damageToCrowdControlledCalculator,
+                                         BerserkingDamageCalculator berserkingDamageCalculator)
     {
-        var physicalDamage = PhysicalDamageCalculator.Calculate(state, damageType);
-        var damageToClose = DamageToCloseCalculator.Calculate(state);
-        var damageToInjured = DamageToInjuredCalculator.Calculate(state, enemy);
-        var damageToSlowed = DamageToSlowedCalculator.Calculate(state, enemy);
-        var damageToCrowdControlled = DamageToCrowdControlledCalculator.Calculate(state, enemy);
-        var berserkingDamage = BerserkingDamageCalculator.Calculate(state);
+        _physicalDamageCalculator = physicalDamageCalculator;
+        _damageToCloseCalculator = damageToCloseCalculator;
+        _damageToInjuredCalculator = damageToInjuredCalculator;
+        _damageToSlowedCalculator = damageToSlowedCalculator;
+        _damageToCrowdControlledCalculator = damageToCrowdControlledCalculator;
+        _berserkingDamageCalculator = berserkingDamageCalculator;
+    }
+
+    private readonly PhysicalDamageCalculator _physicalDamageCalculator;
+    private readonly DamageToCloseCalculator _damageToCloseCalculator;
+    private readonly DamageToInjuredCalculator _damageToInjuredCalculator;
+    private readonly DamageToSlowedCalculator _damageToSlowedCalculator;
+    private readonly DamageToCrowdControlledCalculator _damageToCrowdControlledCalculator;
+    private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
+
+    public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy)
+    {
+        var physicalDamage = _physicalDamageCalculator.Calculate(state, damageType);
+        var damageToClose = _damageToCloseCalculator.Calculate(state);
+        var damageToInjured = _damageToInjuredCalculator.Calculate(state, enemy);
+        var damageToSlowed = _damageToSlowedCalculator.Calculate(state, enemy);
+        var damageToCrowdControlled = _damageToCrowdControlledCalculator.Calculate(state, enemy);
+        var berserkingDamage = _berserkingDamageCalculator.Calculate(state);
 
         var bonus = physicalDamage + damageToClose + damageToInjured + damageToSlowed + damageToCrowdControlled + berserkingDamage;
 

@@ -9,35 +9,32 @@ namespace BarbarianSim.Tests.Abilities;
 
 public class RallyingCryTests
 {
+    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
+    private readonly RallyingCry _rallyingCry = new();
+
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-
-        RallyingCry.CanUse(state).Should().BeTrue();
+        _rallyingCry.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void CanUse_Returns_False_If_On_Cooldown()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.RallyingCryCooldown);
+        _state.Player.Auras.Add(Aura.RallyingCryCooldown);
 
-        RallyingCry.CanUse(state).Should().BeFalse();
+        _rallyingCry.CanUse(_state).Should().BeFalse();
     }
 
     [Fact]
     public void Use_Creates_RallyingCryEvent()
     {
-        var state = new SimulationState(new SimulationConfig())
-        {
-            CurrentTime = 123
-        };
+        _state.CurrentTime = 123;
 
-        RallyingCry.Use(state);
+        _rallyingCry.Use(_state);
 
-        state.Events.Should().ContainSingle(e => e is RallyingCryEvent);
-        state.Events.Cast<RallyingCryEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.Should().ContainSingle(e => e is RallyingCryEvent);
+        _state.Events.Cast<RallyingCryEvent>().First().Timestamp.Should().Be(123);
     }
 
     [Theory]
@@ -50,61 +47,56 @@ public class RallyingCryTests
     [InlineData(6, 1.56)]
     public void Skill_Points_Determines_ResourceGeneration(int skillPoints, double resourceGeneration)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.RallyingCry, skillPoints);
+        _state.Config.Skills.Add(Skill.RallyingCry, skillPoints);
 
-        RallyingCry.GetResourceGeneration(state).Should().Be(resourceGeneration);
+        _rallyingCry.GetResourceGeneration(_state).Should().Be(resourceGeneration);
     }
 
     [Fact]
     public void Skill_Points_From_Gear_Are_Included()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.RallyingCry, 1);
-        state.Config.Gear.Helm.RallyingCry = 2;
+        _state.Config.Skills.Add(Skill.RallyingCry, 1);
+        _state.Config.Gear.Helm.RallyingCry = 2;
 
-        RallyingCry.GetResourceGeneration(state).Should().Be(1.48);
+        _rallyingCry.GetResourceGeneration(_state).Should().Be(1.48);
     }
 
     [Fact]
     public void StrategicRallyingCry_Creates_FortifyGeneratedEvent_On_Direct_Damage()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
-        state.Player.Auras.Add(Aura.RallyingCry);
-        state.Player.BaseLife = 4000;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
+        _state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        _state.Player.Auras.Add(Aura.RallyingCry);
+        _state.Player.BaseLife = 4000;
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, _state.Enemies.First());
 
-        RallyingCry.ProcessEvent(directDamageEvent, state);
+        _rallyingCry.ProcessEvent(directDamageEvent, _state);
 
-        state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
-        state.Events.OfType<FortifyGeneratedEvent>().First().Timestamp.Should().Be(123);
-        state.Events.OfType<FortifyGeneratedEvent>().First().Amount.Should().Be(80);
+        _state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
+        _state.Events.OfType<FortifyGeneratedEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.OfType<FortifyGeneratedEvent>().First().Amount.Should().Be(80);
     }
 
     [Fact]
     public void StrategicRallyingCry_Does_Not_Fortify_If_Missing_Skill()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.RallyingCry);
-        state.Player.BaseLife = 4000;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
+        _state.Player.Auras.Add(Aura.RallyingCry);
+        _state.Player.BaseLife = 4000;
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, _state.Enemies.First());
 
-        RallyingCry.ProcessEvent(directDamageEvent, state);
+        _rallyingCry.ProcessEvent(directDamageEvent, _state);
 
-        state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
+        _state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
     }
 
     [Fact]
     public void StrategicRallyingCry_Does_Not_Fortify_If_Shout_Not_Active()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
-        state.Player.BaseLife = 4000;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, state.Enemies.First());
+        _state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
+        _state.Player.BaseLife = 4000;
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, Expertise.Polearm, _state.Enemies.First());
 
-        RallyingCry.ProcessEvent(directDamageEvent, state);
+        _rallyingCry.ProcessEvent(directDamageEvent, _state);
 
-        state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
+        _state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
     }
 }

@@ -1,10 +1,8 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class WillpowerCalculator : BaseStatCalculator
+public class WillpowerCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<WillpowerCalculator>(state);
-
-    protected override double InstanceCalculate(SimulationState state)
+    public virtual double Calculate(SimulationState state)
     {
         var willpower = state.Config.Gear.GetStatTotal(g => g.Willpower);
         willpower += state.Config.Gear.GetStatTotal(g => g.AllStats);

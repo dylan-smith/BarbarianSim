@@ -4,7 +4,5 @@ namespace BarbarianSim.Aspects;
 
 public class BoldChieftainsAspect : Aspect
 {
-    public double Cooldown { get; init; }
-
-    public BoldChieftainsAspect(double cooldown) => Cooldown = cooldown;
+    public double Cooldown { get; set; }
 }

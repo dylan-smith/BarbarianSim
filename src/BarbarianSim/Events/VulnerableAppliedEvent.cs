@@ -1,6 +1,4 @@
-﻿using BarbarianSim.Enums;
-
-namespace BarbarianSim.Events;
+﻿namespace BarbarianSim.Events;
 
 public class VulnerableAppliedEvent : EventInfo
 {
@@ -14,12 +12,4 @@ public class VulnerableAppliedEvent : EventInfo
     public EnemyState Target { get; init; }
 
     public AuraExpiredEvent VulnerableExpiredEvent { get; set; }
-
-    public override void ProcessEvent(SimulationState state)
-    {
-        Target.Auras.Add(Aura.Vulnerable);
-
-        VulnerableExpiredEvent = new AuraExpiredEvent(Timestamp + Duration, Target, Aura.Vulnerable);
-        state.Events.Add(VulnerableExpiredEvent);
-    }
 }

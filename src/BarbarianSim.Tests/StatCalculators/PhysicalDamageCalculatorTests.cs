@@ -8,14 +8,15 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class PhysicalDamageCalculatorTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly PhysicalDamageCalculator _calculator = new();
+
     [Fact]
     public void Includes_Stats_From_Gear()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.PhysicalDamage = 12.0;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.PhysicalDamage = 12.0;
 
-        var result = PhysicalDamageCalculator.Calculate(state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical);
 
         result.Should().Be(12.0);
     }
@@ -23,11 +24,9 @@ public class PhysicalDamageCalculatorTests
     [Fact]
     public void Returns_0_For_Non_Physical_Damage_Type()
     {
-        var config = new SimulationConfig();
-        config.Gear.Helm.PhysicalDamage = 12.0;
-        var state = new SimulationState(config);
+        _state.Config.Gear.Helm.PhysicalDamage = 12.0;
 
-        var result = PhysicalDamageCalculator.Calculate(state, DamageType.Direct);
+        var result = _calculator.Calculate(_state, DamageType.Direct);
 
         result.Should().Be(0.0);
     }

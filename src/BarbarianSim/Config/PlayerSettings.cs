@@ -18,4 +18,6 @@ public class PlayerSettings
     public double Dexterity => 8;
 
     public int Life => 40;
+
+    public IDictionary<Skill, GearItem> SkillWeapons { get; init; } = new Dictionary<Skill, GearItem>();
 }

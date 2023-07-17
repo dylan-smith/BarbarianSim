@@ -2,12 +2,13 @@
 using BarbarianSim.Aspects;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BarbarianSim;
 
 public static class EventPublisher
 {
-    public static void PublishEvent(EventInfo e, SimulationState state)
+    public static void PublishEvent(EventInfo e, SimulationState state, IServiceProvider sp)
     {
         state.ProcessedEvents.Add(e);
 
@@ -15,45 +16,45 @@ public static class EventPublisher
         {
             case DamageEvent ev:
                 state.Config.Gear.GetAllAspects<AspectOfTheProtector>().ForEach(a => a.ProcessEvent(ev, state));
-                EnhancedWhirlwind.ProcessEvent(ev, state);
-                CombatLungingStrike.ProcessEvent(ev, state);
+                sp.GetRequiredService<EnhancedWhirlwind>().ProcessEvent(ev, state);
+                sp.GetRequiredService<CombatLungingStrike>().ProcessEvent(ev, state);
                 break;
             case DirectDamageEvent ev:
                 state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));
-                RallyingCry.ProcessEvent(ev, state);
-                WrathOfTheBerserker.ProcessEvent(ev, state);
+                sp.GetRequiredService<RallyingCry>().ProcessEvent(ev, state);
+                sp.GetRequiredService<WrathOfTheBerserker>().ProcessEvent(ev, state);
                 break;
             case WhirlwindStoppedEvent ev:
                 state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().ForEach(a => a.ProcessEvent(ev, state));
                 break;
             case LuckyHitEvent ev:
-                PressurePoint.ProcessEvent(ev, state);
+                sp.GetRequiredService<PressurePoint>().ProcessEvent(ev, state);
                 break;
             case WarCryEvent ev:
-                GutteralYell.ProcessEvent(ev, state);
+                sp.GetRequiredService<GutteralYell>().ProcessEvent(ev, state);
                 break;
             case ChallengingShoutEvent ev:
-                GutteralYell.ProcessEvent(ev, state);
+                sp.GetRequiredService<GutteralYell>().ProcessEvent(ev, state);
                 state.Config.Gear.GetAllAspects<AspectOfEchoingFury>().ForEach(a => a.ProcessEvent(ev, state));
                 break;
             case RallyingCryEvent ev:
-                GutteralYell.ProcessEvent(ev, state);
+                sp.GetRequiredService<GutteralYell>().ProcessEvent(ev, state);
                 break;
             case BleedAppliedEvent ev:
-                Hamstring.ProcessEvent(ev, state);
+                sp.GetRequiredService<Hamstring>().ProcessEvent(ev, state);
                 break;
             case FurySpentEvent ev:
-                InvigoratingFury.ProcessEvent(ev, state);
+                sp.GetRequiredService<InvigoratingFury>().ProcessEvent(ev, state);
                 break;
             case AuraAppliedEvent ev:
                 state.Config.Gear.GetAllAspects<GhostwalkerAspect>().ForEach(a => a.ProcessEvent(ev, state));
                 break;
             case WhirlwindSpinEvent ev:
-                ViolentWhirlwind.ProcessEvent(ev, state);
+                sp.GetRequiredService<ViolentWhirlwind>().ProcessEvent(ev, state);
                 break;
             case LungingStrikeEvent ev:
-                EnhancedLungingStrike.ProcessEvent(ev, state);
-                BattleLungingStrike.ProcessEvent(ev, state);
+                sp.GetRequiredService<EnhancedLungingStrike>().ProcessEvent(ev, state);
+                sp.GetRequiredService<BattleLungingStrike>().ProcessEvent(ev, state);
                 break;
             default:
                 break;

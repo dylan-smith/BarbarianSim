@@ -8,6 +8,9 @@ namespace BarbarianSim.Tests.Skills;
 
 public class ProlificFuryTests
 {
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly ProlificFury _skill = new();
+
     [Theory]
     [InlineData(0, 1.0)]
     [InlineData(1, 1.06)]
@@ -16,19 +19,17 @@ public class ProlificFuryTests
     [InlineData(4, 1.18)]
     public void Skill_Points_Determines_Max_Fury(int skillPoints, double furyGeneration)
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.ProlificFury, skillPoints);
-        state.Player.Auras.Add(Aura.Berserking);
+        _state.Config.Skills.Add(Skill.ProlificFury, skillPoints);
+        _state.Player.Auras.Add(Aura.Berserking);
 
-        ProlificFury.GetFuryGeneration(state).Should().Be(furyGeneration);
+        _skill.GetFuryGeneration(_state).Should().Be(furyGeneration);
     }
 
     [Fact]
     public void Only_Activates_When_Berserking()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Skills.Add(Skill.ProlificFury, 3);
+        _state.Config.Skills.Add(Skill.ProlificFury, 3);
 
-        ProlificFury.GetFuryGeneration(state).Should().Be(1.0);
+        _skill.GetFuryGeneration(_state).Should().Be(1.0);
     }
 }

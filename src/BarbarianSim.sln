@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarbarianSim.Tests", "BarbarianSim.Tests\BarbarianSim.Tests.csproj", "{DB8C05EF-2247-4568-AB77-985C3DF8D49E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarbarianSim.Tests", "BarbarianSim.Tests\BarbarianSim.Tests.csproj", "{B1AB744D-A284-4D6E-ADB4-5A205CE07BAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{4993EAA8-234A-434F-AFAD-37207FEE3624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4993EAA8-234A-434F-AFAD-37207FEE3624}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4993EAA8-234A-434F-AFAD-37207FEE3624}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB8C05EF-2247-4568-AB77-985C3DF8D49E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB8C05EF-2247-4568-AB77-985C3DF8D49E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB8C05EF-2247-4568-AB77-985C3DF8D49E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB8C05EF-2247-4568-AB77-985C3DF8D49E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1AB744D-A284-4D6E-ADB4-5A205CE07BAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1AB744D-A284-4D6E-ADB4-5A205CE07BAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1AB744D-A284-4D6E-ADB4-5A205CE07BAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1AB744D-A284-4D6E-ADB4-5A205CE07BAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

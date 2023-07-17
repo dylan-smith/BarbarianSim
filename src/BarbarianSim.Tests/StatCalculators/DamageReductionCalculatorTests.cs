@@ -1,29 +1,50 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
-public sealed class DamageReductionCalculatorTests : IDisposable
+public class DamageReductionCalculatorTests
 {
-    public void Dispose() => BaseStatCalculator.ClearMocks();
+    private readonly Mock<DamageReductionFromBleedingCalculator> _mockDamageReductionFromBleedingCalculator = TestHelpers.CreateMock<DamageReductionFromBleedingCalculator>();
+    private readonly Mock<DamageReductionFromCloseCalculator> _mockDamageReductionFromCloseCalculator = TestHelpers.CreateMock<DamageReductionFromCloseCalculator>();
+    private readonly Mock<DamageReductionWhileFortifiedCalculator> _mockDamageReductionWhileFortifiedCalculator = TestHelpers.CreateMock<DamageReductionWhileFortifiedCalculator>();
+    private readonly Mock<DamageReductionWhileInjuredCalculator> _mockDamageReductionWhileInjuredCalculator = TestHelpers.CreateMock<DamageReductionWhileInjuredCalculator>();
+    private readonly Mock<AggressiveResistance> _mockAggressiveResistance = TestHelpers.CreateMock<AggressiveResistance>();
+    private readonly Mock<ChallengingShout> _mockChallengingShout = TestHelpers.CreateMock<ChallengingShout>();
+    private readonly Mock<GutteralYell> _mockGutteralYell = TestHelpers.CreateMock<GutteralYell>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly DamageReductionCalculator _calculator;
 
     public DamageReductionCalculatorTests()
     {
-        BaseStatCalculator.InjectMock(typeof(DamageReductionFromBleedingCalculator), new FakeStatCalculator(0.0));
-        BaseStatCalculator.InjectMock(typeof(DamageReductionFromCloseCalculator), new FakeStatCalculator(0.0));
-        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileFortifiedCalculator), new FakeStatCalculator(0.0));
-        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileInjuredCalculator), new FakeStatCalculator(0.0));
+        _mockDamageReductionFromBleedingCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(0.0);
+        _mockDamageReductionFromCloseCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockDamageReductionWhileFortifiedCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockDamageReductionWhileInjuredCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockAggressiveResistance.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockChallengingShout.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockGutteralYell.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
+
+        _calculator = new DamageReductionCalculator(
+            _mockDamageReductionFromBleedingCalculator.Object,
+            _mockDamageReductionFromCloseCalculator.Object,
+            _mockDamageReductionWhileFortifiedCalculator.Object,
+            _mockDamageReductionWhileInjuredCalculator.Object,
+            _mockAggressiveResistance.Object,
+            _mockChallengingShout.Object,
+            _mockGutteralYell.Object);
     }
 
     [Fact]
     public void Returns_Base_DamageReduction_Of_10_Percent()
     {
-        var state = new SimulationState(new SimulationConfig());
-
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.9);
     }
@@ -31,10 +52,9 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     [Fact]
     public void Includes_DamageReduction_From_Gear()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Config.Gear.Helm.DamageReduction = 12.0;
+        _state.Config.Gear.Helm.DamageReduction = 12.0;
 
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.792);
     }
@@ -42,11 +62,9 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     [Fact]
     public void Includes_DamageReductionFromBleeding()
     {
-        var state = new SimulationState(new SimulationConfig());
+        _mockDamageReductionFromBleedingCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(12.0);
 
-        BaseStatCalculator.InjectMock(typeof(DamageReductionFromBleedingCalculator), new FakeStatCalculator(12.0));
-
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.792);
     }
@@ -54,11 +72,9 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     [Fact]
     public void Includes_DamageReductionFromClose()
     {
-        var state = new SimulationState(new SimulationConfig());
+        _mockDamageReductionFromCloseCalculator.Setup(m => m.Calculate(_state)).Returns(12.0);
 
-        BaseStatCalculator.InjectMock(typeof(DamageReductionFromCloseCalculator), new FakeStatCalculator(12.0));
-
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.792);
     }
@@ -66,11 +82,9 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     [Fact]
     public void Includes_DamageReductionWhileFortified()
     {
-        var state = new SimulationState(new SimulationConfig());
+        _mockDamageReductionWhileFortifiedCalculator.Setup(m => m.Calculate(_state)).Returns(12.0);
 
-        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileFortifiedCalculator), new FakeStatCalculator(12.0));
-
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.792);
     }
@@ -78,11 +92,9 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     [Fact]
     public void Includes_DamageReductionWhileInjured()
     {
-        var state = new SimulationState(new SimulationConfig());
+        _mockDamageReductionWhileInjuredCalculator.Setup(m => m.Calculate(_state)).Returns(12.0);
 
-        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileInjuredCalculator), new FakeStatCalculator(12.0));
-
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
         result.Should().Be(0.792);
     }
@@ -90,59 +102,52 @@ public sealed class DamageReductionCalculatorTests : IDisposable
     [Fact]
     public void Includes_Bonus_From_ChallengingShout()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.ChallengingShout);
-        state.Config.Skills.Add(Skill.ChallengingShout, 5);
+        _state.Player.Auras.Add(Aura.ChallengingShout);
+        _mockChallengingShout.Setup(m => m.GetDamageReduction(_state)).Returns(12.0);
 
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
-        result.Should().Be(0.468);
+        result.Should().Be(0.792);
     }
 
     [Fact]
     public void Includes_Bonus_From_GutteralYell()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.GutteralYell);
-        state.Config.Skills.Add(Skill.GutteralYell, 3);
+        _state.Player.Auras.Add(Aura.GutteralYell);
+        _mockGutteralYell.Setup(m => m.GetDamageReduction(_state)).Returns(12.0);
 
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
-        result.Should().Be(0.792); // 0.88 * 0.9
+        result.Should().Be(0.792);
     }
 
     [Fact]
     public void Includes_Bonus_From_AggressiveResistance()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.Berserking);
-        state.Config.Skills.Add(Skill.AggressiveResistance, 3);
+        _mockAggressiveResistance.Setup(m => m.GetDamageReduction(_state)).Returns(12.0);
 
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
-        result.Should().BeApproximately(0.819, 0.0000001); // 0.88 * 0.9
+        result.Should().Be(0.792);
     }
 
     [Fact]
     public void Multiplies_All_Damage_Reduction_Bonuses()
     {
-        var state = new SimulationState(new SimulationConfig());
-        state.Player.Auras.Add(Aura.ChallengingShout);
-        state.Config.Skills.Add(Skill.ChallengingShout, 2);
-        state.Player.Auras.Add(Aura.GutteralYell);
-        state.Config.Skills.Add(Skill.GutteralYell, 3);
-        state.Config.Skills.Add(Skill.AggressiveResistance, 1);
-        state.Player.Auras.Add(Aura.Berserking);
+        _state.Config.Gear.Helm.DamageReduction = 8.0;
 
-        state.Config.Gear.Helm.DamageReduction = 8.0;
+        _mockDamageReductionFromBleedingCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(8.0);
+        _mockDamageReductionFromCloseCalculator.Setup(m => m.Calculate(_state)).Returns(8.0);
+        _mockDamageReductionWhileFortifiedCalculator.Setup(m => m.Calculate(_state)).Returns(8.0);
+        _mockDamageReductionWhileInjuredCalculator.Setup(m => m.Calculate(_state)).Returns(8.0);
+        _mockAggressiveResistance.Setup(m => m.GetDamageReduction(_state)).Returns(3.0);
+        _state.Player.Auras.Add(Aura.ChallengingShout);
+        _mockChallengingShout.Setup(m => m.GetDamageReduction(_state)).Returns(42.0);
+        _state.Player.Auras.Add(Aura.GutteralYell);
+        _mockGutteralYell.Setup(m => m.GetDamageReduction(_state)).Returns(12.0);
 
-        BaseStatCalculator.InjectMock(typeof(DamageReductionFromBleedingCalculator), new FakeStatCalculator(8.0));
-        BaseStatCalculator.InjectMock(typeof(DamageReductionFromCloseCalculator), new FakeStatCalculator(8.0));
-        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileFortifiedCalculator), new FakeStatCalculator(8.0));
-        BaseStatCalculator.InjectMock(typeof(DamageReductionWhileInjuredCalculator), new FakeStatCalculator(8.0));
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
 
-        var result = DamageReductionCalculator.Calculate(state, state.Enemies.First());
-
-        result.Should().BeApproximately(0.293673, 0.000001); // 0.9 * 0.58 * 0.92 * 0.92 * 0.92 * 0.92 * 0.92 * 0.88 * 0.97
+        result.Should().BeApproximately(0.9 * 0.92 * 0.92 * 0.92 * 0.92 * 0.92 * 0.97 * 0.58 * 0.88, 0.0000001);
     }
 }

@@ -1,13 +1,15 @@
 ﻿namespace BarbarianSim.StatCalculators;
 
-public class HealingReceivedCalculator : BaseStatCalculator
+public class HealingReceivedCalculator
 {
-    public static double Calculate(SimulationState state) => Calculate<HealingReceivedCalculator>(state);
+    public HealingReceivedCalculator(WillpowerCalculator willpowerCalculator) => _willpowerCalculator = willpowerCalculator;
 
-    protected override double InstanceCalculate(SimulationState state)
+    private readonly WillpowerCalculator _willpowerCalculator;
+
+    public virtual double Calculate(SimulationState state)
     {
         var healingReceived = state.Config.Gear.GetStatTotal(g => g.HealingReceived);
-        healingReceived += WillpowerCalculator.Calculate(state) * 0.1;
+        healingReceived += _willpowerCalculator.Calculate(state) * 0.1;
 
         return 1.0 + (healingReceived / 100.0);
     }
