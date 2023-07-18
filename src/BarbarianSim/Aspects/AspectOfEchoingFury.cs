@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Aspects;
 
-public class AspectOfEchoingFury : Aspect
+public class AspectOfEchoingFury : Aspect, IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<WarCryEvent>, IHandlesEvent<RallyingCryEvent>
 {
     // Your Shout skills generate 2-4 Fury per second while active
     public double Fury { get; set; }

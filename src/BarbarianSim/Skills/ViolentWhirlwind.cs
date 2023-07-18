@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class ViolentWhirlwind
+public class ViolentWhirlwind : IHandlesEvent<WhirlwindSpinEvent>
 {
     // After using Whirlwind for 2 seconds, Whirlwind deals 30%[x] increased damage until cancelled
     public const double DELAY = 2.0;

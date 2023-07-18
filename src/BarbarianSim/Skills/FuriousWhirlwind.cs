@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class FuriousWhirlwind
+public class FuriousWhirlwind : IHandlesEvent<WhirlwindSpinEvent>
 {
     // While using a slashing weapon Whirlwind also inflicts 40% of it's Base damage as Bleeding damage over 5 seconds
     public const double BLEED_DAMAGE = 0.4;

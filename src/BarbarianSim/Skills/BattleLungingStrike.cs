@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class BattleLungingStrike
+public class BattleLungingStrike : IHandlesEvent<LungingStrikeEvent>
 {
     // Lunging strike also inflicts 20% bleeding damage over 5 seconds
     public const double BLEED_DAMAGE = 0.2;

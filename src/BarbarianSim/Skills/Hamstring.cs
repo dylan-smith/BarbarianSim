@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class Hamstring
+public class Hamstring : IHandlesEvent<BleedAppliedEvent>
 {
     public void ProcessEvent(BleedAppliedEvent bleedAppliedEvent, SimulationState state)
     {

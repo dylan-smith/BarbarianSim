@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Abilities;
 
-public class RallyingCry
+public class RallyingCry : IHandlesEvent<DirectDamageEvent>
 {
     public const double MOVEMENT_SPEED = 30.0;
     public const double DURATION = 6.0;

@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Abilities;
 
-public class WrathOfTheBerserker
+public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
 {
     public const double BERSERKING_DURATION = 5;
     public const double UNSTOPPABLE_DURATION = 5;

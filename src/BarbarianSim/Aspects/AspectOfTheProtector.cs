@@ -4,7 +4,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Aspects;
 
-public class AspectOfTheProtector : Aspect
+public class AspectOfTheProtector : Aspect, IHandlesEvent<DamageEvent>
 {
     // Damaging an Elite enemy grants you a Barrier absorbing up to [X] damage for 10 seconds. This effect can only happen once every 30 seconds.
     public int BarrierAmount { get; set; }

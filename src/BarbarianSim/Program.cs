@@ -131,6 +131,7 @@ internal class Program
 
         // Other
         serviceCollection.AddSingleton(new RandomGenerator(123));
+        serviceCollection.AddSingleton<EventPublisher>();
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
 

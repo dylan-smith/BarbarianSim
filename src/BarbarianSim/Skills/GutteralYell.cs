@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class GutteralYell
+public class GutteralYell : IHandlesEvent<WarCryEvent>, IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<RallyingCryEvent>
 {
     // Your Shout skills cause enemies to deal X% less damage for 5 seconds
     public const double DURATION = 5;

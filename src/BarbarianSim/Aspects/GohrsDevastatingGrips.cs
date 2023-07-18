@@ -4,7 +4,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Aspects;
 
-public class GohrsDevastatingGrips : Aspect
+public class GohrsDevastatingGrips : Aspect, IHandlesEvent<DirectDamageEvent>, IHandlesEvent<WhirlwindStoppedEvent>
 {
     // Whirlwind explodes after it ends, dealing X% of the total base damage dealt to surrounding enemies as Fire damage
     // Explosion damage is only increased by the first 100 hits of whirlwind (https://us.forums.blizzard.com/en/d4/t/unique-power-on-gohrs-devastating-grips-disabled/27618/2)

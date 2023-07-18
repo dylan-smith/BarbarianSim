@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class CombatLungingStrike
+public class CombatLungingStrike : IHandlesEvent<DamageEvent>
 {
     // Critical strikes with Lunging Strike grant you Berserking for 1.5 seconds
     public const double BERSERKING_DURATION = 1.5;

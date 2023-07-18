@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class PressurePoint
+public class PressurePoint : IHandlesEvent<LuckyHitEvent>
 {
     // Lucky Hit: Your Core skills have up to a 30% chance to make enemies Vulnerable for 2 seconds
     public PressurePoint(RandomGenerator randomGenerator) => _randomGenerator = randomGenerator;

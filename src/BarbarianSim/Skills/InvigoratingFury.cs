@@ -4,7 +4,7 @@ using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.Skills;
 
-public class InvigoratingFury
+public class InvigoratingFury : IHandlesEvent<FurySpentEvent>
 {
     // Heal for 3% of your Maximum Life for each 100 Fury spent
     public InvigoratingFury(MaxLifeCalculator maxLifeCalculator) => _maxLifeCalculator = maxLifeCalculator;

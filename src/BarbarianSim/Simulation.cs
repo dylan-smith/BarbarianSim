@@ -23,6 +23,8 @@ public class Simulation
             return State;
         }
 
+        var eventPublisher = _sp.GetRequiredService<EventPublisher>();
+
         while (true)
         {
             State.Config.Rotation.Execute(State);
@@ -40,7 +42,7 @@ public class Simulation
                 State.Events.Remove(nextEvent);
                 ProcessEvent(nextEvent, State);
 
-                EventPublisher.PublishEvent(nextEvent, State, _sp);
+                eventPublisher.PublishEvent(nextEvent, State, _sp);
 
                 nextEvent = GetNextEvent();
             }
