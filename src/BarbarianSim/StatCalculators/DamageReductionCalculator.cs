@@ -1,5 +1,4 @@
 ﻿using BarbarianSim.Abilities;
-using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
@@ -40,16 +39,8 @@ public class DamageReductionCalculator
         damageReduction *= 1 - (_damageReductionWhileFortifiedCalculator.Calculate(state) / 100.0);
         damageReduction *= 1 - (_damageReductionWhileInjuredCalculator.Calculate(state) / 100.0);
         damageReduction *= 1 - (_aggressiveResistance.GetDamageReduction(state) / 100.0);
-
-        if (state.Player.Auras.Contains(Aura.ChallengingShout))
-        {
-            damageReduction *= 1 - (_challengingShout.GetDamageReduction(state) / 100.0);
-        }
-
-        if (state.Player.Auras.Contains(Aura.GutteralYell))
-        {
-            damageReduction *= 1 - (_gutteralYell.GetDamageReduction(state) / 100.0);
-        }
+        damageReduction *= 1 - (_challengingShout.GetDamageReduction(state) / 100.0);
+        damageReduction *= 1 - (_gutteralYell.GetDamageReduction(state) / 100.0);
 
         return damageReduction;
     }
