@@ -96,33 +96,7 @@ public class IronSkinEventHandlerTests
         ironSkinEvent.BarrierAppliedEvent.Duration.Should().Be(5);
     }
 
-    [Fact]
-    public void TacticalIronSkin_Creates_5_HealingEvents()
-    {
-        _state.Config.Skills.Add(Skill.EnhancedIronSkin, 1);
-        _state.Config.Skills.Add(Skill.TacticalIronSkin, 1);
-        _state.Player.Life = 800;
-        var ironSkinEvent = new IronSkinEvent(123);
-
-        _handler.ProcessEvent(ironSkinEvent, _state);
-
-        ironSkinEvent.HealingEvents.Should().HaveCount(5);
-        _state.Events.Should().Contain(ironSkinEvent.HealingEvents);
-        var missingLife = 1200 - 800;
-        var expectedBarrierAmount = missingLife * 0.6;
-        expectedBarrierAmount += 1200 * 0.2;
-        var expectedHeal = expectedBarrierAmount * 0.1;
-        ironSkinEvent.HealingEvents[0].Timestamp.Should().Be(124);
-        ironSkinEvent.HealingEvents[1].Timestamp.Should().Be(125);
-        ironSkinEvent.HealingEvents[2].Timestamp.Should().Be(126);
-        ironSkinEvent.HealingEvents[3].Timestamp.Should().Be(127);
-        ironSkinEvent.HealingEvents[4].Timestamp.Should().Be(128);
-        ironSkinEvent.HealingEvents[0].BaseAmountHealed.Should().Be(expectedHeal);
-        ironSkinEvent.HealingEvents[1].BaseAmountHealed.Should().Be(expectedHeal);
-        ironSkinEvent.HealingEvents[2].BaseAmountHealed.Should().Be(expectedHeal);
-        ironSkinEvent.HealingEvents[3].BaseAmountHealed.Should().Be(expectedHeal);
-        ironSkinEvent.HealingEvents[4].BaseAmountHealed.Should().Be(expectedHeal);
-    }
+    
 
     [Fact]
     public void StrategicIronSkin_Creates_FortifyGeneratedEvent()

@@ -37,16 +37,6 @@ public class IronSkinEventHandler : EventHandler<IronSkinEvent>
         e.BarrierAppliedEvent = new BarrierAppliedEvent(e.Timestamp, barrierAmount, IronSkin.DURATION);
         state.Events.Add(e.BarrierAppliedEvent);
 
-        if (state.Config.Skills.ContainsKey(Skill.TacticalIronSkin))
-        {
-            for (var i = 0; i < IronSkin.DURATION; i++)
-            {
-                var healEvent = new HealingEvent(e.Timestamp + i + 1, barrierAmount * IronSkin.HEAL_FROM_TACTICAL);
-                e.HealingEvents.Add(healEvent);
-                state.Events.Add(healEvent);
-            }
-        }
-
         if (state.Config.Skills.ContainsKey(Skill.StrategicIronSkin))
         {
             var fortifyAmount = IronSkin.FORTIFY_FROM_STRATEGIC * state.Player.BaseLife;
