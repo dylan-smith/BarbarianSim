@@ -54,22 +54,6 @@ public class WarCryEventHandlerTests
     }
 
     [Fact]
-    public void MightyWarCry_Creates_FortifyGeneratedEvent()
-    {
-        _state.Config.Skills.Add(Skill.MightyWarCry, 1);
-        _state.Player.BaseLife = 4000;
-        var warCryEvent = new WarCryEvent(123);
-
-        _handler.ProcessEvent(warCryEvent, _state);
-
-        warCryEvent.FortifyGeneratedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(warCryEvent.FortifyGeneratedEvent);
-        _state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
-        warCryEvent.FortifyGeneratedEvent.Timestamp.Should().Be(123);
-        warCryEvent.FortifyGeneratedEvent.Amount.Should().Be(600);
-    }
-
-    [Fact]
     public void BoomingVoice_Increases_Duration()
     {
         _mockBoomingVoice.Setup(m => m.GetDurationIncrease(_state))

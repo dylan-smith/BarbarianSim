@@ -20,13 +20,5 @@ public class WarCryEventHandler : EventHandler<WarCryEvent>
 
         e.WarCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, WarCry.COOLDOWN, Aura.WarCryCooldown);
         state.Events.Add(e.WarCryCooldownAuraAppliedEvent);
-
-
-
-        if (state.Config.Skills.ContainsKey(Skill.MightyWarCry))
-        {
-            e.FortifyGeneratedEvent = new FortifyGeneratedEvent(e.Timestamp, WarCry.FORTIFY_FROM_MIGHTY * state.Player.BaseLife);
-            state.Events.Add(e.FortifyGeneratedEvent);
-        }
     }
 }
