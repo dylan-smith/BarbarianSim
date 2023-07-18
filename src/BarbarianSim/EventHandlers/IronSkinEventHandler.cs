@@ -36,18 +36,5 @@ public class IronSkinEventHandler : EventHandler<IronSkinEvent>
 
         e.BarrierAppliedEvent = new BarrierAppliedEvent(e.Timestamp, barrierAmount, IronSkin.DURATION);
         state.Events.Add(e.BarrierAppliedEvent);
-
-        if (state.Config.Skills.ContainsKey(Skill.StrategicIronSkin))
-        {
-            var fortifyAmount = IronSkin.FORTIFY_FROM_STRATEGIC * state.Player.BaseLife;
-
-            if (state.Player.GetLifePercentage(maxLife) < 0.5)
-            {
-                fortifyAmount *= 2;
-            }
-
-            e.FortifyGeneratedEvent = new FortifyGeneratedEvent(e.Timestamp, fortifyAmount);
-            state.Events.Add(e.FortifyGeneratedEvent);
-        }
     }
 }

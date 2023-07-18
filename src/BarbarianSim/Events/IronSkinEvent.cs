@@ -9,5 +9,4 @@ public class IronSkinEvent : EventInfo
     public AuraAppliedEvent IronSkinAuraAppliedEvent { get; set; }
     public AuraAppliedEvent IronSkinCooldownAuraAppliedEvent { get; set; }
     public BarrierAppliedEvent BarrierAppliedEvent { get; set; }
-    public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
 }

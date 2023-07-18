@@ -27,16 +27,16 @@ public class EventPublisher
         return typeof(Program).Assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(Events.EventInfo)));
     }
 
-    public void PublishEvent(Events.EventInfo e, SimulationState state, IServiceProvider sp)
+    public void PublishEvent(Events.EventInfo e, SimulationState state)
     {
         state.ProcessedEvents.Add(e);
 
         typeof(EventPublisher).GetMethod(nameof(Publish), BindingFlags.NonPublic | BindingFlags.Instance)
                               .MakeGenericMethod(e.GetType())
-                              .Invoke(this, new object[] { e, state, sp });
+                              .Invoke(this, new object[] { e, state });
     }
 
-    private void Publish<TEvent>(TEvent e, SimulationState state, IServiceProvider sp) where TEvent : Events.EventInfo
+    private void Publish<TEvent>(TEvent e, SimulationState state) where TEvent : Events.EventInfo
     {
         foreach (var subscriber in _subscribers[typeof(TEvent)])
         {

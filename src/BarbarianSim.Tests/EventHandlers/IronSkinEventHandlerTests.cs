@@ -95,40 +95,4 @@ public class IronSkinEventHandlerTests
         ironSkinEvent.BarrierAppliedEvent.BarrierAmount.Should().Be(expectedBarrierAmount);
         ironSkinEvent.BarrierAppliedEvent.Duration.Should().Be(5);
     }
-
-    
-
-    [Fact]
-    public void StrategicIronSkin_Creates_FortifyGeneratedEvent()
-    {
-        _state.Config.Skills.Add(Skill.StrategicIronSkin, 1);
-        _state.Player.Life = 800;
-        _state.Player.BaseLife = 700;
-        var ironSkinEvent = new IronSkinEvent(123);
-
-        _handler.ProcessEvent(ironSkinEvent, _state);
-
-        ironSkinEvent.FortifyGeneratedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(ironSkinEvent.FortifyGeneratedEvent);
-        _state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
-        ironSkinEvent.FortifyGeneratedEvent.Timestamp.Should().Be(123);
-        ironSkinEvent.FortifyGeneratedEvent.Amount.Should().Be(105);
-    }
-
-    [Fact]
-    public void StrategicIronSkin_Fortify_Amount_Doubles_When_Below_Half_Life()
-    {
-        _state.Config.Skills.Add(Skill.StrategicIronSkin, 1);
-        _state.Player.Life = 400;
-        _state.Player.BaseLife = 700;
-        var ironSkinEvent = new IronSkinEvent(123);
-
-        _handler.ProcessEvent(ironSkinEvent, _state);
-
-        ironSkinEvent.FortifyGeneratedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(ironSkinEvent.FortifyGeneratedEvent);
-        _state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
-        ironSkinEvent.FortifyGeneratedEvent.Timestamp.Should().Be(123);
-        ironSkinEvent.FortifyGeneratedEvent.Amount.Should().Be(210);
-    }
 }
