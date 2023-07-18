@@ -21,12 +21,6 @@ public class RallyingCryEventHandler : EventHandler<RallyingCryEvent>
         e.RallyingCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
         state.Events.Add(e.RallyingCryCooldownAuraAppliedEvent);
 
-        if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry))
-        {
-            e.UnstoppableAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.Unstoppable);
-            state.Events.Add(e.UnstoppableAuraAppliedEvent);
-        }
-
         if (state.Config.Skills.ContainsKey(Skill.TacticalRallyingCry))
         {
             e.FuryGeneratedEvent = new FuryGeneratedEvent(e.Timestamp, RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);

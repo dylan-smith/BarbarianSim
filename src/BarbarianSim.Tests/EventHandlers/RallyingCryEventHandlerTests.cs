@@ -55,22 +55,6 @@ public class RallyingCryEventHandlerTests
     }
 
     [Fact]
-    public void EnhancedRallyingCry_Creates_UnstoppableAuraAppliedEvent()
-    {
-        _state.Config.Skills.Add(Skill.EnhancedRallyingCry, 1);
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        _handler.ProcessEvent(rallyingCryEvent, _state);
-
-        rallyingCryEvent.UnstoppableAuraAppliedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(rallyingCryEvent.UnstoppableAuraAppliedEvent);
-        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Unstoppable);
-        rallyingCryEvent.UnstoppableAuraAppliedEvent.Timestamp.Should().Be(123);
-        rallyingCryEvent.UnstoppableAuraAppliedEvent.Aura.Should().Be(Aura.Unstoppable);
-        rallyingCryEvent.UnstoppableAuraAppliedEvent.Duration.Should().Be(6);
-    }
-
-    [Fact]
     public void TacticalRallyingCry_Creates_FuryGeneratedEvent()
     {
         _state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
