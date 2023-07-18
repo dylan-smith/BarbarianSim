@@ -27,11 +27,5 @@ public class ChallengingShoutEventHandler : EventHandler<ChallengingShoutEvent>
             e.TauntAuraAppliedEvent.Add(tauntAppliedEvent);
             state.Events.Add(tauntAppliedEvent);
         }
-
-        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
-        {
-            e.RaidLeaderProcEvent = new RaidLeaderProcEvent(e.Timestamp, e.Duration);
-            state.Events.Add(e.RaidLeaderProcEvent);
-        }
     }
 }

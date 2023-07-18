@@ -82,20 +82,4 @@ public class ChallengingShoutEventHandlerTests
 
         challengingShoutEvent.ChallengingShoutAuraAppliedEvent.Duration.Should().Be(6.0 * 1.24);
     }
-
-    [Fact]
-    public void Creates_RaidLeaderProcEvent()
-    {
-        _state.Config.Skills.Add(Skill.RaidLeader, 1);
-        _mockBoomingVoice.Setup(m => m.GetDurationIncrease(_state)).Returns(1.24);
-        var challengingShoutEvent = new ChallengingShoutEvent(123);
-
-        _handler.ProcessEvent(challengingShoutEvent, _state);
-
-        challengingShoutEvent.RaidLeaderProcEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(challengingShoutEvent.RaidLeaderProcEvent);
-        _state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
-        challengingShoutEvent.RaidLeaderProcEvent.Timestamp.Should().Be(123);
-        challengingShoutEvent.RaidLeaderProcEvent.Duration.Should().Be(6.0 * 1.24);
-    }
 }
