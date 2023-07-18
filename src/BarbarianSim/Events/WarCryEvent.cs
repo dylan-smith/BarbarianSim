@@ -8,7 +8,6 @@ public class WarCryEvent : EventInfo
 
     public AuraAppliedEvent WarCryAuraAppliedEvent { get; set; }
     public AuraAppliedEvent WarCryCooldownAuraAppliedEvent { get; set; }
-    public AuraAppliedEvent BerserkingAuraAppliedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
     public double Duration { get; set; }
 }

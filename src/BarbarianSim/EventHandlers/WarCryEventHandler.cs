@@ -21,11 +21,7 @@ public class WarCryEventHandler : EventHandler<WarCryEvent>
         e.WarCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, WarCry.COOLDOWN, Aura.WarCryCooldown);
         state.Events.Add(e.WarCryCooldownAuraAppliedEvent);
 
-        if (state.Config.Skills.ContainsKey(Skill.EnhancedWarCry))
-        {
-            e.BerserkingAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, WarCry.BERSERKING_DURATION_FROM_ENHANCED, Aura.Berserking);
-            state.Events.Add(e.BerserkingAuraAppliedEvent);
-        }
+
 
         if (state.Config.Skills.ContainsKey(Skill.MightyWarCry))
         {

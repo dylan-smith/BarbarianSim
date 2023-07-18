@@ -54,22 +54,6 @@ public class WarCryEventHandlerTests
     }
 
     [Fact]
-    public void EnhancedWarCry_Creates_BerserkingAuraAppliedEvent()
-    {
-        _state.Config.Skills.Add(Skill.EnhancedWarCry, 1);
-        var warCryEvent = new WarCryEvent(123);
-
-        _handler.ProcessEvent(warCryEvent, _state);
-
-        warCryEvent.BerserkingAuraAppliedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(warCryEvent.BerserkingAuraAppliedEvent);
-        _state.Events.Should().ContainSingle(e => e is AuraAppliedEvent && ((AuraAppliedEvent)e).Aura == Aura.Berserking);
-        warCryEvent.BerserkingAuraAppliedEvent.Timestamp.Should().Be(123);
-        warCryEvent.BerserkingAuraAppliedEvent.Duration.Should().Be(4.0);
-        warCryEvent.BerserkingAuraAppliedEvent.Aura.Should().Be(Aura.Berserking);
-    }
-
-    [Fact]
     public void MightyWarCry_Creates_FortifyGeneratedEvent()
     {
         _state.Config.Skills.Add(Skill.MightyWarCry, 1);
