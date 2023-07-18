@@ -38,11 +38,5 @@ public class RallyingCryEventHandler : EventHandler<RallyingCryEvent>
             e.FortifyGeneratedEvent = new FortifyGeneratedEvent(e.Timestamp, RallyingCry.FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife);
             state.Events.Add(e.FortifyGeneratedEvent);
         }
-
-        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
-        {
-            e.RaidLeaderProcEvent = new RaidLeaderProcEvent(e.Timestamp, e.Duration);
-            state.Events.Add(e.RaidLeaderProcEvent);
-        }
     }
 }

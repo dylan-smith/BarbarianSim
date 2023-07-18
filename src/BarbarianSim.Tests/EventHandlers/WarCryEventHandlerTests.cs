@@ -97,21 +97,4 @@ public class WarCryEventHandlerTests
 
         warCryEvent.WarCryAuraAppliedEvent.Duration.Should().Be(1.2 * 6.0);
     }
-
-    [Fact]
-    public void Creates_RaidLeaderProcEvent()
-    {
-        _state.Config.Skills.Add(Skill.RaidLeader, 1);
-        _mockBoomingVoice.Setup(m => m.GetDurationIncrease(_state))
-                         .Returns(1.2);
-        var warCryEvent = new WarCryEvent(123);
-
-        _handler.ProcessEvent(warCryEvent, _state);
-
-        warCryEvent.RaidLeaderProcEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(warCryEvent.RaidLeaderProcEvent);
-        _state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
-        warCryEvent.RaidLeaderProcEvent.Timestamp.Should().Be(123);
-        warCryEvent.RaidLeaderProcEvent.Duration.Should().Be(1.2 * 6.0);
-    }
 }

@@ -11,6 +11,5 @@ public class RallyingCryEvent : EventInfo
     public AuraAppliedEvent UnstoppableAuraAppliedEvent { get; set; }
     public FuryGeneratedEvent FuryGeneratedEvent { get; set; }
     public FortifyGeneratedEvent FortifyGeneratedEvent { get; set; }
-    public RaidLeaderProcEvent RaidLeaderProcEvent { get; set; }
     public double Duration { get; set; }
 }

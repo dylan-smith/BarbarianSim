@@ -32,11 +32,5 @@ public class WarCryEventHandler : EventHandler<WarCryEvent>
             e.FortifyGeneratedEvent = new FortifyGeneratedEvent(e.Timestamp, WarCry.FORTIFY_FROM_MIGHTY * state.Player.BaseLife);
             state.Events.Add(e.FortifyGeneratedEvent);
         }
-
-        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
-        {
-            e.RaidLeaderProcEvent = new RaidLeaderProcEvent(e.Timestamp, e.Duration);
-            state.Events.Add(e.RaidLeaderProcEvent);
-        }
     }
 }

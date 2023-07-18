@@ -113,19 +113,4 @@ public class RallyingCryEventHandlerTests
 
         rallyingCryEvent.RallyingCryAuraAppliedEvent.Duration.Should().Be(1.2 * 6.0);
     }
-
-    [Fact]
-    public void Creates_RaidLeaderProcEvent()
-    {
-        _state.Config.Skills.Add(Skill.RaidLeader, 1);
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        _handler.ProcessEvent(rallyingCryEvent, _state);
-
-        rallyingCryEvent.RaidLeaderProcEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(rallyingCryEvent.RaidLeaderProcEvent);
-        _state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
-        rallyingCryEvent.RaidLeaderProcEvent.Timestamp.Should().Be(123);
-        rallyingCryEvent.RaidLeaderProcEvent.Duration.Should().Be(6);
-    }
 }

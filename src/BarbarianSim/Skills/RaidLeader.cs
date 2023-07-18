@@ -3,7 +3,7 @@ using BarbarianSim.Events;
 
 namespace BarbarianSim.Skills;
 
-public class RaidLeader : IHandlesEvent<Events.ChallengingShoutEvent>
+public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<RallyingCryEvent>, IHandlesEvent<WarCryEvent>
 {
     // Your Shouts also heal Allies for X% of their Maximum Life per second
     public virtual double GetHealPercentage(SimulationState state)
@@ -25,6 +25,22 @@ public class RaidLeader : IHandlesEvent<Events.ChallengingShoutEvent>
     }
 
     public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
+    {
+        if (state.Config.Skills.ContainsKey(Skill.RaidLeader) && state.Config.Skills[Skill.RaidLeader] > 0)
+        {
+            state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
+        }
+    }
+
+    public void ProcessEvent(RallyingCryEvent e, SimulationState state)
+    {
+        if (state.Config.Skills.ContainsKey(Skill.RaidLeader) && state.Config.Skills[Skill.RaidLeader] > 0)
+        {
+            state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
+        }
+    }
+
+    public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.RaidLeader) && state.Config.Skills[Skill.RaidLeader] > 0)
         {

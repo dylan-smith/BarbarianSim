@@ -26,7 +26,7 @@ public class RaidLeaderTests
     }
 
     [Fact]
-    public void Creates_RaidLeaderProcEvent()
+    public void ChallengingShoutEvent_Creates_RaidLeaderProcEvent()
     {
         _state.Config.Skills.Add(Skill.RaidLeader, 1);
         var challengingShoutEvent = new ChallengingShoutEvent(123)
@@ -53,5 +53,37 @@ public class RaidLeaderTests
         _skill.ProcessEvent(challengingShoutEvent, _state);
 
         _state.Events.Should().NotContain(e => e is RaidLeaderProcEvent);
+    }
+
+    [Fact]
+    public void RallyingCryEvent_Creates_RaidLeaderProcEvent()
+    {
+        _state.Config.Skills.Add(Skill.RaidLeader, 1);
+        var rallyingCryEvent = new RallyingCryEvent(123)
+        {
+            Duration = 12.2
+        };
+
+        _skill.ProcessEvent(rallyingCryEvent, _state);
+
+        _state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
+        _state.Events.OfType<RaidLeaderProcEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.OfType<RaidLeaderProcEvent>().First().Duration.Should().Be(12.2);
+    }
+
+    [Fact]
+    public void WarCryEvent_Creates_RaidLeaderProcEvent()
+    {
+        _state.Config.Skills.Add(Skill.RaidLeader, 1);
+        var warCryEvent = new WarCryEvent(123)
+        {
+            Duration = 12.2
+        };
+
+        _skill.ProcessEvent(warCryEvent, _state);
+
+        _state.Events.Should().ContainSingle(e => e is RaidLeaderProcEvent);
+        _state.Events.OfType<RaidLeaderProcEvent>().First().Timestamp.Should().Be(123);
+        _state.Events.OfType<RaidLeaderProcEvent>().First().Duration.Should().Be(12.2);
     }
 }
