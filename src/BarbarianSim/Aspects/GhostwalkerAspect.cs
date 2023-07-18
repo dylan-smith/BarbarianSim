@@ -9,11 +9,11 @@ public class GhostwalkerAspect : Aspect, IHandlesEvent<AuraAppliedEvent>
     // While Unstoppable and for 4 seconds after, you gain 10-25%[+] increased Movement Speed and can move freely through enemies
     public int Speed { get; set; }
 
-    public void ProcessEvent(AuraAppliedEvent auraAppliedEvent, SimulationState state)
+    public void ProcessEvent(AuraAppliedEvent e, SimulationState state)
     {
-        if (auraAppliedEvent.Aura == Aura.Unstoppable)
+        if (e.Aura == Aura.Unstoppable)
         {
-            state.Events.Add(new AuraAppliedEvent(auraAppliedEvent.Timestamp, auraAppliedEvent.Duration + 4.0, Aura.Ghostwalker));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration + 4.0, Aura.Ghostwalker));
         }
     }
 }

@@ -14,12 +14,12 @@ public class EnhancedLungingStrike : IHandlesEvent<LungingStrikeEvent>
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
 
-    public void ProcessEvent(LungingStrikeEvent lungingStrikeEvent, SimulationState state)
+    public void ProcessEvent(LungingStrikeEvent e, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) &&
-            lungingStrikeEvent.Target.IsHealthy())
+            e.Target.IsHealthy())
         {
-            var healingEvent = new HealingEvent(lungingStrikeEvent.Timestamp, _maxLifeCalculator.Calculate(state) * HEAL_PERCENT);
+            var healingEvent = new HealingEvent(e.Timestamp, _maxLifeCalculator.Calculate(state) * HEAL_PERCENT);
             state.Events.Add(healingEvent);
         }
     }

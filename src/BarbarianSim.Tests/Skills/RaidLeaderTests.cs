@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using BarbarianSim.Config;
+﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;

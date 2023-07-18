@@ -9,11 +9,11 @@ public class BattleLungingStrike : IHandlesEvent<LungingStrikeEvent>
     public const double BLEED_DAMAGE = 0.2;
     public const double BLEED_DURATION = 5;
 
-    public void ProcessEvent(LungingStrikeEvent lungingStrikeEvent, SimulationState state)
+    public void ProcessEvent(LungingStrikeEvent e, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
         {
-            var bleedAppliedEvent = new BleedAppliedEvent(lungingStrikeEvent.Timestamp, lungingStrikeEvent.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, lungingStrikeEvent.Target);
+            var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, e.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, e.Target);
             state.Events.Add(bleedAppliedEvent);
         }
     }

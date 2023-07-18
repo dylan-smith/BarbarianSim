@@ -8,18 +8,18 @@ public class AspectOfEchoingFury : Aspect, IHandlesEvent<ChallengingShoutEvent>,
     // Your Shout skills generate 2-4 Fury per second while active
     public double Fury { get; set; }
 
-    public void ProcessEvent(ChallengingShoutEvent challengingShoutEvent, SimulationState state)
+    public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
-        state.Events.Add(new AspectOfEchoingFuryProcEvent(challengingShoutEvent.Timestamp, challengingShoutEvent.Duration, Fury));
+        state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
     }
 
-    public void ProcessEvent(WarCryEvent warCryEvent, SimulationState state)
+    public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        state.Events.Add(new AspectOfEchoingFuryProcEvent(warCryEvent.Timestamp, warCryEvent.Duration, Fury));
+        state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
     }
 
-    public void ProcessEvent(RallyingCryEvent rallyingCryEvent, SimulationState state)
+    public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        state.Events.Add(new AspectOfEchoingFuryProcEvent(rallyingCryEvent.Timestamp, rallyingCryEvent.Duration, Fury));
+        state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
     }
 }

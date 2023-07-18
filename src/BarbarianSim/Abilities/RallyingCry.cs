@@ -38,12 +38,12 @@ public class RallyingCry : IHandlesEvent<DirectDamageEvent>
         };
     }
 
-    public void ProcessEvent(DirectDamageEvent damageEvent, SimulationState state)
+    public void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry) &&
             state.Player.Auras.Contains(Aura.RallyingCry))
         {
-            state.Events.Add(new FortifyGeneratedEvent(damageEvent.Timestamp, DIRECT_DAMAGE_FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife));
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, DIRECT_DAMAGE_FORTIFY_FROM_STRATEGIC_RALLYING_CRY * state.Player.BaseLife));
         }
     }
 }

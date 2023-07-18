@@ -12,7 +12,7 @@ public class AspectOfTheProtector : Aspect, IHandlesEvent<DamageEvent>
     public const double BARRIER_EXPIRY = 10.0;
     public const double COOLDOWN = 30;
 
-    public void ProcessEvent(DamageEvent _, SimulationState state)
+    public void ProcessEvent(DamageEvent e, SimulationState state)
     {
         if (!state.Config.EnemySettings.IsElite)
         {

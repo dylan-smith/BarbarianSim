@@ -11,7 +11,7 @@ public class InvigoratingFury : IHandlesEvent<FurySpentEvent>
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
 
-    public void ProcessEvent(FurySpentEvent furySpentEvent, SimulationState state)
+    public void ProcessEvent(FurySpentEvent e, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.InvigoratingFury))
         {
@@ -19,9 +19,9 @@ public class InvigoratingFury : IHandlesEvent<FurySpentEvent>
 
             // If we spend more than 100 fury at once this will only fire once (which is probably wrong)
             // but I don't think there's any way to spend more than 100 fury at once
-            if (Math.Floor(totalFurySpent / 100) != Math.Floor((totalFurySpent - furySpentEvent.FurySpent) / 100))
+            if (Math.Floor(totalFurySpent / 100) != Math.Floor((totalFurySpent - e.FurySpent) / 100))
             {
-                state.Events.Add(new HealingEvent(furySpentEvent.Timestamp, _maxLifeCalculator.Calculate(state) * GetHealingPercentage(state)));
+                state.Events.Add(new HealingEvent(e.Timestamp, _maxLifeCalculator.Calculate(state) * GetHealingPercentage(state)));
             }
         }
     }

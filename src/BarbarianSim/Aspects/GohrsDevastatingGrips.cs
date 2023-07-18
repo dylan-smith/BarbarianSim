@@ -13,24 +13,24 @@ public class GohrsDevastatingGrips : Aspect, IHandlesEvent<DirectDamageEvent>, I
     public double TotalBaseDamage { get; set; }
     public const int MAX_HIT_COUNT = 100;
 
-    public void ProcessEvent(DirectDamageEvent directDamageEvent, SimulationState _)
+    public void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
-        if (directDamageEvent.DamageSource != DamageSource.Whirlwind)
+        if (e.DamageSource != DamageSource.Whirlwind)
         {
             return;
         }
 
         if (HitCount < MAX_HIT_COUNT)
         {
-            TotalBaseDamage += directDamageEvent.BaseDamage;
+            TotalBaseDamage += e.BaseDamage;
             HitCount++;
         }
     }
 
-    public void ProcessEvent(WhirlwindStoppedEvent whirlwindStoppedEvent, SimulationState state)
+    public void ProcessEvent(WhirlwindStoppedEvent e, SimulationState state)
     {
         var damage = TotalBaseDamage * DamagePercent / 100.0;
-        state.Events.Add(new GohrsDevastatingGripsProcEvent(whirlwindStoppedEvent.Timestamp, damage));
+        state.Events.Add(new GohrsDevastatingGripsProcEvent(e.Timestamp, damage));
 
         HitCount = 0;
         TotalBaseDamage = 0;

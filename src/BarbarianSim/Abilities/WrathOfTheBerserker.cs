@@ -19,13 +19,13 @@ public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
 
     public virtual void Use(SimulationState state) => state.Events.Add(new WrathOfTheBerserkerEvent(state.CurrentTime));
 
-    public void ProcessEvent(DirectDamageEvent damageEvent, SimulationState state)
+    public void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
         if (state.Config.Skills.ContainsKey(Skill.WrathOfTheBerserker) &&
             state.Player.Auras.Contains(Aura.WrathOfTheBerserker) &&
-            damageEvent.SkillType == SkillType.Basic)
+            e.SkillType == SkillType.Basic)
         {
-            state.Events.Add(new AuraAppliedEvent(damageEvent.Timestamp, BERSERKING_DURATION, Aura.Berserking));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, BERSERKING_DURATION, Aura.Berserking));
         }
     }
 

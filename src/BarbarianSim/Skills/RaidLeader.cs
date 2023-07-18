@@ -26,7 +26,7 @@ public class RaidLeader : IHandlesEvent<Events.ChallengingShoutEvent>
 
     public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
-        if (state.Config.Skills.ContainsKey(Skill.RaidLeader))
+        if (state.Config.Skills.ContainsKey(Skill.RaidLeader) && state.Config.Skills[Skill.RaidLeader] > 0)
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
         }
