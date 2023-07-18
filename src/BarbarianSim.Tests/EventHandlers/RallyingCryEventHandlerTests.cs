@@ -1,5 +1,4 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Config;
+﻿using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
@@ -52,21 +51,6 @@ public class RallyingCryEventHandlerTests
         rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Timestamp.Should().Be(123);
         rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Aura.Should().Be(Aura.RallyingCryCooldown);
         rallyingCryEvent.RallyingCryCooldownAuraAppliedEvent.Duration.Should().Be(25);
-    }
-
-    [Fact]
-    public void TacticalRallyingCry_Creates_FuryGeneratedEvent()
-    {
-        _state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        _handler.ProcessEvent(rallyingCryEvent, _state);
-
-        rallyingCryEvent.FuryGeneratedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(rallyingCryEvent.FuryGeneratedEvent);
-        _state.Events.Should().ContainSingle(e => e is FuryGeneratedEvent);
-        rallyingCryEvent.FuryGeneratedEvent.Timestamp.Should().Be(123);
-        rallyingCryEvent.FuryGeneratedEvent.BaseFury.Should().Be(RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
     }
 
     [Fact]
