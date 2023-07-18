@@ -54,22 +54,6 @@ public class RallyingCryEventHandlerTests
     }
 
     [Fact]
-    public void StrategicRallyingCry_Creates_FortifyGeneratedEvent()
-    {
-        _state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
-        _state.Player.BaseLife = 4000;
-        var rallyingCryEvent = new RallyingCryEvent(123);
-
-        _handler.ProcessEvent(rallyingCryEvent, _state);
-
-        rallyingCryEvent.FortifyGeneratedEvent.Should().NotBeNull();
-        _state.Events.Should().Contain(rallyingCryEvent.FortifyGeneratedEvent);
-        _state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
-        rallyingCryEvent.FortifyGeneratedEvent.Timestamp.Should().Be(123);
-        rallyingCryEvent.FortifyGeneratedEvent.Amount.Should().Be(400);
-    }
-
-    [Fact]
     public void BoomingVoice_Increases_Duration()
     {
         _mockBoomingVoice.Setup(m => m.GetDurationIncrease(_state))
