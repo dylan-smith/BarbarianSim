@@ -1,15 +1,25 @@
 ﻿using BarbarianSim.Config;
-using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class MaxLifeCalculatorTests
 {
+    private readonly Mock<EnhancedChallengingShout> _mockEnhancedChallengingShout = TestHelpers.CreateMock<EnhancedChallengingShout>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly MaxLifeCalculator _calculator = new();
+    private readonly MaxLifeCalculator _calculator;
+
+    public MaxLifeCalculatorTests()
+    {
+        _mockEnhancedChallengingShout.Setup(m => m.GetMaxLifeMultiplier(It.IsAny<SimulationState>()))
+                                      .Returns(1.0);
+
+        _calculator = new MaxLifeCalculator(_mockEnhancedChallengingShout.Object);
+    }
 
     [Fact]
     public void Includes_Base_Life()
@@ -36,12 +46,14 @@ public class MaxLifeCalculatorTests
     [Fact]
     public void Includes_Bonus_From_EnhancedChallengingShout()
     {
-        _state.Config.Skills.Add(Skill.EnhancedChallengingShout, 1);
+        _state.Config.Gear.Helm.MaxLife = 100;
+        _state.Config.Gear.Chest.MaxLife = 100;
         _state.Player.BaseLife = 1000;
-        _state.Player.Auras.Add(Aura.ChallengingShout);
+        _mockEnhancedChallengingShout.Setup(m => m.GetMaxLifeMultiplier(It.IsAny<SimulationState>()))
+                                      .Returns(1.2);
 
         var result = _calculator.Calculate(_state);
 
-        result.Should().Be(1200);
+        result.Should().Be(1440);
     }
 }

@@ -7,7 +7,6 @@ public class ChallengingShout
 {
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
-    public const double MAX_LIFE_BONUS_FROM_ENHANCED = 1.2;
     public const double FURY_BONUS_FROM_TACTICAL = 3;
     public const double THORNS_BONUS_FROM_STRATEGIC = 0.3;
 
