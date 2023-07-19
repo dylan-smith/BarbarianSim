@@ -289,7 +289,7 @@ dotnet_diagnostic.CA1058.severity = warning
 dotnet_diagnostic.CA1060.severity = warning
 
 # CA1062: Validate arguments of public methods
-dotnet_diagnostic.CA1062.severity = suggestion
+dotnet_diagnostic.CA1062.severity = silent
 
 # CA1064: Exceptions should be public
 dotnet_diagnostic.CA1064.severity = warning
