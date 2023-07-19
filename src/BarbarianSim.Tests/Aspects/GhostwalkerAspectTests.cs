@@ -26,4 +26,32 @@ public class GhostwalkerAspectTests
         _state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(9);
         _state.Events.OfType<AuraAppliedEvent>().First().Aura.Should().Be(Aura.Ghostwalker);
     }
+
+    [Fact]
+    public void GetMovementSpeedIncrease_Returns_Bonus_When_Active()
+    {
+        _state.Player.Auras.Add(Aura.Ghostwalker);
+        _state.Config.Gear.Ring1.Aspect = _aspect;
+        _aspect.Speed = 17;
+
+        _aspect.GetMovementSpeedIncrease(_state).Should().Be(17);
+    }
+
+    [Fact]
+    public void GetMovementSpeedIncrease_Returns_0_When_Not_Active()
+    {
+        _state.Config.Gear.Ring1.Aspect = _aspect;
+        _aspect.Speed = 17;
+
+        _aspect.GetMovementSpeedIncrease(_state).Should().Be(0);
+    }
+
+    [Fact]
+    public void GetMovementSpeedIncrease_Returns_0_When_Not_Equipped()
+    {
+        _state.Player.Auras.Add(Aura.Ghostwalker);
+        _aspect.Speed = 17;
+
+        _aspect.GetMovementSpeedIncrease(_state).Should().Be(0);
+    }
 }

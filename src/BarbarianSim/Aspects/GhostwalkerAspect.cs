@@ -16,4 +16,17 @@ public class GhostwalkerAspect : Aspect, IHandlesEvent<AuraAppliedEvent>
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration + 4.0, Aura.Ghostwalker));
         }
     }
+
+    public virtual double GetMovementSpeedIncrease(SimulationState state)
+    {
+        if (state.Config.Gear.HasAspect<GhostwalkerAspect>())
+        {
+            if (state.Player.Auras.Contains(Aura.Ghostwalker))
+            {
+                return Speed;
+            }
+        }
+
+        return 0;
+    }
 }

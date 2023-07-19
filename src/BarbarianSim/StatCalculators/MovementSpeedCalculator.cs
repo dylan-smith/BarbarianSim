@@ -7,9 +7,14 @@ namespace BarbarianSim.StatCalculators;
 
 public class MovementSpeedCalculator
 {
-    public MovementSpeedCalculator(PrimeWrathOfTheBerserker primeWrathOfTheBerserker) => _primeWrathOfTheBerserker = primeWrathOfTheBerserker;
+    public MovementSpeedCalculator(PrimeWrathOfTheBerserker primeWrathOfTheBerserker, GhostwalkerAspect ghostwalkerAspect)
+    {
+        _primeWrathOfTheBerserker = primeWrathOfTheBerserker;
+        _ghostwalkerAspect = ghostwalkerAspect;
+    }
 
     private readonly PrimeWrathOfTheBerserker _primeWrathOfTheBerserker;
+    private readonly GhostwalkerAspect _ghostwalkerAspect;
 
     public virtual double Calculate(SimulationState state)
     {
@@ -19,10 +24,7 @@ public class MovementSpeedCalculator
 
         movementSpeed += _primeWrathOfTheBerserker.GetMovementSpeedIncrease(state);
 
-        if (state.Player.Auras.Contains(Aura.Ghostwalker))
-        {
-            movementSpeed += state.Config.Gear.GetAllAspects<GhostwalkerAspect>().Single().Speed;
-        }
+        movementSpeed += _ghostwalkerAspect.GetMovementSpeedIncrease(state);
 
         return 1.0 + (movementSpeed / 100.0);
     }
