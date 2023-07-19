@@ -1,23 +1,28 @@
 ﻿using BarbarianSim.Abilities;
-using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
 
 public class ResourceGenerationCalculator
 {
-    public ResourceGenerationCalculator(WillpowerCalculator willpowerCalculator, RallyingCry rallyingCry, ProlificFury prolificFury, TacticalRallyingCry tacticalRallyingCry)
+    public ResourceGenerationCalculator(WillpowerCalculator willpowerCalculator,
+                                        RallyingCry rallyingCry,
+                                        ProlificFury prolificFury,
+                                        TacticalRallyingCry tacticalRallyingCry,
+                                        PrimeWrathOfTheBerserker primeWrathOfTheBerserker)
     {
         _willpowerCalculator = willpowerCalculator;
         _rallyingCry = rallyingCry;
         _prolificFury = prolificFury;
         _tacticalRallyingCry = tacticalRallyingCry;
+        _primeWrathOfTheBerserker = primeWrathOfTheBerserker;
     }
 
     private readonly WillpowerCalculator _willpowerCalculator;
     private readonly RallyingCry _rallyingCry;
     private readonly ProlificFury _prolificFury;
     private readonly TacticalRallyingCry _tacticalRallyingCry;
+    private readonly PrimeWrathOfTheBerserker _primeWrathOfTheBerserker;
 
     public virtual double Calculate(SimulationState state)
     {
@@ -28,13 +33,8 @@ public class ResourceGenerationCalculator
 
         result *= _rallyingCry.GetResourceGeneration(state);
         result *= _tacticalRallyingCry.GetResourceGeneration(state);
-
         result *= _prolificFury.GetFuryGeneration(state);
-
-        if (state.Config.Skills.ContainsKey(Skill.PrimeWrathOfTheBerserker) && state.Player.Auras.Contains(Aura.WrathOfTheBerserker))
-        {
-            result *= WrathOfTheBerserker.RESOURCE_GENERATION_FROM_PRIME;
-        }
+        result *= _primeWrathOfTheBerserker.GetResourceGeneration(state);
 
         return result;
     }

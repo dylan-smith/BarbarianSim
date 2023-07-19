@@ -16,4 +16,13 @@ public class PrimeWrathOfTheBerserker
                ? MOVEMENT_SPEED_INCREASE
                : 0;
     }
+
+    public virtual double GetResourceGeneration(SimulationState state)
+    {
+        return state.Config.Skills.ContainsKey(Skill.PrimeWrathOfTheBerserker) &&
+               state.Config.Skills[Skill.PrimeWrathOfTheBerserker] > 0 &&
+               state.Player.Auras.Contains(Aura.WrathOfTheBerserker)
+               ? FURY_GENERATION_INCREASE
+               : 1;
+    }
 }

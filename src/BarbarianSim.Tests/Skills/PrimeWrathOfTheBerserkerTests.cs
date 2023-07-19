@@ -35,4 +35,29 @@ public class PrimeWrathOfTheBerserkerTests
 
         _skill.GetMovementSpeedIncrease(_state).Should().Be(0);
     }
+
+    [Fact]
+    public void GetResourceGeneration_When_Active()
+    {
+        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+
+        _skill.GetResourceGeneration(_state).Should().Be(PrimeWrathOfTheBerserker.FURY_GENERATION_INCREASE);
+    }
+
+    [Fact]
+    public void GetResourceGeneration_Returns_1_When_Not_Skilled()
+    {
+        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+
+        _skill.GetResourceGeneration(_state).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetResourceGeneration_Returns_1_When_Not_Active()
+    {
+        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
+
+        _skill.GetResourceGeneration(_state).Should().Be(1.0);
+    }
 }

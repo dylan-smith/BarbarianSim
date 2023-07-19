@@ -15,6 +15,7 @@ public class ResourceGenerationCalculatorTests
     private readonly Mock<RallyingCry> _mockRallyingCry = TestHelpers.CreateMock<RallyingCry>();
     private readonly Mock<ProlificFury> _mockProlificFury = TestHelpers.CreateMock<ProlificFury>();
     private readonly Mock<TacticalRallyingCry> _mockTacticalRallyingCry = TestHelpers.CreateMock<TacticalRallyingCry>();
+    private readonly Mock<PrimeWrathOfTheBerserker> _mockPrimeWrathOfTheBerserker = TestHelpers.CreateMock<PrimeWrathOfTheBerserker>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ResourceGenerationCalculator _calculator;
 
@@ -24,8 +25,9 @@ public class ResourceGenerationCalculatorTests
         _mockRallyingCry.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
         _mockProlificFury.Setup(m => m.GetFuryGeneration(It.IsAny<SimulationState>())).Returns(1.0);
         _mockTacticalRallyingCry.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockPrimeWrathOfTheBerserker.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
 
-        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object, _mockRallyingCry.Object, _mockProlificFury.Object, _mockTacticalRallyingCry.Object);
+        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object, _mockRallyingCry.Object, _mockProlificFury.Object, _mockTacticalRallyingCry.Object, _mockPrimeWrathOfTheBerserker.Object);
     }
 
     [Fact]
@@ -104,34 +106,11 @@ public class ResourceGenerationCalculatorTests
     [Fact]
     public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In()
     {
-        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
-        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
+        _mockPrimeWrathOfTheBerserker.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.3);
         _state.Config.Gear.Helm.ResourceGeneration = 30;
 
         var result = _calculator.Calculate(_state);
 
-        result.Should().BeApproximately(1.69, 0.0000001); // (1 + 30%) * 1.3
-    }
-
-    [Fact]
-    public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In_Only_When_Skilled()
-    {
-        _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        _state.Config.Gear.Helm.ResourceGeneration = 30;
-
-        var result = _calculator.Calculate(_state);
-
-        result.Should().BeApproximately(1.3, 0.0000001); // (1 + 30%) * 1.3
-    }
-
-    [Fact]
-    public void PrimeWrathOfTheBerserker_Bonus_Multiplied_In_Only_When_Active()
-    {
-        _state.Config.Skills.Add(Skill.PrimeWrathOfTheBerserker, 1);
-        _state.Config.Gear.Helm.ResourceGeneration = 30;
-
-        var result = _calculator.Calculate(_state);
-
-        result.Should().BeApproximately(1.3, 0.0000001); // (1 + 30%) * 1.3
+        result.Should().Be(1.3 * 1.3);
     }
 }
