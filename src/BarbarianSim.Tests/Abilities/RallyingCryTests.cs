@@ -47,6 +47,7 @@ public class RallyingCryTests
     [InlineData(6, 1.56)]
     public void Skill_Points_Determines_ResourceGeneration(int skillPoints, double resourceGeneration)
     {
+        _state.Player.Auras.Add(Aura.RallyingCry);
         _state.Config.Skills.Add(Skill.RallyingCry, skillPoints);
 
         _rallyingCry.GetResourceGeneration(_state).Should().Be(resourceGeneration);
@@ -55,10 +56,20 @@ public class RallyingCryTests
     [Fact]
     public void Skill_Points_From_Gear_Are_Included()
     {
+        _state.Player.Auras.Add(Aura.RallyingCry);
         _state.Config.Skills.Add(Skill.RallyingCry, 1);
         _state.Config.Gear.Helm.RallyingCry = 2;
 
         _rallyingCry.GetResourceGeneration(_state).Should().Be(1.48);
+    }
+
+    [Fact]
+    public void Returns_1_When_RallyingCry_Not_Active()
+    {
+        _state.Config.Skills.Add(Skill.RallyingCry, 1);
+        _state.Config.Gear.Helm.RallyingCry = 2;
+
+        _rallyingCry.GetResourceGeneration(_state).Should().Be(1);
     }
 
     [Fact]

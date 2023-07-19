@@ -9,7 +9,6 @@ public class RallyingCry : IHandlesEvent<DirectDamageEvent>
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
     public const double FURY_FROM_TACTICAL_RALLYING_CRY = 20.0;
-    public const double RESOURCE_GENERATION_FROM_TACTICAL_RALLYING_CRY = 1.20;
     public const double FORTIFY_FROM_STRATEGIC_RALLYING_CRY = 0.1;
     public const double DIRECT_DAMAGE_FORTIFY_FROM_STRATEGIC_RALLYING_CRY = 0.02;
 
@@ -20,6 +19,11 @@ public class RallyingCry : IHandlesEvent<DirectDamageEvent>
 
     public virtual double GetResourceGeneration(SimulationState state)
     {
+        if (!state.Player.Auras.Contains(Aura.RallyingCry))
+        {
+            return 1.0;
+        }
+
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.RallyingCry);
 
         if (state.Config.Skills.TryGetValue(Skill.RallyingCry, out var pointsSpent))

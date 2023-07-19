@@ -6,16 +6,18 @@ namespace BarbarianSim.StatCalculators;
 
 public class ResourceGenerationCalculator
 {
-    public ResourceGenerationCalculator(WillpowerCalculator willpowerCalculator, RallyingCry rallyingCry, ProlificFury prolificFury)
+    public ResourceGenerationCalculator(WillpowerCalculator willpowerCalculator, RallyingCry rallyingCry, ProlificFury prolificFury, TacticalRallyingCry tacticalRallyingCry)
     {
         _willpowerCalculator = willpowerCalculator;
         _rallyingCry = rallyingCry;
         _prolificFury = prolificFury;
+        _tacticalRallyingCry = tacticalRallyingCry;
     }
 
     private readonly WillpowerCalculator _willpowerCalculator;
     private readonly RallyingCry _rallyingCry;
     private readonly ProlificFury _prolificFury;
+    private readonly TacticalRallyingCry _tacticalRallyingCry;
 
     public virtual double Calculate(SimulationState state)
     {
@@ -24,15 +26,8 @@ public class ResourceGenerationCalculator
 
         var result = 1.0 + (resourceGeneration / 100.0);
 
-        if (state.Player.Auras.Contains(Aura.RallyingCry))
-        {
-            result *= _rallyingCry.GetResourceGeneration(state);
-
-            if (state.Config.Skills.ContainsKey(Skill.TacticalRallyingCry))
-            {
-                result *= RallyingCry.RESOURCE_GENERATION_FROM_TACTICAL_RALLYING_CRY;
-            }
-        }
+        result *= _rallyingCry.GetResourceGeneration(state);
+        result *= _tacticalRallyingCry.GetResourceGeneration(state);
 
         result *= _prolificFury.GetFuryGeneration(state);
 

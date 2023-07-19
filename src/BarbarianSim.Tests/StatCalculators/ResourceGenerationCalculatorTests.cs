@@ -14,6 +14,7 @@ public class ResourceGenerationCalculatorTests
     private readonly Mock<WillpowerCalculator> _mockWillpowerCalculator = TestHelpers.CreateMock<WillpowerCalculator>();
     private readonly Mock<RallyingCry> _mockRallyingCry = TestHelpers.CreateMock<RallyingCry>();
     private readonly Mock<ProlificFury> _mockProlificFury = TestHelpers.CreateMock<ProlificFury>();
+    private readonly Mock<TacticalRallyingCry> _mockTacticalRallyingCry = TestHelpers.CreateMock<TacticalRallyingCry>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ResourceGenerationCalculator _calculator;
 
@@ -22,8 +23,9 @@ public class ResourceGenerationCalculatorTests
         _mockWillpowerCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
         _mockRallyingCry.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
         _mockProlificFury.Setup(m => m.GetFuryGeneration(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockTacticalRallyingCry.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
 
-        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object, _mockRallyingCry.Object, _mockProlificFury.Object);
+        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object, _mockRallyingCry.Object, _mockProlificFury.Object, _mockTacticalRallyingCry.Object);
     }
 
     [Fact]
@@ -68,7 +70,6 @@ public class ResourceGenerationCalculatorTests
     [Fact]
     public void RallyingCry_Bonus_And_Gear_Multiply_Together()
     {
-        _state.Player.Auras.Add(Aura.RallyingCry);
         _mockRallyingCry.Setup(m => m.GetResourceGeneration(_state)).Returns(1.56);
         _state.Config.Gear.Helm.ResourceGeneration = 30;
 
@@ -80,14 +81,13 @@ public class ResourceGenerationCalculatorTests
     [Fact]
     public void TacticalRallyingCry_Bonus_Multiplied_In()
     {
-        _state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
-        _state.Player.Auras.Add(Aura.RallyingCry);
+        _mockTacticalRallyingCry.Setup(m => m.GetResourceGeneration(_state)).Returns(1.2);
         _mockRallyingCry.Setup(m => m.GetResourceGeneration(_state)).Returns(1.56);
         _state.Config.Gear.Helm.ResourceGeneration = 30;
 
         var result = _calculator.Calculate(_state);
 
-        result.Should().Be(1.3 * 1.56 * 1.2); // (1 + 30%) * 1.56 * 1.2
+        result.Should().Be(1.3 * 1.56 * 1.2);
     }
 
     [Fact]

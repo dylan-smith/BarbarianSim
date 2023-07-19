@@ -36,4 +36,29 @@ public class TacticalRallyingCryTests
 
         _state.Events.Should().NotContain(e => e is FuryGeneratedEvent);
     }
+
+    [Fact]
+    public void GetResourceGeneration_When_Active()
+    {
+        _state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
+        _state.Player.Auras.Add(Aura.RallyingCry);
+
+        _skill.GetResourceGeneration(_state).Should().Be(TacticalRallyingCry.RESOURCE_GENERATION);
+    }
+
+    [Fact]
+    public void GetResourceGeneration_Returns_1_When_Not_Skilled()
+    {
+        _state.Player.Auras.Add(Aura.RallyingCry);
+
+        _skill.GetResourceGeneration(_state).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetResourceGeneration_Returns_1_When_Not_Active()
+    {
+        _state.Config.Skills.Add(Skill.TacticalRallyingCry, 1);
+
+        _skill.GetResourceGeneration(_state).Should().Be(1.0);
+    }
 }
