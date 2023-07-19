@@ -23,7 +23,6 @@ public class MovementSpeedCalculator
         movementSpeed += state.Player.Auras.Contains(Aura.RallyingCry) ? RallyingCry.MOVEMENT_SPEED : 0;
 
         movementSpeed += _primeWrathOfTheBerserker.GetMovementSpeedIncrease(state);
-
         movementSpeed += _ghostwalkerAspect.GetMovementSpeedIncrease(state);
 
         return 1.0 + (movementSpeed / 100.0);
