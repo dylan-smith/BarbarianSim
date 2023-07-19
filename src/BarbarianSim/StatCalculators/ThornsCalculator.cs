@@ -1,22 +1,18 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Enums;
+﻿using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
 
 public class ThornsCalculator
 {
-    public ThornsCalculator(MaxLifeCalculator maxLifeCalculator) => _maxLifeCalculator = maxLifeCalculator;
+    public ThornsCalculator(StrategicChallengingShout strategicChallengingShout) => _strategicChallengingShout = strategicChallengingShout;
 
-    private readonly MaxLifeCalculator _maxLifeCalculator;
+    private readonly StrategicChallengingShout _strategicChallengingShout;
 
     public virtual double Calculate(SimulationState state)
     {
         var thorns = state.Config.Gear.GetStatTotal(g => g.Thorns);
 
-        if (state.Player.Auras.Contains(Aura.ChallengingShout) && state.Config.Skills.ContainsKey(Skill.StrategicChallengingShout))
-        {
-            thorns += _maxLifeCalculator.Calculate(state) * ChallengingShout.THORNS_BONUS_FROM_STRATEGIC;
-        }
+        thorns += _strategicChallengingShout.GetThorns(state);
 
         return thorns;
     }

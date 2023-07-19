@@ -1,5 +1,5 @@
 ﻿using BarbarianSim.Config;
-using BarbarianSim.Enums;
+using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Moq;
@@ -9,14 +9,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 
 public class ThornsCalculatorTests
 {
-    private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<StrategicChallengingShout> _mockStrategicChallengingShout = TestHelpers.CreateMock<StrategicChallengingShout>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ThornsCalculator _calculator;
 
     public ThornsCalculatorTests()
     {
-        _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1000);
-        _calculator = new ThornsCalculator(_mockMaxLifeCalculator.Object);
+        _mockStrategicChallengingShout.Setup(m => m.GetThorns(It.IsAny<SimulationState>())).Returns(0);
+        _calculator = new ThornsCalculator(_mockStrategicChallengingShout.Object);
     }
 
     [Fact]
@@ -33,12 +33,11 @@ public class ThornsCalculatorTests
     [Fact]
     public void Includes_Bonus_From_StrategicChallengingShout()
     {
-        _state.Config.Skills.Add(Skill.StrategicChallengingShout, 1);
-        _state.Player.Auras.Add(Aura.ChallengingShout);
+        _mockStrategicChallengingShout.Setup(m => m.GetThorns(It.IsAny<SimulationState>())).Returns(320);
 
         var result = _calculator.Calculate(_state);
 
-        result.Should().Be(300);
+        result.Should().Be(320);
     }
 
     [Fact]

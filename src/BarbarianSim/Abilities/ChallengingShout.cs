@@ -8,7 +8,6 @@ public class ChallengingShout
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
     public const double FURY_BONUS_FROM_TACTICAL = 3;
-    public const double THORNS_BONUS_FROM_STRATEGIC = 0.3;
 
     // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)
     public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
