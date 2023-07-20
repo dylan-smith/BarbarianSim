@@ -35,11 +35,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _vulnerableDamageBonusCalculator.Calculate(state, enemy);
         damageBonus *= 1 + (_strengthCalculator.Calculate(state) * 0.001);
         damageBonus *= _pitFighter.GetCloseDamageBonus(state);
-
-        if (state.Player.Auras.Contains(Aura.WarCry))
-        {
-            damageBonus *= _warCry.GetDamageBonus(state);
-        }
+        damageBonus *= _warCry.GetDamageBonus(state);
 
         if (state.Config.Skills.ContainsKey(Skill.UnbridledRage))
         {

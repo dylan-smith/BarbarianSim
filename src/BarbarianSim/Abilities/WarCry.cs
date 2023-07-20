@@ -24,6 +24,11 @@ public class WarCry
 
     public virtual double GetDamageBonus(SimulationState state)
     {
+        if (!state.Player.Auras.Contains(Aura.WarCry))
+        {
+            return 0;
+        }
+
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.WarCry);
 
         if (state.Config.Skills.TryGetValue(Skill.WarCry, out var pointsSpent))

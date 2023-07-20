@@ -58,6 +58,7 @@ public class WarCryTests
     public void Skill_Points_Determines_DamageBonus(int skillPoints, double damageBonus)
     {
         _state.Config.Skills.Add(Skill.WarCry, skillPoints);
+        _state.Player.Auras.Add(Aura.WarCry);
 
         _warCry.GetDamageBonus(_state).Should().Be(damageBonus);
     }
@@ -67,6 +68,7 @@ public class WarCryTests
     {
         _state.Config.Skills.Add(Skill.WarCry, 1);
         _state.Config.Gear.Helm.WarCry = 2;
+        _state.Player.Auras.Add(Aura.WarCry);
 
         _warCry.GetDamageBonus(_state).Should().Be(1.18);
     }
@@ -76,6 +78,7 @@ public class WarCryTests
     {
         _mockPowerWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(0.1);
         _state.Config.Skills.Add(Skill.WarCry, 1);
+        _state.Player.Auras.Add(Aura.WarCry);
 
         _warCry.GetDamageBonus(_state).Should().Be(1.25);
     }
