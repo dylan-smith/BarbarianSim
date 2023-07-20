@@ -27,17 +27,14 @@ public class PressurePoint : IHandlesEvent<LuckyHitEvent>
 
     public virtual double GetProcPercentage(SimulationState state)
     {
-        if (state.Config.Skills.TryGetValue(Skill.PressurePoint, out var value))
-        {
-            return value switch
+        return state.Config.Skills.TryGetValue(Skill.PressurePoint, out var skillPoints)
+            ? skillPoints switch
             {
                 1 => 0.1,
                 2 => 0.2,
                 >= 3 => 0.3,
                 _ => 0.0,
-            };
-        }
-
-        return 0;
+            }
+            : 0;
     }
 }
