@@ -12,14 +12,14 @@ public class TotalDamageMultiplierCalculator
                                            StrengthCalculator strengthCalculator,
                                            PitFighter pitFighter,
                                            WarCry warCry,
-                                           WrathOfTheBerserker wrathOfTheBerserker)
+                                           SupremeWrathOfTheBerserker supremeWrathOfTheBerserker)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
         _strengthCalculator = strengthCalculator;
         _pitFighter = pitFighter;
         _warCry = warCry;
-        _wrathOfTheBerserker = wrathOfTheBerserker;
+        _supremeWrathOfTheBerserker = supremeWrathOfTheBerserker;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -27,7 +27,7 @@ public class TotalDamageMultiplierCalculator
     private readonly StrengthCalculator _strengthCalculator;
     private readonly PitFighter _pitFighter;
     private readonly WarCry _warCry;
-    private readonly WrathOfTheBerserker _wrathOfTheBerserker;
+    private readonly SupremeWrathOfTheBerserker _supremeWrathOfTheBerserker;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -57,7 +57,7 @@ public class TotalDamageMultiplierCalculator
             damageBonus *= EnhancedLungingStrike.DAMAGE_MULTIPLIER;
         }
 
-        damageBonus *= _wrathOfTheBerserker.GetBerserkDamageBonus(state);
+        damageBonus *= _supremeWrathOfTheBerserker.GetBerserkDamageBonus(state);
 
         var edgemasters = state.Config.Gear.GetAspect<EdgemastersAspect>();
         if (edgemasters != null)

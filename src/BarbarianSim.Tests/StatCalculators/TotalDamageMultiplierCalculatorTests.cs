@@ -17,7 +17,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<StrengthCalculator> _mockStrengthCalculator = TestHelpers.CreateMock<StrengthCalculator>();
     private readonly Mock<PitFighter> _mockPitFighter = TestHelpers.CreateMock<PitFighter>();
     private readonly Mock<WarCry> _mockWarCry = TestHelpers.CreateMock<WarCry>();
-    private readonly Mock<WrathOfTheBerserker> _mockWrathOfTheBerserker = TestHelpers.CreateMock<WrathOfTheBerserker>();
+    private readonly Mock<SupremeWrathOfTheBerserker> _mockSupremeWrathOfTheBerserker = TestHelpers.CreateMock<SupremeWrathOfTheBerserker>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -28,14 +28,14 @@ public class TotalDamageMultiplierCalculatorTests
         _mockStrengthCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
-        _mockWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockSupremeWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
                                                           _mockStrengthCalculator.Object,
                                                           _mockPitFighter.Object,
                                                           _mockWarCry.Object,
-                                                          _mockWrathOfTheBerserker.Object);
+                                                          _mockSupremeWrathOfTheBerserker.Object);
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Includes_WrathOfTheBerserker_Bonus()
     {
-        _mockWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(_state)).Returns(1.25);
+        _mockSupremeWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(_state)).Returns(1.25);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
 

@@ -26,17 +26,4 @@ public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, BERSERKING_DURATION, Aura.Berserking));
         }
     }
-
-    public virtual double GetBerserkDamageBonus(SimulationState state)
-    {
-        if (state.Player.Auras.Contains(Aura.WrathOfTheBerserker) && state.Player.Auras.Contains(Aura.Berserking) && state.Config.Skills.ContainsKey(Skill.SupremeWrathOfTheBerserker))
-        {
-            var startTime = state.ProcessedEvents.OrderBy(e => e.Timestamp).Last(e => e is WrathOfTheBerserkerEvent).Timestamp;
-            var totalFurySpent = state.ProcessedEvents.OfType<FurySpentEvent>().Where(e => e.Timestamp >= startTime).Sum(e => e.FurySpent);
-
-            return Math.Pow(1.25, Math.Floor(totalFurySpent / 50));
-        }
-
-        return 1.0;
-    }
 }
