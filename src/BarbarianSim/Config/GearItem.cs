@@ -12,7 +12,28 @@ public sealed class YamlPropertyAttribute : Attribute
 
 public class GearItem
 {
-    [YamlPropertyAttribute("armor")]
+    // Skill Points
+    public int ChallengingShout { get; set; }
+    public int Charge { get; set; }
+    public int DeathBlow { get; set; }
+    public int DoubleSwing { get; set; }
+    public int GroundStomp { get; set; }
+    public int HammerOfTheAncients { get; set; }
+    public int IronSkin { get; set; }
+    public int Kick { get; set; }
+    public int Leap { get; set; }
+    public int RallyingCry { get; set; }
+    public int Rend { get; set; }
+    public int Rupture { get; set; }
+    public int SteelGrasp { get; set; }
+    public int Upheaval { get; set; }
+    public int WarCry { get; set; }
+    public int Whirlwind { get; set; }
+    public int AllBrawlingSkills { get; set; }
+    public int AllDefensiveSkills { get; set; }
+    public int AllWeaponMasterySkills { get; set; }
+
+
     public int Armor { get; set; }
     public double CooldownReduction { get; set; }
     public double PoisonResistance { get; set; }
@@ -27,13 +48,6 @@ public class GearItem
     public double LuckyHitChance { get; set; }
     public double NonPhysicalDamage { get; set; }
     public double PotionSpeedWhileInjured { get; set; }
-    public int WarCry { get; set; }
-    public int Whirlwind { get; set; }
-    public int LungingStrike { get; set; }
-    public int PressurePoint { get; set; }
-    public int RallyingCry { get; set; }
-    public int ChallengingShout { get; set; }
-    public int IronSkin { get; set; }
     public double Dodge { get; set; }
     public double DamageReduction { get; set; }
     public double DamageReductionFromClose { get; set; }

@@ -66,13 +66,4 @@ public class PressurePointTests
 
         _skill.GetProcPercentage(_state).Should().Be(procRate);
     }
-
-    [Fact]
-    public void Skill_Points_From_Gear_Are_Included()
-    {
-        _state.Config.Skills.Add(Skill.PressurePoint, 1);
-        _state.Config.Gear.Helm.PressurePoint = 2;
-
-        _skill.GetProcPercentage(_state).Should().Be(0.3);
-    }
 }

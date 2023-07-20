@@ -29,8 +29,6 @@ public class PressurePoint : IHandlesEvent<LuckyHitEvent>
     {
         if (state.Config.Skills.TryGetValue(Skill.PressurePoint, out var value))
         {
-            value += state.Config.Gear.AllGear.Sum(g => g.PressurePoint);
-
             return value switch
             {
                 1 => 0.1,

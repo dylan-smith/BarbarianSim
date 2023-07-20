@@ -54,16 +54,4 @@ public sealed class LungingStrikeTests
 
         result.Should().Be(expectedMultiplier);
     }
-
-    [Fact]
-    public void GetSkillMultiplier_Includes_Skill_Points_And_Gear_Bonuses()
-    {
-        _state.Config.Skills.Add(Skill.LungingStrike, 1);
-
-        _state.Config.Gear.Helm.LungingStrike = 2;
-
-        var result = _lungingStrike.GetSkillMultiplier(_state);
-
-        result.Should().Be(0.39);
-    }
 }

@@ -19,7 +19,6 @@ public class LungingStrike
     public virtual double GetSkillMultiplier(SimulationState state)
     {
         var skillPoints = state?.Config.Skills[Skill.LungingStrike];
-        skillPoints += state?.Config.Gear.AllGear.Sum(g => g.LungingStrike);
 
         return skillPoints switch
         {
