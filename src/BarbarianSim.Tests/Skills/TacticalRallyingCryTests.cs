@@ -23,7 +23,7 @@ public class TacticalRallyingCryTests
 
         _state.Events.Should().ContainSingle(e => e is FuryGeneratedEvent);
         _state.Events.OfType<FuryGeneratedEvent>().Single().Timestamp.Should().Be(123);
-        _state.Events.OfType<FuryGeneratedEvent>().Single().BaseFury.Should().Be(RallyingCry.FURY_FROM_TACTICAL_RALLYING_CRY);
+        _state.Events.OfType<FuryGeneratedEvent>().Single().BaseFury.Should().Be(TacticalRallyingCry.FURY_GENERATED);
     }
 
     [Fact]

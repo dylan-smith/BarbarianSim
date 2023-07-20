@@ -8,7 +8,6 @@ public class RallyingCry
     public const double MOVEMENT_SPEED = 30.0;
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
-    public const double FURY_FROM_TACTICAL_RALLYING_CRY = 20.0;
 
     // Bellow a Rallying Cry, increasing your Movement Speed by 30%[+] and Resource Generation by 40%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
     public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.RallyingCryCooldown);
