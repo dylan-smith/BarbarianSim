@@ -8,7 +8,7 @@ public class WarCry
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
     public const double BERSERKING_DURATION_FROM_ENHANCED = 4.0;
-    public const double FORTIFY_FROM_MIGHTY = 0.15;
+    
     public const double DAMAGE_BONUS_FROM_POWER = 0.1;
     public const double NEARBY_ENEMIES_FOR_POWER = 6;
 
