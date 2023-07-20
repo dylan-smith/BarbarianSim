@@ -2,15 +2,25 @@
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
+using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
 public class WarCryTests
 {
+    private readonly Mock<PowerWarCry> _mockPowerWarCry = TestHelpers.CreateMock<PowerWarCry>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly WarCry _warCry = new();
+    private readonly WarCry _warCry;
+
+    public WarCryTests()
+    {
+        _mockPowerWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(0);
+
+        _warCry = new WarCry(_mockPowerWarCry.Object);
+    }
 
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
@@ -62,26 +72,11 @@ public class WarCryTests
     }
 
     [Fact]
-    public void PowerWarCry_Adds_DamageBonus_When_6_Enemies_Nearby()
+    public void PowerWarCry_Adds_DamageBonus()
     {
-        var config = new SimulationConfig();
-        config.EnemySettings.NumberOfEnemies = 6;
-        var state = new SimulationState(config);
-        state.Config.Skills.Add(Skill.WarCry, 1);
-        state.Config.Skills.Add(Skill.PowerWarCry, 1);
+        _mockPowerWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(0.1);
+        _state.Config.Skills.Add(Skill.WarCry, 1);
 
-        _warCry.GetDamageBonus(state).Should().Be(1.25);
-    }
-
-    [Fact]
-    public void PowerWarCry_Does_Nothing_When_Less_Than_6_Enemies_Nearby()
-    {
-        var config = new SimulationConfig();
-        config.EnemySettings.NumberOfEnemies = 5;
-        var state = new SimulationState(config);
-        state.Config.Skills.Add(Skill.WarCry, 1);
-        state.Config.Skills.Add(Skill.PowerWarCry, 1);
-
-        _warCry.GetDamageBonus(state).Should().Be(1.15);
+        _warCry.GetDamageBonus(_state).Should().Be(1.25);
     }
 }
