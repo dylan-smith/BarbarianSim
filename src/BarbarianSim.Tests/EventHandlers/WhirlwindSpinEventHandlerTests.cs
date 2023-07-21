@@ -12,21 +12,18 @@ namespace BarbarianSim.Tests.EventHandlers;
 
 public class WhirlwindSpinEventHandlerTests
 {
-    private readonly Mock<AttackSpeedCalculator> _mockAttackSpeedCalculator = TestHelpers.CreateMock<AttackSpeedCalculator>();
     private readonly Mock<Whirlwind> _mockWhirlwind = TestHelpers.CreateMock<Whirlwind>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly WhirlwindSpinEventHandler _handler;
 
     public WhirlwindSpinEventHandlerTests()
     {
-        _mockAttackSpeedCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
-                                  .Returns(1.0);
         _mockWhirlwind.Setup(m => m.GetSkillMultiplier(It.IsAny<SimulationState>()))
                       .Returns(0.17);
 
         _state.Config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 });
 
-        _handler = new WhirlwindSpinEventHandler(_mockAttackSpeedCalculator.Object, _mockWhirlwind.Object);
+        _handler = new WhirlwindSpinEventHandler(_mockWhirlwind.Object);
     }
 
     [Fact]
@@ -115,19 +112,6 @@ public class WhirlwindSpinEventHandlerTests
         _handler.ProcessEvent(whirlwindSpinEvent, _state);
 
         whirlwindSpinEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(0.5);
-    }
-
-    [Fact]
-    public void Considers_AttackSpeed_Bonuses_When_Creating_WeaponAuraCooldownCompletedEvent()
-    {
-        _mockAttackSpeedCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
-                                  .Returns(0.6);
-
-        var whirlwindSpinEvent = new WhirlwindSpinEvent(123);
-
-        _handler.ProcessEvent(whirlwindSpinEvent, _state);
-
-        whirlwindSpinEvent.WeaponCooldownAuraAppliedEvent.Duration.Should().Be(0.6);
     }
 
     [Fact]
