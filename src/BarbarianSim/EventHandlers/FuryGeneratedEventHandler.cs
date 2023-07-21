@@ -20,6 +20,10 @@ public class FuryGeneratedEventHandler : EventHandler<FuryGeneratedEvent>
         e.FuryGenerated += e.BaseFury * multiplier;
         state.Player.Fury += e.FuryGenerated;
 
-        state.Player.Fury = Math.Min(_maxFuryCalculator.Calculate(state), state.Player.Fury);
+        if (state.Player.Fury > _maxFuryCalculator.Calculate(state))
+        {
+            e.OverflowFury = state.Player.Fury - _maxFuryCalculator.Calculate(state);
+            state.Player.Fury = _maxFuryCalculator.Calculate(state);
+        }
     }
 }

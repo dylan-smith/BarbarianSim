@@ -22,6 +22,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<ViolentWhirlwind> _mockViolentWhirlwind = TestHelpers.CreateMock<ViolentWhirlwind>();
     private readonly Mock<EnhancedLungingStrike> _mockEnhancedLungingStrike = TestHelpers.CreateMock<EnhancedLungingStrike>();
     private readonly Mock<EdgemastersAspect> _mockEdgemastersAspect = TestHelpers.CreateMock<EdgemastersAspect>();
+    private readonly Mock<AspectOfLimitlessRage> _mockAspectOfLimitlessRage = TestHelpers.CreateMock<AspectOfLimitlessRage>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -37,6 +38,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockViolentWhirlwind.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<DamageSource>())).Returns(1.0);
         _mockEnhancedLungingStrike.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<DamageSource>(), It.IsAny<EnemyState>())).Returns(1.0);
         _mockEdgemastersAspect.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
+        _mockAspectOfLimitlessRage.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
@@ -47,7 +49,8 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockUnbridledRage.Object,
                                                           _mockViolentWhirlwind.Object,
                                                           _mockEnhancedLungingStrike.Object,
-                                                          _mockEdgemastersAspect.Object);
+                                                          _mockEdgemastersAspect.Object,
+                                                          _mockAspectOfLimitlessRage.Object);
     }
 
     [Fact]
@@ -168,14 +171,14 @@ public class TotalDamageMultiplierCalculatorTests
     }
 
     [Fact]
-    public void EnhancedLungingStrike_Bonus_Only_Applies_When_Enemy_Healthy()
+    public void Includes_AspectOfLimitlessRage_Bonus()
     {
-        _state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
-        _state.Enemies.First().MaxLife = 1000;
-        _state.Enemies.First().Life = 500;
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        _mockAspectOfLimitlessRage.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(1.2);
+        _state.Config.Gear.Chest.Aspect = _mockAspectOfLimitlessRage.Object;
 
-        result.Should().Be(1.0);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+
+        result.Should().Be(1.2);
     }
 
     [Fact]
