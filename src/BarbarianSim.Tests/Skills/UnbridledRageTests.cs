@@ -40,4 +40,32 @@ public class UnbridledRageTests
 
         result.Should().Be(1.0);
     }
+
+    [Fact]
+    public void GetDamageBonus_When_Active()
+    {
+        _state.Config.Skills.Add(Skill.UnbridledRage, 1);
+
+        var result = _skill.GetDamageBonus(_state, SkillType.Core);
+
+        result.Should().Be(2.0);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Return_1_When_Not_Skilled()
+    {
+        var result = _skill.GetDamageBonus(_state, SkillType.Core);
+
+        result.Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Return_1_When_Not_Non_Core_Skill()
+    {
+        _state.Config.Skills.Add(Skill.UnbridledRage, 1);
+
+        var result = _skill.GetDamageBonus(_state, SkillType.Basic);
+
+        result.Should().Be(1.0);
+    }
 }

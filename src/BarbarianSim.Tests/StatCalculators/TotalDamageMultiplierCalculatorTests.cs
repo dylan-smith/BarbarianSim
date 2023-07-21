@@ -18,6 +18,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<PitFighter> _mockPitFighter = TestHelpers.CreateMock<PitFighter>();
     private readonly Mock<WarCry> _mockWarCry = TestHelpers.CreateMock<WarCry>();
     private readonly Mock<SupremeWrathOfTheBerserker> _mockSupremeWrathOfTheBerserker = TestHelpers.CreateMock<SupremeWrathOfTheBerserker>();
+    private readonly Mock<UnbridledRage> _mockUnbridledRage = TestHelpers.CreateMock<UnbridledRage>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -29,13 +30,15 @@ public class TotalDamageMultiplierCalculatorTests
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockSupremeWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockUnbridledRage.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
                                                           _mockStrengthCalculator.Object,
                                                           _mockPitFighter.Object,
                                                           _mockWarCry.Object,
-                                                          _mockSupremeWrathOfTheBerserker.Object);
+                                                          _mockSupremeWrathOfTheBerserker.Object,
+                                                          _mockUnbridledRage.Object);
     }
 
     [Fact]
@@ -79,7 +82,6 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Includes_WarCry_Bonus()
     {
-        _state.Player.Auras.Add(Aura.WarCry);
         _mockWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(1.21);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
@@ -90,7 +92,7 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Includes_UnbridledRage_Bonus()
     {
-        _state.Config.Skills.Add(Skill.UnbridledRage, 1);
+        _mockUnbridledRage.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(2.0);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
 
@@ -173,9 +175,8 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Multiplies_Bonuses_Together()
     {
-        _state.Player.Auras.Add(Aura.WarCry);
         _mockWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(1.21);
-        _state.Config.Skills.Add(Skill.UnbridledRage, 1);
+        _mockUnbridledRage.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(2.0);
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(_state)).Returns(1.09);
 
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First())).Returns(1.2);

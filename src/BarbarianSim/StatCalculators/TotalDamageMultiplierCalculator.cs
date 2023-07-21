@@ -12,7 +12,8 @@ public class TotalDamageMultiplierCalculator
                                            StrengthCalculator strengthCalculator,
                                            PitFighter pitFighter,
                                            WarCry warCry,
-                                           SupremeWrathOfTheBerserker supremeWrathOfTheBerserker)
+                                           SupremeWrathOfTheBerserker supremeWrathOfTheBerserker,
+                                           UnbridledRage unbridledRage)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -20,6 +21,7 @@ public class TotalDamageMultiplierCalculator
         _pitFighter = pitFighter;
         _warCry = warCry;
         _supremeWrathOfTheBerserker = supremeWrathOfTheBerserker;
+        _unbridledRage = unbridledRage;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -28,6 +30,7 @@ public class TotalDamageMultiplierCalculator
     private readonly PitFighter _pitFighter;
     private readonly WarCry _warCry;
     private readonly SupremeWrathOfTheBerserker _supremeWrathOfTheBerserker;
+    private readonly UnbridledRage _unbridledRage;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -36,14 +39,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= 1 + (_strengthCalculator.Calculate(state) * 0.001);
         damageBonus *= _pitFighter.GetCloseDamageBonus(state);
         damageBonus *= _warCry.GetDamageBonus(state);
-
-        if (state.Config.Skills.ContainsKey(Skill.UnbridledRage))
-        {
-            if (skillType == SkillType.Core)
-            {
-                damageBonus *= 2;
-            }
-        }
+        damageBonus *= _unbridledRage.GetDamageBonus(state, skillType);
 
         if (damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind))
         {
