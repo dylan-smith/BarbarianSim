@@ -2,15 +2,26 @@
 using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
+using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class BleedCompletedEventHandlerTests
 {
+    private readonly Mock<TotalDamageMultiplierCalculator> _mockTotalDamageMultiplierCalculator = TestHelpers.CreateMock<TotalDamageMultiplierCalculator>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly BleedCompletedEventHandler _handler = new();
+    private readonly BleedCompletedEventHandler _handler;
+
+    public BleedCompletedEventHandlerTests()
+    {
+        _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<SkillType>(), It.IsAny<DamageSource>()))
+                                            .Returns(1.0);
+
+        _handler = new BleedCompletedEventHandler(_mockTotalDamageMultiplierCalculator.Object);
+    }
 
     [Fact]
     public void Removes_Bleeding_Aura()
@@ -50,5 +61,17 @@ public class BleedCompletedEventHandlerTests
         bleedCompletedEvent.DamageEvent.DamageSource.Should().Be(DamageSource.Bleeding);
         bleedCompletedEvent.DamageEvent.Target.Should().Be(_state.Enemies.First());
         bleedCompletedEvent.DamageEvent.SkillType.Should().Be(SkillType.None);
+    }
+
+    [Fact]
+    public void Applied_Damage_Multipliers()
+    {
+        _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(_state, DamageType.Physical | DamageType.DamageOverTime, _state.Enemies.First(), SkillType.None, DamageSource.Bleeding)).Returns(2.5);
+        var bleedCompletedEvent = new BleedCompletedEvent(123.0, 500.0, _state.Enemies.First());
+
+        _handler.ProcessEvent(bleedCompletedEvent, _state);
+
+        _state.Events.Should().ContainSingle(e => e is DamageEvent);
+        bleedCompletedEvent.DamageEvent.Damage.Should().Be(1250.0);
     }
 }
