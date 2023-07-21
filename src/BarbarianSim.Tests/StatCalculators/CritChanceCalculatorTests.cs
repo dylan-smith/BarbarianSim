@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Config;
+﻿using BarbarianSim.Aspects;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
@@ -11,6 +12,7 @@ public class CritChanceCalculatorTests
 {
     private readonly Mock<CritChancePhysicalAgainstElitesCalculator> _mockcritChancePhysicalAgainstElitesCalculator = TestHelpers.CreateMock<CritChancePhysicalAgainstElitesCalculator>();
     private readonly Mock<DexterityCalculator> _mockDexterityCalculator = TestHelpers.CreateMock<DexterityCalculator>();
+    private readonly Mock<AspectOfTheDireWhirlwind> _mockAspectOfTheDireWhirlwind = TestHelpers.CreateMock<AspectOfTheDireWhirlwind>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly CritChanceCalculator _calculator;
 
@@ -18,8 +20,9 @@ public class CritChanceCalculatorTests
     {
         _mockcritChancePhysicalAgainstElitesCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>())).Returns(0.0);
         _mockDexterityCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockAspectOfTheDireWhirlwind.Setup(m => m.GetCritChanceBonus(It.IsAny<SimulationState>())).Returns(0);
 
-        _calculator = new CritChanceCalculator(_mockcritChancePhysicalAgainstElitesCalculator.Object, _mockDexterityCalculator.Object);
+        _calculator = new CritChanceCalculator(_mockcritChancePhysicalAgainstElitesCalculator.Object, _mockDexterityCalculator.Object, _mockAspectOfTheDireWhirlwind.Object);
     }
 
     [Fact]
@@ -58,5 +61,15 @@ public class CritChanceCalculatorTests
         var result = _calculator.Calculate(_state, DamageType.Physical);
 
         result.Should().Be(0.13);
+    }
+
+    [Fact]
+    public void Includes_AspectOfTheDireWhirlwind_Bonus()
+    {
+        _mockAspectOfTheDireWhirlwind.Setup(m => m.GetCritChanceBonus(_state)).Returns(20);
+
+        var result = _calculator.Calculate(_state, DamageType.Physical);
+
+        result.Should().Be(0.25);
     }
 }
