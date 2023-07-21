@@ -14,7 +14,8 @@ public class TotalDamageMultiplierCalculator
                                            WarCry warCry,
                                            SupremeWrathOfTheBerserker supremeWrathOfTheBerserker,
                                            UnbridledRage unbridledRage,
-                                           ViolentWhirlwind violentWhirlwind)
+                                           ViolentWhirlwind violentWhirlwind,
+                                           EnhancedLungingStrike enhancedLungingStrike)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -24,6 +25,7 @@ public class TotalDamageMultiplierCalculator
         _supremeWrathOfTheBerserker = supremeWrathOfTheBerserker;
         _unbridledRage = unbridledRage;
         _violentWhirlwind = violentWhirlwind;
+        _enhancedLungingStrike = enhancedLungingStrike;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -34,6 +36,7 @@ public class TotalDamageMultiplierCalculator
     private readonly SupremeWrathOfTheBerserker _supremeWrathOfTheBerserker;
     private readonly UnbridledRage _unbridledRage;
     private readonly ViolentWhirlwind _violentWhirlwind;
+    private readonly EnhancedLungingStrike _enhancedLungingStrike;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -44,13 +47,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _warCry.GetDamageBonus(state);
         damageBonus *= _unbridledRage.GetDamageBonus(state, skillType);
         damageBonus *= _violentWhirlwind.GetDamageBonus(state, damageSource);
-
-        if (damageSource == DamageSource.LungingStrike &&
-            state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) &&
-            enemy.IsHealthy())
-        {
-            damageBonus *= EnhancedLungingStrike.DAMAGE_MULTIPLIER;
-        }
+        damageBonus *= _enhancedLungingStrike.GetDamageBonus(state, damageSource, enemy);
 
         damageBonus *= _supremeWrathOfTheBerserker.GetBerserkDamageBonus(state);
 

@@ -48,4 +48,39 @@ public class EnhancedLungingStrikeTests
 
         _state.Events.Should().NotContain(e => e is HealingEvent);
     }
+
+    [Fact]
+    public void GetDamageBonus_When_Active()
+    {
+        _state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        _state.Enemies.First().Life = 900;
+        _state.Enemies.First().MaxLife = 1000;
+        _skill.GetDamageBonus(_state, DamageSource.LungingStrike, _state.Enemies.First()).Should().Be(1.3);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Returns_1_When_Not_Skilled()
+    {
+        _state.Enemies.First().Life = 900;
+        _state.Enemies.First().MaxLife = 1000;
+        _skill.GetDamageBonus(_state, DamageSource.LungingStrike, _state.Enemies.First()).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Returns_1_When_Other_DamageSource()
+    {
+        _state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        _state.Enemies.First().Life = 900;
+        _state.Enemies.First().MaxLife = 1000;
+        _skill.GetDamageBonus(_state, DamageSource.Whirlwind, _state.Enemies.First()).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Returns_1_When_Enemy_Not_Healthy()
+    {
+        _state.Config.Skills.Add(Skill.EnhancedLungingStrike, 1);
+        _state.Enemies.First().Life = 700;
+        _state.Enemies.First().MaxLife = 1000;
+        _skill.GetDamageBonus(_state, DamageSource.LungingStrike, _state.Enemies.First()).Should().Be(1.0);
+    }
 }
