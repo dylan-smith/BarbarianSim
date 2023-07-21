@@ -16,4 +16,11 @@ public class ViolentWhirlwind : IHandlesEvent<WhirlwindSpinEvent>
             state.Events.Add(new AuraAppliedEvent(e.Timestamp + DELAY, 0, Aura.ViolentWhirlwind));
         }
     }
+
+    public virtual double GetDamageBonus(SimulationState state, DamageSource damageSource)
+    {
+        return damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind)
+            ? ViolentWhirlwind.DAMAGE_MULTIPLIER
+            : 1.0;
+    }
 }

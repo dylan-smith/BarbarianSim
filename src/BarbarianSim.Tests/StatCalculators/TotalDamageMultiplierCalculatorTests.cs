@@ -19,6 +19,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<WarCry> _mockWarCry = TestHelpers.CreateMock<WarCry>();
     private readonly Mock<SupremeWrathOfTheBerserker> _mockSupremeWrathOfTheBerserker = TestHelpers.CreateMock<SupremeWrathOfTheBerserker>();
     private readonly Mock<UnbridledRage> _mockUnbridledRage = TestHelpers.CreateMock<UnbridledRage>();
+    private readonly Mock<ViolentWhirlwind> _mockViolentWhirlwind = TestHelpers.CreateMock<ViolentWhirlwind>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -31,6 +32,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockSupremeWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockUnbridledRage.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
+        _mockViolentWhirlwind.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<DamageSource>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
@@ -38,7 +40,8 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockPitFighter.Object,
                                                           _mockWarCry.Object,
                                                           _mockSupremeWrathOfTheBerserker.Object,
-                                                          _mockUnbridledRage.Object);
+                                                          _mockUnbridledRage.Object,
+                                                          _mockViolentWhirlwind.Object);
     }
 
     [Fact]
@@ -144,7 +147,7 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Includes_ViolentWhirlwind_Bonus()
     {
-        _state.Player.Auras.Add(Aura.ViolentWhirlwind);
+        _mockViolentWhirlwind.Setup(m => m.GetDamageBonus(_state, DamageSource.Whirlwind)).Returns(1.3);
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
 
         result.Should().Be(1.3);

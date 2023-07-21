@@ -13,7 +13,8 @@ public class TotalDamageMultiplierCalculator
                                            PitFighter pitFighter,
                                            WarCry warCry,
                                            SupremeWrathOfTheBerserker supremeWrathOfTheBerserker,
-                                           UnbridledRage unbridledRage)
+                                           UnbridledRage unbridledRage,
+                                           ViolentWhirlwind violentWhirlwind)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -22,6 +23,7 @@ public class TotalDamageMultiplierCalculator
         _warCry = warCry;
         _supremeWrathOfTheBerserker = supremeWrathOfTheBerserker;
         _unbridledRage = unbridledRage;
+        _violentWhirlwind = violentWhirlwind;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -31,6 +33,7 @@ public class TotalDamageMultiplierCalculator
     private readonly WarCry _warCry;
     private readonly SupremeWrathOfTheBerserker _supremeWrathOfTheBerserker;
     private readonly UnbridledRage _unbridledRage;
+    private readonly ViolentWhirlwind _violentWhirlwind;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -40,11 +43,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _pitFighter.GetCloseDamageBonus(state);
         damageBonus *= _warCry.GetDamageBonus(state);
         damageBonus *= _unbridledRage.GetDamageBonus(state, skillType);
-
-        if (damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind))
-        {
-            damageBonus *= ViolentWhirlwind.DAMAGE_MULTIPLIER;
-        }
+        damageBonus *= _violentWhirlwind.GetDamageBonus(state, damageSource);
 
         if (damageSource == DamageSource.LungingStrike &&
             state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) &&

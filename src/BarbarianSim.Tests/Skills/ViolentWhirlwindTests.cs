@@ -35,4 +35,24 @@ public class ViolentWhirlwindTests
 
         _state.Events.Should().BeEmpty();
     }
+
+    [Fact]
+    public void GetDamageBonus_When_Active()
+    {
+        _state.Player.Auras.Add(Aura.ViolentWhirlwind);
+        _skill.GetDamageBonus(_state, DamageSource.Whirlwind).Should().Be(1.3);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Return_1_When_No_Aura()
+    {
+        _skill.GetDamageBonus(_state, DamageSource.Whirlwind).Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Return_1_When_Other_DamageSource()
+    {
+        _state.Player.Auras.Add(Aura.ViolentWhirlwind);
+        _skill.GetDamageBonus(_state, DamageSource.LungingStrike).Should().Be(1.0);
+    }
 }
