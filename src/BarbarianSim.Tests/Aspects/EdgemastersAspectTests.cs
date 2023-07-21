@@ -21,6 +21,7 @@ public class EdgemastersAspectTests
                               .Returns(100);
 
         _aspect = new(_mockMaxFuryCalculator.Object);
+        _state.Config.Gear.Helm.Aspect = _aspect;
     }
 
     [Fact]
@@ -68,6 +69,18 @@ public class EdgemastersAspectTests
         _aspect.Damage = 10;
 
         var result = _aspect.GetDamageBonus(_state, SkillType.None);
+
+        result.Should().Be(1.0);
+    }
+
+    [Fact]
+    public void GetDamageBonus_Returns_1_When_Not_Equipped()
+    {
+        _state.Player.Fury = 100;
+        _state.Config.Gear.Helm.Aspect = null;
+        _aspect.Damage = 15;
+
+        var result = _aspect.GetDamageBonus(_state, SkillType.Basic);
 
         result.Should().Be(1.0);
     }

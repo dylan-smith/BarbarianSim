@@ -15,7 +15,8 @@ public class TotalDamageMultiplierCalculator
                                            SupremeWrathOfTheBerserker supremeWrathOfTheBerserker,
                                            UnbridledRage unbridledRage,
                                            ViolentWhirlwind violentWhirlwind,
-                                           EnhancedLungingStrike enhancedLungingStrike)
+                                           EnhancedLungingStrike enhancedLungingStrike,
+                                           EdgemastersAspect edgemastersAspect)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -26,6 +27,7 @@ public class TotalDamageMultiplierCalculator
         _unbridledRage = unbridledRage;
         _violentWhirlwind = violentWhirlwind;
         _enhancedLungingStrike = enhancedLungingStrike;
+        _edgemastersAspect = edgemastersAspect;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -37,6 +39,7 @@ public class TotalDamageMultiplierCalculator
     private readonly UnbridledRage _unbridledRage;
     private readonly ViolentWhirlwind _violentWhirlwind;
     private readonly EnhancedLungingStrike _enhancedLungingStrike;
+    private readonly EdgemastersAspect _edgemastersAspect;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -48,14 +51,8 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _unbridledRage.GetDamageBonus(state, skillType);
         damageBonus *= _violentWhirlwind.GetDamageBonus(state, damageSource);
         damageBonus *= _enhancedLungingStrike.GetDamageBonus(state, damageSource, enemy);
-
         damageBonus *= _supremeWrathOfTheBerserker.GetBerserkDamageBonus(state);
-
-        var edgemasters = state.Config.Gear.GetAspect<EdgemastersAspect>();
-        if (edgemasters != null)
-        {
-            damageBonus *= edgemasters.GetDamageBonus(state, skillType);
-        }
+        damageBonus *= _edgemastersAspect.GetDamageBonus(state, skillType);
 
         return damageBonus;
     }

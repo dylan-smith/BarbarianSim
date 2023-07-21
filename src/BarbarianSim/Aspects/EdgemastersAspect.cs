@@ -15,7 +15,7 @@ public class EdgemastersAspect : Aspect
 
     public virtual double GetDamageBonus(SimulationState state, SkillType skillType)
     {
-        if (skillType != SkillType.None)
+        if (IsAspectEquipped(state) && skillType != SkillType.None)
         {
             var maxFury = _maxFuryCalculator.Calculate(state);
             var furyMultiplier = state.Player.Fury / maxFury;

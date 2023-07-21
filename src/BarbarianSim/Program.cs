@@ -79,18 +79,31 @@ internal class Program
         serviceCollection.AddSingleton<BattleLungingStrike>();
         serviceCollection.AddSingleton<BoomingVoice>();
         serviceCollection.AddSingleton<CombatLungingStrike>();
+        serviceCollection.AddSingleton<EnhancedChallengingShout>();
         serviceCollection.AddSingleton<EnhancedLungingStrike>();
+        serviceCollection.AddSingleton<EnhancedRallyingCry>();
+        serviceCollection.AddSingleton<EnhancedWarCry>();
         serviceCollection.AddSingleton<EnhancedWhirlwind>();
         serviceCollection.AddSingleton<FuriousWhirlwind>();
         serviceCollection.AddSingleton<GutteralYell>();
         serviceCollection.AddSingleton<Hamstring>();
         serviceCollection.AddSingleton<HeavyHanded>();
         serviceCollection.AddSingleton<InvigoratingFury>();
+        serviceCollection.AddSingleton<MightyWarCry>();
         serviceCollection.AddSingleton<PitFighter>();
+        serviceCollection.AddSingleton<PowerWarCry>();
         serviceCollection.AddSingleton<PressurePoint>();
+        serviceCollection.AddSingleton<PrimeWrathOfTheBerserker>();
         serviceCollection.AddSingleton<ProlificFury>();
         serviceCollection.AddSingleton<RaidLeader>();
+        serviceCollection.AddSingleton<StrategicChallengingShout>();
+        serviceCollection.AddSingleton<StrategicIronSkin>();
+        serviceCollection.AddSingleton<StrategicRallyingCry>();
+        serviceCollection.AddSingleton<SupremeWrathOfTheBerserker>();
+        serviceCollection.AddSingleton<TacticalIronSkin>();
+        serviceCollection.AddSingleton<TacticalRallyingCry>();
         serviceCollection.AddSingleton<TemperedFury>();
+        serviceCollection.AddSingleton<UnbridledRage>();
         serviceCollection.AddSingleton<ViolentWhirlwind>();
 
         // Stat Calculators
