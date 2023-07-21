@@ -57,7 +57,7 @@ public class SimulationConfigTests
 
         config.Gear.Gloves.Aspect = new GohrsDevastatingGrips();
 
-        config.Gear.Pants.Aspect = new AspectOfNumbingWraith();
+        config.Gear.Pants.Aspect = new GhostwalkerAspect();
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
         config.Gear.Pants.Gems.Add(new RoyalSapphire());
 

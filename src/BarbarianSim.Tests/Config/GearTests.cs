@@ -39,7 +39,7 @@ public class GearTests
     {
         var gear = new Gear();
         gear.Helm.Aspect = new AspectOfEchoingFury();
-        gear.Chest.Aspect = new AspectOfNumbingWraith();
+        gear.Chest.Aspect = new AspectOfDisobedience();
         gear.Amulet.Aspect = null;
 
         gear.GetAllAspects<Aspect>().Should().HaveCount(2);
@@ -50,11 +50,11 @@ public class GearTests
     {
         var gear = new Gear();
         gear.Helm.Aspect = new AspectOfEchoingFury();
-        gear.Chest.Aspect = new AspectOfNumbingWraith() { Fortify = 12 };
+        gear.Chest.Aspect = new AspectOfDisobedience() { ArmorIncrement = 0.25 };
         gear.Amulet.Aspect = null;
 
-        gear.GetAllAspects<AspectOfNumbingWraith>().Should().HaveCount(1);
-        gear.GetAllAspects<AspectOfNumbingWraith>().First().Fortify.Should().Be(12);
+        gear.GetAllAspects<AspectOfDisobedience>().Should().HaveCount(1);
+        gear.GetAllAspects<AspectOfDisobedience>().First().ArmorIncrement.Should().Be(0.25);
     }
 
     [Fact]
