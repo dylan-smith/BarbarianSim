@@ -17,7 +17,7 @@ public class AuraAppliedEvent : EventInfo
         Target = target;
     }
 
-    public double Duration { get; init; }
+    public double Duration { get; set; }
     public Aura Aura { get; init; }
     public EnemyState Target { get; init; }
     public AuraExpiredEvent AuraExpiredEvent { get; set; }

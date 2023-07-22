@@ -335,7 +335,7 @@ internal class Program
         config.Gear.Ring1.CritChance = 6.9;
         config.Gear.Ring1.CritDamage = 23.3;
         config.Gear.Ring1.Aspect = CreateAspect<BoldChieftainsAspect>(sp);
-        (config.Gear.Ring1.Aspect as BoldChieftainsAspect).Cooldown = 1.9;
+        (config.Gear.Ring1.Aspect as BoldChieftainsAspect).CooldownReduction = 1.9;
         config.Gear.Ring1.Gems.Add(new RoyalSkull());
 
         config.Gear.Ring2.ColdResistance = 32.2;
