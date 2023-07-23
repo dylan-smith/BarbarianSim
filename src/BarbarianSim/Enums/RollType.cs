@@ -3,6 +3,7 @@
 public enum RollType
 {
     None,
+    AspectOfAnemia,
     CriticalStrike,
     LuckyHit,
     Overpower,
