@@ -9,7 +9,7 @@ public class Hamstring : IHandlesEvent<BleedAppliedEvent>
     {
         if (state.Config.Skills.ContainsKey(Skill.Hamstring))
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.Slow));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.Slow, e.Target));
         }
     }
 }

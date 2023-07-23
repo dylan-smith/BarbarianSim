@@ -25,4 +25,22 @@ public class HamstringTests
         _state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
         _state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(12);
     }
+
+    [Fact]
+    public void Applies_It_To_The_Right_Enemy()
+    {
+        var config = new SimulationConfig();
+        config.EnemySettings.NumberOfEnemies = 3;
+        var state = new SimulationState(config);
+        state.Config.Skills.Add(Skill.Hamstring, 1);
+        var bleedEvent = new BleedAppliedEvent(123, 99, 12, state.Enemies.Last());
+
+        _skill.ProcessEvent(bleedEvent, state);
+
+        state.Events.Should().ContainSingle(e => e is AuraAppliedEvent);
+        state.Events.OfType<AuraAppliedEvent>().First().Aura.Should().Be(Aura.Slow);
+        state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
+        state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(12);
+        state.Events.OfType<AuraAppliedEvent>().First().Target.Should().Be(state.Enemies.Last());
+    }
 }
