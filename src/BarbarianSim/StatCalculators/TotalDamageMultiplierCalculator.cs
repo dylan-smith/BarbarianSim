@@ -17,7 +17,8 @@ public class TotalDamageMultiplierCalculator
                                            ViolentWhirlwind violentWhirlwind,
                                            EnhancedLungingStrike enhancedLungingStrike,
                                            EdgemastersAspect edgemastersAspect,
-                                           AspectOfLimitlessRage aspectOfLimitlessRage)
+                                           AspectOfLimitlessRage aspectOfLimitlessRage,
+                                           ConceitedAspect conceitedAspect)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -30,6 +31,7 @@ public class TotalDamageMultiplierCalculator
         _enhancedLungingStrike = enhancedLungingStrike;
         _edgemastersAspect = edgemastersAspect;
         _aspectOfLimitlessRage = aspectOfLimitlessRage;
+        _conceitedAspect = conceitedAspect;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -43,6 +45,7 @@ public class TotalDamageMultiplierCalculator
     private readonly EnhancedLungingStrike _enhancedLungingStrike;
     private readonly EdgemastersAspect _edgemastersAspect;
     private readonly AspectOfLimitlessRage _aspectOfLimitlessRage;
+    private readonly ConceitedAspect _conceitedAspect;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -57,6 +60,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _supremeWrathOfTheBerserker.GetBerserkDamageBonus(state);
         damageBonus *= _edgemastersAspect.GetDamageBonus(state, skillType);
         damageBonus *= _aspectOfLimitlessRage.GetDamageBonus(state, skillType);
+        damageBonus *= _conceitedAspect.GetDamageBonus(state);
 
         return damageBonus;
     }
