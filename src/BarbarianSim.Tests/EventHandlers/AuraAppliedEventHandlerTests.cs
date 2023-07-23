@@ -2,15 +2,24 @@
 using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
+using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class AuraAppliedEventHandlerTests
 {
+    private readonly Mock<CrowdControlDurationCalculator> _mockCrowdControlDurationCalculator = TestHelpers.CreateMock<CrowdControlDurationCalculator>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AuraAppliedEventHandler _handler = new();
+    private readonly AuraAppliedEventHandler _handler;
+
+    public AuraAppliedEventHandlerTests()
+    {
+        _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1.0);
+        _handler = new AuraAppliedEventHandler(_mockCrowdControlDurationCalculator.Object);
+    }
 
     [Fact]
     public void Applies_Aura_To_Player()
@@ -67,5 +76,17 @@ public class AuraAppliedEventHandlerTests
 
         _state.Player.Auras.Should().Contain(testAura);
         _state.Events.Should().NotContain(e => e is AuraExpiredEvent);
+    }
+
+    [Fact]
+    public void Applies_CrowdControlDuration_Bonuses()
+    {
+        _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(_state)).Returns(1.4);
+
+        var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, Aura.Stun);
+
+        _handler.ProcessEvent(auraAppliedEvent, _state);
+
+        auraAppliedEvent.AuraExpiredEvent.Timestamp.Should().Be(123 + (5 * 1.4));
     }
 }

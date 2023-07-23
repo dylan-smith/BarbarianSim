@@ -27,7 +27,9 @@ internal class Program
         serviceCollection.AddSingleton<WrathOfTheBerserker>();
 
         // Aspects
+        serviceCollection.AddSingleton<AspectOfAnemia>();
         serviceCollection.AddSingleton<AspectOfBerserkRipping>();
+        serviceCollection.AddSingleton<AspectOfDisobedience>();
         serviceCollection.AddSingleton<AspectOfEchoingFury>();
         serviceCollection.AddSingleton<AspectOfGraspingWhirlwind>();
         serviceCollection.AddSingleton<AspectOfLimitlessRage>();
@@ -40,6 +42,7 @@ internal class Program
         serviceCollection.AddSingleton<GhostwalkerAspect>();
         serviceCollection.AddSingleton<GohrsDevastatingGrips>();
         serviceCollection.AddSingleton<RageOfHarrogath>();
+        serviceCollection.AddSingleton<SmitingAspect>();
 
         // Event Handlers
         serviceCollection.AddSingleton<EventHandlers.EventHandler<AspectOfEchoingFuryProcEvent>, EventHandlers.AspectOfEchoingFuryProcEventHandler>();
@@ -114,6 +117,7 @@ internal class Program
         serviceCollection.AddSingleton<CritChanceCalculator>();
         serviceCollection.AddSingleton<CritChancePhysicalAgainstElitesCalculator>();
         serviceCollection.AddSingleton<CritDamageCalculator>();
+        serviceCollection.AddSingleton<CrowdControlDurationCalculator>();
         serviceCollection.AddSingleton<DamageReductionCalculator>();
         serviceCollection.AddSingleton<DamageReductionFromBleedingCalculator>();
         serviceCollection.AddSingleton<DamageReductionFromCloseCalculator>();

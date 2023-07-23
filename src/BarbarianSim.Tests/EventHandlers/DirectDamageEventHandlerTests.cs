@@ -26,7 +26,7 @@ public class DirectDamageEventHandlerTests
         _mockTotalDamageMultiplierCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<SkillType>(), It.IsAny<DamageSource>()))
                                             .Returns(1.0);
 
-        _mockCritChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>()))
+        _mockCritChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>()))
                                  .Returns(0.0);
 
         _mockCritDamageCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<Expertise>()))
@@ -77,7 +77,7 @@ public class DirectDamageEventHandlerTests
     [Fact]
     public void Critical_Strike_Applies_CritChance_Bonus()
     {
-        _mockCritChanceCalculator.Setup(m => m.Calculate(_state, DamageType.Physical))
+        _mockCritChanceCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First()))
                                  .Returns(0.7);
 
         _mockRandomGenerator.Setup(m => m.Roll(RollType.CriticalStrike))

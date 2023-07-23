@@ -13,6 +13,7 @@ public class CritChanceCalculatorTests
     private readonly Mock<CritChancePhysicalAgainstElitesCalculator> _mockcritChancePhysicalAgainstElitesCalculator = TestHelpers.CreateMock<CritChancePhysicalAgainstElitesCalculator>();
     private readonly Mock<DexterityCalculator> _mockDexterityCalculator = TestHelpers.CreateMock<DexterityCalculator>();
     private readonly Mock<AspectOfTheDireWhirlwind> _mockAspectOfTheDireWhirlwind = TestHelpers.CreateMock<AspectOfTheDireWhirlwind>();
+    private readonly Mock<SmitingAspect> _mockSmitingAspect = TestHelpers.CreateMock<SmitingAspect>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly CritChanceCalculator _calculator;
 
@@ -21,14 +22,15 @@ public class CritChanceCalculatorTests
         _mockcritChancePhysicalAgainstElitesCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>())).Returns(0.0);
         _mockDexterityCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
         _mockAspectOfTheDireWhirlwind.Setup(m => m.GetCritChanceBonus(It.IsAny<SimulationState>())).Returns(0);
+        _mockSmitingAspect.Setup(m => m.GetCriticalStrikeChanceBonus(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(1.0);
 
-        _calculator = new CritChanceCalculator(_mockcritChancePhysicalAgainstElitesCalculator.Object, _mockDexterityCalculator.Object, _mockAspectOfTheDireWhirlwind.Object);
+        _calculator = new CritChanceCalculator(_mockcritChancePhysicalAgainstElitesCalculator.Object, _mockDexterityCalculator.Object, _mockAspectOfTheDireWhirlwind.Object, _mockSmitingAspect.Object);
     }
 
     [Fact]
     public void Includes_Base_5_Percent_Chance()
     {
-        var result = _calculator.Calculate(_state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
 
         result.Should().Be(0.05);
     }
@@ -38,7 +40,7 @@ public class CritChanceCalculatorTests
     {
         _state.Config.Gear.Helm.CritChance = 12.0;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
 
         result.Should().Be(0.17);
     }
@@ -48,7 +50,7 @@ public class CritChanceCalculatorTests
     {
         _mockcritChancePhysicalAgainstElitesCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>())).Returns(12.0);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
 
         result.Should().Be(0.17);
     }
@@ -58,7 +60,7 @@ public class CritChanceCalculatorTests
     {
         _mockDexterityCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
 
         result.Should().Be(0.13);
     }
@@ -68,8 +70,18 @@ public class CritChanceCalculatorTests
     {
         _mockAspectOfTheDireWhirlwind.Setup(m => m.GetCritChanceBonus(_state)).Returns(20);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
 
         result.Should().Be(0.25);
+    }
+
+    [Fact]
+    public void Includes_SmitingAspect_Bonus()
+    {
+        _mockSmitingAspect.Setup(m => m.GetCriticalStrikeChanceBonus(_state, _state.Enemies.First())).Returns(1.2);
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
+
+        result.Should().Be(0.06);
     }
 }

@@ -31,7 +31,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
         var damage = e.BaseDamage * damageMultiplier;
 
-        var critChance = _critChanceCalculator.Calculate(state, e.DamageType);
+        var critChance = _critChanceCalculator.Calculate(state, e.DamageType, e.Enemy);
         var critRoll = _randomGenerator.Roll(RollType.CriticalStrike);
 
         var damageType = e.DamageType | DamageType.Direct;

@@ -1,9 +1,15 @@
-﻿using BarbarianSim.Events;
+﻿using BarbarianSim.Enums;
+using BarbarianSim.Events;
+using BarbarianSim.StatCalculators;
 
 namespace BarbarianSim.EventHandlers;
 
 public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
 {
+    public AuraAppliedEventHandler(CrowdControlDurationCalculator crowdControlDurationCalculator) => _crowdControlDurationCalculator = crowdControlDurationCalculator;
+
+    private readonly CrowdControlDurationCalculator _crowdControlDurationCalculator;
+
     public override void ProcessEvent(AuraAppliedEvent e, SimulationState state)
     {
         if (e.Target == null)
@@ -17,7 +23,14 @@ public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
 
         if (e.Duration > 0)
         {
-            e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + e.Duration, e.Target, e.Aura);
+            var duration = e.Duration;
+
+            if (e.Aura.IsCrowdControl())
+            {
+                duration *= _crowdControlDurationCalculator.Calculate(state);
+            }
+
+            e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + duration, e.Target, e.Aura);
             state.Events.Add(e.AuraExpiredEvent);
         }
     }
