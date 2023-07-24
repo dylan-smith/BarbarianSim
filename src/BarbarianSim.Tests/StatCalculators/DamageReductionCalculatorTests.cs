@@ -20,6 +20,7 @@ public class DamageReductionCalculatorTests
     private readonly Mock<ChallengingShout> _mockChallengingShout = TestHelpers.CreateMock<ChallengingShout>();
     private readonly Mock<GutteralYell> _mockGutteralYell = TestHelpers.CreateMock<GutteralYell>();
     private readonly Mock<AspectOfTheIronWarrior> _mockAspectOfTheIronWarrior = TestHelpers.CreateMock<AspectOfTheIronWarrior>();
+    private readonly Mock<IronBloodAspect> _mockIronBloodAspect = TestHelpers.CreateMock<IronBloodAspect>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly DamageReductionCalculator _calculator;
 
@@ -33,6 +34,7 @@ public class DamageReductionCalculatorTests
         _mockChallengingShout.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
         _mockGutteralYell.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
         _mockAspectOfTheIronWarrior.Setup(m => m.GetDamageReductionBonus(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockIronBloodAspect.Setup(m => m.GetDamageReductionBonus(It.IsAny<SimulationState>())).Returns(0.0);
 
         _calculator = new DamageReductionCalculator(
             _mockDamageReductionFromBleedingCalculator.Object,
@@ -42,7 +44,8 @@ public class DamageReductionCalculatorTests
             _mockAggressiveResistance.Object,
             _mockChallengingShout.Object,
             _mockGutteralYell.Object,
-            _mockAspectOfTheIronWarrior.Object);
+            _mockAspectOfTheIronWarrior.Object,
+            _mockIronBloodAspect.Object);
     }
 
     [Fact]
@@ -139,6 +142,16 @@ public class DamageReductionCalculatorTests
     public void Includes_Bonus_From_AspectOfTheIronWarrior()
     {
         _mockAspectOfTheIronWarrior.Setup(m => m.GetDamageReductionBonus(_state)).Returns(12.0);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
+    public void Includes_Bonus_From_IronBloodAspect()
+    {
+        _mockIronBloodAspect.Setup(m => m.GetDamageReductionBonus(_state)).Returns(12.0);
 
         var result = _calculator.Calculate(_state, _state.Enemies.First());
 

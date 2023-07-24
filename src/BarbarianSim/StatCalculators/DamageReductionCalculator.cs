@@ -13,7 +13,8 @@ public class DamageReductionCalculator
                                      AggressiveResistance aggressiveResistance,
                                      ChallengingShout challengingShout,
                                      GutteralYell gutteralYell,
-                                     AspectOfTheIronWarrior aspectOfTheIronWarrior)
+                                     AspectOfTheIronWarrior aspectOfTheIronWarrior,
+                                     IronBloodAspect ironBloodAspect)
     {
         _damageReductionFromBleedingCalculator = damageReductionFromBleedingCalculator;
         _damageReductionFromCloseCalculator = damageReductionFromCloseCalculator;
@@ -23,6 +24,7 @@ public class DamageReductionCalculator
         _challengingShout = challengingShout;
         _gutteralYell = gutteralYell;
         _aspectOfTheIronWarrior = aspectOfTheIronWarrior;
+        _ironBloodAspect = ironBloodAspect;
     }
 
     private readonly DamageReductionFromBleedingCalculator _damageReductionFromBleedingCalculator;
@@ -33,6 +35,7 @@ public class DamageReductionCalculator
     private readonly ChallengingShout _challengingShout;
     private readonly GutteralYell _gutteralYell;
     private readonly AspectOfTheIronWarrior _aspectOfTheIronWarrior;
+    private readonly IronBloodAspect _ironBloodAspect;
 
     public virtual double Calculate(SimulationState state, EnemyState enemy)
     {
@@ -46,6 +49,7 @@ public class DamageReductionCalculator
         damageReduction *= 1 - (_challengingShout.GetDamageReduction(state) / 100.0);
         damageReduction *= 1 - (_gutteralYell.GetDamageReduction(state) / 100.0);
         damageReduction *= 1 - (_aspectOfTheIronWarrior.GetDamageReductionBonus(state) / 100.0);
+        damageReduction *= 1 - (_ironBloodAspect.GetDamageReductionBonus(state) / 100.0);
 
         return damageReduction;
     }
