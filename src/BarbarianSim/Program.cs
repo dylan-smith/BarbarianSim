@@ -35,7 +35,9 @@ internal class Program
         serviceCollection.AddSingleton<AspectOfLimitlessRage>();
         serviceCollection.AddSingleton<AspectOfNumbingWraith>();
         serviceCollection.AddSingleton<AspectOfTheDireWhirlwind>();
+        serviceCollection.AddSingleton<AspectOfTheExpectant>();
         serviceCollection.AddSingleton<AspectOfTheProtector>();
+        serviceCollection.AddSingleton<AspectOfTheIronWarrior>();
         serviceCollection.AddSingleton<BoldChieftainsAspect>();
         serviceCollection.AddSingleton<ConceitedAspect>();
         serviceCollection.AddSingleton<EdgemastersAspect>();

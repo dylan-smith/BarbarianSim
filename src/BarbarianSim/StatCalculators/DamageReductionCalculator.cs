@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Abilities;
+using BarbarianSim.Aspects;
 using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
@@ -11,7 +12,8 @@ public class DamageReductionCalculator
                                      DamageReductionWhileInjuredCalculator damageReductionWhileInjuredCalculator,
                                      AggressiveResistance aggressiveResistance,
                                      ChallengingShout challengingShout,
-                                     GutteralYell gutteralYell)
+                                     GutteralYell gutteralYell,
+                                     AspectOfTheIronWarrior aspectOfTheIronWarrior)
     {
         _damageReductionFromBleedingCalculator = damageReductionFromBleedingCalculator;
         _damageReductionFromCloseCalculator = damageReductionFromCloseCalculator;
@@ -20,6 +22,7 @@ public class DamageReductionCalculator
         _aggressiveResistance = aggressiveResistance;
         _challengingShout = challengingShout;
         _gutteralYell = gutteralYell;
+        _aspectOfTheIronWarrior = aspectOfTheIronWarrior;
     }
 
     private readonly DamageReductionFromBleedingCalculator _damageReductionFromBleedingCalculator;
@@ -29,6 +32,7 @@ public class DamageReductionCalculator
     private readonly AggressiveResistance _aggressiveResistance;
     private readonly ChallengingShout _challengingShout;
     private readonly GutteralYell _gutteralYell;
+    private readonly AspectOfTheIronWarrior _aspectOfTheIronWarrior;
 
     public virtual double Calculate(SimulationState state, EnemyState enemy)
     {
@@ -41,6 +45,7 @@ public class DamageReductionCalculator
         damageReduction *= 1 - (_aggressiveResistance.GetDamageReduction(state) / 100.0);
         damageReduction *= 1 - (_challengingShout.GetDamageReduction(state) / 100.0);
         damageReduction *= 1 - (_gutteralYell.GetDamageReduction(state) / 100.0);
+        damageReduction *= 1 - (_aspectOfTheIronWarrior.GetDamageReductionBonus(state) / 100.0);
 
         return damageReduction;
     }
