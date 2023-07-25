@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using System.Reflection;
 using BarbarianSim.Config;
+using BarbarianSim.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BarbarianSim;
@@ -24,6 +24,7 @@ public class Simulation
         }
 
         var eventPublisher = _sp.GetRequiredService<EventPublisher>();
+        eventPublisher.PublishEvent(new SimulationStartedEvent(0.0), State);
 
         while (true)
         {
@@ -40,28 +41,12 @@ public class Simulation
             while (nextEvent != null && nextEvent.Timestamp == State.CurrentTime)
             {
                 State.Events.Remove(nextEvent);
-                ProcessEvent(nextEvent, State);
-
                 eventPublisher.PublishEvent(nextEvent, State);
-
                 nextEvent = GetNextEvent();
             }
         }
 
         throw new Exception("This should never happen");
-    }
-
-    private void ProcessEvent(Events.EventInfo nextEvent, SimulationState state)
-    {
-        GetType().GetMethod(nameof(ProcessEventImpl), BindingFlags.NonPublic | BindingFlags.Instance)
-                 .MakeGenericMethod(nextEvent.GetType())
-                 .Invoke(this, new object[] { nextEvent, state });
-    }
-
-    private void ProcessEventImpl<T>(T nextEvent, SimulationState state) where T : Events.EventInfo
-    {
-        var handler = _sp.GetRequiredService<EventHandlers.EventHandler<T>>();
-        handler.ProcessEvent(nextEvent, state);
     }
 
     private Events.EventInfo GetNextEvent() => State.Events.OrderBy(e => e.Timestamp).FirstOrDefault();

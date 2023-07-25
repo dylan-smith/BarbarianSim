@@ -71,6 +71,7 @@ internal class Program
         serviceCollection.AddSingleton<EventHandlers.EventHandler<PressurePointProcEvent>, EventHandlers.PressurePointProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<RaidLeaderProcEvent>, EventHandlers.RaidLeaderProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<RallyingCryEvent>, EventHandlers.RallyingCryEventHandler>();
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<SimulationStartedEvent>, EventHandlers.SimulationStartedEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WarCryEvent>, EventHandlers.WarCryEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindRefreshEvent>, EventHandlers.WhirlwindRefreshEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindSpinEvent>, EventHandlers.WhirlwindSpinEventHandler>();
