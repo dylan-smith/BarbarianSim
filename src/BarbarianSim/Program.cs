@@ -44,6 +44,7 @@ internal class Program
         serviceCollection.AddSingleton<ExploitersAspect>();
         serviceCollection.AddSingleton<GhostwalkerAspect>();
         serviceCollection.AddSingleton<GohrsDevastatingGrips>();
+        serviceCollection.AddSingleton<PenitentGreaves>();
         serviceCollection.AddSingleton<RageOfHarrogath>();
         serviceCollection.AddSingleton<SmitingAspect>();
 
