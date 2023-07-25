@@ -18,7 +18,7 @@ public class BleedCompletedEventHandler : EventHandler<BleedCompletedEvent>
         }
 
         var damageType = DamageType.Physical | DamageType.DamageOverTime;
-        var damageMultiplier = _totalDamageMultiplierCalculator.Calculate(state, damageType, e.Target, SkillType.None, DamageSource.Bleeding);
+        var damageMultiplier = _totalDamageMultiplierCalculator.Calculate(state, damageType, e.Target, SkillType.None, DamageSource.Bleeding, null);
 
         var damage = e.Damage * damageMultiplier;
 

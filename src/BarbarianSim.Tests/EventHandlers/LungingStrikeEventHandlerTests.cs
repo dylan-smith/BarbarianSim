@@ -33,7 +33,8 @@ public class LungingStrikeEventHandlerTests
     [Fact]
     public void Creates_DirectDamageEvent()
     {
-        _state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike] = new GearItem { MinDamage = 1000, MaxDamage = 2000, AttacksPerSecond = 1, Expertise = Expertise.Polearm };
+        var skillWeapon = new GearItem { MinDamage = 1000, MaxDamage = 2000, AttacksPerSecond = 1, Expertise = Expertise.Polearm };
+        _state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike] = skillWeapon;
         var lungingStrikeEvent = new LungingStrikeEvent(123, _state.Enemies.First());
 
         _handler.ProcessEvent(lungingStrikeEvent, _state);
@@ -46,7 +47,7 @@ public class LungingStrikeEventHandlerTests
         lungingStrikeEvent.DirectDamageEvent.DamageSource.Should().Be(DamageSource.LungingStrike);
         lungingStrikeEvent.DirectDamageEvent.SkillType.Should().Be(SkillType.Basic);
         lungingStrikeEvent.DirectDamageEvent.LuckyHitChance.Should().Be(0.5);
-        lungingStrikeEvent.DirectDamageEvent.Expertise.Should().Be(Expertise.Polearm);
+        lungingStrikeEvent.DirectDamageEvent.Weapon.Should().Be(skillWeapon);
         lungingStrikeEvent.DirectDamageEvent.Enemy.Should().Be(_state.Enemies.First());
     }
 

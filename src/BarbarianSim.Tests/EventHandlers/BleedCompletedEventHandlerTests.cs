@@ -17,7 +17,7 @@ public class BleedCompletedEventHandlerTests
 
     public BleedCompletedEventHandlerTests()
     {
-        _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<SkillType>(), It.IsAny<DamageSource>()))
+        _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<SkillType>(), It.IsAny<DamageSource>(), It.IsAny<GearItem>()))
                                             .Returns(1.0);
 
         _handler = new BleedCompletedEventHandler(_mockTotalDamageMultiplierCalculator.Object);
@@ -66,7 +66,7 @@ public class BleedCompletedEventHandlerTests
     [Fact]
     public void Applied_Damage_Multipliers()
     {
-        _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(_state, DamageType.Physical | DamageType.DamageOverTime, _state.Enemies.First(), SkillType.None, DamageSource.Bleeding)).Returns(2.5);
+        _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(_state, DamageType.Physical | DamageType.DamageOverTime, _state.Enemies.First(), SkillType.None, DamageSource.Bleeding, null)).Returns(2.5);
         var bleedCompletedEvent = new BleedCompletedEvent(123.0, 500.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedCompletedEvent, _state);

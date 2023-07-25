@@ -42,7 +42,7 @@ public class WrathOfTheBerserkerTests
     {
         _state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, 0, Expertise.Polearm, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, 0, null, _state.Enemies.First());
 
         _wrathOfTheBerserker.ProcessEvent(directDamageEvent, _state);
 
@@ -55,7 +55,7 @@ public class WrathOfTheBerserkerTests
     public void Does_Not_Berserk_If_Missing_Skill()
     {
         _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, 0, Expertise.Polearm, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, 0, null, _state.Enemies.First());
 
         _wrathOfTheBerserker.ProcessEvent(directDamageEvent, _state);
 
@@ -67,7 +67,7 @@ public class WrathOfTheBerserkerTests
     {
         _state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         _state.Player.Auras.Add(Aura.WrathOfTheBerserker);
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Core, 0, Expertise.Polearm, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Core, 0, null, _state.Enemies.First());
 
         _wrathOfTheBerserker.ProcessEvent(directDamageEvent, _state);
 
@@ -78,7 +78,7 @@ public class WrathOfTheBerserkerTests
     public void Does_Not_Berserk_If_Aura_Missing()
     {
         _state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, 0, Expertise.Polearm, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, 0, null, _state.Enemies.First());
 
         _wrathOfTheBerserker.ProcessEvent(directDamageEvent, _state);
 

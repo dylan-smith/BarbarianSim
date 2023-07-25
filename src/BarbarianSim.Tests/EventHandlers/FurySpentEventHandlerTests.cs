@@ -49,13 +49,13 @@ public class FurySpentEventHandlerTests
     }
 
     [Fact]
-    public void Throws_Exception_If_Spending_More_Fury_Than_Player_Has()
+    public void Player_Fury_Cant_Go_Below_0()
     {
         _state.Player.Fury = 10.0;
         var furySpentEvent = new FurySpentEvent(123.0, 12.0, SkillType.Basic);
 
-        var act = () => _handler.ProcessEvent(furySpentEvent, _state);
+        _handler.ProcessEvent(furySpentEvent, _state);
 
-        act.Should().Throw<Exception>();
+        _state.Player.Fury.Should().Be(0.0);
     }
 }

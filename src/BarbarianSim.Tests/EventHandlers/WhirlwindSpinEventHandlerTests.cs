@@ -52,7 +52,8 @@ public class WhirlwindSpinEventHandlerTests
     [Fact]
     public void Creates_DirectDamageEvent()
     {
-        _state.Config.PlayerSettings.SkillWeapons[Skill.Whirlwind] = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1, Expertise = Expertise.TwoHandedSword };
+        var skillWeapon = new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1, Expertise = Expertise.TwoHandedSword };
+        _state.Config.PlayerSettings.SkillWeapons[Skill.Whirlwind] = skillWeapon;
 
         var whirlwindSpinEvent = new WhirlwindSpinEvent(123);
 
@@ -66,7 +67,7 @@ public class WhirlwindSpinEventHandlerTests
         whirlwindSpinEvent.DirectDamageEvents.First().DamageSource.Should().Be(DamageSource.Whirlwind);
         whirlwindSpinEvent.DirectDamageEvents.First().SkillType.Should().Be(SkillType.Core);
         whirlwindSpinEvent.DirectDamageEvents.First().LuckyHitChance.Should().Be(0.2);
-        whirlwindSpinEvent.DirectDamageEvents.First().Expertise.Should().Be(Expertise.TwoHandedSword);
+        whirlwindSpinEvent.DirectDamageEvents.First().Weapon.Should().Be(skillWeapon);
         whirlwindSpinEvent.DirectDamageEvents.First().Enemy.Should().Be(_state.Enemies.First());
     }
 

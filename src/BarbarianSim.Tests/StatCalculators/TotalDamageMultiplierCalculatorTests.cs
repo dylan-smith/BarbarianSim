@@ -27,6 +27,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<AspectOfTheExpectant> _mockAspectOfTheExpectant = TestHelpers.CreateMock<AspectOfTheExpectant>();
     private readonly Mock<ExploitersAspect> _mockExploitersAspect = TestHelpers.CreateMock<ExploitersAspect>();
     private readonly Mock<PenitentGreaves> _mockPenitentGreaves = TestHelpers.CreateMock<PenitentGreaves>();
+    private readonly Mock<RamaladnisMagnumOpus> _mockRamaladnisMagnumOpus = TestHelpers.CreateMock<RamaladnisMagnumOpus>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -47,6 +48,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockAspectOfTheExpectant.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
         _mockExploitersAspect.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(1.0);
         _mockPenitentGreaves.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockRamaladnisMagnumOpus.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
@@ -62,13 +64,14 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockConceitedAspect.Object,
                                                           _mockAspectOfTheExpectant.Object,
                                                           _mockExploitersAspect.Object,
-                                                          _mockPenitentGreaves.Object);
+                                                          _mockPenitentGreaves.Object,
+                                                          _mockRamaladnisMagnumOpus.Object);
     }
 
     [Fact]
     public void Returns_1_When_No_Extra_Bonuses()
     {
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.0);
     }
@@ -78,7 +81,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First())).Returns(1.12);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.12);
     }
@@ -88,7 +91,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(1.12);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.12);
     }
@@ -98,7 +101,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockStrengthCalculator.Setup(m => m.Calculate(_state)).Returns(42.0);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.042);
     }
@@ -108,7 +111,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(1.21);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.21);
     }
@@ -118,7 +121,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockUnbridledRage.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(2.0);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(2);
     }
@@ -128,7 +131,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _state.Config.Skills.Add(Skill.UnbridledRage, 1);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1);
     }
@@ -138,7 +141,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(_state)).Returns(1.03);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.03);
     }
@@ -148,7 +151,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockSupremeWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(_state)).Returns(1.25);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.25);
     }
@@ -159,7 +162,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockEdgemastersAspect.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(1.2);
         _state.Config.Gear.Chest.Aspect = _mockEdgemastersAspect.Object;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.2);
     }
@@ -168,7 +171,7 @@ public class TotalDamageMultiplierCalculatorTests
     public void Includes_ViolentWhirlwind_Bonus()
     {
         _mockViolentWhirlwind.Setup(m => m.GetDamageBonus(_state, DamageSource.Whirlwind)).Returns(1.3);
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.3);
     }
@@ -177,7 +180,7 @@ public class TotalDamageMultiplierCalculatorTests
     public void Includes_EnhancedLungingStrike_Bonus()
     {
         _mockEnhancedLungingStrike.Setup(m => m.GetDamageBonus(_state, DamageSource.LungingStrike, _state.Enemies.First())).Returns(1.3);
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.3);
     }
@@ -188,7 +191,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockAspectOfLimitlessRage.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(1.2);
         _state.Config.Gear.Chest.Aspect = _mockAspectOfLimitlessRage.Object;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.2);
     }
@@ -199,7 +202,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockConceitedAspect.Setup(m => m.GetDamageBonus(_state)).Returns(1.25);
         _state.Config.Gear.Chest.Aspect = _mockConceitedAspect.Object;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.25);
     }
@@ -210,7 +213,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockAspectOfTheExpectant.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(1.25);
         _state.Config.Gear.Chest.Aspect = _mockAspectOfTheExpectant.Object;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.25);
     }
@@ -221,7 +224,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockExploitersAspect.Setup(m => m.GetDamageBonus(_state, _state.Enemies.First())).Returns(1.25);
         _state.Config.Gear.Chest.Aspect = _mockExploitersAspect.Object;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().Be(1.25);
     }
@@ -232,7 +235,19 @@ public class TotalDamageMultiplierCalculatorTests
         _mockPenitentGreaves.Setup(m => m.GetDamageBonus(_state)).Returns(1.25);
         _state.Config.Gear.Chest.Aspect = _mockPenitentGreaves.Object;
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
+
+        result.Should().Be(1.25);
+    }
+
+    [Fact]
+    public void Includes_RamaladnisMagnumOpus_Bonus()
+    {
+        var weapon = new GearItem() { Expertise = Expertise.Polearm };
+        _mockRamaladnisMagnumOpus.Setup(m => m.GetDamageBonus(_state, weapon)).Returns(1.25);
+        _state.Config.Gear.Chest.Aspect = _mockRamaladnisMagnumOpus.Object;
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, weapon);
 
         result.Should().Be(1.25);
     }
@@ -248,7 +263,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(1.2);
         _mockStrengthCalculator.Setup(m => m.Calculate(_state)).Returns(50.0);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 
         result.Should().BeApproximately(3.9883536, 0.0000001); // 1.2 * 1.2 * 1.05 * 1.09 * 1.21 * 2.0
     }

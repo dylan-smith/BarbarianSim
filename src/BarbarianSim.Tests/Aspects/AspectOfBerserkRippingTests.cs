@@ -21,7 +21,7 @@ public sealed class AspectOfBerserkRippingTests
     [Fact]
     public void Creates_BleedAppliedEvent()
     {
-        var dmg = new DirectDamageEvent(123.0, 500.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 10, Expertise.TwoHandedSword, _state.Enemies.First());
+        var dmg = new DirectDamageEvent(123.0, 500.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 10, null, _state.Enemies.First());
         _state.Player.Auras.Add(Aura.Berserking);
 
         _aspect.ProcessEvent(dmg, _state);
@@ -37,7 +37,7 @@ public sealed class AspectOfBerserkRippingTests
     public void Does_Nothing_When_Not_Equipped()
     {
         _state.Config.Gear.Helm.Aspect = null;
-        var dmg = new DirectDamageEvent(123.0, 500.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 10, Expertise.TwoHandedSword, _state.Enemies.First());
+        var dmg = new DirectDamageEvent(123.0, 500.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 10, null, _state.Enemies.First());
         _state.Player.Auras.Add(Aura.Berserking);
 
         _aspect.ProcessEvent(dmg, _state);
@@ -48,7 +48,7 @@ public sealed class AspectOfBerserkRippingTests
     [Fact]
     public void Does_Nothing_When_Not_Berserking()
     {
-        var dmg = new DirectDamageEvent(123.0, 500.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 10, Expertise.TwoHandedSword, _state.Enemies.First());
+        var dmg = new DirectDamageEvent(123.0, 500.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, 10, null, _state.Enemies.First());
 
         _aspect.ProcessEvent(dmg, _state);
 

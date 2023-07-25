@@ -27,7 +27,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
     public override void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
-        var damageMultiplier = _totalDamageMultiplierCalculator.Calculate(state, e.DamageType, e.Enemy, e.SkillType, e.DamageSource);
+        var damageMultiplier = _totalDamageMultiplierCalculator.Calculate(state, e.DamageType, e.Enemy, e.SkillType, e.DamageSource, e.Weapon);
 
         var damage = e.BaseDamage * damageMultiplier;
 
@@ -38,7 +38,8 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
         if (critRoll <= critChance)
         {
-            damage *= _critDamageCalculator.Calculate(state, e.Expertise);
+            var expertise = e.Weapon?.Expertise ?? Expertise.NA;
+            damage *= _critDamageCalculator.Calculate(state, expertise);
             damageType |= DamageType.CriticalStrike;
         }
 

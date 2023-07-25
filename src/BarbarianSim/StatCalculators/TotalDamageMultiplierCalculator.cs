@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Aspects;
+using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 
@@ -21,7 +22,8 @@ public class TotalDamageMultiplierCalculator
                                            ConceitedAspect conceitedAspect,
                                            AspectOfTheExpectant aspectOfTheExpectant,
                                            ExploitersAspect exploitersAspect,
-                                           PenitentGreaves penitentGreaves)
+                                           PenitentGreaves penitentGreaves,
+                                           RamaladnisMagnumOpus ramaladnisMagnumOpus)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -38,6 +40,7 @@ public class TotalDamageMultiplierCalculator
         _aspectOfTheExpectant = aspectOfTheExpectant;
         _exploitersAspect = exploitersAspect;
         _penitentGreaves = penitentGreaves;
+        _ramaladnisMagnumOpus = ramaladnisMagnumOpus;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -55,8 +58,9 @@ public class TotalDamageMultiplierCalculator
     private readonly AspectOfTheExpectant _aspectOfTheExpectant;
     private readonly ExploitersAspect _exploitersAspect;
     private readonly PenitentGreaves _penitentGreaves;
+    private readonly RamaladnisMagnumOpus _ramaladnisMagnumOpus;
 
-    public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
+    public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource, GearItem weapon)
     {
         var damageBonus = _additiveDamageBonusCalculator.Calculate(state, damageType, enemy);
         damageBonus *= _vulnerableDamageBonusCalculator.Calculate(state, enemy);
@@ -73,6 +77,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _aspectOfTheExpectant.GetDamageBonus(state, skillType);
         damageBonus *= _exploitersAspect.GetDamageBonus(state, enemy);
         damageBonus *= _penitentGreaves.GetDamageBonus(state);
+        damageBonus *= _ramaladnisMagnumOpus.GetDamageBonus(state, weapon);
 
         return damageBonus;
     }

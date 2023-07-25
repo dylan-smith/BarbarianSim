@@ -25,7 +25,7 @@ public class WhirlwindSpinEventHandler : EventHandler<WhirlwindSpinEvent>
 
         foreach (var enemy in state.Enemies)
         {
-            var directDamageEvent = new DirectDamageEvent(e.Timestamp, e.BaseDamage, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, Whirlwind.LUCKY_HIT_CHANCE, state.Config.PlayerSettings.SkillWeapons[Skill.Whirlwind].Expertise, enemy);
+            var directDamageEvent = new DirectDamageEvent(e.Timestamp, e.BaseDamage, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, Whirlwind.LUCKY_HIT_CHANCE, state.Config.PlayerSettings.SkillWeapons[Skill.Whirlwind], enemy);
             e.DirectDamageEvents.Add(directDamageEvent);
             state.Events.Add(directDamageEvent);
         }

@@ -1,17 +1,18 @@
-﻿using BarbarianSim.Enums;
+﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 
 namespace BarbarianSim.Events;
 
 public class DirectDamageEvent : EventInfo
 {
-    public DirectDamageEvent(double timestamp, double baseDamage, DamageType damageType, DamageSource damageSource, SkillType skillType, double luckyHitChance, Expertise expertise, EnemyState enemy) : base(timestamp)
+    public DirectDamageEvent(double timestamp, double baseDamage, DamageType damageType, DamageSource damageSource, SkillType skillType, double luckyHitChance, GearItem weapon, EnemyState enemy) : base(timestamp)
     {
         BaseDamage = baseDamage;
         DamageType = damageType;
         DamageSource = damageSource;
         SkillType = skillType;
         LuckyHitChance = luckyHitChance;
-        Expertise = expertise;
+        Weapon = weapon;
         Enemy = enemy;
     }
 
@@ -20,7 +21,7 @@ public class DirectDamageEvent : EventInfo
     public DamageSource DamageSource { get; init; }
     public SkillType SkillType { get; init; }
     public double LuckyHitChance { get; init; }
-    public Expertise Expertise { get; init; }
+    public GearItem Weapon { get; init; }
     public EnemyState Enemy { get; init; }
 
     public DamageEvent DamageEvent { get; set; }

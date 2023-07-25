@@ -25,7 +25,7 @@ public class LungingStrikeEventHandler : EventHandler<LungingStrikeEvent>
         var skillMultiplier = _lungingStrike.GetSkillMultiplier(state);
         e.BaseDamage = weaponDamage * skillMultiplier;
 
-        e.DirectDamageEvent = new DirectDamageEvent(e.Timestamp, e.BaseDamage, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, LungingStrike.LUCKY_HIT_CHANCE, state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].Expertise, e.Target);
+        e.DirectDamageEvent = new DirectDamageEvent(e.Timestamp, e.BaseDamage, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, LungingStrike.LUCKY_HIT_CHANCE, state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike], e.Target);
         state.Events.Add(e.DirectDamageEvent);
 
         var weaponSpeed = 1 / state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].AttacksPerSecond;

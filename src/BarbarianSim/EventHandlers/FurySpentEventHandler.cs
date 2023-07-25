@@ -13,11 +13,7 @@ public class FurySpentEventHandler : EventHandler<FurySpentEvent>
     {
         e.FurySpent = e.BaseFurySpent * _furyCostReductionCalculator.Calculate(state, e.SkillType);
 
-        if (e.FurySpent > state.Player.Fury)
-        {
-            throw new Exception("Not enough fury to spend");
-        }
-
         state.Player.Fury -= e.FurySpent;
+        state.Player.Fury = Math.Max(state.Player.Fury, 0);
     }
 }
