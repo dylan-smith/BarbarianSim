@@ -41,6 +41,7 @@ internal class Program
         serviceCollection.AddSingleton<BoldChieftainsAspect>();
         serviceCollection.AddSingleton<ConceitedAspect>();
         serviceCollection.AddSingleton<EdgemastersAspect>();
+        serviceCollection.AddSingleton<ExploitersAspect>();
         serviceCollection.AddSingleton<GhostwalkerAspect>();
         serviceCollection.AddSingleton<GohrsDevastatingGrips>();
         serviceCollection.AddSingleton<RageOfHarrogath>();

@@ -19,7 +19,8 @@ public class TotalDamageMultiplierCalculator
                                            EdgemastersAspect edgemastersAspect,
                                            AspectOfLimitlessRage aspectOfLimitlessRage,
                                            ConceitedAspect conceitedAspect,
-                                           AspectOfTheExpectant aspectOfTheExpectant)
+                                           AspectOfTheExpectant aspectOfTheExpectant,
+                                           ExploitersAspect exploitersAspect)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
@@ -34,6 +35,7 @@ public class TotalDamageMultiplierCalculator
         _aspectOfLimitlessRage = aspectOfLimitlessRage;
         _conceitedAspect = conceitedAspect;
         _aspectOfTheExpectant = aspectOfTheExpectant;
+        _exploitersAspect = exploitersAspect;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -49,6 +51,7 @@ public class TotalDamageMultiplierCalculator
     private readonly AspectOfLimitlessRage _aspectOfLimitlessRage;
     private readonly ConceitedAspect _conceitedAspect;
     private readonly AspectOfTheExpectant _aspectOfTheExpectant;
+    private readonly ExploitersAspect _exploitersAspect;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource)
     {
@@ -65,6 +68,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _aspectOfLimitlessRage.GetDamageBonus(state, skillType);
         damageBonus *= _conceitedAspect.GetDamageBonus(state);
         damageBonus *= _aspectOfTheExpectant.GetDamageBonus(state, skillType);
+        damageBonus *= _exploitersAspect.GetDamageBonus(state, enemy);
 
         return damageBonus;
     }

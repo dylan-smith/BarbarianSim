@@ -27,7 +27,7 @@ public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
 
             if (e.Aura.IsCrowdControl())
             {
-                duration *= _crowdControlDurationCalculator.Calculate(state);
+                duration = _crowdControlDurationCalculator.Calculate(state, duration);
             }
 
             e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + duration, e.Target, e.Aura);

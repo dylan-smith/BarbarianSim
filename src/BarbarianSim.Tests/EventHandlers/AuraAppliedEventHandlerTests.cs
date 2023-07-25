@@ -17,7 +17,7 @@ public class AuraAppliedEventHandlerTests
 
     public AuraAppliedEventHandlerTests()
     {
-        _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<double>())).Returns(1.0);
         _handler = new AuraAppliedEventHandler(_mockCrowdControlDurationCalculator.Object);
     }
 
@@ -81,12 +81,12 @@ public class AuraAppliedEventHandlerTests
     [Fact]
     public void Applies_CrowdControlDuration_Bonuses()
     {
-        _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(_state)).Returns(1.4);
+        _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(_state, 5)).Returns(7);
 
         var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, Aura.Stun);
 
         _handler.ProcessEvent(auraAppliedEvent, _state);
 
-        auraAppliedEvent.AuraExpiredEvent.Timestamp.Should().Be(123 + (5 * 1.4));
+        auraAppliedEvent.AuraExpiredEvent.Timestamp.Should().Be(123 + 7);
     }
 }

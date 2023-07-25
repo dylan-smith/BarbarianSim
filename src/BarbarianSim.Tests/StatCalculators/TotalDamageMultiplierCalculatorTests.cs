@@ -25,6 +25,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<AspectOfLimitlessRage> _mockAspectOfLimitlessRage = TestHelpers.CreateMock<AspectOfLimitlessRage>();
     private readonly Mock<ConceitedAspect> _mockConceitedAspect = TestHelpers.CreateMock<ConceitedAspect>();
     private readonly Mock<AspectOfTheExpectant> _mockAspectOfTheExpectant = TestHelpers.CreateMock<AspectOfTheExpectant>();
+    private readonly Mock<ExploitersAspect> _mockExploitersAspect = TestHelpers.CreateMock<ExploitersAspect>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -43,6 +44,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockAspectOfLimitlessRage.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
         _mockConceitedAspect.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockAspectOfTheExpectant.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
+        _mockExploitersAspect.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
@@ -56,7 +58,8 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockEdgemastersAspect.Object,
                                                           _mockAspectOfLimitlessRage.Object,
                                                           _mockConceitedAspect.Object,
-                                                          _mockAspectOfTheExpectant.Object);
+                                                          _mockAspectOfTheExpectant.Object,
+                                                          _mockExploitersAspect.Object);
     }
 
     [Fact]
@@ -203,6 +206,17 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockAspectOfTheExpectant.Setup(m => m.GetDamageBonus(_state, SkillType.Core)).Returns(1.25);
         _state.Config.Gear.Chest.Aspect = _mockAspectOfTheExpectant.Object;
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
+
+        result.Should().Be(1.25);
+    }
+
+    [Fact]
+    public void Includes_ExploitersAspect_Bonus()
+    {
+        _mockExploitersAspect.Setup(m => m.GetDamageBonus(_state, _state.Enemies.First())).Returns(1.25);
+        _state.Config.Gear.Chest.Aspect = _mockExploitersAspect.Object;
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind);
 
