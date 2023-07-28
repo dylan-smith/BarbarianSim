@@ -38,11 +38,7 @@ public class Gear
 
     public IEnumerable<T> GetAllAspects<T>() => AllGear.Select(g => g.Aspect).OfType<T>().Where(a => a != null);
 
-    public bool HasAspect<T>() => AllGear.Any(g => g.Aspect is T);
-
     public bool HasAspect(Aspect aspect) => AllGear.Any(g => g.Aspect == aspect);
-
-    public T GetAspect<T>() => GetAllAspects<T>().FirstOrDefault();
 
     public double GetStatTotal(Func<GearItem, double> stat) => AllGear.Sum(g => g.GetStatWithGems(stat));
 

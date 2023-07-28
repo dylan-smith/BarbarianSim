@@ -11,6 +11,11 @@ public class SimulationConfig
     public SimulationSettings SimulationSettings { get; init; } = new();
     public IDictionary<Skill, int> Skills { get; init; } = new Dictionary<Skill, int>();
     public IRotation Rotation { get; set; }
+    public GearItem Paragon { get; set; } = new();
+
+    public double GetStatTotal(Func<GearItem, double> stat) => Gear.GetStatTotal(stat) + stat(Paragon);
+
+    public double GetStatTotalMultiplied(Func<GearItem, double> stat) => Gear.GetStatTotalMultiplied(stat) * stat(Paragon);
 
     public virtual (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
     {

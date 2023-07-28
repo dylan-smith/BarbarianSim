@@ -18,7 +18,7 @@ public class MovementSpeedCalculator
 
     public virtual double Calculate(SimulationState state)
     {
-        var movementSpeed = state.Config.Gear.GetStatTotal(g => g.MovementSpeed);
+        var movementSpeed = state.Config.GetStatTotal(g => g.MovementSpeed);
         movementSpeed += state.Player.Auras.Contains(Aura.Berserking) ? 15 : 0;
         movementSpeed += state.Player.Auras.Contains(Aura.RallyingCry) ? RallyingCry.MOVEMENT_SPEED : 0;
 

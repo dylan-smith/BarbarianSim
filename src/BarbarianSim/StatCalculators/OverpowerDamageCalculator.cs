@@ -8,7 +8,7 @@ public class OverpowerDamageCalculator
 
     public virtual double Calculate(SimulationState state)
     {
-        var overpowerDamage = state.Config.Gear.GetStatTotal(g => g.OverpowerDamage);
+        var overpowerDamage = state.Config.GetStatTotal(g => g.OverpowerDamage);
         overpowerDamage += _willpowerCalculator.Calculate(state) * 0.25;
 
         return 1.0 + (overpowerDamage / 100.0);

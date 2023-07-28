@@ -26,7 +26,7 @@ public class ResourceGenerationCalculator
 
     public virtual double Calculate(SimulationState state)
     {
-        var resourceGeneration = state.Config.Gear.GetStatTotal(g => g.ResourceGeneration);
+        var resourceGeneration = state.Config.GetStatTotal(g => g.ResourceGeneration);
         resourceGeneration += _willpowerCalculator.Calculate(state) * 0.03;
 
         var result = 1.0 + (resourceGeneration / 100.0);

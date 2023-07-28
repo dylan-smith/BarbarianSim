@@ -24,7 +24,7 @@ public class CritChanceCalculator
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy)
     {
         var critChance = 5.0; // base chance to crit
-        critChance += state.Config.Gear.AllGear.Sum(g => g.CritChance);
+        critChance += state.Config.GetStatTotal(g => g.CritChance);
         critChance += _critChancePhysicalAgainstElitesCalculator.Calculate(state, damageType);
         critChance += _dexterityCalculator.Calculate(state) * 0.02;
         critChance += _aspectOfTheDireWhirlwind.GetCritChanceBonus(state);

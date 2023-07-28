@@ -357,6 +357,15 @@ internal class Program
         (config.Gear.Ring2.Aspect as AspectOfEchoingFury).Fury = 4;
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
 
+        config.Paragon.Dexterity = 36;
+        config.Paragon.Willpower = 15;
+        config.Paragon.Strength = 60;
+        config.Paragon.Intelligence = 5;
+        config.Paragon.Armor = 739;
+        config.Paragon.MaxLife = 12;
+        config.Paragon.PhysicalDamage = 40;
+        config.Paragon.TwoHandWeaponDamageMultiplicative = 8;
+
         return config;
     }
 
