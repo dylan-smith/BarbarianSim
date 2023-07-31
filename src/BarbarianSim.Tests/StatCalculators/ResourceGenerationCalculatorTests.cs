@@ -49,6 +49,16 @@ public class ResourceGenerationCalculatorTests
     }
 
     [Fact]
+    public void Includes_ResourceGeneration_Paragon_Bonus()
+    {
+        _state.Config.Paragon.ResourceGeneration = 42;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(1.42);
+    }
+
+    [Fact]
     public void Includes_Willpower_Bonus()
     {
         _mockWillpowerCalculator.Setup(m => m.Calculate(_state)).Returns(400.0);

@@ -22,6 +22,16 @@ public class PhysicalDamageCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.PhysicalDamage = 12.0;
+
+        var result = _calculator.Calculate(_state, DamageType.Physical);
+
+        result.Should().Be(12.0);
+    }
+
+    [Fact]
     public void Returns_0_For_Non_Physical_Damage_Type()
     {
         _state.Config.Gear.Helm.PhysicalDamage = 12.0;

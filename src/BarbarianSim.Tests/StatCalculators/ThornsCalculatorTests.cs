@@ -31,6 +31,17 @@ public class ThornsCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.Thorns = 100;
+        _state.Config.Gear.Chest.Thorns = 100;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(200);
+    }
+
+    [Fact]
     public void Includes_Bonus_From_StrategicChallengingShout()
     {
         _mockStrategicChallengingShout.Setup(m => m.GetThorns(It.IsAny<SimulationState>())).Returns(320);

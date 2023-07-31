@@ -40,6 +40,16 @@ public class ArmorCalculatorTests
     }
 
     [Fact]
+    public void Includes_Paragon_Bonus()
+    {
+        _state.Config.Paragon.Armor = 27;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(27);
+    }
+
+    [Fact]
     public void Includes_Strength_Bonus()
     {
         _mockStrengthCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(42.0);

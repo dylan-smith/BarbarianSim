@@ -37,6 +37,16 @@ public class OverpowerDamageCalculatorTests
     }
 
     [Fact]
+    public void Includes_OverpowerDamage_Paragon_Bonus()
+    {
+        _state.Config.Paragon.OverpowerDamage = 42;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(1.42);
+    }
+
+    [Fact]
     public void Includes_Willpower_Bonus()
     {
         _mockWillpowerCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);

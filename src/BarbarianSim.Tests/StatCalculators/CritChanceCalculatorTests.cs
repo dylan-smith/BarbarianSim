@@ -46,6 +46,16 @@ public class CritChanceCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.CritChance = 12.0;
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
+
+        result.Should().Be(0.17);
+    }
+
+    [Fact]
     public void Includes_Crit_Chance_Physical_Against_Elites()
     {
         _mockcritChancePhysicalAgainstElitesCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>())).Returns(12.0);

@@ -55,4 +55,17 @@ public class DamageReductionWhileFortifiedCalculatorTests
 
         result.Should().Be(0.69696);
     }
+
+    [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.DamageReductionWhileFortified = 12.0;
+        _state.Config.Gear.Chest.DamageReductionWhileFortified = 12.0;
+        _state.Player.Fortify = 1000;
+        _state.Player.Life = 800;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(0.69696);
+    }
 }

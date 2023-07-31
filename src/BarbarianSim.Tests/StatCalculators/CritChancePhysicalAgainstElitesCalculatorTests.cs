@@ -23,6 +23,17 @@ public class CritChancePhysicalAgainstElitesCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.CritChancePhysicalAgainstElites = 12.0;
+        _state.Config.EnemySettings.IsElite = true;
+
+        var result = _calculator.Calculate(_state, DamageType.Physical);
+
+        result.Should().Be(0.12);
+    }
+
+    [Fact]
     public void Returns_0_For_Non_Elites()
     {
         _state.Config.Gear.Helm.CritChancePhysicalAgainstElites = 12.0;
