@@ -32,6 +32,17 @@ public class CritDamageCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.CritDamage = 12.0;
+
+        var result = _calculator.Calculate(_state, Expertise.NA);
+
+        // 1.5 base + 0.12 from helm == 1.62
+        result.Should().Be(1.62);
+    }
+
+    [Fact]
     public void Base_Crit_Is_50()
     {
         var result = _calculator.Calculate(_state, Expertise.NA);

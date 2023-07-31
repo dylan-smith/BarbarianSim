@@ -11,7 +11,7 @@ public class MaxFuryCalculator
     public virtual double Calculate(SimulationState state)
     {
         var maxFury = 100.0;
-        maxFury += state.Config.Gear.GetStatTotal(g => g.MaxFury);
+        maxFury += state.Config.GetStatTotal(g => g.MaxFury);
         maxFury += _temperedFury.GetMaximumFury(state);
 
         return maxFury;

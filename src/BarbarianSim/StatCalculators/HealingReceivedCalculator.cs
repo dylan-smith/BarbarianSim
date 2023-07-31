@@ -8,7 +8,7 @@ public class HealingReceivedCalculator
 
     public virtual double Calculate(SimulationState state)
     {
-        var healingReceived = state.Config.Gear.GetStatTotal(g => g.HealingReceived);
+        var healingReceived = state.Config.GetStatTotal(g => g.HealingReceived);
         healingReceived += _willpowerCalculator.Calculate(state) * 0.1;
 
         return 1.0 + (healingReceived / 100.0);

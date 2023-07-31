@@ -15,8 +15,10 @@ public class ArmorCalculator
 
     public virtual double Calculate(SimulationState state)
     {
-        var armor = state.Config.Gear.GetStatTotal(g => g.Armor);
+        var armor = state.Config.GetStatTotal(g => g.Armor);
         armor += _strengthCalculator.Calculate(state);
+
+        armor *= 1 + (state.Config.GetStatTotal(g => g.TotalArmor) / 100.0);
         armor *= _aspectOfDisobedience.GetArmorBonus(state);
 
         return armor;

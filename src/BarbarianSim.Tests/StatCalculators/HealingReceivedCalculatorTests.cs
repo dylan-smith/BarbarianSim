@@ -37,6 +37,16 @@ public class HealingReceivedCalculatorTests
     }
 
     [Fact]
+    public void Includes_HealingReceived_Paragon_Bonus()
+    {
+        _state.Config.Paragon.HealingReceived = 20;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(1.2);
+    }
+
+    [Fact]
     public void Includes_Willpower_Bonus()
     {
         _mockWillpowerCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);

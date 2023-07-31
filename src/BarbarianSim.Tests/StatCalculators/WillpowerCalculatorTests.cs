@@ -43,6 +43,28 @@ public class WillpowerCalculatorTests
     }
 
     [Fact]
+    public void Includes_Willpower_Paragon_Bonus()
+    {
+        _state.Config.PlayerSettings.Level = 1;
+        _state.Config.Paragon.Willpower = 42;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(49.0);
+    }
+
+    [Fact]
+    public void Includes_All_Stats_Paragon_Bonus()
+    {
+        _state.Config.PlayerSettings.Level = 1;
+        _state.Config.Paragon.AllStats = 17;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(24.0);
+    }
+
+    [Fact]
     public void Includes_Level_Bonus()
     {
         _state.Config.PlayerSettings.Level = 100;

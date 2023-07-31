@@ -33,6 +33,16 @@ public sealed class FuryCostReductionCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.FuryCostReduction = 12.0;
+
+        var result = _calculator.Calculate(_state, SkillType.Basic);
+
+        result.Should().Be(0.88);
+    }
+
+    [Fact]
     public void Unbridled_Rage_Multiplies_Properly_With_Other_Bonuses()
     {
         _state.Config.Gear.Helm.FuryCostReduction = 12.0;

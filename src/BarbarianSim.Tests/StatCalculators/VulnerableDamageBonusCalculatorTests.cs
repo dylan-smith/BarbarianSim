@@ -33,6 +33,17 @@ public class VulnerableDamageBonusCalculatorTests
     }
 
     [Fact]
+    public void Includes_Damage_To_Vulnerable_From_Paragon()
+    {
+        _state.Config.Paragon.VulnerableDamage = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Vulnerable);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().BeApproximately(1.32, 0.000001);
+    }
+
+    [Fact]
     public void Returns_1_When_Enemy_Is_Not_Vulnerable()
     {
         _state.Config.Gear.Helm.VulnerableDamage = 12.0;

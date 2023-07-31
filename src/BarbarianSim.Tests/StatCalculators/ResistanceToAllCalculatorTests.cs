@@ -37,6 +37,16 @@ public class ResistanceToAllCalculatorTests
     }
 
     [Fact]
+    public void Includes_ResistanceToAll_Paragon_Bonus()
+    {
+        _state.Config.Paragon.ResistanceToAll = 42;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(0.42);
+    }
+
+    [Fact]
     public void Includes_Intelligence_Bonus()
     {
         _mockIntelligenceCalculator.Setup(x => x.Calculate(_state)).Returns(400.0);

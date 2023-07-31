@@ -23,6 +23,17 @@ public class DamageToCrowdControlledCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.DamageToCrowdControlled = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Slow);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().Be(12);
+    }
+
+    [Fact]
     public void Returns_0_When_Enemy_Is_Not_Crowd_Controlled()
     {
         _state.Config.Gear.Helm.DamageToCrowdControlled = 12.0;

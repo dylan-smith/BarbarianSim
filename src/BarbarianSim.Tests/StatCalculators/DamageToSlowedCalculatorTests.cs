@@ -23,6 +23,17 @@ public class DamageToSlowedCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.DamageToSlowed = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Slow);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().Be(12.0);
+    }
+
+    [Fact]
     public void Returns_0_When_Enemy_Is_Not_Slowed()
     {
         _state.Config.Gear.Helm.DamageToSlowed = 12.0;

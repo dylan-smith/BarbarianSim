@@ -37,6 +37,16 @@ public class MovementSpeedCalculatorTests
     }
 
     [Fact]
+    public void Includes_Bonus_From_Paragon()
+    {
+        _state.Config.Paragon.MovementSpeed = 12.0;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(1.12);
+    }
+
+    [Fact]
     public void Bonus_From_Berserking()
     {
         _state.Config.Gear.Helm.MovementSpeed = 12.0;

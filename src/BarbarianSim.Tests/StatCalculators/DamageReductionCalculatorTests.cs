@@ -67,6 +67,16 @@ public class DamageReductionCalculatorTests
     }
 
     [Fact]
+    public void Includes_DamageReduction_From_Paragon()
+    {
+        _state.Config.Paragon.DamageReduction = 12.0;
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().Be(0.792);
+    }
+
+    [Fact]
     public void Includes_DamageReductionFromBleeding()
     {
         _mockDamageReductionFromBleedingCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(12.0);

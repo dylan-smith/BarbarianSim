@@ -44,6 +44,18 @@ public class MaxLifeCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.MaxLife = 100;
+        _state.Config.Gear.Chest.MaxLife = 100;
+        _state.Player.BaseLife = 1000;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(1200);
+    }
+
+    [Fact]
     public void Includes_Bonus_From_EnhancedChallengingShout()
     {
         _state.Config.Gear.Helm.MaxLife = 100;

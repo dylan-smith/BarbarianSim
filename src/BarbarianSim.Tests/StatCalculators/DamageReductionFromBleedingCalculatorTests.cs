@@ -24,6 +24,18 @@ public class DamageReductionFromBleedingCalculatorTests
     }
 
     [Fact]
+    public void Includes_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.DamageReductionFromBleeding = 12.0;
+        _state.Config.Gear.Chest.DamageReductionFromBleeding = 12.0;
+        _state.Enemies.First().Auras.Add(Aura.Bleeding);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().Be(0.7744);
+    }
+
+    [Fact]
     public void Returns_1_When_Enemy_Is_Not_Bleeding()
     {
         _state.Config.Gear.Helm.DamageReductionFromBleeding = 12.0;

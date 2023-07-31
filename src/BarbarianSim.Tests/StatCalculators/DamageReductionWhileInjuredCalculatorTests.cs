@@ -39,4 +39,16 @@ public class DamageReductionWhileInjuredCalculatorTests
 
         result.Should().Be(0.7744);
     }
+
+    [Fact]
+    public void Multiplies_Stats_From_Paragon()
+    {
+        _state.Config.Paragon.DamageReductionWhileInjured = 12.0;
+        _state.Config.Gear.Chest.DamageReductionWhileInjured = 12.0;
+        _state.Player.Life = 300;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(0.7744);
+    }
 }

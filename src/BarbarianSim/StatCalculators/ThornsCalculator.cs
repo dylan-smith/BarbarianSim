@@ -10,7 +10,7 @@ public class ThornsCalculator
 
     public virtual double Calculate(SimulationState state)
     {
-        var thorns = state.Config.Gear.GetStatTotal(g => g.Thorns);
+        var thorns = state.Config.GetStatTotal(g => g.Thorns);
 
         thorns += _strategicChallengingShout.GetThorns(state);
 

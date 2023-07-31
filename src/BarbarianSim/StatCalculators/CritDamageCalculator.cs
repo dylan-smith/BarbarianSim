@@ -11,7 +11,7 @@ public class CritDamageCalculator
 
     public virtual double Calculate(SimulationState state, Expertise expertise)
     {
-        var critDamage = state.Config.Gear.GetStatTotal(g => g.CritDamage);
+        var critDamage = state.Config.GetStatTotal(g => g.CritDamage);
         critDamage += _heavyHanded.GetCriticalStrikeDamage(state, expertise);
 
         return 1.5 + (critDamage / 100.0);
