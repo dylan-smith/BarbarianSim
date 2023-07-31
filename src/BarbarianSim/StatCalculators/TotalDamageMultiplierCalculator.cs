@@ -9,6 +9,7 @@ namespace BarbarianSim.StatCalculators;
 public class TotalDamageMultiplierCalculator
 {
     public TotalDamageMultiplierCalculator(AdditiveDamageBonusCalculator additiveDamageBonusCalculator,
+                                           TwoHandedWeaponDamageMultiplicativeCalculator twoHandedWeaponDamageMultiplicativeCalculator,
                                            VulnerableDamageBonusCalculator vulnerableDamageBonusCalculator,
                                            StrengthCalculator strengthCalculator,
                                            PitFighter pitFighter,
@@ -26,6 +27,7 @@ public class TotalDamageMultiplierCalculator
                                            RamaladnisMagnumOpus ramaladnisMagnumOpus)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
+        _twoHandedWeaponDamageMultiplicativeCalculator = twoHandedWeaponDamageMultiplicativeCalculator;
         _vulnerableDamageBonusCalculator = vulnerableDamageBonusCalculator;
         _strengthCalculator = strengthCalculator;
         _pitFighter = pitFighter;
@@ -44,6 +46,7 @@ public class TotalDamageMultiplierCalculator
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
+    private readonly TwoHandedWeaponDamageMultiplicativeCalculator _twoHandedWeaponDamageMultiplicativeCalculator;
     private readonly VulnerableDamageBonusCalculator _vulnerableDamageBonusCalculator;
     private readonly StrengthCalculator _strengthCalculator;
     private readonly PitFighter _pitFighter;
@@ -63,6 +66,7 @@ public class TotalDamageMultiplierCalculator
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource, GearItem weapon)
     {
         var damageBonus = _additiveDamageBonusCalculator.Calculate(state, damageType, enemy);
+        damageBonus *= _twoHandedWeaponDamageMultiplicativeCalculator.Calculate(state, weapon);
         damageBonus *= _vulnerableDamageBonusCalculator.Calculate(state, enemy);
         damageBonus *= 1 + (_strengthCalculator.Calculate(state) * 0.001);
         damageBonus *= _pitFighter.GetCloseDamageBonus(state);

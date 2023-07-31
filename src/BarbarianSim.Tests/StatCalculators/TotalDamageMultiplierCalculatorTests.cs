@@ -13,6 +13,7 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class TotalDamageMultiplierCalculatorTests
 {
     private readonly Mock<AdditiveDamageBonusCalculator> _mockAdditiveDamageBonusCalculator = TestHelpers.CreateMock<AdditiveDamageBonusCalculator>();
+    private readonly Mock<TwoHandedWeaponDamageMultiplicativeCalculator> _mockTwoHandedWeaponDamageMultiplicativeCalculator = TestHelpers.CreateMock<TwoHandedWeaponDamageMultiplicativeCalculator>();
     private readonly Mock<VulnerableDamageBonusCalculator> _mockVulnerableDamageBonusCalculator = TestHelpers.CreateMock<VulnerableDamageBonusCalculator>();
     private readonly Mock<StrengthCalculator> _mockStrengthCalculator = TestHelpers.CreateMock<StrengthCalculator>();
     private readonly Mock<PitFighter> _mockPitFighter = TestHelpers.CreateMock<PitFighter>();
@@ -34,6 +35,7 @@ public class TotalDamageMultiplierCalculatorTests
     public TotalDamageMultiplierCalculatorTests()
     {
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>())).Returns(1.0);
+        _mockTwoHandedWeaponDamageMultiplicativeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
         _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(1.0);
         _mockStrengthCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
@@ -51,6 +53,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockRamaladnisMagnumOpus.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
+                                                          _mockTwoHandedWeaponDamageMultiplicativeCalculator.Object,
                                                           _mockVulnerableDamageBonusCalculator.Object,
                                                           _mockStrengthCalculator.Object,
                                                           _mockPitFighter.Object,
@@ -82,6 +85,17 @@ public class TotalDamageMultiplierCalculatorTests
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First())).Returns(1.12);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
+
+        result.Should().Be(1.12);
+    }
+
+    [Fact]
+    public void Includes_TwoHandedWeaponDamageMultiplicative()
+    {
+        _state.Config.Gear.TwoHandSlashing.Expertise = Expertise.TwoHandedSword;
+        _mockTwoHandedWeaponDamageMultiplicativeCalculator.Setup(m => m.Calculate(_state, _state.Config.Gear.TwoHandSlashing)).Returns(1.12);
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, _state.Config.Gear.TwoHandSlashing);
 
         result.Should().Be(1.12);
     }
