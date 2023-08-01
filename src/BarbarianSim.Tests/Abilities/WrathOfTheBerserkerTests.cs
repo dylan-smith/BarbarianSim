@@ -15,14 +15,23 @@ public class WrathOfTheBerserkerTests
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
     {
+        _state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         _wrathOfTheBerserker.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void CanUse_Returns_False_If_On_Cooldown()
     {
+        _state.Config.Skills.Add(Skill.WrathOfTheBerserker, 1);
         _state.Player.Auras.Add(Aura.WrathOfTheBerserkerCooldown);
 
+        _wrathOfTheBerserker.CanUse(_state).Should().BeFalse();
+    }
+
+    [Fact]
+    public void CanUse_Returns_False_If_Not_Skilled()
+    {
+        _state.Config.Skills.Add(Skill.WrathOfTheBerserker, 0);
         _wrathOfTheBerserker.CanUse(_state).Should().BeFalse();
     }
 

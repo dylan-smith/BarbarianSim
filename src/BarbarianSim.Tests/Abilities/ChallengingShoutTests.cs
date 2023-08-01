@@ -15,14 +15,22 @@ public class ChallengingShoutTests
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
     {
+        _state.Config.Skills.Add(Skill.ChallengingShout, 1);
         _challengingShout.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void CanUse_Returns_False_If_On_Cooldown()
     {
+        _state.Config.Skills.Add(Skill.ChallengingShout, 1);
         _state.Player.Auras.Add(Aura.ChallengingShoutCooldown);
 
+        _challengingShout.CanUse(_state).Should().BeFalse();
+    }
+
+    [Fact]
+    public void CanUse_Returns_False_If_Not_Skilled()
+    {
         _challengingShout.CanUse(_state).Should().BeFalse();
     }
 

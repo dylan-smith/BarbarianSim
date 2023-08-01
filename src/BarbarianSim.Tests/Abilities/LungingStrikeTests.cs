@@ -15,6 +15,7 @@ public sealed class LungingStrikeTests
     [Fact]
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
     {
+        _state.Config.Skills.Add(Skill.LungingStrike, 1);
         _state.Player.Auras.Add(Aura.WeaponCooldown);
 
         _lungingStrike.CanUse(_state).Should().BeFalse();
@@ -23,7 +24,14 @@ public sealed class LungingStrikeTests
     [Fact]
     public void CanUse_When_Weapon_Not_On_Cooldown_Returns_True()
     {
+        _state.Config.Skills.Add(Skill.LungingStrike, 1);
         _lungingStrike.CanUse(_state).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanUse_Returns_False_When_Not_Skilled()
+    {
+        _lungingStrike.CanUse(_state).Should().BeFalse();
     }
 
     [Fact]

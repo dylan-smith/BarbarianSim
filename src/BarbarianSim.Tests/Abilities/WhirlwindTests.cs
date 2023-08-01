@@ -27,6 +27,7 @@ public class WhirlwindTests
     [Fact]
     public void CanUse_Returns_True_When_Enough_Fury()
     {
+        _state.Config.Skills.Add(Skill.Whirlwind, 1);
         _state.Player.Fury = 25;
 
         _whirlwind.CanUse(_state).Should().BeTrue();
@@ -35,6 +36,7 @@ public class WhirlwindTests
     [Fact]
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
     {
+        _state.Config.Skills.Add(Skill.Whirlwind, 1);
         _state.Player.Fury = 25;
         _state.Player.Auras.Add(Aura.WeaponCooldown);
 
@@ -44,6 +46,7 @@ public class WhirlwindTests
     [Fact]
     public void CanUse_When_Whirlwinding_Aura_Returns_False()
     {
+        _state.Config.Skills.Add(Skill.Whirlwind, 1);
         _state.Player.Fury = 25;
         _state.Player.Auras.Add(Aura.Whirlwinding);
 
@@ -53,6 +56,7 @@ public class WhirlwindTests
     [Fact]
     public void CanUse_When_Not_Enough_Fury_Returns_False()
     {
+        _state.Config.Skills.Add(Skill.Whirlwind, 1);
         _state.Player.Fury = 24;
 
         _whirlwind.CanUse(_state).Should().BeFalse();
@@ -61,11 +65,20 @@ public class WhirlwindTests
     [Fact]
     public void CanUse_Considers_FuryCostReduction()
     {
+        _state.Config.Skills.Add(Skill.Whirlwind, 1);
         _state.Player.Fury = 20;
         _mockFuryCostReductionCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), SkillType.Core))
                                         .Returns(0.8);
 
         _whirlwind.CanUse(_state).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CanUse_Returns_False_When_Not_Skilled()
+    {
+        _state.Player.Fury = 25;
+
+        _whirlwind.CanUse(_state).Should().BeFalse();
     }
 
     [Fact]

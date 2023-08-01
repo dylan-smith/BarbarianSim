@@ -18,7 +18,10 @@ public class WarCry
 
     private readonly PowerWarCry _powerWarCry;
 
-    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.WarCryCooldown);
+    public virtual bool CanUse(SimulationState state) =>
+        state.Config.Skills.TryGetValue(Skill.WarCry, out var skillPoints)
+        && skillPoints > 0
+        && !state.Player.Auras.Contains(Aura.WarCryCooldown);
 
     public virtual void Use(SimulationState state) => state.Events.Add(new WarCryEvent(state.CurrentTime));
 

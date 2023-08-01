@@ -25,14 +25,22 @@ public class WarCryTests
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
     {
+        _state.Config.Skills.Add(Skill.WarCry, 1);
         _warCry.CanUse(_state).Should().BeTrue();
     }
 
     [Fact]
     public void CanUse_Returns_False_If_On_Cooldown()
     {
+        _state.Config.Skills.Add(Skill.WarCry, 1);
         _state.Player.Auras.Add(Aura.WarCryCooldown);
 
+        _warCry.CanUse(_state).Should().BeFalse();
+    }
+
+    [Fact]
+    public void CanUse_Returns_False_If_NotSkilled()
+    {
         _warCry.CanUse(_state).Should().BeFalse();
     }
 

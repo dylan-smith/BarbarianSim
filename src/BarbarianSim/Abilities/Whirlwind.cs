@@ -16,7 +16,9 @@ public class Whirlwind
 
     public virtual bool CanUse(SimulationState state)
     {
-        return !state.Player.Auras.Contains(Aura.WeaponCooldown) &&
+        return state.Config.Skills.TryGetValue(Skill.Whirlwind, out var skillPoints) &&
+               skillPoints > 0 &&
+               !state.Player.Auras.Contains(Aura.WeaponCooldown) &&
                !state.Player.Auras.Contains(Aura.Whirlwinding) &&
                state.Player.Fury >= (FURY_COST * _furyCostReductionCalculator.Calculate(state, SkillType.Core));
     }

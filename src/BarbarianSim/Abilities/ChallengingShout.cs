@@ -10,7 +10,10 @@ public class ChallengingShout
     public const double FURY_BONUS_FROM_TACTICAL = 3;
 
     // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)
-    public virtual bool CanUse(SimulationState state) => !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
+    public virtual bool CanUse(SimulationState state) =>
+        state.Config.Skills.TryGetValue(Skill.ChallengingShout, out var skillPoints)
+        && skillPoints > 0
+        && !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
 
     public virtual void Use(SimulationState state) => state.Events.Add(new ChallengingShoutEvent(state.CurrentTime));
 
