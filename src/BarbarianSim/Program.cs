@@ -161,7 +161,7 @@ internal class Program
 
         var config = CreateConfig(serviceProvider);
 
-        var sim = new Simulation(config, serviceProvider);
+        var sim = new Simulation(config, serviceProvider.GetRequiredService<EventPublisher>());
         var state = sim.Run();
 
         ReportResults(state);
