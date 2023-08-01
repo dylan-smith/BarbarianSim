@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Xunit;
@@ -72,5 +73,25 @@ public class StrengthCalculatorTests
         var result = _calculator.Calculate(_state);
 
         result.Should().Be(109.0);
+    }
+
+    [Fact]
+    public void GetStrengthMultiplier_Returns_Correct_Value()
+    {
+        _state.Config.Gear.Helm.Strength = 42;
+        _state.Config.PlayerSettings.Level = 1;
+        var result = _calculator.GetStrengthMultiplier(_state, SkillType.Core);
+
+        result.Should().Be(1.052);
+    }
+
+    [Fact]
+    public void GetStrengthMultiplier_Returns_0_When_Not_Skill_Damage()
+    {
+        _state.Config.Gear.Helm.Strength = 42;
+        _state.Config.PlayerSettings.Level = 1;
+        var result = _calculator.GetStrengthMultiplier(_state, SkillType.None);
+
+        result.Should().Be(1.0);
     }
 }

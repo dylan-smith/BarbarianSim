@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim.StatCalculators;
+﻿using BarbarianSim.Enums;
+
+namespace BarbarianSim.StatCalculators;
 
 public class StrengthCalculator
 {
@@ -10,5 +12,17 @@ public class StrengthCalculator
         strength += state.Config.PlayerSettings.Level - 1;
 
         return strength;
+    }
+
+    // Strength increases Skill Damage by 0.1% per point
+    public virtual double GetStrengthMultiplier(SimulationState state, SkillType skillType)
+    {
+        if (skillType != SkillType.None)
+        {
+            var strength = Calculate(state);
+            return 1 + (strength * 0.001);
+        }
+
+        return 1.0;
     }
 }

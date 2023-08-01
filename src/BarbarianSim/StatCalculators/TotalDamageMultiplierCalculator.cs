@@ -68,7 +68,7 @@ public class TotalDamageMultiplierCalculator
         var damageBonus = _additiveDamageBonusCalculator.Calculate(state, damageType, enemy);
         damageBonus *= _twoHandedWeaponDamageMultiplicativeCalculator.Calculate(state, weapon);
         damageBonus *= _vulnerableDamageBonusCalculator.Calculate(state, enemy);
-        damageBonus *= 1 + (_strengthCalculator.Calculate(state) * 0.001);
+        damageBonus *= _strengthCalculator.GetStrengthMultiplier(state, skillType);
         damageBonus *= _pitFighter.GetCloseDamageBonus(state);
         damageBonus *= _warCry.GetDamageBonus(state);
         damageBonus *= _unbridledRage.GetDamageBonus(state, skillType);
