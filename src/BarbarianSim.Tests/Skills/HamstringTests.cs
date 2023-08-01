@@ -17,6 +17,8 @@ public class HamstringTests
     {
         _state.Config.Skills.Add(Skill.Hamstring, 1);
         var bleedEvent = new BleedAppliedEvent(123, 99, 12, _state.Enemies.First());
+        _state.Enemies.First().Life = 100;
+        _state.Enemies.First().MaxLife = 100;
 
         _skill.ProcessEvent(bleedEvent, _state);
 
@@ -34,6 +36,8 @@ public class HamstringTests
         var state = new SimulationState(config);
         state.Config.Skills.Add(Skill.Hamstring, 1);
         var bleedEvent = new BleedAppliedEvent(123, 99, 12, state.Enemies.Last());
+        state.Enemies.Last().Life = 100;
+        state.Enemies.Last().MaxLife = 100;
 
         _skill.ProcessEvent(bleedEvent, state);
 
@@ -42,5 +46,18 @@ public class HamstringTests
         state.Events.OfType<AuraAppliedEvent>().First().Timestamp.Should().Be(123);
         state.Events.OfType<AuraAppliedEvent>().First().Duration.Should().Be(12);
         state.Events.OfType<AuraAppliedEvent>().First().Target.Should().Be(state.Enemies.Last());
+    }
+
+    [Fact]
+    public void Only_Applies_To_Healthy_Enemies()
+    {
+        _state.Config.Skills.Add(Skill.Hamstring, 1);
+        var bleedEvent = new BleedAppliedEvent(123, 99, 12, _state.Enemies.First());
+        _state.Enemies.First().Life = 70;
+        _state.Enemies.First().MaxLife = 100;
+
+        _skill.ProcessEvent(bleedEvent, _state);
+
+        _state.Events.Should().NotContain(e => e is AuraAppliedEvent);
     }
 }

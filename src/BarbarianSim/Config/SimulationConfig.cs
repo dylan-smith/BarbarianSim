@@ -17,6 +17,8 @@ public class SimulationConfig
 
     public double GetStatTotalMultiplied(Func<GearItem, double> stat) => Gear.GetStatTotalMultiplied(stat) * stat(Paragon);
 
+    public bool HasSkill(Skill skill) => Skills.TryGetValue(skill, out var skillPoints) && skillPoints > 0;
+
     public virtual (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
     {
         var warnings = new List<string>();

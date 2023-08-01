@@ -103,7 +103,7 @@ public enum Skill
     EnhancedRupture,
     WarriorsRupture,
     FightersRupture,
-    Hamstring, // Your Bleeding effects Slow enemies by 10%
+    Hamstring, // Your Bleeding effects Slow Healthy enemies by 10%
     CutToTheBone,
     SteelGrasp,
     EnhancedSteelGrasp,
