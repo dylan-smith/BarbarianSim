@@ -8,29 +8,15 @@ public class GutteralYell : IHandlesEvent<WarCryEvent>, IHandlesEvent<Challengin
     // Your Shout skills cause enemies to deal X% less damage for 5 seconds
     public const double DURATION = 5;
 
-    public void ProcessEvent(WarCryEvent e, SimulationState state)
-    {
-        state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
-    }
+    public void ProcessEvent(WarCryEvent e, SimulationState state) => state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
 
-    public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
-    {
-        state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
-    }
+    public void ProcessEvent(ChallengingShoutEvent e, SimulationState state) => state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
 
-    public void ProcessEvent(RallyingCryEvent e, SimulationState state)
-    {
-        state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
-    }
+    public void ProcessEvent(RallyingCryEvent e, SimulationState state) => state.Events.Add(new GutteralYellProcEvent(e.Timestamp));
 
     public virtual double GetDamageReduction(SimulationState state)
     {
-        var skillPoints = 0;
-
-        if (state.Config.Skills.TryGetValue(Skill.GutteralYell, out var pointsSpent))
-        {
-            skillPoints += pointsSpent;
-        }
+        var skillPoints = state.Config.GetSkillPoints(Skill.GutteralYell);
 
         return skillPoints switch
         {

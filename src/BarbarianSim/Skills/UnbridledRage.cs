@@ -8,7 +8,7 @@ public class UnbridledRage
 
     public virtual double GetFuryCostReduction(SimulationState state, SkillType skillType)
     {
-        if (state.Config.Skills.TryGetValue(Skill.UnbridledRage, out var skillPoints) && skillPoints > 0)
+        if (state.Config.HasSkill(Skill.UnbridledRage))
         {
             if (skillType == SkillType.Core)
             {
@@ -21,7 +21,7 @@ public class UnbridledRage
 
     public virtual double GetDamageBonus(SimulationState state, SkillType skillType)
     {
-        if (state.Config.Skills.TryGetValue(Skill.UnbridledRage, out var skillPoints) && skillPoints > 0)
+        if (state.Config.HasSkill(Skill.UnbridledRage))
         {
             if (skillType == SkillType.Core)
             {

@@ -11,8 +11,7 @@ public class LungingStrike
 
     // Lunge forward and strike an enemy for 33% damage
     public virtual bool CanUse(SimulationState state) =>
-        state.Config.Skills.TryGetValue(Skill.LungingStrike, out var skillPoints)
-        && skillPoints > 0
+        state.Config.HasSkill(Skill.LungingStrike)
         && !state.Player.Auras.Contains(Aura.WeaponCooldown);
 
     public virtual void Use(SimulationState state, EnemyState target) => state.Events.Add(new LungingStrikeEvent(state.CurrentTime, target));

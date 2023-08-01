@@ -14,8 +14,7 @@ public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
     // Prime: While Wrath of the Berserker is active, gain 20%[+] increased Movement Speed and increase Fury Generation by 30%[x]
     // Supreme: While Wrath of the Berserker is active, every 50 Fury you spend increases Berserk's damage bonus by 25%[x]
     public virtual bool CanUse(SimulationState state) =>
-        state.Config.Skills.TryGetValue(Skill.WrathOfTheBerserker, out var skillPoints)
-        && skillPoints > 0
+        state.Config.HasSkill(Skill.WrathOfTheBerserker)
         && !state.Player.Auras.Contains(Aura.WrathOfTheBerserkerCooldown);
 
     public virtual void Use(SimulationState state) => state.Events.Add(new WrathOfTheBerserkerEvent(state.CurrentTime));

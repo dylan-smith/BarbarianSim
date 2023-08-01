@@ -11,8 +11,7 @@ public class ChallengingShout
 
     // Taunt nearby enemies and gain 40% Damage Reduction for 6 seconds (Cooldown: 25 seconds)
     public virtual bool CanUse(SimulationState state) =>
-        state.Config.Skills.TryGetValue(Skill.ChallengingShout, out var skillPoints)
-        && skillPoints > 0
+        state.Config.HasSkill(Skill.ChallengingShout)
         && !state.Player.Auras.Contains(Aura.ChallengingShoutCooldown);
 
     public virtual void Use(SimulationState state) => state.Events.Add(new ChallengingShoutEvent(state.CurrentTime));
@@ -20,11 +19,7 @@ public class ChallengingShout
     public virtual double GetDamageReduction(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.ChallengingShout);
-
-        if (state.Config.Skills.TryGetValue(Skill.ChallengingShout, out var pointsSpent))
-        {
-            skillPoints += pointsSpent;
-        }
+        skillPoints += state.Config.GetSkillPoints(Skill.ChallengingShout);
 
         return skillPoints switch
         {

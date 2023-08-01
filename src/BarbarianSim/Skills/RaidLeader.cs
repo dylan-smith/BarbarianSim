@@ -8,12 +8,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
     // Your Shouts also heal Allies for X% of their Maximum Life per second
     public virtual double GetHealPercentage(SimulationState state)
     {
-        var skillPoints = 0;
-
-        if (state.Config.Skills.TryGetValue(Skill.RaidLeader, out var pointsSpent))
-        {
-            skillPoints += pointsSpent;
-        }
+        var skillPoints = state.Config.GetSkillPoints(Skill.RaidLeader);
 
         return skillPoints switch
         {

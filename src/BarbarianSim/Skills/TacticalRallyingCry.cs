@@ -11,7 +11,7 @@ public class TacticalRallyingCry : IHandlesEvent<RallyingCryEvent>
 
     public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        if (state.Config.Skills.TryGetValue(Skill.TacticalRallyingCry, out var skillPoints) && skillPoints > 0)
+        if (state.Config.HasSkill(Skill.TacticalRallyingCry))
         {
             state.Events.Add(new FuryGeneratedEvent(e.Timestamp, FURY_GENERATED));
         }
@@ -19,8 +19,7 @@ public class TacticalRallyingCry : IHandlesEvent<RallyingCryEvent>
 
     public virtual double GetResourceGeneration(SimulationState state)
     {
-        return state.Config.Skills.TryGetValue(Skill.TacticalRallyingCry, out var skillPoints) &&
-               skillPoints > 0 &&
+        return state.Config.HasSkill(Skill.TacticalRallyingCry) &&
                state.Player.Auras.Contains(Aura.RallyingCry)
             ? RESOURCE_GENERATION
             : 1.0;

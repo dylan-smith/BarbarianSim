@@ -19,8 +19,7 @@ public class WarCry
     private readonly PowerWarCry _powerWarCry;
 
     public virtual bool CanUse(SimulationState state) =>
-        state.Config.Skills.TryGetValue(Skill.WarCry, out var skillPoints)
-        && skillPoints > 0
+        state.Config.HasSkill(Skill.WarCry)
         && !state.Player.Auras.Contains(Aura.WarCryCooldown);
 
     public virtual void Use(SimulationState state) => state.Events.Add(new WarCryEvent(state.CurrentTime));
@@ -33,11 +32,7 @@ public class WarCry
         }
 
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.WarCry);
-
-        if (state.Config.Skills.TryGetValue(Skill.WarCry, out var pointsSpent))
-        {
-            skillPoints += pointsSpent;
-        }
+        skillPoints += state.Config.GetSkillPoints(Skill.WarCry);
 
         var damageBonus = skillPoints switch
         {

@@ -12,8 +12,7 @@ public class SupremeWrathOfTheBerserker
     {
         if (state.Player.Auras.Contains(Aura.WrathOfTheBerserker) &&
             state.Player.Auras.Contains(Aura.Berserking) &&
-            state.Config.Skills.TryGetValue(Skill.SupremeWrathOfTheBerserker, out var skillPoints) &&
-            skillPoints > 0)
+            state.Config.HasSkill(Skill.SupremeWrathOfTheBerserker))
         {
             var startTime = state.ProcessedEvents.OrderBy(e => e.Timestamp).Last(e => e is WrathOfTheBerserkerEvent).Timestamp;
             var totalFurySpent = state.ProcessedEvents.OfType<FurySpentEvent>().Where(e => e.Timestamp >= startTime).Sum(e => e.FurySpent);

@@ -10,8 +10,7 @@ public class PowerWarCry
 
     public virtual double GetDamageBonus(SimulationState state)
     {
-        return state.Config.Skills.TryGetValue(Skill.PowerWarCry, out var skillPoints) &&
-            skillPoints > 0 &&
+        return state.Config.HasSkill(Skill.PowerWarCry) &&
             state.Enemies.Count >= NEARBY_ENEMIES_FOR_POWER &&
             state.Player.Auras.Contains(Aura.WarCry)
             ? DAMAGE_BONUS_FROM_POWER

@@ -16,8 +16,7 @@ public class IronSkin
     // Tactical: While Ironskin is active Heal for 10% of the Barrier's original amount as Life per second
     // Strategic: Ironskin also grants 15% Base Life (15%[x] HP) as Fortify. Double this amount if cast while below 50% Life
     public virtual bool CanUse(SimulationState state) =>
-        state.Config.Skills.TryGetValue(Skill.IronSkin, out var skillPoints)
-        && skillPoints > 0
+        state.Config.HasSkill(Skill.IronSkin)
         && !state.Player.Auras.Contains(Aura.IronSkinCooldown);
 
     public virtual void Use(SimulationState state) => state.Events.Add(new IronSkinEvent(state.CurrentTime));
@@ -25,11 +24,7 @@ public class IronSkin
     public virtual double GetBarrierPercentage(SimulationState state)
     {
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.IronSkin);
-
-        if (state.Config.Skills.TryGetValue(Skill.IronSkin, out var pointsSpent))
-        {
-            skillPoints += pointsSpent;
-        }
+        skillPoints += state.Config.GetSkillPoints(Skill.IronSkin);
 
         return skillPoints switch
         {

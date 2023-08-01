@@ -19,8 +19,7 @@ public class StrategicRallyingCry : IHandlesEvent<RallyingCryEvent>, IHandlesEve
 
     public void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
-        if (state.Config.Skills.TryGetValue(Skill.StrategicRallyingCry, out var skillPoints) &&
-            skillPoints > 0 &&
+        if (state.Config.HasSkill(Skill.StrategicRallyingCry) &&
             state.Player.Auras.Contains(Aura.RallyingCry))
         {
             state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, DIRECT_DAMAGE_FORTIFY * state.Player.BaseLife));

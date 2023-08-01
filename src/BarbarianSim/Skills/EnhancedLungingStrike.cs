@@ -27,8 +27,7 @@ public class EnhancedLungingStrike : IHandlesEvent<LungingStrikeEvent>
     public virtual double GetDamageBonus(SimulationState state, DamageSource damageSource, EnemyState enemy)
     {
         return damageSource == DamageSource.LungingStrike &&
-            state.Config.Skills.TryGetValue(Skill.EnhancedLungingStrike, out var skillPoints) &&
-            skillPoints > 0 &&
+            state.Config.HasSkill(Skill.EnhancedLungingStrike) &&
             enemy.IsHealthy()
             ? EnhancedLungingStrike.DAMAGE_MULTIPLIER
             : 1.0;

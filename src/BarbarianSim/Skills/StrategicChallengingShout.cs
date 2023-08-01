@@ -17,8 +17,7 @@ public class StrategicChallengingShout
 
     public virtual double GetThorns(SimulationState state)
     {
-        return state.Config.Skills.TryGetValue(Skill.StrategicChallengingShout, out var skillPoints) &&
-               skillPoints > 0 &&
+        return state.Config.HasSkill(Skill.StrategicChallengingShout) &&
                state.Player.Auras.Contains(Aura.ChallengingShout)
                ? THORNS_BONUS * _maxLifeCalculator.Calculate(state)
                : 0;
