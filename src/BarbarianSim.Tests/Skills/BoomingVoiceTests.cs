@@ -4,7 +4,7 @@ using BarbarianSim.Skills;
 using FluentAssertions;
 using Xunit;
 
-namespace BarbarianSim.Tests.Abilities;
+namespace BarbarianSim.Tests.Skills;
 
 public class BoomingVoiceTests
 {
