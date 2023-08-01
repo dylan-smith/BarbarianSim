@@ -36,8 +36,8 @@ internal class Program
         serviceCollection.AddSingleton<AspectOfNumbingWraith>();
         serviceCollection.AddSingleton<AspectOfTheDireWhirlwind>();
         serviceCollection.AddSingleton<AspectOfTheExpectant>();
-        serviceCollection.AddSingleton<AspectOfTheProtector>();
         serviceCollection.AddSingleton<AspectOfTheIronWarrior>();
+        serviceCollection.AddSingleton<AspectOfTheProtector>();
         serviceCollection.AddSingleton<BoldChieftainsAspect>();
         serviceCollection.AddSingleton<ConceitedAspect>();
         serviceCollection.AddSingleton<EdgemastersAspect>();
@@ -45,6 +45,7 @@ internal class Program
         serviceCollection.AddSingleton<GhostwalkerAspect>();
         serviceCollection.AddSingleton<GohrsDevastatingGrips>();
         serviceCollection.AddSingleton<PenitentGreaves>();
+        serviceCollection.AddSingleton<RamaladnisMagnumOpus>();
         serviceCollection.AddSingleton<RageOfHarrogath>();
         serviceCollection.AddSingleton<SmitingAspect>();
 
@@ -148,6 +149,7 @@ internal class Program
         serviceCollection.AddSingleton<StrengthCalculator>();
         serviceCollection.AddSingleton<ThornsCalculator>();
         serviceCollection.AddSingleton<TotalDamageMultiplierCalculator>();
+        serviceCollection.AddSingleton<TwoHandedWeaponDamageMultiplicativeCalculator>();
         serviceCollection.AddSingleton<VulnerableDamageBonusCalculator>();
         serviceCollection.AddSingleton<WillpowerCalculator>();
 

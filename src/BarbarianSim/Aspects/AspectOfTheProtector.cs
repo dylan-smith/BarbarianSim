@@ -14,6 +14,11 @@ public class AspectOfTheProtector : Aspect, IHandlesEvent<DamageEvent>
 
     public void ProcessEvent(DamageEvent e, SimulationState state)
     {
+        if (!IsAspectEquipped(state))
+        {
+            return;
+        }
+
         if (!state.Config.EnemySettings.IsElite)
         {
             return;

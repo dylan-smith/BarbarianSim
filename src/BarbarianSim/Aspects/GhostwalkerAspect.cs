@@ -11,7 +11,7 @@ public class GhostwalkerAspect : Aspect, IHandlesEvent<AuraAppliedEvent>
 
     public void ProcessEvent(AuraAppliedEvent e, SimulationState state)
     {
-        if (e.Aura == Aura.Unstoppable)
+        if (IsAspectEquipped(state) && e.Aura == Aura.Unstoppable)
         {
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration + 4.0, Aura.Ghostwalker));
         }

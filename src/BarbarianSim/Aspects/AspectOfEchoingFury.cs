@@ -10,16 +10,25 @@ public class AspectOfEchoingFury : Aspect, IHandlesEvent<ChallengingShoutEvent>,
 
     public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
-        state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
+        if (IsAspectEquipped(state))
+        {
+            state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
+        }
     }
 
     public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
+        if (IsAspectEquipped(state))
+        {
+            state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
+        }
     }
 
     public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
+        if (IsAspectEquipped(state))
+        {
+            state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
+        }
     }
 }

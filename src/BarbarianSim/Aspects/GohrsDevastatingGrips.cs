@@ -29,10 +29,13 @@ public class GohrsDevastatingGrips : Aspect, IHandlesEvent<DirectDamageEvent>, I
 
     public void ProcessEvent(WhirlwindStoppedEvent e, SimulationState state)
     {
-        var damage = TotalBaseDamage * DamagePercent / 100.0;
-        state.Events.Add(new GohrsDevastatingGripsProcEvent(e.Timestamp, damage));
+        if (IsAspectEquipped(state))
+        {
+            var damage = TotalBaseDamage * DamagePercent / 100.0;
+            state.Events.Add(new GohrsDevastatingGripsProcEvent(e.Timestamp, damage));
 
-        HitCount = 0;
-        TotalBaseDamage = 0;
+            HitCount = 0;
+            TotalBaseDamage = 0;
+        }
     }
 }
