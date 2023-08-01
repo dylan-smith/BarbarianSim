@@ -28,7 +28,7 @@ public class WarCry
     {
         if (!state.Player.Auras.Contains(Aura.WarCry))
         {
-            return 0;
+            return 1.0;
         }
 
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.WarCry);

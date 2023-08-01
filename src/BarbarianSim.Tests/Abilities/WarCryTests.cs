@@ -90,4 +90,13 @@ public class WarCryTests
 
         _warCry.GetDamageBonus(_state).Should().Be(1.25);
     }
+
+    [Fact]
+    public void GetDamageBonus_Returns_1_If_No_Aura()
+    {
+        _state.Config.Skills.Add(Skill.WarCry, 1);
+        _state.Config.Gear.Helm.WarCry = 2;
+
+        _warCry.GetDamageBonus(_state).Should().Be(1.0);
+    }
 }
