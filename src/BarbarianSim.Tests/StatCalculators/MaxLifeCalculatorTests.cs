@@ -68,4 +68,16 @@ public class MaxLifeCalculatorTests
 
         result.Should().Be(1440);
     }
+
+    [Fact]
+    public void Includes_MaxLifePercent_From_Gear()
+    {
+        _state.Config.Gear.Helm.MaxLifePercent = 20;
+        _state.Config.Gear.Chest.MaxLifePercent = 10;
+        _state.Player.BaseLife = 1000;
+
+        var result = _calculator.Calculate(_state);
+
+        result.Should().Be(1300);
+    }
 }
