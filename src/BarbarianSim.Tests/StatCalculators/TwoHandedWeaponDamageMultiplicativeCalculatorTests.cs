@@ -2,7 +2,6 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
-using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
