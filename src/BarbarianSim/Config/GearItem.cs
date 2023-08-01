@@ -50,7 +50,9 @@ public class GearItem
     public double DamageReductionFromBleeding { get; set; }
     public double DamageReductionFromClose { get; set; }
     public double DamageReductionFromDistant { get; set; }
+    public double DamageReductionFromVulnerable { get; set; }
     public double DamageReductionWhileFortified { get; set; }
+    public double DamageReductionWhileHealthy { get; set; }
     public double DamageReductionWhileInjured { get; set; }
     public double Dodge { get; set; }
     public double DodgeAgainstDistant { get; set; }
@@ -86,6 +88,7 @@ public class GearItem
     public double AttacksReduceEvadeCooldown { get; set; }
     public double CooldownReduction { get; set; }
     public double FuryCostReduction { get; set; }
+    public double FuryOnKill { get; set; }
     public double HealingReceived { get; set; }
     public double LuckyHitChance { get; set; }
     public int MaxFury { get; set; }

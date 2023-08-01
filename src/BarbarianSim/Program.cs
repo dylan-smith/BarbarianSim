@@ -176,7 +176,7 @@ internal class Program
             Rotation = sp.GetRequiredService<SpinToWin>()
         };
 
-        config.EnemySettings.Life = 4000000;
+        config.EnemySettings.Life = 40000000;
         config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;
@@ -359,14 +359,68 @@ internal class Program
         (config.Gear.Ring2.Aspect as AspectOfEchoingFury).Fury = 4;
         config.Gear.Ring2.Gems.Add(new RoyalSkull());
 
-        config.Paragon.Dexterity = 36;
-        config.Paragon.Willpower = 15;
-        config.Paragon.Strength = 60;
-        config.Paragon.Intelligence = 5;
-        config.Paragon.Armor = 739;
-        config.Paragon.MaxLife = 12;
-        config.Paragon.PhysicalDamage = 40;
-        config.Paragon.TwoHandWeaponDamageMultiplicative = 8;
+        // Paragon Board 1 (Starter)
+        config.Paragon.Dexterity += 36;
+        config.Paragon.Willpower += 15;
+        config.Paragon.Strength += 60;
+        config.Paragon.Intelligence += 5;
+        config.Paragon.Armor += 738;
+        config.Paragon.MaxLifePercent += 20;
+        config.Paragon.PhysicalDamage += 84;
+        config.Paragon.TwoHandWeaponDamageMultiplicative += 8;
+
+        // Paragon Board 2 (Warbringer)
+        config.Paragon.Dexterity += 74;
+        config.Paragon.Willpower += 45;
+        config.Paragon.Strength += 100;
+        config.Paragon.Intelligence += 10;
+        config.Paragon.PhysicalDamage += 35;
+        config.Paragon.FuryOnKill += 4;
+        config.Paragon.MaxFury += 24;
+        config.ParagonNodes.Add(ParagonNode.Warbringer);
+        config.ParagonNodes.Add(ParagonNode.Exploit);
+
+        // Paragon Board 3 (Flawless Technique)
+        config.Paragon.Dexterity += 22;
+        config.Paragon.Willpower += 69;
+        config.Paragon.Strength += 65;
+        config.Paragon.Intelligence += 15;
+        config.Paragon.DamageReductionWhileFortified += 387.1;
+        config.Paragon.PhysicalDamage += 20;
+        config.Paragon.CritDamage += 52.5;
+        config.Paragon.DamageReductionFromClose += 15.9;
+        config.ParagonNodes.Add(ParagonNode.Undaunted);
+
+        // Paragon Board 4 (Decimator)
+        config.Paragon.Dexterity += 15;
+        config.Paragon.Willpower += 45;
+        config.Paragon.Strength += 100;
+        config.Paragon.Intelligence += 25;
+        config.Paragon.DamageReductionFromVulnerable += 21.5;
+        config.Paragon.VulnerableDamage += 88.75;
+        config.Paragon.Armor += 200;
+        config.Paragon.PhysicalDamage += 35;
+        config.Paragon.MaxLifePercent += 8;
+        config.ParagonNodes.Add(ParagonNode.Marshal);
+
+        // Paragon Board 5 (Bone Breaker)
+        config.Paragon.Dexterity += 59;
+        config.Paragon.Willpower += 20;
+        config.Paragon.Strength += 45;
+        config.Paragon.Intelligence += 5;
+        config.Paragon.CritDamage += 362.6;
+        config.Paragon.DamageReductionWhileHealthy += 17.5;
+        config.ParagonNodes.Add(ParagonNode.Wrath);
+
+        // Paragon Board 6 (Weapons Master)
+        config.Paragon.Dexterity += 34;
+        config.Paragon.Willpower += 25;
+        config.Paragon.Strength += 45;
+        config.Paragon.Intelligence += 5;
+        config.Paragon.PhysicalDamage += 35;
+        config.Paragon.Armor += 350;
+        config.Paragon.DamageToClose += 287.1;
+        config.Paragon.DamageReductionFromClose += 10;
 
         return config;
     }
