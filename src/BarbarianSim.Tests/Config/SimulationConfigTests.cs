@@ -49,46 +49,46 @@ public class SimulationConfigTests
         config.Skills.Add(Skill.UnbridledRage, 1);
 
         config.Gear.Helm.Aspect = new AspectOfGraspingWhirlwind();
-        config.Gear.Helm.Gems.Add(new RoyalSapphire());
+        config.Gear.Helm.Gems.Add(new RoyalSapphire(GearSlot.Helm));
 
         config.Gear.Chest.Aspect = new RageOfHarrogath();
-        config.Gear.Chest.Gems.Add(new RoyalSapphire());
-        config.Gear.Chest.Gems.Add(new RoyalSapphire());
+        config.Gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
+        config.Gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
 
         config.Gear.Gloves.Aspect = new GohrsDevastatingGrips();
 
         config.Gear.Pants.Aspect = new GhostwalkerAspect();
-        config.Gear.Pants.Gems.Add(new RoyalSapphire());
-        config.Gear.Pants.Gems.Add(new RoyalSapphire());
+        config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));
+        config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));
 
         config.Gear.Boots.Aspect = new GhostwalkerAspect();
 
         config.Gear.TwoHandBludgeoning.Aspect = new AspectOfGraspingWhirlwind();
         config.Gear.TwoHandBludgeoning.Expertise = Expertise.TwoHandedMace;
-        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
-        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
+        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald(GearSlot.TwoHandBludgeoning));
+        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald(GearSlot.TwoHandBludgeoning));
 
         config.Gear.OneHandLeft.Aspect = new ConceitedAspect();
         config.Gear.OneHandLeft.Expertise = Expertise.OneHandedSword;
-        config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald());
+        config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald(GearSlot.OneHandLeft));
 
         config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping();
         config.Gear.OneHandRight.Expertise = Expertise.OneHandedSword;
-        config.Gear.OneHandRight.Gems.Add(new RoyalEmerald());
+        config.Gear.OneHandRight.Gems.Add(new RoyalEmerald(GearSlot.OneHandRight));
 
         config.Gear.TwoHandSlashing.Aspect = new AspectOfGraspingWhirlwind();
         config.Gear.TwoHandSlashing.Expertise = Expertise.TwoHandedSword;
-        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
-        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
+        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald(GearSlot.TwoHandSlashing));
+        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald(GearSlot.TwoHandSlashing));
 
         config.Gear.Amulet.Aspect = new GhostwalkerAspect();
-        config.Gear.Amulet.Gems.Add(new RoyalSkull());
+        config.Gear.Amulet.Gems.Add(new RoyalSkull(GearSlot.Amulet));
 
         config.Gear.Ring1.Aspect = new BoldChieftainsAspect();
-        config.Gear.Ring1.Gems.Add(new RoyalSkull());
+        config.Gear.Ring1.Gems.Add(new RoyalSkull(GearSlot.Ring1));
 
         config.Gear.Ring2.Aspect = new AspectOfEchoingFury();
-        config.Gear.Ring2.Gems.Add(new RoyalSkull());
+        config.Gear.Ring2.Gems.Add(new RoyalSkull(GearSlot.Ring2));
 
         return config;
     }
@@ -108,7 +108,7 @@ public class SimulationConfigTests
     {
         var config = new SimulationConfig();
         config.Gear.Helm.Strength = 12;
-        config.Gear.Ring2.Gems.Add(new RoyalEmerald());
+        config.Gear.Ring2.Gems.Add(new RoyalEmerald(GearSlot.Ring2));
         config.Gear.Ring2.Gems.First().Strength = 3;
 
         config.GetStatTotal(x => x.Strength).Should().Be(15);
@@ -214,7 +214,7 @@ public class SimulationConfigTests
         var config = DefaultConfig();
 
         config.Gear.Helm.Gems.RemoveAt(0);
-        config.Gear.Helm.Gems.Add(new FlawlessSapphire());
+        config.Gear.Helm.Gems.Add(new FlawlessSapphire(GearSlot.Helm));
 
         var (warnings, _) = config.Validate();
 

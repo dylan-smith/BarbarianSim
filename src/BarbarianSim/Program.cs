@@ -240,7 +240,7 @@ internal class Program
         config.Gear.Helm.MaxLife = 472;
         config.Gear.Helm.Aspect = CreateAspect<AspectOfTheProtector>(sp);
         (config.Gear.Helm.Aspect as AspectOfTheProtector).BarrierAmount = 2000;
-        config.Gear.Helm.Gems.Add(new RoyalSapphire());
+        config.Gear.Helm.Gems.Add(new RoyalSapphire(GearSlot.Helm));
 
         config.Gear.Chest.Armor = 1195;
         config.Gear.Chest.PhysicalDamage = 10.5;
@@ -249,8 +249,8 @@ internal class Program
         config.Gear.Chest.Thorns = 403;
         config.Gear.Chest.Aspect = CreateAspect<RageOfHarrogath>(sp);
         (config.Gear.Chest.Aspect as RageOfHarrogath).Chance = 26;
-        config.Gear.Chest.Gems.Add(new RoyalSapphire());
-        config.Gear.Chest.Gems.Add(new RoyalSapphire());
+        config.Gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
+        config.Gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
 
         config.Gear.Gloves.Armor = 354;
         config.Gear.Gloves.AttackSpeed = 10.6;
@@ -268,8 +268,8 @@ internal class Program
         config.Gear.Pants.DamageReductionWhileInjured = 39.5;
         config.Gear.Pants.Aspect = CreateAspect<AspectOfNumbingWraith>(sp);
         (config.Gear.Pants.Aspect as AspectOfNumbingWraith).Fortify = 12;
-        config.Gear.Pants.Gems.Add(new RoyalSapphire());
-        config.Gear.Pants.Gems.Add(new RoyalSapphire());
+        config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));
+        config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));
 
         config.Gear.Boots.Armor = 344;
         config.Gear.Boots.AttacksReduceEvadeCooldown = 1.2;
@@ -293,8 +293,8 @@ internal class Program
         config.Gear.TwoHandBludgeoning.Aspect = CreateAspect<AspectOfLimitlessRage>(sp);
         (config.Gear.TwoHandBludgeoning.Aspect as AspectOfLimitlessRage).Damage = 4;
         (config.Gear.TwoHandBludgeoning.Aspect as AspectOfLimitlessRage).MaxDamage = 60;
-        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
-        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald());
+        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald(GearSlot.TwoHandBludgeoning));
+        config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald(GearSlot.TwoHandBludgeoning));
 
         config.Gear.OneHandLeft.DPS = 645;
         config.Gear.OneHandLeft.Expertise = Expertise.OneHandedSword;
@@ -308,7 +308,7 @@ internal class Program
         config.Gear.OneHandLeft.CoreDamage = 18.8;
         config.Gear.OneHandLeft.Aspect = CreateAspect<ConceitedAspect>(sp);
         (config.Gear.OneHandLeft.Aspect as ConceitedAspect).Damage = 25;
-        config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald());
+        config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald(GearSlot.OneHandLeft));
 
         config.Gear.OneHandRight.DPS = 650;
         config.Gear.OneHandRight.Expertise = Expertise.OneHandedSword;
@@ -322,7 +322,7 @@ internal class Program
         config.Gear.OneHandRight.DamageToCrowdControlled = 13.5;
         config.Gear.OneHandRight.Aspect = CreateAspect<AspectOfBerserkRipping>(sp);
         (config.Gear.OneHandRight.Aspect as AspectOfBerserkRipping).Damage = 30;
-        config.Gear.OneHandRight.Gems.Add(new RoyalEmerald());
+        config.Gear.OneHandRight.Gems.Add(new RoyalEmerald(GearSlot.OneHandRight));
 
         config.Gear.TwoHandSlashing.DPS = 2465;
         config.Gear.TwoHandSlashing.Expertise = Expertise.TwoHandedSword;
@@ -337,8 +337,8 @@ internal class Program
         config.Gear.TwoHandSlashing.Aspect = CreateAspect<AspectOfTheDireWhirlwind>(sp);
         (config.Gear.TwoHandSlashing.Aspect as AspectOfTheDireWhirlwind).CritChance = 14;
         (config.Gear.TwoHandSlashing.Aspect as AspectOfTheDireWhirlwind).MaxCritChance = 42;
-        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
-        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald());
+        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald(GearSlot.TwoHandSlashing));
+        config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald(GearSlot.TwoHandSlashing));
 
         config.Gear.Amulet.ResistanceToAll = 24.1;
         config.Gear.Amulet.DamageReductionFromDistant = 19.6;
@@ -347,7 +347,7 @@ internal class Program
         config.Gear.Amulet.FuryCostReduction = 16.7;
         config.Gear.Amulet.Aspect = CreateAspect<EdgemastersAspect>(sp);
         (config.Gear.Amulet.Aspect as EdgemastersAspect).Damage = 29;
-        config.Gear.Amulet.Gems.Add(new RoyalSkull());
+        config.Gear.Amulet.Gems.Add(new RoyalSkull(GearSlot.Amulet));
 
         config.Gear.Ring1.LightningResistance = 35.0;
         config.Gear.Ring1.FireResistance = 35.0;
@@ -357,7 +357,7 @@ internal class Program
         config.Gear.Ring1.CritDamage = 23.3;
         config.Gear.Ring1.Aspect = CreateAspect<BoldChieftainsAspect>(sp);
         (config.Gear.Ring1.Aspect as BoldChieftainsAspect).CooldownReduction = 1.9;
-        config.Gear.Ring1.Gems.Add(new RoyalSkull());
+        config.Gear.Ring1.Gems.Add(new RoyalSkull(GearSlot.Ring1));
 
         config.Gear.Ring2.ColdResistance = 32.2;
         config.Gear.Ring2.LightningResistance = 32.2;
@@ -367,7 +367,7 @@ internal class Program
         config.Gear.Ring2.CritDamage = 16.5;
         config.Gear.Ring2.Aspect = CreateAspect<AspectOfEchoingFury>(sp);
         (config.Gear.Ring2.Aspect as AspectOfEchoingFury).Fury = 4;
-        config.Gear.Ring2.Gems.Add(new RoyalSkull());
+        config.Gear.Ring2.Gems.Add(new RoyalSkull(GearSlot.Ring2));
 
         // Paragon Board 1 (Starter)
         config.Paragon.Dexterity += 36;

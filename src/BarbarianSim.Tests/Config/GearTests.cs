@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Aspects;
 using BarbarianSim.Config;
+using BarbarianSim.Enums;
 using BarbarianSim.Gems;
 using FluentAssertions;
 using Xunit;
@@ -26,10 +27,10 @@ public class GearTests
     public void GetAllGems_Returns_All_Gems()
     {
         var gear = new Gear();
-        gear.Helm.Gems.Add(new RoyalSapphire());
-        gear.Helm.Gems.Add(new RoyalSapphire());
-        gear.Chest.Gems.Add(new RoyalSapphire());
-        gear.Amulet.Gems.Add(new RoyalSapphire());
+        gear.Helm.Gems.Add(new RoyalSapphire(GearSlot.Helm));
+        gear.Helm.Gems.Add(new RoyalSapphire(GearSlot.Helm));
+        gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
+        gear.Amulet.Gems.Add(new RoyalSapphire(GearSlot.Amulet));
 
         gear.GetAllGems().Should().HaveCount(4);
     }

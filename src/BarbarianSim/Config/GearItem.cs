@@ -25,6 +25,7 @@ public class GearItem
     public double CritChance { get; set; }
     public double CritChancePhysicalAgainstElites { get; set; }
     public double CritDamage { get; set; }
+    public double CritDamageCrowdControlled { get; set; }
     public double CritDamageVulnerable { get; set; }
     public double DamageToClose { get; set; }
     public double DamageToCrowdControlled { get; set; }
@@ -90,6 +91,7 @@ public class GearItem
     public double FuryCostReduction { get; set; }
     public double FuryOnKill { get; set; }
     public double HealingReceived { get; set; }
+    public double LifeOnKill { get; set; }
     public double LuckyHitChance { get; set; }
     public int MaxFury { get; set; }
     public int MaxLife { get; set; }
