@@ -1,5 +1,6 @@
 ﻿using BarbarianSim.Abilities;
 using BarbarianSim.Aspects;
+using BarbarianSim.Paragon;
 using BarbarianSim.Skills;
 
 namespace BarbarianSim.StatCalculators;
@@ -14,7 +15,8 @@ public class DamageReductionCalculator
                                      ChallengingShout challengingShout,
                                      GutteralYell gutteralYell,
                                      AspectOfTheIronWarrior aspectOfTheIronWarrior,
-                                     IronBloodAspect ironBloodAspect)
+                                     IronBloodAspect ironBloodAspect,
+                                     Undaunted undaunted)
     {
         _damageReductionFromBleedingCalculator = damageReductionFromBleedingCalculator;
         _damageReductionFromCloseCalculator = damageReductionFromCloseCalculator;
@@ -25,6 +27,7 @@ public class DamageReductionCalculator
         _gutteralYell = gutteralYell;
         _aspectOfTheIronWarrior = aspectOfTheIronWarrior;
         _ironBloodAspect = ironBloodAspect;
+        _undaunted = undaunted;
     }
 
     private readonly DamageReductionFromBleedingCalculator _damageReductionFromBleedingCalculator;
@@ -36,6 +39,7 @@ public class DamageReductionCalculator
     private readonly GutteralYell _gutteralYell;
     private readonly AspectOfTheIronWarrior _aspectOfTheIronWarrior;
     private readonly IronBloodAspect _ironBloodAspect;
+    private readonly Undaunted _undaunted;
 
     public virtual double Calculate(SimulationState state, EnemyState enemy)
     {
@@ -50,6 +54,7 @@ public class DamageReductionCalculator
         damageReduction *= 1 - (_gutteralYell.GetDamageReduction(state) / 100.0);
         damageReduction *= 1 - (_aspectOfTheIronWarrior.GetDamageReductionBonus(state) / 100.0);
         damageReduction *= 1 - (_ironBloodAspect.GetDamageReductionBonus(state) / 100.0);
+        damageReduction *= 1 - (_undaunted.GetDamageReduction(state) / 100.0);
 
         return damageReduction;
     }

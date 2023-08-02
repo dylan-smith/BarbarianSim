@@ -86,6 +86,7 @@ internal class Program
         // Paragon
         serviceCollection.AddSingleton<Exploit>();
         serviceCollection.AddSingleton<Marshal>();
+        serviceCollection.AddSingleton<Undaunted>();
         serviceCollection.AddSingleton<Warbringer>();
 
         // Rotations

@@ -2,6 +2,7 @@
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
+using BarbarianSim.Paragon;
 using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
@@ -21,6 +22,7 @@ public class DamageReductionCalculatorTests
     private readonly Mock<GutteralYell> _mockGutteralYell = TestHelpers.CreateMock<GutteralYell>();
     private readonly Mock<AspectOfTheIronWarrior> _mockAspectOfTheIronWarrior = TestHelpers.CreateMock<AspectOfTheIronWarrior>();
     private readonly Mock<IronBloodAspect> _mockIronBloodAspect = TestHelpers.CreateMock<IronBloodAspect>();
+    private readonly Mock<Undaunted> _mockUndaunted = TestHelpers.CreateMock<Undaunted>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly DamageReductionCalculator _calculator;
 
@@ -35,6 +37,7 @@ public class DamageReductionCalculatorTests
         _mockGutteralYell.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
         _mockAspectOfTheIronWarrior.Setup(m => m.GetDamageReductionBonus(It.IsAny<SimulationState>())).Returns(0.0);
         _mockIronBloodAspect.Setup(m => m.GetDamageReductionBonus(It.IsAny<SimulationState>())).Returns(0.0);
+        _mockUndaunted.Setup(m => m.GetDamageReduction(It.IsAny<SimulationState>())).Returns(0.0);
 
         _calculator = new DamageReductionCalculator(
             _mockDamageReductionFromBleedingCalculator.Object,
@@ -45,7 +48,8 @@ public class DamageReductionCalculatorTests
             _mockChallengingShout.Object,
             _mockGutteralYell.Object,
             _mockAspectOfTheIronWarrior.Object,
-            _mockIronBloodAspect.Object);
+            _mockIronBloodAspect.Object,
+            _mockUndaunted.Object);
     }
 
     [Fact]
@@ -169,7 +173,17 @@ public class DamageReductionCalculatorTests
     }
 
     [Fact]
-    public void Multiplies_All_Damage_Reduction_Bonuses()
+    public void Includes_Bonus_From_Undaunted()
+    {
+        _mockUndaunted.Setup(m => m.GetDamageReduction(_state)).Returns(10.0);
+
+        var result = _calculator.Calculate(_state, _state.Enemies.First());
+
+        result.Should().Be(0.9 * 0.9);
+    }
+
+    [Fact]
+    public void Multiplies_Damage_Reduction_Bonuses()
     {
         _state.Config.Gear.Helm.DamageReduction = 8.0;
 
