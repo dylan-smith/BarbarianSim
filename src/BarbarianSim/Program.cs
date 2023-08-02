@@ -4,6 +4,7 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Gems;
+using BarbarianSim.Paragon;
 using BarbarianSim.Rotations;
 using BarbarianSim.Skills;
 using BarbarianSim.StatCalculators;
@@ -74,11 +75,15 @@ internal class Program
         serviceCollection.AddSingleton<EventHandlers.EventHandler<RaidLeaderProcEvent>, EventHandlers.RaidLeaderProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<RallyingCryEvent>, EventHandlers.RallyingCryEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<SimulationStartedEvent>, EventHandlers.SimulationStartedEventHandler>();
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<WarbringerProcEvent>, EventHandlers.WarbringerProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WarCryEvent>, EventHandlers.WarCryEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindRefreshEvent>, EventHandlers.WhirlwindRefreshEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindSpinEvent>, EventHandlers.WhirlwindSpinEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WhirlwindStoppedEvent>, EventHandlers.WhirlwindStoppedEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WrathOfTheBerserkerEvent>, EventHandlers.WrathOfTheBerserkerEventHandler>();
+
+        // Paragon
+        serviceCollection.AddSingleton<Warbringer>();
 
         // Rotations
         serviceCollection.AddSingleton<SpinToWin>();

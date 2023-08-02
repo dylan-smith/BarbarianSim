@@ -12,7 +12,7 @@ public class SimulationConfig
     public IDictionary<Skill, int> Skills { get; init; } = new Dictionary<Skill, int>();
     public IRotation Rotation { get; set; }
     public GearItem Paragon { get; set; } = new();
-    public IList<ParagonNode> ParagonNodes { get; init; } = new List<ParagonNode>();
+    public ISet<ParagonNode> ParagonNodes { get; init; } = new HashSet<ParagonNode>();
 
     public double GetStatTotal(Func<GearItem, double> stat) => Gear.GetStatTotal(stat) + stat(Paragon);
 
@@ -20,6 +20,7 @@ public class SimulationConfig
 
     public bool HasSkill(Skill skill) => GetSkillPoints(skill) > 0;
     public int GetSkillPoints(Skill skill) => Skills.TryGetValue(skill, out var skillPoints) ? skillPoints : 0;
+    public bool HasParagonNode(ParagonNode node) => ParagonNodes.Contains(node);
 
     public virtual (IEnumerable<string> Warnings, IEnumerable<string> Errors) Validate()
     {
