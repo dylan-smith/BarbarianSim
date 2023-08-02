@@ -62,6 +62,7 @@ internal class Program
         serviceCollection.AddSingleton<EventHandlers.EventHandler<ChallengingShoutEvent>, EventHandlers.ChallengingShoutEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<DamageEvent>, EventHandlers.DamageEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<DirectDamageEvent>, EventHandlers.DirectDamageEventHandler>();
+        serviceCollection.AddSingleton<EventHandlers.EventHandler<ExploitProcEvent>, EventHandlers.ExploitProcEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<FortifyGeneratedEvent>, EventHandlers.FortifyGeneratedEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<FuryGeneratedEvent>, EventHandlers.FuryGeneratedEventHandler>();
         serviceCollection.AddSingleton<EventHandlers.EventHandler<FurySpentEvent>, EventHandlers.FurySpentEventHandler>();
@@ -83,6 +84,7 @@ internal class Program
         serviceCollection.AddSingleton<EventHandlers.EventHandler<WrathOfTheBerserkerEvent>, EventHandlers.WrathOfTheBerserkerEventHandler>();
 
         // Paragon
+        serviceCollection.AddSingleton<Exploit>();
         serviceCollection.AddSingleton<Warbringer>();
 
         // Rotations
