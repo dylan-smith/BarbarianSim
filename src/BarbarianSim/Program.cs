@@ -432,6 +432,11 @@ internal class Program
         config.Paragon.DamageToClose += 287.1;
         config.Paragon.DamageReductionFromClose += 10;
 
+        config.AltersOfLilith.Strength = 68;
+        config.AltersOfLilith.Dexterity = 68;
+        config.AltersOfLilith.Willpower = 68;
+        config.AltersOfLilith.Intelligence = 68;
+
         return config;
     }
 

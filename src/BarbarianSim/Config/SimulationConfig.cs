@@ -11,12 +11,12 @@ public class SimulationConfig
     public SimulationSettings SimulationSettings { get; init; } = new();
     public IDictionary<Skill, int> Skills { get; init; } = new Dictionary<Skill, int>();
     public IRotation Rotation { get; set; }
-    public GearItem Paragon { get; set; } = new();
+    public GearItem Paragon { get; init; } = new();
     public ISet<ParagonNode> ParagonNodes { get; init; } = new HashSet<ParagonNode>();
+    public GearItem AltersOfLilith { get; init; } = new();
 
-    public double GetStatTotal(Func<GearItem, double> stat) => Gear.GetStatTotal(stat) + stat(Paragon);
-
-    public double GetStatTotalMultiplied(Func<GearItem, double> stat) => Gear.GetStatTotalMultiplied(stat) * stat(Paragon);
+    public double GetStatTotal(Func<GearItem, double> stat) => Gear.GetStatTotal(stat) + stat(Paragon) + stat(AltersOfLilith);
+    public double GetStatTotalMultiplied(Func<GearItem, double> stat) => Gear.GetStatTotalMultiplied(stat) * stat(Paragon) * stat(AltersOfLilith);
 
     public bool HasSkill(Skill skill) => GetSkillPoints(skill) > 0;
     public int GetSkillPoints(Skill skill) => Skills.TryGetValue(skill, out var skillPoints) ? skillPoints : 0;

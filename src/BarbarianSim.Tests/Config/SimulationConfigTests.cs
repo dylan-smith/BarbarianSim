@@ -94,6 +94,47 @@ public class SimulationConfigTests
     }
 
     [Fact]
+    public void GetStatTotal_Includes_Gear()
+    {
+        var config = new SimulationConfig();
+        config.Gear.Helm.Strength = 12;
+        config.Gear.Ring1.Strength = 7;
+
+        config.GetStatTotal(x => x.Strength).Should().Be(19);
+    }
+
+    [Fact]
+    public void GetStatTotal_Includes_Gems()
+    {
+        var config = new SimulationConfig();
+        config.Gear.Helm.Strength = 12;
+        config.Gear.Ring2.Gems.Add(new RoyalEmerald());
+        config.Gear.Ring2.Gems.First().Strength = 3;
+
+        config.GetStatTotal(x => x.Strength).Should().Be(15);
+    }
+
+    [Fact]
+    public void GetStatTotal_Includes_Paragon()
+    {
+        var config = new SimulationConfig();
+        config.Gear.Helm.Strength = 12;
+        config.Paragon.Strength = 20;
+
+        config.GetStatTotal(x => x.Strength).Should().Be(32);
+    }
+
+    [Fact]
+    public void GetStatTotal_Includes_AltersOfLilith()
+    {
+        var config = new SimulationConfig();
+        config.Gear.Helm.Strength = 12;
+        config.AltersOfLilith.Strength = 20;
+
+        config.GetStatTotal(x => x.Strength).Should().Be(32);
+    }
+
+    [Fact]
     public void DefaultConfig_Validate_Successfully()
     {
         var config = DefaultConfig();
