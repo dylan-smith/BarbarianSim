@@ -88,6 +88,7 @@ internal class Program
         serviceCollection.AddSingleton<Marshal>();
         serviceCollection.AddSingleton<Undaunted>();
         serviceCollection.AddSingleton<Warbringer>();
+        serviceCollection.AddSingleton<Wrath>();
 
         // Rotations
         serviceCollection.AddSingleton<SpinToWin>();
