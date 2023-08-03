@@ -27,7 +27,7 @@ public class DirectDamageEventHandlerTests
         _mockTotalDamageMultiplierCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<SkillType>(), It.IsAny<DamageSource>(), It.IsAny<GearItem>()))
                                             .Returns(1.0);
 
-        _mockCritChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>()))
+        _mockCritChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<GearItem>()))
                                  .Returns(0.0);
 
         _mockCritDamageCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<Expertise>()))
@@ -83,13 +83,13 @@ public class DirectDamageEventHandlerTests
     [Fact]
     public void Critical_Strike_Applies_CritChance_Bonus()
     {
-        _mockCritChanceCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First()))
+        _mockCritChanceCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First(), _state.Config.Gear.TwoHandBludgeoning))
                                  .Returns(0.7);
 
         _mockRandomGenerator.Setup(m => m.Roll(RollType.CriticalStrike))
                             .Returns(0.69);
 
-        var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, _state.Config.Gear.TwoHandBludgeoning, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 

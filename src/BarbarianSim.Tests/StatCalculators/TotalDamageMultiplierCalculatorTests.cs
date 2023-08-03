@@ -36,7 +36,7 @@ public class TotalDamageMultiplierCalculatorTests
     {
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>())).Returns(1.0);
         _mockTwoHandedWeaponDamageMultiplicativeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
-        _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(1.0);
+        _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>(), It.IsAny<GearItem>())).Returns(1.0);
         _mockStrengthCalculator.Setup(m => m.GetStrengthMultiplier(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
@@ -103,9 +103,9 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Includes_Vulnerable_Damage()
     {
-        _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(1.12);
+        _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First(), _state.Config.Gear.TwoHandSlashing)).Returns(1.12);
 
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, _state.Config.Gear.TwoHandSlashing);
 
         result.Should().Be(1.12);
     }
@@ -274,7 +274,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(_state)).Returns(1.09);
 
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First())).Returns(1.2);
-        _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(1.2);
+        _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First(), null)).Returns(1.2);
         _mockStrengthCalculator.Setup(m => m.GetStrengthMultiplier(_state, SkillType.Core)).Returns(1.05);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
