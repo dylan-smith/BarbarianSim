@@ -30,7 +30,7 @@ public class DirectDamageEventHandlerTests
         _mockCritChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<GearItem>()))
                                  .Returns(0.0);
 
-        _mockCritDamageCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<Expertise>()))
+        _mockCritDamageCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<Expertise>(), It.IsAny<GearItem>(), It.IsAny<EnemyState>()))
                                  .Returns(1.5);
 
         _mockOverpowerDamageCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>()))
@@ -105,7 +105,7 @@ public class DirectDamageEventHandlerTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.CriticalStrike))
                             .Returns(0.0);
 
-        _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.NA))
+        _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.NA, null, _state.Enemies.First()))
                                  .Returns(3.5);
 
         var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
@@ -122,7 +122,7 @@ public class DirectDamageEventHandlerTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.CriticalStrike))
                             .Returns(0.0);
 
-        _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.OneHandedAxe))
+        _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.OneHandedAxe, weapon, _state.Enemies.First()))
                                  .Returns(3.5);
 
         var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
@@ -138,7 +138,7 @@ public class DirectDamageEventHandlerTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.CriticalStrike))
                             .Returns(0.0);
 
-        _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.TwoHandedAxe))
+        _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.TwoHandedAxe, null, _state.Enemies.First()))
                                  .Returns(3.5);
 
         var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
@@ -262,7 +262,8 @@ public class DirectDamageEventHandlerTests
     [Fact]
     public void LuckyHit_20_Percent_Chance()
     {
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var weapon = new GearItem() { Expertise = Expertise.OneHandedAxe };
+        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
         _mockRandomGenerator.Setup(m => m.Roll(RollType.LuckyHit))
                             .Returns(0.19);
 
@@ -273,6 +274,7 @@ public class DirectDamageEventHandlerTests
         directDamageEvent.LuckyHitEvent.Timestamp.Should().Be(123);
         directDamageEvent.LuckyHitEvent.SkillType.Should().Be(SkillType.Core);
         directDamageEvent.LuckyHitEvent.Target.Should().Be(_state.Enemies.First());
+        directDamageEvent.LuckyHitEvent.Weapon.Should().Be(weapon);
     }
 
     [Fact]

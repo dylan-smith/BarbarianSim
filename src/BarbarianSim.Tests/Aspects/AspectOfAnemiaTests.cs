@@ -26,7 +26,7 @@ public sealed class AspectOfAnemiaTests
     {
         _state.Enemies.First().Auras.Add(Aura.Bleeding);
         _mockRandomGenerator.Setup(m => m.Roll(RollType.AspectOfAnemia)).Returns(0.29);
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First());
+        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First(), null);
 
         _aspect.ProcessEvent(luckyHitEvent, _state);
 
@@ -43,7 +43,7 @@ public sealed class AspectOfAnemiaTests
         _state.Config.Gear.Helm.Aspect = null;
         _state.Enemies.First().Auras.Add(Aura.Bleeding);
         _mockRandomGenerator.Setup(m => m.Roll(RollType.AspectOfAnemia)).Returns(0.29);
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First());
+        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First(), null);
 
         _aspect.ProcessEvent(luckyHitEvent, _state);
 
@@ -59,7 +59,7 @@ public sealed class AspectOfAnemiaTests
         state.Config.Gear.Helm.Aspect = _aspect;
         state.Enemies.First().Auras.Add(Aura.Bleeding);
         _mockRandomGenerator.Setup(m => m.Roll(RollType.AspectOfAnemia)).Returns(0.29);
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, state.Enemies.Last());
+        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, state.Enemies.Last(), null);
 
         _aspect.ProcessEvent(luckyHitEvent, state);
 
@@ -71,7 +71,7 @@ public sealed class AspectOfAnemiaTests
     {
         _state.Enemies.First().Auras.Add(Aura.Bleeding);
         _mockRandomGenerator.Setup(m => m.Roll(RollType.AspectOfAnemia)).Returns(0.31);
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First());
+        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First(), null);
 
         _aspect.ProcessEvent(luckyHitEvent, _state);
 

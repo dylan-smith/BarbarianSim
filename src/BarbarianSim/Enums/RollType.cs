@@ -8,4 +8,5 @@ public enum RollType
     LuckyHit,
     Overpower,
     PressurePoint,
+    TwoHandedMaceExpertise,
 }

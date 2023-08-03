@@ -206,4 +206,22 @@ public class EnemyStateTests
 
         enemyState.IsHealthy().Should().BeFalse();
     }
+
+    [Fact]
+    public void IsStunned_Returns_True_When_Stun_Aura()
+    {
+        var enemyState = new EnemyState();
+        enemyState.Auras.Add(Aura.Stun);
+
+        enemyState.IsStunned().Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsStunned_Returns_False_When_No_Stun_Aura()
+    {
+        var enemyState = new EnemyState();
+        enemyState.Auras.Add(Aura.Chill);
+
+        enemyState.IsStunned().Should().BeFalse();
+    }
 }

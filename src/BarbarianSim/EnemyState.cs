@@ -21,4 +21,6 @@ public class EnemyState
     public bool IsBleeding() => Auras.Contains(Aura.Bleeding);
 
     public bool IsUnstoppable() => Auras.Contains(Aura.Unstoppable);
+
+    public bool IsStunned() => Auras.Contains(Aura.Stun);
 }

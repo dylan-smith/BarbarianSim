@@ -42,7 +42,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
         if (critRoll <= critChance)
         {
             var expertise = e.Weapon?.Expertise ?? Expertise.NA;
-            damage *= _critDamageCalculator.Calculate(state, expertise);
+            damage *= _critDamageCalculator.Calculate(state, expertise, e.Weapon, e.Enemy);
             damageType |= DamageType.CriticalStrike;
         }
 
@@ -64,7 +64,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
         if (luckyRoll <= (e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state)))
         {
-            e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.SkillType, e.Enemy);
+            e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.SkillType, e.Enemy, e.Weapon);
             state.Events.Add(e.LuckyHitEvent);
         }
     }
