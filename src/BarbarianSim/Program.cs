@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Abilities;
+using BarbarianSim.Arsenal;
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
@@ -26,6 +27,10 @@ internal class Program
         serviceCollection.AddSingleton<WarCry>();
         serviceCollection.AddSingleton<Whirlwind>();
         serviceCollection.AddSingleton<WrathOfTheBerserker>();
+
+        // Arsenal
+        serviceCollection.AddSingleton<TwoHandedAxeExpertise>();
+        serviceCollection.AddSingleton<TwoHandedSwordExpertise>();
 
         // Aspects
         serviceCollection.AddSingleton<AspectOfAnemia>();
@@ -132,6 +137,7 @@ internal class Program
         serviceCollection.AddSingleton<BerserkingDamageCalculator>();
         serviceCollection.AddSingleton<CritChanceCalculator>();
         serviceCollection.AddSingleton<CritChancePhysicalAgainstElitesCalculator>();
+        serviceCollection.AddSingleton<CritChanceVulnerableCalculator>();
         serviceCollection.AddSingleton<CritDamageCalculator>();
         serviceCollection.AddSingleton<CrowdControlDurationCalculator>();
         serviceCollection.AddSingleton<DamageReductionCalculator>();
