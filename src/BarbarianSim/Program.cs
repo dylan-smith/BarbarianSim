@@ -29,7 +29,9 @@ internal class Program
         serviceCollection.AddSingleton<WrathOfTheBerserker>();
 
         // Arsenal
+        serviceCollection.AddSingleton<PolearmExpertise>();
         serviceCollection.AddSingleton<TwoHandedAxeExpertise>();
+        serviceCollection.AddSingleton<TwoHandedMaceExpertise>();
         serviceCollection.AddSingleton<TwoHandedSwordExpertise>();
 
         // Aspects

@@ -36,7 +36,7 @@ public class DirectDamageEventHandlerTests
         _mockOverpowerDamageCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>()))
                                       .Returns(1.0);
 
-        _mockLuckyHitChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>()))
+        _mockLuckyHitChanceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>(), It.IsAny<GearItem>()))
                                      .Returns(0.0);
 
         _mockRandomGenerator.Setup(x => x.Roll(It.IsAny<RollType>()))
@@ -280,13 +280,13 @@ public class DirectDamageEventHandlerTests
     [Fact]
     public void LuckyHit_Includes_Increased_Chance_From_Gear()
     {
-        _mockLuckyHitChanceCalculator.Setup(m => m.Calculate(_state))
+        _mockLuckyHitChanceCalculator.Setup(m => m.Calculate(_state, _state.Config.Gear.TwoHandBludgeoning))
                                      .Returns(15);
 
         _mockRandomGenerator.Setup(m => m.Roll(RollType.LuckyHit))
                             .Returns(0.34);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, _state.Config.Gear.TwoHandBludgeoning, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 

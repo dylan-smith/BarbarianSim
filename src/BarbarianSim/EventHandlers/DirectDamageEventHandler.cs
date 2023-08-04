@@ -62,7 +62,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
         var luckyRoll = _randomGenerator.Roll(RollType.LuckyHit);
 
-        if (luckyRoll <= (e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state)))
+        if (luckyRoll <= (e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state, e.Weapon)))
         {
             e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.SkillType, e.Enemy, e.Weapon);
             state.Events.Add(e.LuckyHitEvent);
