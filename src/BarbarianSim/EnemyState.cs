@@ -4,6 +4,7 @@ namespace BarbarianSim;
 
 public class EnemyState
 {
+    public int Id { get; set; }
     public double Life { get; set; }
     public double MaxLife { get; set; }
     public ISet<Aura> Auras { get; init; } = new HashSet<Aura>();

@@ -18,7 +18,7 @@ public class SimulationState
     {
         Config = config;
 
-        config.EnemySettings.NumberOfEnemies.Times(() => Enemies.Add(new EnemyState() { MaxLife = config.EnemySettings.Life, Life = config.EnemySettings.Life }));
+        config.EnemySettings.NumberOfEnemies.Times(i => Enemies.Add(new EnemyState() { MaxLife = config.EnemySettings.Life, Life = config.EnemySettings.Life, Id = i + 1 }));
 
         Player.BaseLife = config.PlayerSettings.Life;
         Player.Life = Player.BaseLife;

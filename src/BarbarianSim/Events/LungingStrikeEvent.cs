@@ -10,5 +10,5 @@ public class LungingStrikeEvent : EventInfo
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
     public double BaseDamage { get; set; }
 
-    public override string ToString() => $"{base.ToString()} - {BaseDamage:F2} base damage";
+    public override string ToString() => $"{base.ToString()} - {BaseDamage:F2} base damage to Enemy #{Target.Id}";
 }

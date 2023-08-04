@@ -22,5 +22,17 @@ public class AuraAppliedEvent : EventInfo
     public EnemyState Target { get; init; }
     public AuraExpiredEvent AuraExpiredEvent { get; set; }
 
-    public override string ToString() => $"{base.ToString()} - {Aura} applied for {Duration:F2} seconds (Source: {Source})";
+    public override string ToString()
+    {
+        var result = $"{base.ToString()} - {Aura} applied for {Duration:F2} seconds";
+
+        if (Target != null)
+        {
+            result += $" to Enemy #{Target.Id}";
+        }
+
+        result += $" (Source: {Source})";
+
+        return result;
+    }
 }

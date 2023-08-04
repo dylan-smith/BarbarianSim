@@ -12,5 +12,5 @@ public class BleedCompletedEvent : EventInfo
     public DamageEvent DamageEvent { get; set; }
     public EnemyState Target { get; init; }
 
-    public override string ToString() => $"{base.ToString()} - Bleed completed, {Damage:F2} damage dealt (Source: {Source})";
+    public override string ToString() => $"{base.ToString()} - Bleed completed, {Damage:F2} damage dealt to Enemy #{Target.Id} (Source: {Source})";
 }

@@ -19,5 +19,5 @@ public class DamageEvent : EventInfo
         Target = target;
     }
 
-    public override string ToString() => $"{base.ToString()} - {Damage:F2} dealt ({DamageType}) (Source: {Source})";
+    public override string ToString() => $"{base.ToString()} - {Damage:F2} dealt to Enemy #{Target.Id} ({DamageType}) (Source: {Source})";
 }

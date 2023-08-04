@@ -14,5 +14,5 @@ public class BleedAppliedEvent : EventInfo
     public EnemyState Target { get; init; }
     public BleedCompletedEvent BleedCompletedEvent { get; set; }
 
-    public override string ToString() => $"{base.ToString()} - Bleed applied for {Damage:F2} damage over {Duration:F2} seconds (Source: {Source})";
+    public override string ToString() => $"{base.ToString()} - Bleed applied for {Damage:F2} damage over {Duration:F2} seconds to Enemy #{Target.Id} (Source: {Source})";
 }

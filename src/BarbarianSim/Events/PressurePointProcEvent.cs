@@ -7,5 +7,5 @@ public class PressurePointProcEvent : EventInfo
     public EnemyState Target { get; init; }
     public AuraAppliedEvent VulnerableAppliedEvent { get; set; }
 
-    public override string ToString() => $"{base.ToString()} - Applying Vulnerable for 3 seconds";
+    public override string ToString() => $"{base.ToString()} - Applying Vulnerable for 3 seconds to Enemy #{Target.Id}";
 }

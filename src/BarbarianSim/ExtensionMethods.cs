@@ -46,6 +46,14 @@ public static class ExtensionMethods
         }
     }
 
+    public static void Times(this int count, Action<int> action)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            action(i);
+        }
+    }
+
     public static double Multiply(this IEnumerable<double> list)
     {
         return list.Aggregate(1.0, (acc, x) => acc * x);

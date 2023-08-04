@@ -27,5 +27,5 @@ public class DirectDamageEvent : EventInfo
     public DamageEvent DamageEvent { get; set; }
     public LuckyHitEvent LuckyHitEvent { get; set; }
 
-    public override string ToString() => $"{base.ToString()} - {BaseDamage:F2} damage of type {DamageType} (Source: {Source})";
+    public override string ToString() => $"{base.ToString()} - {BaseDamage:F2} damage to Enemy #{Enemy.Id} of type {DamageType} (Source: {Source})";
 }

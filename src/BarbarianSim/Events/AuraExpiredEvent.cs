@@ -15,5 +15,17 @@ public class AuraExpiredEvent : EventInfo
     public Aura Aura { get; set; }
     public EnemyState Target { get; set; }
 
-    public override string ToString() => $"{base.ToString()} - {Aura} expired (Source: {Source})";
+    public override string ToString()
+    {
+        var result = $"{base.ToString()} - {Aura} expired";
+
+        if (Target != null)
+        {
+            result += $" on Enemy #{Target.Id}";
+        }
+
+        result += $" (Source: {Source})";
+
+        return result;
+    }
 }
