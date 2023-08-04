@@ -21,12 +21,14 @@ public class GearItem
 
     // Damage
     public double AttackSpeed { get; set; }
-    public double CoreDamage { get; set; }
+    public double BasicSkillDamage { get; set; }
+    public double CoreSkillDamage { get; set; }
     public double CritChance { get; set; }
     public double CritChancePhysicalAgainstElites { get; set; }
     public double CritDamage { get; set; }
     public double CritDamageCrowdControlled { get; set; }
     public double CritDamageVulnerable { get; set; }
+    public double DamageOverTime { get; set; }
     public double DamageToClose { get; set; }
     public double DamageToCrowdControlled { get; set; }
     public double DamageToInjured { get; set; }
@@ -35,6 +37,7 @@ public class GearItem
     public double OverpowerDamage { get; set; }
     public double PhysicalDamage { get; set; }
     public double TwoHandWeaponDamageMultiplicative { get; set; }
+    public double UltimateSkillDamage { get; set; }
     public double VulnerableDamage { get; set; }
 
     // Weapon Stats
@@ -52,15 +55,18 @@ public class GearItem
     public double DamageReductionFromClose { get; set; }
     public double DamageReductionFromDistant { get; set; }
     public double DamageReductionFromVulnerable { get; set; }
+    public double DamageReductionWhileControlImpaired { get; set; }
     public double DamageReductionWhileFortified { get; set; }
     public double DamageReductionWhileHealthy { get; set; }
     public double DamageReductionWhileInjured { get; set; }
+    public double DamageTakenOverTimeReduction { get; set; }
     public double Dodge { get; set; }
     public double DodgeAgainstDistant { get; set; }
     public double FireResistance { get; set; }
     public double LightningResistance { get; set; }
     public double PoisonResistance { get; set; }
     public double ResistanceToAll { get; set; }
+    public double ShadowResistance { get; set; }
     public double TotalArmor { get; set; }
 
 
@@ -87,6 +93,7 @@ public class GearItem
 
     // Other
     public double AttacksReduceEvadeCooldown { get; set; }
+    public double BarrierGeneration { get; set; }
     public double CooldownReduction { get; set; }
     public double FuryCostReduction { get; set; }
     public double FuryOnKill { get; set; }

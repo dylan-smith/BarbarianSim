@@ -295,7 +295,7 @@ internal class Program
         config.Gear.TwoHandBludgeoning.AttacksPerSecond = 0.9;
         config.Gear.TwoHandBludgeoning.OverpowerDamage = 94.5;
         config.Gear.TwoHandBludgeoning.DamageToClose = 57.0;
-        config.Gear.TwoHandBludgeoning.CoreDamage = 58.5;
+        config.Gear.TwoHandBludgeoning.CoreSkillDamage = 58.5;
         config.Gear.TwoHandBludgeoning.Strength = 156;
         config.Gear.TwoHandBludgeoning.CritDamage = 57.0;
         config.Gear.TwoHandBludgeoning.Aspect = CreateAspect<AspectOfLimitlessRage>(sp);
@@ -313,7 +313,7 @@ internal class Program
         config.Gear.OneHandLeft.VulnerableDamage = 21.0;
         config.Gear.OneHandLeft.Strength = 77;
         config.Gear.OneHandLeft.DamageToInjured = 34.5;
-        config.Gear.OneHandLeft.CoreDamage = 18.8;
+        config.Gear.OneHandLeft.CoreSkillDamage = 18.8;
         config.Gear.OneHandLeft.Aspect = CreateAspect<ConceitedAspect>(sp);
         (config.Gear.OneHandLeft.Aspect as ConceitedAspect).Damage = 25;
         config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald(GearSlot.OneHandLeft));
