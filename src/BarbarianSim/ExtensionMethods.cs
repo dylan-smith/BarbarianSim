@@ -1,4 +1,6 @@
-﻿namespace BarbarianSim;
+﻿using System.Reflection;
+
+namespace BarbarianSim;
 
 public static class ExtensionMethods
 {
@@ -62,5 +64,12 @@ public static class ExtensionMethods
     public static double Multiply<T>(this IEnumerable<T> list, Func<T, double> projection)
     {
         return list.Aggregate(1.0, (acc, x) => acc * projection(x));
+    }
+
+    public static bool HasAttribute<T>(this Enum enumVal) where T : Attribute
+    {
+        var enumType = enumVal.GetType();
+        var memberInfo = enumType.GetMember(enumVal.ToString());
+        return memberInfo[0].GetCustomAttribute(typeof(T)) != null;
     }
 }

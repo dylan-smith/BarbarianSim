@@ -80,18 +80,24 @@ public class SimulationSummary
 
         foreach (var aura in Enum.GetValues<Aura>())
         {
-            var (buffCount, buffUptimePercentage) = GetBuffStats(state, aura);
-
-            if (buffCount > 0)
+            if (aura.IsBuff())
             {
-                PlayerEffects.Add((aura, buffCount, buffUptimePercentage));
+                var (buffCount, buffUptimePercentage) = GetBuffStats(state, aura);
+
+                if (buffCount > 0)
+                {
+                    PlayerEffects.Add((aura, buffCount, buffUptimePercentage));
+                }
             }
 
-            var (debuffCount, debuffUptimePercentage) = GetDebuffStats(state, aura);
-
-            if (debuffCount > 0)
+            if (aura.IsDebuff())
             {
-                EnemyEffects.Add((aura, debuffCount, debuffUptimePercentage));
+                var (debuffCount, debuffUptimePercentage) = GetDebuffStats(state, aura);
+
+                if (debuffCount > 0)
+                {
+                    EnemyEffects.Add((aura, debuffCount, debuffUptimePercentage));
+                }
             }
         }
 
