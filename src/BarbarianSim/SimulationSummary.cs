@@ -150,7 +150,7 @@ public class SimulationSummary
 
         Console.WriteLine("");
         Console.WriteLine("Buffs");
-        Console.WriteLine("========");
+        Console.WriteLine("======");
 
         foreach (var buff in PlayerEffects)
         {
@@ -159,7 +159,7 @@ public class SimulationSummary
 
         Console.WriteLine("");
         Console.WriteLine("Debuffs");
-        Console.WriteLine("========");
+        Console.WriteLine("=======");
 
         foreach (var debuff in EnemyEffects)
         {
