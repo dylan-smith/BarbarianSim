@@ -14,7 +14,7 @@ public class AspectOfTheIronWarrior : Aspect, IHandlesEvent<IronSkinEvent>
     {
         if (IsAspectEquipped(state))
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, IronSkin.DURATION, Aura.Unstoppable));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Aspect of the Iron Warrior", IronSkin.DURATION, Aura.Unstoppable));
         }
     }
 

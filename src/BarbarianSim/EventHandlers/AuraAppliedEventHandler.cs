@@ -30,7 +30,7 @@ public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
                 duration = _crowdControlDurationCalculator.Calculate(state, duration);
             }
 
-            e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + duration, e.Target, e.Aura);
+            e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + duration, e.Source, e.Target, e.Aura);
             state.Events.Add(e.AuraExpiredEvent);
         }
     }

@@ -15,7 +15,7 @@ public class PenitentGreaves : Aspect, IHandlesEvent<SimulationStartedEvent>
         {
             foreach (var enemy in state.Enemies)
             {
-                state.Events.Add(new AuraAppliedEvent(0, 0, Aura.Chill, enemy));
+                state.Events.Add(new AuraAppliedEvent(0, "Penitent Greaves", 0, Aura.Chill, enemy));
             }
         }
     }

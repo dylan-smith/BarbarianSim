@@ -17,7 +17,7 @@ public class WrathTests
     [Fact]
     public void Creates_FuryGeneratedEvent()
     {
-        var damageEvent = new DamageEvent(123, 500, DamageType.Physical | DamageType.CriticalStrike, DamageSource.None, SkillType.Core, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 500, DamageType.Physical | DamageType.CriticalStrike, DamageSource.None, SkillType.Core, _state.Enemies.First());
 
         _paragon.ProcessEvent(damageEvent, _state);
 
@@ -30,7 +30,7 @@ public class WrathTests
     public void Does_Nothing_If_Paragon_Not_Active()
     {
         _state.Config.ParagonNodes.Remove(ParagonNode.Wrath);
-        var damageEvent = new DamageEvent(123, 500, DamageType.CriticalStrike, DamageSource.None, SkillType.Core, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 500, DamageType.CriticalStrike, DamageSource.None, SkillType.Core, _state.Enemies.First());
 
         _paragon.ProcessEvent(damageEvent, _state);
 
@@ -40,7 +40,7 @@ public class WrathTests
     [Fact]
     public void Only_Triggers_On_Crits()
     {
-        var damageEvent = new DamageEvent(123, 500, DamageType.Physical, DamageSource.None, SkillType.Core, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 500, DamageType.Physical, DamageSource.None, SkillType.Core, _state.Enemies.First());
 
         _paragon.ProcessEvent(damageEvent, _state);
 
@@ -50,7 +50,7 @@ public class WrathTests
     [Fact]
     public void Only_Triggers_On_Skills()
     {
-        var damageEvent = new DamageEvent(123, 500, DamageType.Physical | DamageType.CriticalStrike, DamageSource.None, SkillType.None, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 500, DamageType.Physical | DamageType.CriticalStrike, DamageSource.None, SkillType.None, _state.Enemies.First());
 
         _paragon.ProcessEvent(damageEvent, _state);
 

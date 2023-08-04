@@ -9,7 +9,7 @@ public class GohrsDevastatingGripsProcEventHandler : EventHandler<GohrsDevastati
     {
         foreach (var enemy in state.Enemies)
         {
-            var damageEvent = new DamageEvent(e.Timestamp, e.Damage, DamageType.Fire, DamageSource.GohrsDevastatingGrips, SkillType.None, enemy);
+            var damageEvent = new DamageEvent(e.Timestamp, "Gohr's Devastatic Grips", e.Damage, DamageType.Fire, DamageSource.GohrsDevastatingGrips, SkillType.None, enemy);
             e.DamageEvents.Add(damageEvent);
             state.Events.Add(damageEvent);
         }

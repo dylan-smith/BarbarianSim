@@ -19,7 +19,7 @@ public class EnhancedLungingStrike : IHandlesEvent<LungingStrikeEvent>
         if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) &&
             e.Target.IsHealthy())
         {
-            var healingEvent = new HealingEvent(e.Timestamp, _maxLifeCalculator.Calculate(state) * HEAL_PERCENT);
+            var healingEvent = new HealingEvent(e.Timestamp, "Enhanced Lunging Strike", _maxLifeCalculator.Calculate(state) * HEAL_PERCENT);
             state.Events.Add(healingEvent);
         }
     }

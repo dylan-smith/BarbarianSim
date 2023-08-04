@@ -13,7 +13,7 @@ public class StrategicRallyingCry : IHandlesEvent<RallyingCryEvent>, IHandlesEve
     {
         if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry) && state.Config.Skills[Skill.StrategicRallyingCry] > 0)
         {
-            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, FORTIFY * state.Player.BaseLife));
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Rallying Cry", FORTIFY * state.Player.BaseLife));
         }
     }
 
@@ -22,7 +22,7 @@ public class StrategicRallyingCry : IHandlesEvent<RallyingCryEvent>, IHandlesEve
         if (state.Config.HasSkill(Skill.StrategicRallyingCry) &&
             state.Player.Auras.Contains(Aura.RallyingCry))
         {
-            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, DIRECT_DAMAGE_FORTIFY * state.Player.BaseLife));
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Rallying Cry", DIRECT_DAMAGE_FORTIFY * state.Player.BaseLife));
         }
     }
 }

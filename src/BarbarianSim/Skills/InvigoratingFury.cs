@@ -21,7 +21,7 @@ public class InvigoratingFury : IHandlesEvent<FurySpentEvent>
             // but I don't think there's any way to spend more than 100 fury at once
             if (Math.Floor(totalFurySpent / 100) != Math.Floor((totalFurySpent - e.FurySpent) / 100))
             {
-                state.Events.Add(new HealingEvent(e.Timestamp, _maxLifeCalculator.Calculate(state) * GetHealingPercentage(state)));
+                state.Events.Add(new HealingEvent(e.Timestamp, "Invigorating Fury", _maxLifeCalculator.Calculate(state) * GetHealingPercentage(state)));
             }
         }
     }

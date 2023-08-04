@@ -5,7 +5,7 @@ namespace BarbarianSim.Events;
 
 public class DirectDamageEvent : EventInfo
 {
-    public DirectDamageEvent(double timestamp, double baseDamage, DamageType damageType, DamageSource damageSource, SkillType skillType, double luckyHitChance, GearItem weapon, EnemyState enemy) : base(timestamp)
+    public DirectDamageEvent(double timestamp, string source, double baseDamage, DamageType damageType, DamageSource damageSource, SkillType skillType, double luckyHitChance, GearItem weapon, EnemyState enemy) : base(timestamp, source)
     {
         BaseDamage = baseDamage;
         DamageType = damageType;
@@ -26,4 +26,6 @@ public class DirectDamageEvent : EventInfo
 
     public DamageEvent DamageEvent { get; set; }
     public LuckyHitEvent LuckyHitEvent { get; set; }
+
+    public override string ToString() => $"{base.ToString()} - {BaseDamage:F2} damage of type {DamageType} (Source: {Source})";
 }

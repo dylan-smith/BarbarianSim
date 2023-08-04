@@ -24,7 +24,7 @@ public class PressurePointTests
     public void Creates_PressurePointProcEvent()
     {
         _state.Config.Skills.Add(Skill.PressurePoint, 1);
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Core, _state.Enemies.First(), null);
+        var luckyHitEvent = new LuckyHitEvent(123, null, SkillType.Core, _state.Enemies.First(), null);
 
         _skill.ProcessEvent(luckyHitEvent, _state);
 
@@ -36,7 +36,7 @@ public class PressurePointTests
     [Fact]
     public void Only_Procs_On_Core_Skills()
     {
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Basic, _state.Enemies.First(), null);
+        var luckyHitEvent = new LuckyHitEvent(123, null, SkillType.Basic, _state.Enemies.First(), null);
 
         _skill.ProcessEvent(luckyHitEvent, _state);
 
@@ -48,7 +48,7 @@ public class PressurePointTests
     {
         _state.Config.Skills.Add(Skill.PressurePoint, 0);
         _mockRandomGenerator.Setup(m => m.Roll(RollType.PressurePoint)).Returns(0.001);
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.Core, _state.Enemies.First(), null);
+        var luckyHitEvent = new LuckyHitEvent(123, null, SkillType.Core, _state.Enemies.First(), null);
 
         _skill.ProcessEvent(luckyHitEvent, _state);
 

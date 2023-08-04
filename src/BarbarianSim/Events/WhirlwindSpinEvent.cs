@@ -3,7 +3,7 @@
 public class WhirlwindSpinEvent : EventInfo
 {
     // Rapidly attack surrounding enemies for 17%[x] damage (Fury Cost: 11, Lucky Hit: 20%)
-    public WhirlwindSpinEvent(double timestamp) : base(timestamp)
+    public WhirlwindSpinEvent(double timestamp) : base(timestamp, null)
     { }
 
     public AuraAppliedEvent WhirlwindingAuraAppliedEvent { get; set; }
@@ -12,4 +12,6 @@ public class WhirlwindSpinEvent : EventInfo
     public WhirlwindRefreshEvent WhirlwindRefreshEvent { get; set; }
     public AuraAppliedEvent WeaponCooldownAuraAppliedEvent { get; set; }
     public double BaseDamage { get; set; }
+
+    public override string ToString() => $"{base.ToString()} - {BaseDamage:F2} damage to each enemy";
 }

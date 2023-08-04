@@ -2,7 +2,7 @@
 
 public class WhirlwindStoppedEvent : EventInfo
 {
-    public WhirlwindStoppedEvent(double timestamp) : base(timestamp)
+    public WhirlwindStoppedEvent(double timestamp) : base(timestamp, null)
     {
     }
 

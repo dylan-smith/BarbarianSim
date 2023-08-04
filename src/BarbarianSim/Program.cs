@@ -194,7 +194,7 @@ internal class Program
             Rotation = sp.GetRequiredService<SpinToWin>()
         };
 
-        config.EnemySettings.Life = 400000000;
+        config.EnemySettings.Life = 40000000;
         config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;

@@ -16,7 +16,7 @@ public class CombatLungingStrikeTests
     public void Grants_Berserking_On_Crit()
     {
         _state.Config.Skills.Add(Skill.CombatLungingStrike, 1);
-        var damageEvent = new DamageEvent(123, 1200, DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 1200, DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _skill.ProcessEvent(damageEvent, _state);
 
@@ -30,7 +30,7 @@ public class CombatLungingStrikeTests
     public void Does_Nothing_On_Non_Crit()
     {
         _state.Config.Skills.Add(Skill.CombatLungingStrike, 1);
-        var damageEvent = new DamageEvent(123, 1200, DamageType.Physical | DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 1200, DamageType.Physical | DamageType.Direct, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _skill.ProcessEvent(damageEvent, _state);
 
@@ -40,7 +40,7 @@ public class CombatLungingStrikeTests
     [Fact]
     public void Does_Nothing_If_Not_Skilled()
     {
-        var damageEvent = new DamageEvent(123, 1200, DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 1200, DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _skill.ProcessEvent(damageEvent, _state);
 
@@ -51,7 +51,7 @@ public class CombatLungingStrikeTests
     public void Does_Nothing_If_Source_Not_LungingStrike()
     {
         _state.Config.Skills.Add(Skill.CombatLungingStrike, 1);
-        var damageEvent = new DamageEvent(123, 1200, DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Basic, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123, null, 1200, DamageType.Physical | DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Basic, _state.Enemies.First());
 
         _skill.ProcessEvent(damageEvent, _state);
 

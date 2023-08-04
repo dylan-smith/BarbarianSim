@@ -17,7 +17,7 @@ public class TwoHandedSwordExpertiseTests
     {
         _state.Config.Gear.TwoHandSlashing.Expertise = Expertise.TwoHandedSword;
         _state.Config.PlayerSettings.ExpertiseTechnique = Expertise.NA;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.None, DamageSource.None, SkillType.None, 0, _state.Config.Gear.TwoHandSlashing, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 500, DamageType.None, DamageSource.None, SkillType.None, 0, _state.Config.Gear.TwoHandSlashing, _state.Enemies.First());
 
         _expertise.ProcessEvent(directDamageEvent, _state);
 
@@ -33,7 +33,7 @@ public class TwoHandedSwordExpertiseTests
     {
         _state.Config.Gear.TwoHandSlashing.Expertise = Expertise.NA;
         _state.Config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedSword;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.None, DamageSource.None, SkillType.None, 0, _state.Config.Gear.TwoHandSlashing, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 500, DamageType.None, DamageSource.None, SkillType.None, 0, _state.Config.Gear.TwoHandSlashing, _state.Enemies.First());
 
         _expertise.ProcessEvent(directDamageEvent, _state);
 

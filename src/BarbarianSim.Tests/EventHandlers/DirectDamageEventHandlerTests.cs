@@ -53,7 +53,7 @@ public class DirectDamageEventHandlerTests
     [Fact]
     public void Creates_DamageEvent()
     {
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -73,7 +73,7 @@ public class DirectDamageEventHandlerTests
         _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, weapon))
                                             .Returns(4.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -89,7 +89,7 @@ public class DirectDamageEventHandlerTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.CriticalStrike))
                             .Returns(0.69);
 
-        var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, _state.Config.Gear.TwoHandBludgeoning, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, _state.Config.Gear.TwoHandBludgeoning, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -108,7 +108,7 @@ public class DirectDamageEventHandlerTests
         _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.NA, null, _state.Enemies.First()))
                                  .Returns(3.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -125,7 +125,7 @@ public class DirectDamageEventHandlerTests
         _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.OneHandedAxe, weapon, _state.Enemies.First()))
                                  .Returns(3.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 100, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -141,7 +141,7 @@ public class DirectDamageEventHandlerTests
         _mockCritDamageCalculator.Setup(m => m.Calculate(_state, Expertise.TwoHandedAxe, null, _state.Enemies.First()))
                                  .Returns(3.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -160,7 +160,7 @@ public class DirectDamageEventHandlerTests
         _mockOverpowerDamageCalculator.Setup(m => m.Calculate(_state))
                                       .Returns(2.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -179,7 +179,7 @@ public class DirectDamageEventHandlerTests
         _mockOverpowerDamageCalculator.Setup(m => m.Calculate(_state))
                                       .Returns(2.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -198,7 +198,7 @@ public class DirectDamageEventHandlerTests
         _mockOverpowerDamageCalculator.Setup(m => m.Calculate(_state))
                                       .Returns(2.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -217,7 +217,7 @@ public class DirectDamageEventHandlerTests
         _mockOverpowerDamageCalculator.Setup(m => m.Calculate(_state))
                                       .Returns(2.5);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -230,7 +230,7 @@ public class DirectDamageEventHandlerTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.Overpower))
                             .Returns(0.00);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -252,7 +252,7 @@ public class DirectDamageEventHandlerTests
         _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null))
                                             .Returns(4.0);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, null, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
@@ -263,7 +263,7 @@ public class DirectDamageEventHandlerTests
     public void LuckyHit_20_Percent_Chance()
     {
         var weapon = new GearItem() { Expertise = Expertise.OneHandedAxe };
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, weapon, _state.Enemies.First());
         _mockRandomGenerator.Setup(m => m.Roll(RollType.LuckyHit))
                             .Returns(0.19);
 
@@ -286,7 +286,7 @@ public class DirectDamageEventHandlerTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.LuckyHit))
                             .Returns(0.34);
 
-        var directDamageEvent = new DirectDamageEvent(123, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, _state.Config.Gear.TwoHandBludgeoning, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 1200, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, 20, _state.Config.Gear.TwoHandBludgeoning, _state.Enemies.First());
 
         _handler.ProcessEvent(directDamageEvent, _state);
 

@@ -13,7 +13,7 @@ public class ViolentWhirlwind : IHandlesEvent<WhirlwindSpinEvent>
     {
         if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp + DELAY, 0, Aura.ViolentWhirlwind));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp + DELAY, "Violent Whirlwind", 0, Aura.ViolentWhirlwind));
         }
     }
 

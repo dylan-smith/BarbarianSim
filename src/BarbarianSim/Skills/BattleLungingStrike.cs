@@ -13,7 +13,7 @@ public class BattleLungingStrike : IHandlesEvent<LungingStrikeEvent>
     {
         if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
         {
-            var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, e.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, e.Target);
+            var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, "Battle Lunging Strike", e.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, e.Target);
             state.Events.Add(bleedAppliedEvent);
         }
     }

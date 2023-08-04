@@ -27,7 +27,7 @@ public class FurySpentEventHandlerTests
     public void Removes_Fury_From_Player()
     {
         _state.Player.Fury = 29.0;
-        var furySpentEvent = new FurySpentEvent(123.0, 12.0, SkillType.Basic);
+        var furySpentEvent = new FurySpentEvent(123.0, null, 12.0, SkillType.Basic);
 
         _handler.ProcessEvent(furySpentEvent, _state);
 
@@ -41,7 +41,7 @@ public class FurySpentEventHandlerTests
         _mockFuryCostReductionCalculator.Setup(m => m.Calculate(_state, SkillType.Core))
                                         .Returns(0.8);
 
-        var furySpentEvent = new FurySpentEvent(123.0, 12.0, SkillType.Core);
+        var furySpentEvent = new FurySpentEvent(123.0, null, 12.0, SkillType.Core);
 
         _handler.ProcessEvent(furySpentEvent, _state);
 
@@ -52,7 +52,7 @@ public class FurySpentEventHandlerTests
     public void Player_Fury_Cant_Go_Below_0()
     {
         _state.Player.Fury = 10.0;
-        var furySpentEvent = new FurySpentEvent(123.0, 12.0, SkillType.Basic);
+        var furySpentEvent = new FurySpentEvent(123.0, null, 12.0, SkillType.Basic);
 
         _handler.ProcessEvent(furySpentEvent, _state);
 

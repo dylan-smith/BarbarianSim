@@ -25,7 +25,7 @@ public class FortifyGeneratedEventHandlerTests
     [Fact]
     public void Adds_Fortify_To_Player()
     {
-        var fortifyGeneratedEvent = new FortifyGeneratedEvent(123.0, 12.0);
+        var fortifyGeneratedEvent = new FortifyGeneratedEvent(123.0, null, 12.0);
 
         _handler.ProcessEvent(fortifyGeneratedEvent, _state);
 
@@ -38,7 +38,7 @@ public class FortifyGeneratedEventHandlerTests
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                               .Returns(4000);
         _state.Player.Fortify = 3970;
-        var fortifyGeneratedEvent = new FortifyGeneratedEvent(123.0, 80.0);
+        var fortifyGeneratedEvent = new FortifyGeneratedEvent(123.0, null, 80.0);
 
         _handler.ProcessEvent(fortifyGeneratedEvent, _state);
 

@@ -26,7 +26,7 @@ public class StrategicIronSkin : IHandlesEvent<Events.IronSkinEvent>
                 fortifyAmount *= 2;
             }
 
-            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, fortifyAmount));
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Iron Skin", fortifyAmount));
         }
     }
 }

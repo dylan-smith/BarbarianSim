@@ -10,7 +10,7 @@ public class EnhancedRallyingCry : IHandlesEvent<RallyingCryEvent>
     {
         if (state.Config.Skills.ContainsKey(Skill.EnhancedRallyingCry) && state.Config.Skills[Skill.EnhancedRallyingCry] > 0)
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.Unstoppable));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Enhanced Rallying Cry", e.Duration, Aura.Unstoppable));
         }
     }
 }

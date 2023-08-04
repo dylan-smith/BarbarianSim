@@ -27,7 +27,7 @@ public class BleedCompletedEventHandlerTests
     public void Removes_Bleeding_Aura()
     {
         _state.Enemies.First().Auras.Add(Aura.Bleeding);
-        var bleedCompletedEvent = new BleedCompletedEvent(123.0, 500.0, _state.Enemies.First());
+        var bleedCompletedEvent = new BleedCompletedEvent(123.0, null, 500.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedCompletedEvent, _state);
 
@@ -38,8 +38,8 @@ public class BleedCompletedEventHandlerTests
     public void Leaves_Bleeding_Aura_If_Other_BleedCompletedEvents_Exist()
     {
         _state.Enemies.First().Auras.Add(Aura.Bleeding);
-        _state.Events.Add(new BleedCompletedEvent(126.0, 300.0, _state.Enemies.First()));
-        var bleedCompletedEvent = new BleedCompletedEvent(123.0, 500.0, _state.Enemies.First());
+        _state.Events.Add(new BleedCompletedEvent(126.0, null, 300.0, _state.Enemies.First()));
+        var bleedCompletedEvent = new BleedCompletedEvent(123.0, null, 500.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedCompletedEvent, _state);
 
@@ -49,7 +49,7 @@ public class BleedCompletedEventHandlerTests
     [Fact]
     public void Creates_DamageEvent()
     {
-        var bleedCompletedEvent = new BleedCompletedEvent(123.0, 500.0, _state.Enemies.First());
+        var bleedCompletedEvent = new BleedCompletedEvent(123.0, null, 500.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedCompletedEvent, _state);
 
@@ -67,7 +67,7 @@ public class BleedCompletedEventHandlerTests
     public void Applied_Damage_Multipliers()
     {
         _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(_state, DamageType.Physical | DamageType.DamageOverTime, _state.Enemies.First(), SkillType.None, DamageSource.Bleeding, null)).Returns(2.5);
-        var bleedCompletedEvent = new BleedCompletedEvent(123.0, 500.0, _state.Enemies.First());
+        var bleedCompletedEvent = new BleedCompletedEvent(123.0, null, 500.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedCompletedEvent, _state);
 

@@ -15,10 +15,10 @@ public class WarCryEventHandler : EventHandler<WarCryEvent>
     {
         e.Duration = WarCry.DURATION * _boomingVoice.GetDurationIncrease(state);
 
-        e.WarCryAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.WarCry);
+        e.WarCryAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "War Cry", e.Duration, Aura.WarCry);
         state.Events.Add(e.WarCryAuraAppliedEvent);
 
-        e.WarCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, WarCry.COOLDOWN, Aura.WarCryCooldown);
+        e.WarCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "War Cry", WarCry.COOLDOWN, Aura.WarCryCooldown);
         state.Events.Add(e.WarCryCooldownAuraAppliedEvent);
     }
 }

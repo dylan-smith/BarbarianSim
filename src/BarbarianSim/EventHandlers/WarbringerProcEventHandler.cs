@@ -11,7 +11,7 @@ public class WarbringerProcEventHandler : EventHandler<WarbringerProcEvent>
 
     public override void ProcessEvent(WarbringerProcEvent e, SimulationState state)
     {
-        e.FortifyGeneratedEvent = new FortifyGeneratedEvent(e.Timestamp, _warbringer.GetFortifyGenerated(state));
+        e.FortifyGeneratedEvent = new FortifyGeneratedEvent(e.Timestamp, "Warbringer", _warbringer.GetFortifyGenerated(state));
         state.Events.Add(e.FortifyGeneratedEvent);
     }
 }

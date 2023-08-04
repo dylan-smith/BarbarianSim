@@ -23,7 +23,7 @@ public sealed class AspectOfTheDireWhirlwindTests
     public void Returns_Max_Bonus_When_Spinning_For_Long_Time()
     {
         _state.Player.Auras.Add(Aura.Whirlwinding);
-        var auraAppliedEvent = new AuraAppliedEvent(0, 0, Aura.Whirlwinding);
+        var auraAppliedEvent = new AuraAppliedEvent(0, null, 0, Aura.Whirlwinding);
         _state.ProcessedEvents.Add(auraAppliedEvent);
         _state.CurrentTime = 123;
 
@@ -35,7 +35,7 @@ public sealed class AspectOfTheDireWhirlwindTests
     {
         _state.Config.Gear.Helm.Aspect = null;
         _state.Player.Auras.Add(Aura.Whirlwinding);
-        var auraAppliedEvent = new AuraAppliedEvent(0, 0, Aura.Whirlwinding);
+        var auraAppliedEvent = new AuraAppliedEvent(0, null, 0, Aura.Whirlwinding);
         _state.ProcessedEvents.Add(auraAppliedEvent);
         _state.CurrentTime = 123;
 
@@ -45,7 +45,7 @@ public sealed class AspectOfTheDireWhirlwindTests
     [Fact]
     public void Returns_0_When_No_Aura()
     {
-        var auraAppliedEvent = new AuraAppliedEvent(0, 0, Aura.Whirlwinding);
+        var auraAppliedEvent = new AuraAppliedEvent(0, null, 0, Aura.Whirlwinding);
         _state.ProcessedEvents.Add(auraAppliedEvent);
         _state.CurrentTime = 123;
 
@@ -56,7 +56,7 @@ public sealed class AspectOfTheDireWhirlwindTests
     public void Bonus_Is_Based_On_Time_Spinning()
     {
         _state.Player.Auras.Add(Aura.Whirlwinding);
-        var auraAppliedEvent = new AuraAppliedEvent(0, 0, Aura.Whirlwinding);
+        var auraAppliedEvent = new AuraAppliedEvent(0, null, 0, Aura.Whirlwinding);
         _state.ProcessedEvents.Add(auraAppliedEvent);
         _state.CurrentTime = 2;
 
@@ -67,9 +67,9 @@ public sealed class AspectOfTheDireWhirlwindTests
     public void Starts_Looking_From_Last_AuraExpiredEvent()
     {
         _state.Player.Auras.Add(Aura.Whirlwinding);
-        _state.ProcessedEvents.Add(new AuraAppliedEvent(0, 0, Aura.Whirlwinding));
-        _state.ProcessedEvents.Add(new AuraExpiredEvent(5.0, Aura.Whirlwinding));
-        _state.ProcessedEvents.Add(new AuraAppliedEvent(6.1, 0, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraAppliedEvent(0, null, 0, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraExpiredEvent(5.0, null, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraAppliedEvent(6.1, null, 0, Aura.Whirlwinding));
         _state.CurrentTime = 7.2;
 
         _aspect.GetCritChanceBonus(_state).Should().Be(8);
@@ -79,10 +79,10 @@ public sealed class AspectOfTheDireWhirlwindTests
     public void Ignores_Redundant_AuraAppliedEvents()
     {
         _state.Player.Auras.Add(Aura.Whirlwinding);
-        _state.ProcessedEvents.Add(new AuraAppliedEvent(0, 0, Aura.Whirlwinding));
-        _state.ProcessedEvents.Add(new AuraExpiredEvent(5.0, Aura.Whirlwinding));
-        _state.ProcessedEvents.Add(new AuraAppliedEvent(6.1, 0, Aura.Whirlwinding));
-        _state.ProcessedEvents.Add(new AuraAppliedEvent(6.5, 0, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraAppliedEvent(0, null, 0, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraExpiredEvent(5.0, null, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraAppliedEvent(6.1, null, 0, Aura.Whirlwinding));
+        _state.ProcessedEvents.Add(new AuraAppliedEvent(6.5, null, 0, Aura.Whirlwinding));
         _state.CurrentTime = 7.2;
 
         _aspect.GetCritChanceBonus(_state).Should().Be(8);

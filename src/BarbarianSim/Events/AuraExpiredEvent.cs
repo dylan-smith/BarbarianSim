@@ -4,9 +4,9 @@ namespace BarbarianSim.Events;
 
 public class AuraExpiredEvent : EventInfo
 {
-    public AuraExpiredEvent(double timestamp, Aura aura) : base(timestamp) => Aura = aura;
+    public AuraExpiredEvent(double timestamp, string source, Aura aura) : base(timestamp, source) => Aura = aura;
 
-    public AuraExpiredEvent(double timestamp, EnemyState target, Aura aura) : base(timestamp)
+    public AuraExpiredEvent(double timestamp, string source, EnemyState target, Aura aura) : base(timestamp, source)
     {
         Aura = aura;
         Target = target;
@@ -15,5 +15,5 @@ public class AuraExpiredEvent : EventInfo
     public Aura Aura { get; set; }
     public EnemyState Target { get; set; }
 
-    public override string ToString() => $"[{Timestamp:F1}] {Aura} Aura Expired";
+    public override string ToString() => $"{base.ToString()} - {Aura} expired (Source: {Source})";
 }

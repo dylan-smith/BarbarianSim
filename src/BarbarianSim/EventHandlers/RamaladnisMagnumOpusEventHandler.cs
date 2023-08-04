@@ -8,7 +8,7 @@ public class RamaladnisMagnumOpusEventHandler : EventHandler<RamaladnisMagnumOpu
 {
     public override void ProcessEvent(RamaladnisMagnumOpusEvent e, SimulationState state)
     {
-        e.FurySpentEvent = new FurySpentEvent(e.Timestamp, RamaladnisMagnumOpus.FURY_PER_SECOND_LOST, SkillType.None);
+        e.FurySpentEvent = new FurySpentEvent(e.Timestamp, "Ramaladni's Magnum Opus", RamaladnisMagnumOpus.FURY_PER_SECOND_LOST, SkillType.None);
         state.Events.Add(e.FurySpentEvent);
 
         e.NextRamaladnisMagnumOpusEvent = new RamaladnisMagnumOpusEvent(e.Timestamp + 1);

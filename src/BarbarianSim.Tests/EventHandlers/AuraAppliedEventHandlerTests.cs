@@ -26,7 +26,7 @@ public class AuraAppliedEventHandlerTests
     {
         var testAura = Aura.WarCry;
 
-        var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, testAura);
+        var auraAppliedEvent = new AuraAppliedEvent(123.0, null, 5, testAura);
 
         _handler.ProcessEvent(auraAppliedEvent, _state);
 
@@ -38,7 +38,7 @@ public class AuraAppliedEventHandlerTests
     {
         var testAura = Aura.WarCry;
 
-        var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, testAura);
+        var auraAppliedEvent = new AuraAppliedEvent(123.0, null, 5, testAura);
 
         _handler.ProcessEvent(auraAppliedEvent, _state);
 
@@ -57,7 +57,7 @@ public class AuraAppliedEventHandlerTests
         var config = new SimulationConfig();
         config.EnemySettings.NumberOfEnemies = 3;
         var state = new SimulationState(config);
-        var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, testAura, state.Enemies.Last());
+        var auraAppliedEvent = new AuraAppliedEvent(123.0, null, 5, testAura, state.Enemies.Last());
 
         _handler.ProcessEvent(auraAppliedEvent, state);
 
@@ -70,7 +70,7 @@ public class AuraAppliedEventHandlerTests
     {
         var testAura = Aura.WarCry;
 
-        var auraAppliedEvent = new AuraAppliedEvent(123.0, 0, testAura);
+        var auraAppliedEvent = new AuraAppliedEvent(123.0, null, 0, testAura);
 
         _handler.ProcessEvent(auraAppliedEvent, _state);
 
@@ -83,7 +83,7 @@ public class AuraAppliedEventHandlerTests
     {
         _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(_state, 5)).Returns(7);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123.0, 5, Aura.Stun);
+        var auraAppliedEvent = new AuraAppliedEvent(123.0, null, 5, Aura.Stun);
 
         _handler.ProcessEvent(auraAppliedEvent, _state);
 

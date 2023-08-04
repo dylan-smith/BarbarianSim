@@ -19,7 +19,7 @@ public sealed class AspectOfLimitlessRageTests
         _aspect.Damage = 2;
         _aspect.MaxDamage = 30;
 
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20)
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20)
         {
             OverflowFury = 1
         };
@@ -35,7 +35,7 @@ public sealed class AspectOfLimitlessRageTests
         _aspect.Damage = 2;
         _aspect.MaxDamage = 30;
 
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 70 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 70 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
         _aspect.GetDamageBonus(_state, SkillType.Core).Should().Be(1.3);
@@ -48,9 +48,9 @@ public sealed class AspectOfLimitlessRageTests
         _aspect.Damage = 2;
         _aspect.MaxDamage = 30;
 
-        var furyGeneratedEvent1 = new FuryGeneratedEvent(123, 20) { OverflowFury = 2 };
-        var furyGeneratedEvent2 = new FuryGeneratedEvent(123, 20) { OverflowFury = 3 };
-        var furyGeneratedEvent3 = new FuryGeneratedEvent(123, 20) { OverflowFury = 4 };
+        var furyGeneratedEvent1 = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 2 };
+        var furyGeneratedEvent2 = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 3 };
+        var furyGeneratedEvent3 = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 4 };
 
         _aspect.ProcessEvent(furyGeneratedEvent1, _state);
         _aspect.ProcessEvent(furyGeneratedEvent2, _state);
@@ -65,7 +65,7 @@ public sealed class AspectOfLimitlessRageTests
         _aspect.Damage = 2;
         _aspect.MaxDamage = 30;
 
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 70 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 70 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
         _aspect.GetDamageBonus(_state, SkillType.Core).Should().Be(1.3);
@@ -78,7 +78,7 @@ public sealed class AspectOfLimitlessRageTests
         _aspect.Damage = 2;
         _aspect.MaxDamage = 30;
 
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 70 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 70 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
         _aspect.GetDamageBonus(_state, SkillType.Core).Should().Be(1.0);
@@ -91,7 +91,7 @@ public sealed class AspectOfLimitlessRageTests
         _aspect.Damage = 2;
         _aspect.MaxDamage = 30;
 
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 70 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 70 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
         _aspect.GetDamageBonus(_state, SkillType.Basic).Should().Be(1.0);

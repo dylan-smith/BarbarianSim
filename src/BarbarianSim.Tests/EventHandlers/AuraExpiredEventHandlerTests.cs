@@ -18,7 +18,7 @@ public class AuraExpiredEventHandlerTests
         var testAura = Aura.WarCry;
 
         _state.Player.Auras.Add(testAura);
-        var auraExpiredEvent = new AuraExpiredEvent(123.0, testAura);
+        var auraExpiredEvent = new AuraExpiredEvent(123.0, null, testAura);
 
         _handler.ProcessEvent(auraExpiredEvent, _state);
 
@@ -31,8 +31,8 @@ public class AuraExpiredEventHandlerTests
         var testAura = Aura.WarCry;
 
         _state.Player.Auras.Add(testAura);
-        _state.Events.Add(new AuraExpiredEvent(126.0, testAura));
-        var auraExpiredEvent = new AuraExpiredEvent(123.0, testAura);
+        _state.Events.Add(new AuraExpiredEvent(126.0, null, testAura));
+        var auraExpiredEvent = new AuraExpiredEvent(123.0, null, testAura);
 
         _handler.ProcessEvent(auraExpiredEvent, _state);
 
@@ -46,8 +46,8 @@ public class AuraExpiredEventHandlerTests
         var diffAura = Aura.Whirlwinding;
 
         _state.Player.Auras.Add(testAura);
-        _state.Events.Add(new AuraExpiredEvent(126.0, diffAura));
-        var auraExpiredEvent = new AuraExpiredEvent(123.0, testAura);
+        _state.Events.Add(new AuraExpiredEvent(126.0, null, diffAura));
+        var auraExpiredEvent = new AuraExpiredEvent(123.0, null, testAura);
 
         _handler.ProcessEvent(auraExpiredEvent, _state);
 
@@ -65,9 +65,9 @@ public class AuraExpiredEventHandlerTests
         var diffEnemy = state.Enemies.Last();
 
         testEnemy.Auras.Add(Aura.Berserking);
-        state.Events.Add(new AuraExpiredEvent(126.0, Aura.Berserking));
-        state.Events.Add(new AuraExpiredEvent(126.0, diffEnemy, Aura.Berserking));
-        var auraExpiredEvent = new AuraExpiredEvent(123.0, testEnemy, Aura.Berserking);
+        state.Events.Add(new AuraExpiredEvent(126.0, null, Aura.Berserking));
+        state.Events.Add(new AuraExpiredEvent(126.0, null, diffEnemy, Aura.Berserking));
+        var auraExpiredEvent = new AuraExpiredEvent(123.0, null, testEnemy, Aura.Berserking);
 
         _handler.ProcessEvent(auraExpiredEvent, state);
 
@@ -83,7 +83,7 @@ public class AuraExpiredEventHandlerTests
 
         state.Enemies.First().Auras.Add(Aura.Berserking);
         state.Enemies.Last().Auras.Add(Aura.Berserking);
-        var auraExpiredEvent = new AuraExpiredEvent(123.0, state.Enemies.Last(), Aura.Berserking);
+        var auraExpiredEvent = new AuraExpiredEvent(123.0, null, state.Enemies.Last(), Aura.Berserking);
 
         _handler.ProcessEvent(auraExpiredEvent, state);
 

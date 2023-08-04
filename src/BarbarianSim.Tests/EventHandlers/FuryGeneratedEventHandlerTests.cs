@@ -29,7 +29,7 @@ public class FuryGeneratedEventHandlerTests
     [Fact]
     public void Adds_Fury_To_Player()
     {
-        var furyGeneratedEvent = new FuryGeneratedEvent(123.0, 12.0);
+        var furyGeneratedEvent = new FuryGeneratedEvent(123.0, null, 12.0);
 
         _handler.ProcessEvent(furyGeneratedEvent, _state);
 
@@ -42,7 +42,7 @@ public class FuryGeneratedEventHandlerTests
         _mockResourceGenerationCalculator.Setup(m => m.Calculate(_state))
                                          .Returns(1.4);
 
-        var furyGeneratedEvent = new FuryGeneratedEvent(123.0, 12.0);
+        var furyGeneratedEvent = new FuryGeneratedEvent(123.0, null, 12.0);
 
         _handler.ProcessEvent(furyGeneratedEvent, _state);
 
@@ -55,7 +55,7 @@ public class FuryGeneratedEventHandlerTests
         _mockMaxFuryCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                               .Returns(130);
         _state.Player.Fury = 125;
-        var furyGeneratedEvent = new FuryGeneratedEvent(123.0, 12.0);
+        var furyGeneratedEvent = new FuryGeneratedEvent(123.0, null, 12.0);
 
         _handler.ProcessEvent(furyGeneratedEvent, _state);
 

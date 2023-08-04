@@ -2,7 +2,7 @@
 
 public class WhirlwindRefreshEvent : EventInfo
 {
-    public WhirlwindRefreshEvent(double timestamp) : base(timestamp)
+    public WhirlwindRefreshEvent(double timestamp) : base(timestamp, null)
     { }
 
     public WhirlwindSpinEvent WhirlwindSpinEvent { get; set; }

@@ -17,7 +17,7 @@ public class Wrath : IHandlesEvent<DamageEvent>
 
         if (e.SkillType != SkillType.None && e.DamageType.HasFlag(DamageType.CriticalStrike))
         {
-            state.Events.Add(new FuryGeneratedEvent(e.Timestamp, FURY_GENERATED));
+            state.Events.Add(new FuryGeneratedEvent(e.Timestamp, "Wrath", FURY_GENERATED));
         }
     }
 }

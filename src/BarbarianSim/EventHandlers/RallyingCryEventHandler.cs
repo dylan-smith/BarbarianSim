@@ -15,10 +15,10 @@ public class RallyingCryEventHandler : EventHandler<RallyingCryEvent>
     {
         e.Duration = RallyingCry.DURATION * _boomingVoice.GetDurationIncrease(state);
 
-        e.RallyingCryAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.RallyingCry);
+        e.RallyingCryAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Rallying Cry", e.Duration, Aura.RallyingCry);
         state.Events.Add(e.RallyingCryAuraAppliedEvent);
 
-        e.RallyingCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
+        e.RallyingCryCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Rallying Cry", RallyingCry.COOLDOWN, Aura.RallyingCryCooldown);
         state.Events.Add(e.RallyingCryCooldownAuraAppliedEvent);
     }
 }

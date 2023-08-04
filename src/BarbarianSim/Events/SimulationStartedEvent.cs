@@ -2,7 +2,7 @@
 
 public class SimulationStartedEvent : EventInfo
 {
-    public SimulationStartedEvent(double timestamp) : base(timestamp)
+    public SimulationStartedEvent(double timestamp) : base(timestamp, null)
     {
     }
 }

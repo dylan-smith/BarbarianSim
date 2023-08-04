@@ -21,7 +21,7 @@ public class GhostwalkerAspectTests
     [Fact]
     public void Creates_AuraAppliedEvent()
     {
-        var unstoppableAppliedEvent = new AuraAppliedEvent(123, 5, Aura.Unstoppable);
+        var unstoppableAppliedEvent = new AuraAppliedEvent(123, null, 5, Aura.Unstoppable);
 
         _aspect.ProcessEvent(unstoppableAppliedEvent, _state);
 
@@ -35,7 +35,7 @@ public class GhostwalkerAspectTests
     public void Does_Nothing_When_Not_Equipped()
     {
         _state.Config.Gear.Helm.Aspect = null;
-        var unstoppableAppliedEvent = new AuraAppliedEvent(123, 5, Aura.Unstoppable);
+        var unstoppableAppliedEvent = new AuraAppliedEvent(123, null, 5, Aura.Unstoppable);
 
         _aspect.ProcessEvent(unstoppableAppliedEvent, _state);
 

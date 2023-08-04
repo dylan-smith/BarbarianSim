@@ -24,7 +24,7 @@ public sealed class AspectOfDisobedienceTests
     {
         for (var i = 0; i < 100; i++)
         {
-            _state.ProcessedEvents.Add(new DamageEvent(i / 100.0, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+            _state.ProcessedEvents.Add(new DamageEvent(i / 100.0, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
         }
 
         _state.CurrentTime = 3;
@@ -35,12 +35,12 @@ public sealed class AspectOfDisobedienceTests
     [Fact]
     public void Only_Considers_Damage_In_Previous_4_Seconds()
     {
-        _state.ProcessedEvents.Add(new DamageEvent(1, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(2, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(3, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(4, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(5, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(6, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(1, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(2, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(3, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(4, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(5, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(6, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
 
         _state.CurrentTime = 6.3;
 
@@ -50,12 +50,12 @@ public sealed class AspectOfDisobedienceTests
     [Fact]
     public void Returns_1_When_No_Damage()
     {
-        _state.ProcessedEvents.Add(new DamageEvent(1, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(2, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(3, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(4, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(5, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
-        _state.ProcessedEvents.Add(new DamageEvent(6, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(1, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(2, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(3, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(4, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(5, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(6, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
 
         _state.CurrentTime = 12;
 
@@ -66,7 +66,7 @@ public sealed class AspectOfDisobedienceTests
     public void Returns_1_When_Not_Equipped()
     {
         _state.Config.Gear.Helm.Aspect = null;
-        _state.ProcessedEvents.Add(new DamageEvent(6, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
+        _state.ProcessedEvents.Add(new DamageEvent(6, null, 100, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, _state.Enemies.First()));
 
         _state.CurrentTime = 6.1;
 

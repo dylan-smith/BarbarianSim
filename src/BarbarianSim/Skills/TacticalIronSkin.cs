@@ -13,7 +13,7 @@ public class TacticalIronSkin : IHandlesEvent<Events.IronSkinEvent>
         {
             for (var i = 0; i < IronSkin.DURATION; i++)
             {
-                var healEvent = new HealingEvent(e.Timestamp + i + 1, e.BarrierAppliedEvent.BarrierAmount * IronSkin.HEAL_FROM_TACTICAL);
+                var healEvent = new HealingEvent(e.Timestamp + i + 1, "Tactical Iron Skin", e.BarrierAppliedEvent.BarrierAmount * IronSkin.HEAL_FROM_TACTICAL);
                 state.Events.Add(healEvent);
             }
         }

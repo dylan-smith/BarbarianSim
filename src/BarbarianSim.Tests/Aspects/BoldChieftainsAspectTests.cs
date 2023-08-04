@@ -21,7 +21,7 @@ public class BoldChieftainsAspectTests
     [Fact]
     public void ChallengingShout_Reduces_Cooldown()
     {
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.ChallengingShoutCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.ChallengingShoutCooldown);
         _state.Events.Add(auraAppliedEvent);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
@@ -38,7 +38,7 @@ public class BoldChieftainsAspectTests
         config.Gear.Helm.Aspect = _aspect;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.ChallengingShoutCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.ChallengingShoutCooldown);
         state.Events.Add(auraAppliedEvent);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
@@ -54,7 +54,7 @@ public class BoldChieftainsAspectTests
         config.EnemySettings.NumberOfEnemies = 3;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.ChallengingShoutCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.ChallengingShoutCooldown);
         state.Events.Add(auraAppliedEvent);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
@@ -71,7 +71,7 @@ public class BoldChieftainsAspectTests
         config.Gear.Helm.Aspect = _aspect;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.ChallengingShoutCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.ChallengingShoutCooldown);
         state.Events.Add(auraAppliedEvent);
         var challengingShoutEvent = new ChallengingShoutEvent(123);
 
@@ -83,7 +83,7 @@ public class BoldChieftainsAspectTests
     [Fact]
     public void RallyingCry_Reduces_Cooldown()
     {
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.RallyingCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.RallyingCryCooldown);
         _state.Events.Add(auraAppliedEvent);
         var rallyingCryEvent = new RallyingCryEvent(123);
 
@@ -100,7 +100,7 @@ public class BoldChieftainsAspectTests
         config.Gear.Helm.Aspect = _aspect;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.RallyingCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.RallyingCryCooldown);
         state.Events.Add(auraAppliedEvent);
         var rallyingCryEvent = new RallyingCryEvent(123);
 
@@ -116,7 +116,7 @@ public class BoldChieftainsAspectTests
         config.EnemySettings.NumberOfEnemies = 3;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.RallyingCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.RallyingCryCooldown);
         state.Events.Add(auraAppliedEvent);
         var rallyingCryEvent = new RallyingCryEvent(123);
 
@@ -133,7 +133,7 @@ public class BoldChieftainsAspectTests
         config.Gear.Helm.Aspect = _aspect;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.RallyingCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.RallyingCryCooldown);
         state.Events.Add(auraAppliedEvent);
         var rallyingCryEvent = new RallyingCryEvent(123);
 
@@ -145,7 +145,7 @@ public class BoldChieftainsAspectTests
     [Fact]
     public void WarCry_Reduces_Cooldown()
     {
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.WarCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.WarCryCooldown);
         _state.Events.Add(auraAppliedEvent);
         var warCryEvent = new WarCryEvent(123);
 
@@ -162,7 +162,7 @@ public class BoldChieftainsAspectTests
         config.Gear.Helm.Aspect = _aspect;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.WarCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.WarCryCooldown);
         state.Events.Add(auraAppliedEvent);
         var warCryEvent = new WarCryEvent(123);
 
@@ -178,7 +178,7 @@ public class BoldChieftainsAspectTests
         config.EnemySettings.NumberOfEnemies = 3;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.WarCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.WarCryCooldown);
         state.Events.Add(auraAppliedEvent);
         var warCryEvent = new WarCryEvent(123);
 
@@ -195,7 +195,7 @@ public class BoldChieftainsAspectTests
         config.Gear.Helm.Aspect = _aspect;
         var state = new SimulationState(config);
 
-        var auraAppliedEvent = new AuraAppliedEvent(123, 20, Aura.WarCryCooldown);
+        var auraAppliedEvent = new AuraAppliedEvent(123, null, 20, Aura.WarCryCooldown);
         state.Events.Add(auraAppliedEvent);
         var warCryEvent = new WarCryEvent(123);
 

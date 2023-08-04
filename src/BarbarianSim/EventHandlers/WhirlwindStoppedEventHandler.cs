@@ -7,10 +7,10 @@ public class WhirlwindStoppedEventHandler : EventHandler<WhirlwindStoppedEvent>
 {
     public override void ProcessEvent(WhirlwindStoppedEvent e, SimulationState state)
     {
-        e.WhirlwindingAuraExpiredEvent = new AuraExpiredEvent(e.Timestamp, Aura.Whirlwinding);
+        e.WhirlwindingAuraExpiredEvent = new AuraExpiredEvent(e.Timestamp, "Whirlwind", Aura.Whirlwinding);
         state.Events.Add(e.WhirlwindingAuraExpiredEvent);
 
-        e.ViolentWhirlwindAuraExpiredEvent = new AuraExpiredEvent(e.Timestamp, Aura.ViolentWhirlwind);
+        e.ViolentWhirlwindAuraExpiredEvent = new AuraExpiredEvent(e.Timestamp, "Whirlwind", Aura.ViolentWhirlwind);
         state.Events.Add(e.ViolentWhirlwindAuraExpiredEvent);
 
         state.Events.RemoveAll(x => x is AuraAppliedEvent appliedEvent && appliedEvent.Aura == Aura.ViolentWhirlwind);

@@ -19,7 +19,7 @@ public class RaidLeaderProcEventHandler : EventHandler<RaidLeaderProcEvent>
     {
         for (var i = 0; i < Math.Floor(e.Duration); i++)
         {
-            var healEvent = new HealingEvent(e.Timestamp + i + 1, _maxLifeCalculator.Calculate(state) * _raidLeader.GetHealPercentage(state));
+            var healEvent = new HealingEvent(e.Timestamp + i + 1, "Raid Leader", _maxLifeCalculator.Calculate(state) * _raidLeader.GetHealPercentage(state));
             e.HealingEvents.Add(healEvent);
             state.Events.Add(healEvent);
         }

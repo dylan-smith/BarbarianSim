@@ -25,7 +25,7 @@ public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
             state.Player.Auras.Contains(Aura.WrathOfTheBerserker) &&
             e.SkillType == SkillType.Basic)
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, BERSERKING_DURATION, Aura.Berserking));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Wrath Of The Berserker", BERSERKING_DURATION, Aura.Berserking));
         }
     }
 }

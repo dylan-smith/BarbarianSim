@@ -10,7 +10,7 @@ public class DamageEvent : EventInfo
     public SkillType SkillType { get; init; }
     public EnemyState Target { get; init; }
 
-    public DamageEvent(double timestamp, double damage, DamageType damageType, DamageSource damageSource, SkillType skillType, EnemyState target) : base(timestamp)
+    public DamageEvent(double timestamp, string source, double damage, DamageType damageType, DamageSource damageSource, SkillType skillType, EnemyState target) : base(timestamp, source)
     {
         Damage = damage;
         DamageType = damageType;
@@ -19,5 +19,5 @@ public class DamageEvent : EventInfo
         Target = target;
     }
 
-    public override string ToString() => $"[{Timestamp:F1}] {DamageType} for {Damage:F2}";
+    public override string ToString() => $"{base.ToString()} - {Damage:F2} dealt ({DamageType}) (Source: {Source})";
 }

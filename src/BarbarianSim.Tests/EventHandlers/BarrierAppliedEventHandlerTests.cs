@@ -14,7 +14,7 @@ public class BarrierAppliedEventHandlerTests
     [Fact]
     public void Adds_Barrier_To_Player()
     {
-        var barrierAppliedEvent = new BarrierAppliedEvent(123.0, 1000, 10.0);
+        var barrierAppliedEvent = new BarrierAppliedEvent(123.0, null, 1000, 10.0);
 
         _handler.ProcessEvent(barrierAppliedEvent, _state);
 
@@ -26,7 +26,7 @@ public class BarrierAppliedEventHandlerTests
     [Fact]
     public void Creates_BarrierExpiredEvent()
     {
-        var barrierAppliedEvent = new BarrierAppliedEvent(123.0, 1000, 10.0);
+        var barrierAppliedEvent = new BarrierAppliedEvent(123.0, null, 1000, 10.0);
 
         _handler.ProcessEvent(barrierAppliedEvent, _state);
 

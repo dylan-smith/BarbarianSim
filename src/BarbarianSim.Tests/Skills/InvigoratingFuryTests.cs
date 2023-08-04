@@ -25,7 +25,7 @@ public class InvigoratingFuryTests
     public void Creates_HealingEvent()
     {
         _state.Config.Skills.Add(Skill.InvigoratingFury, 1);
-        var furySpentEvent = new FurySpentEvent(123, 100, SkillType.Basic)
+        var furySpentEvent = new FurySpentEvent(123, null, 100, SkillType.Basic)
         {
             FurySpent = 100
         };
@@ -42,12 +42,12 @@ public class InvigoratingFuryTests
     public void Does_Not_Proc_When_Fury_Not_Crossing_100_Threshold()
     {
         _state.Config.Skills.Add(Skill.InvigoratingFury, 1);
-        var previousFuryEvent = new FurySpentEvent(110, 25, SkillType.Basic)
+        var previousFuryEvent = new FurySpentEvent(110, null, 25, SkillType.Basic)
         {
             FurySpent = 25
         };
         _state.ProcessedEvents.Add(previousFuryEvent);
-        var furySpentEvent = new FurySpentEvent(123, 70, SkillType.Basic)
+        var furySpentEvent = new FurySpentEvent(123, null, 70, SkillType.Basic)
         {
             FurySpent = 70
         };
@@ -62,12 +62,12 @@ public class InvigoratingFuryTests
     public void Procs_When_Fury_Crosses_100_Threshold()
     {
         _state.Config.Skills.Add(Skill.InvigoratingFury, 1);
-        var previousFuryEvent = new FurySpentEvent(110, 25, SkillType.Basic)
+        var previousFuryEvent = new FurySpentEvent(110, null, 25, SkillType.Basic)
         {
             FurySpent = 35
         };
         _state.ProcessedEvents.Add(previousFuryEvent);
-        var furySpentEvent = new FurySpentEvent(123, 70, SkillType.Basic)
+        var furySpentEvent = new FurySpentEvent(123, null, 70, SkillType.Basic)
         {
             FurySpent = 70
         };
@@ -81,7 +81,7 @@ public class InvigoratingFuryTests
     [Fact]
     public void Does_Not_Proc_If_Skill_Points_Are_Zero()
     {
-        var furySpentEvent = new FurySpentEvent(123, 100, SkillType.Basic);
+        var furySpentEvent = new FurySpentEvent(123, null, 100, SkillType.Basic);
 
         _skill.ProcessEvent(furySpentEvent, _state);
 

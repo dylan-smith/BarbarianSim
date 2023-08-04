@@ -8,7 +8,7 @@ public class AspectOfEchoingFuryProcEventHandler : EventHandler<AspectOfEchoingF
     {
         for (var i = 0; i < Math.Floor(e.Duration); i++)
         {
-            var furyEvent = new FuryGeneratedEvent(e.Timestamp + i + 1, e.Fury);
+            var furyEvent = new FuryGeneratedEvent(e.Timestamp + i + 1, "Aspect Of Echoing Fury", e.Fury);
             e.FuryGeneratedEvents.Add(furyEvent);
             state.Events.Add(furyEvent);
         }

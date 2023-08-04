@@ -6,7 +6,7 @@ public class FuryGeneratedEvent : EventInfo
     public double FuryGenerated { get; set; }
     public double OverflowFury { get; set; }
 
-    public FuryGeneratedEvent(double timestamp, double fury) : base(timestamp) => BaseFury = fury;
+    public FuryGeneratedEvent(double timestamp, string source, double fury) : base(timestamp, source) => BaseFury = fury;
 
-    public override string ToString() => $"{base.ToString()} - {FuryGenerated} fury generated";
+    public override string ToString() => $"{base.ToString()} - {FuryGenerated:F2} fury generated (Source: {Source})";
 }

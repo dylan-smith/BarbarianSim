@@ -16,7 +16,7 @@ public class HamstringTests
     public void Creates_AuraAppliedEvent()
     {
         _state.Config.Skills.Add(Skill.Hamstring, 1);
-        var bleedEvent = new BleedAppliedEvent(123, 99, 12, _state.Enemies.First());
+        var bleedEvent = new BleedAppliedEvent(123, null, 99, 12, _state.Enemies.First());
         _state.Enemies.First().Life = 100;
         _state.Enemies.First().MaxLife = 100;
 
@@ -35,7 +35,7 @@ public class HamstringTests
         config.EnemySettings.NumberOfEnemies = 3;
         var state = new SimulationState(config);
         state.Config.Skills.Add(Skill.Hamstring, 1);
-        var bleedEvent = new BleedAppliedEvent(123, 99, 12, state.Enemies.Last());
+        var bleedEvent = new BleedAppliedEvent(123, null, 99, 12, state.Enemies.Last());
         state.Enemies.Last().Life = 100;
         state.Enemies.Last().MaxLife = 100;
 
@@ -52,7 +52,7 @@ public class HamstringTests
     public void Only_Applies_To_Healthy_Enemies()
     {
         _state.Config.Skills.Add(Skill.Hamstring, 1);
-        var bleedEvent = new BleedAppliedEvent(123, 99, 12, _state.Enemies.First());
+        var bleedEvent = new BleedAppliedEvent(123, null, 99, 12, _state.Enemies.First());
         _state.Enemies.First().Life = 70;
         _state.Enemies.First().MaxLife = 100;
 

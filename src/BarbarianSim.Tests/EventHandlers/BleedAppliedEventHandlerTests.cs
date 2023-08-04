@@ -15,7 +15,7 @@ public class BleedAppliedEventHandlerTests
     [Fact]
     public void Adds_Bleeding_Aura()
     {
-        var bleedAppliedEvent = new BleedAppliedEvent(123.0, 500.0, 5.0, _state.Enemies.First());
+        var bleedAppliedEvent = new BleedAppliedEvent(123.0, null, 500.0, 5.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedAppliedEvent, _state);
 
@@ -25,7 +25,7 @@ public class BleedAppliedEventHandlerTests
     [Fact]
     public void Creates_BleedCompletedEvent()
     {
-        var bleedAppliedEvent = new BleedAppliedEvent(123.0, 500.0, 5.0, _state.Enemies.First());
+        var bleedAppliedEvent = new BleedAppliedEvent(123.0, null, 500.0, 5.0, _state.Enemies.First());
 
         _handler.ProcessEvent(bleedAppliedEvent, _state);
 

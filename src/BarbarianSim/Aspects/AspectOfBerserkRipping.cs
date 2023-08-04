@@ -14,7 +14,7 @@ public class AspectOfBerserkRipping : Aspect, IHandlesEvent<DirectDamageEvent>
     {
         if (IsAspectEquipped(state) && state.Player.Auras.Contains(Aura.Berserking))
         {
-            var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, e.BaseDamage * Damage / 100.0, BLEED_DURATION, e.Enemy);
+            var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, "Aspect of Berserk Ripping", e.BaseDamage * Damage / 100.0, BLEED_DURATION, e.Enemy);
             state.Events.Add(bleedAppliedEvent);
         }
     }

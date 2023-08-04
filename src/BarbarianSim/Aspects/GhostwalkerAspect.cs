@@ -13,7 +13,7 @@ public class GhostwalkerAspect : Aspect, IHandlesEvent<AuraAppliedEvent>
     {
         if (IsAspectEquipped(state) && e.Aura == Aura.Unstoppable)
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration + 4.0, Aura.Ghostwalker));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Ghostwalker Aspect", e.Duration + 4.0, Aura.Ghostwalker));
         }
     }
 

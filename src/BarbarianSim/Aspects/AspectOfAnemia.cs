@@ -23,7 +23,7 @@ public class AspectOfAnemia : Aspect, IHandlesEvent<LuckyHitEvent>
 
             if (procRoll <= (StunChance / 100.0))
             {
-                state.Events.Add(new AuraAppliedEvent(e.Timestamp, STUN_DURATION, Aura.Stun, e.Target));
+                state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Aspect of Anemia", STUN_DURATION, Aura.Stun, e.Target));
             }
         }
     }

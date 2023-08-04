@@ -57,14 +57,14 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
             damageType |= DamageType.Overpower;
         }
 
-        e.DamageEvent = new DamageEvent(e.Timestamp, damage, damageType, e.DamageSource, e.SkillType, e.Enemy);
+        e.DamageEvent = new DamageEvent(e.Timestamp, e.Source, damage, damageType, e.DamageSource, e.SkillType, e.Enemy);
         state.Events.Add(e.DamageEvent);
 
         var luckyRoll = _randomGenerator.Roll(RollType.LuckyHit);
 
         if (luckyRoll <= (e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state, e.Weapon)))
         {
-            e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.SkillType, e.Enemy, e.Weapon);
+            e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.Source, e.SkillType, e.Enemy, e.Weapon);
             state.Events.Add(e.LuckyHitEvent);
         }
     }

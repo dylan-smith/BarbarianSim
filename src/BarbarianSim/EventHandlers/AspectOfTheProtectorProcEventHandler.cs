@@ -8,10 +8,10 @@ public class AspectOfTheProtectorProcEventHandler : EventHandler<AspectOfTheProt
 {
     public override void ProcessEvent(AspectOfTheProtectorProcEvent e, SimulationState state)
     {
-        e.AspectOfTheProtectorCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, AspectOfTheProtector.COOLDOWN, Aura.AspectOfTheProtectorCooldown);
+        e.AspectOfTheProtectorCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Aspect of the Protector", AspectOfTheProtector.COOLDOWN, Aura.AspectOfTheProtectorCooldown);
         state.Events.Add(e.AspectOfTheProtectorCooldownAuraAppliedEvent);
 
-        e.BarrierAppliedEvent = new BarrierAppliedEvent(e.Timestamp, e.BarrierAmount, AspectOfTheProtector.BARRIER_EXPIRY);
+        e.BarrierAppliedEvent = new BarrierAppliedEvent(e.Timestamp, "Aspect of the Protector", e.BarrierAmount, AspectOfTheProtector.BARRIER_EXPIRY);
         state.Events.Add(e.BarrierAppliedEvent);
     }
 }

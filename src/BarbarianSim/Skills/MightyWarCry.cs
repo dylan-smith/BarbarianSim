@@ -12,7 +12,7 @@ public class MightyWarCry : IHandlesEvent<WarCryEvent>
     {
         if (state.Config.Skills.ContainsKey(Skill.MightyWarCry) && state.Config.Skills[Skill.MightyWarCry] > 0)
         {
-            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, FORTIFY * state.Player.BaseLife));
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Mighty War Cry", FORTIFY * state.Player.BaseLife));
         }
     }
 }

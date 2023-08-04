@@ -15,15 +15,15 @@ public class ChallengingShoutEventHandler : EventHandler<ChallengingShoutEvent>
     {
         e.Duration = ChallengingShout.DURATION * _boomingVoice.GetDurationIncrease(state);
 
-        e.ChallengingShoutAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.ChallengingShout);
+        e.ChallengingShoutAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Challenging Shout", e.Duration, Aura.ChallengingShout);
         state.Events.Add(e.ChallengingShoutAuraAppliedEvent);
 
-        e.ChallengingShoutCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
+        e.ChallengingShoutCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Challenging Shout", ChallengingShout.COOLDOWN, Aura.ChallengingShoutCooldown);
         state.Events.Add(e.ChallengingShoutCooldownAuraAppliedEvent);
 
         foreach (var enemy in state.Enemies)
         {
-            var tauntAppliedEvent = new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.Taunt, enemy);
+            var tauntAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Challenging Shout", e.Duration, Aura.Taunt, enemy);
             e.TauntAuraAppliedEvent.Add(tauntAppliedEvent);
             state.Events.Add(tauntAppliedEvent);
         }

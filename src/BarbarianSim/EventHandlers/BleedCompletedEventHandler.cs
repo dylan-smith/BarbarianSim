@@ -22,7 +22,7 @@ public class BleedCompletedEventHandler : EventHandler<BleedCompletedEvent>
 
         var damage = e.Damage * damageMultiplier;
 
-        e.DamageEvent = new DamageEvent(e.Timestamp, damage, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, e.Target);
+        e.DamageEvent = new DamageEvent(e.Timestamp, e.Source, damage, DamageType.DamageOverTime, DamageSource.Bleeding, SkillType.None, e.Target);
         state.Events.Add(e.DamageEvent);
     }
 }

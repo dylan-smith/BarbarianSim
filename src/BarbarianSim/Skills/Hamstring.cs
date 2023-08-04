@@ -10,7 +10,7 @@ public class Hamstring : IHandlesEvent<BleedAppliedEvent>
     {
         if (state.Config.HasSkill(Skill.Hamstring) && e.Target.IsHealthy())
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, e.Duration, Aura.Slow, e.Target));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Hamstring", e.Duration, Aura.Slow, e.Target));
         }
     }
 }

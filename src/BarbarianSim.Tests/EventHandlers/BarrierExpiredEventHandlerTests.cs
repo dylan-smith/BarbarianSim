@@ -17,7 +17,7 @@ public class BarrierExpiredEventHandlerTests
         var barrier = new Barrier(1000);
         _state.Player.Barriers.Add(barrier);
 
-        var barrierExpiredEvent = new BarrierExpiredEvent(123.0, barrier);
+        var barrierExpiredEvent = new BarrierExpiredEvent(123.0, null, barrier);
 
         _handler.ProcessEvent(barrierExpiredEvent, _state);
 

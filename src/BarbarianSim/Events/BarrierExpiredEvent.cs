@@ -4,5 +4,5 @@ public class BarrierExpiredEvent : EventInfo
 {
     public Barrier Barrier { get; init; }
 
-    public BarrierExpiredEvent(double timestamp, Barrier barrier) : base(timestamp) => Barrier = barrier;
+    public BarrierExpiredEvent(double timestamp, string source, Barrier barrier) : base(timestamp, source) => Barrier = barrier;
 }

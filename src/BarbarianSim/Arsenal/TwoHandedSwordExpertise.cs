@@ -15,7 +15,7 @@ public class TwoHandedSwordExpertise : IHandlesEvent<DirectDamageEvent>
         if (e.Weapon?.Expertise == Expertise.TwoHandedSword || state.Config.PlayerSettings.ExpertiseTechnique == Expertise.TwoHandedSword)
         {
             var bleedDamage = e.BaseDamage * BLEED_DAMAGE;
-            state.Events.Add(new BleedAppliedEvent(e.Timestamp, bleedDamage, BLEED_DURATION, e.Enemy));
+            state.Events.Add(new BleedAppliedEvent(e.Timestamp, "2-Handed Sword Expertise", bleedDamage, BLEED_DURATION, e.Enemy));
         }
     }
 }

@@ -44,7 +44,7 @@ public class StrategicRallyingCryTests
         _state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         _state.Player.Auras.Add(Aura.RallyingCry);
         _state.Player.BaseLife = 4000;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Core, 0, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 500, DamageType.Direct | DamageType.CriticalStrike, DamageSource.Whirlwind, SkillType.Core, 0, null, _state.Enemies.First());
 
         _skill.ProcessEvent(directDamageEvent, _state);
 
@@ -58,7 +58,7 @@ public class StrategicRallyingCryTests
     {
         _state.Player.Auras.Add(Aura.RallyingCry);
         _state.Player.BaseLife = 4000;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, null, _state.Enemies.First());
 
         _skill.ProcessEvent(directDamageEvent, _state);
 
@@ -70,7 +70,7 @@ public class StrategicRallyingCryTests
     {
         _state.Config.Skills.Add(Skill.StrategicRallyingCry, 1);
         _state.Player.BaseLife = 4000;
-        var directDamageEvent = new DirectDamageEvent(123, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, null, _state.Enemies.First());
+        var directDamageEvent = new DirectDamageEvent(123, null, 500, DamageType.Direct, DamageSource.Whirlwind, SkillType.Core, 0, null, _state.Enemies.First());
 
         _skill.ProcessEvent(directDamageEvent, _state);
 

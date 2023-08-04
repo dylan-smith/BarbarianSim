@@ -10,7 +10,7 @@ public class BarrierAppliedEventHandler : EventHandler<BarrierAppliedEvent>
 
         state.Player.Barriers.Add(e.Barrier);
 
-        e.BarrierExpiredEvent = new BarrierExpiredEvent(e.Timestamp + e.Duration, e.Barrier);
+        e.BarrierExpiredEvent = new BarrierExpiredEvent(e.Timestamp + e.Duration, e.Source, e.Barrier);
         state.Events.Add(e.BarrierExpiredEvent);
     }
 }

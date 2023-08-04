@@ -28,7 +28,7 @@ public class Whirlwind
 
     public virtual void StopSpinning(SimulationState state)
     {
-        state.Events.Add(new AuraExpiredEvent(state.CurrentTime, Aura.Whirlwinding));
+        state.Events.Add(new AuraExpiredEvent(state.CurrentTime, "Whirlwind", Aura.Whirlwinding));
     }
 
     public GearItem Weapon { get; set; }

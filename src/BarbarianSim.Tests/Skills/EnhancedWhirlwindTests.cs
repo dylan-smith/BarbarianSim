@@ -17,7 +17,7 @@ public class EnhancedWhirlwindTests
     {
         _state.Config.Skills.Add(Skill.EnhancedWhirlwind, 1);
 
-        var damageEvent = new DamageEvent(123.0, 2000, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123.0, null, 2000, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, _state.Enemies.First());
 
         _skill.ProcessEvent(damageEvent, _state);
 
@@ -32,7 +32,7 @@ public class EnhancedWhirlwindTests
         _state.Config.Skills.Add(Skill.EnhancedWhirlwind, 1);
         _state.Config.EnemySettings.IsElite = true;
 
-        var damageEvent = new DamageEvent(123.0, 2000, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, _state.Enemies.First());
+        var damageEvent = new DamageEvent(123.0, null, 2000, DamageType.Physical, DamageSource.Whirlwind, SkillType.Core, _state.Enemies.First());
 
         _skill.ProcessEvent(damageEvent, _state);
 

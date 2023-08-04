@@ -18,7 +18,7 @@ public class TacticalIronSkinTests
         _state.Config.Skills.Add(Skill.TacticalIronSkin, 1);
         var ironSkinEvent = new IronSkinEvent(123)
         {
-            BarrierAppliedEvent = new BarrierAppliedEvent(123, 1200, 5.0)
+            BarrierAppliedEvent = new BarrierAppliedEvent(123, null, 1200, 5.0)
         };
 
         _skill.ProcessEvent(ironSkinEvent, _state);

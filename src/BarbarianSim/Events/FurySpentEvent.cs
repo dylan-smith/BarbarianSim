@@ -4,7 +4,7 @@ namespace BarbarianSim.Events;
 
 public class FurySpentEvent : EventInfo
 {
-    public FurySpentEvent(double timestamp, double furySpent, SkillType skillType) : base(timestamp)
+    public FurySpentEvent(double timestamp, string source, double furySpent, SkillType skillType) : base(timestamp, source)
     {
         BaseFurySpent = furySpent;
         SkillType = skillType;
@@ -14,5 +14,5 @@ public class FurySpentEvent : EventInfo
     public double FurySpent { get; set; }
     public SkillType SkillType { get; init; }
 
-    public override string ToString() => $"{base.ToString()} - {FurySpent} fury spent";
+    public override string ToString() => $"{base.ToString()} - {FurySpent:F2} fury spent (Source: {Source})";
 }

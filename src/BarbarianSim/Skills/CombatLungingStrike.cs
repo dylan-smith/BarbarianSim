@@ -14,7 +14,7 @@ public class CombatLungingStrike : IHandlesEvent<DamageEvent>
             state.Config.Skills.ContainsKey(Skill.CombatLungingStrike) &&
             e.DamageType.HasFlag(DamageType.CriticalStrike))
         {
-            state.Events.Add(new AuraAppliedEvent(e.Timestamp, BERSERKING_DURATION, Aura.Berserking));
+            state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Combat Lunging Strike", BERSERKING_DURATION, Aura.Berserking));
         }
     }
 }

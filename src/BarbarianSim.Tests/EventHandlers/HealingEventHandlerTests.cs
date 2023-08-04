@@ -30,7 +30,7 @@ public class HealingEventHandlerTests
     public void Increases_Player_Life()
     {
         _state.Player.Life = 500.0;
-        var healingEvent = new HealingEvent(123.0, 270.0);
+        var healingEvent = new HealingEvent(123.0, null, 270.0);
 
         _handler.ProcessEvent(healingEvent, _state);
 
@@ -46,7 +46,7 @@ public class HealingEventHandlerTests
         _state.Player.Life = 500.0;
         _mockHealingReceivedCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                                       .Returns(1.5);
-        var healingEvent = new HealingEvent(123.0, 270.0);
+        var healingEvent = new HealingEvent(123.0, null, 270.0);
 
         _handler.ProcessEvent(healingEvent, _state);
 
@@ -57,7 +57,7 @@ public class HealingEventHandlerTests
     public void Calculates_Overheal()
     {
         _state.Player.Life = 700.0;
-        var healingEvent = new HealingEvent(123.0, 810.0);
+        var healingEvent = new HealingEvent(123.0, null, 810.0);
 
         _handler.ProcessEvent(healingEvent, _state);
 

@@ -25,7 +25,7 @@ public sealed class AspectOfNumbingWraithTests
     [Fact]
     public void Min_Fortify_Gain_After_1_Extra_FuryGenerated()
     {
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 1 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 1 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
         _state.Player.Fortify.Should().Be(54);
@@ -35,7 +35,7 @@ public sealed class AspectOfNumbingWraithTests
     public void Fortify_Matches_MaxLife_After_Lots_Of_FuryGenerated()
     {
         _state.Player.Fortify = 500;
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 20 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 20 };
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
 
         _state.Player.Fortify.Should().Be(1200);
@@ -45,7 +45,7 @@ public sealed class AspectOfNumbingWraithTests
     public void Does_Nothing_When_Not_Equipped()
     {
         _state.Config.Gear.Helm.Aspect = null;
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, 20) { OverflowFury = 10 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 10 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
         _state.Player.Fortify.Should().Be(0);

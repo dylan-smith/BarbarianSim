@@ -25,7 +25,7 @@ public class TwoHandedMaceExpertiseTests
     {
         _state.Config.Gear.TwoHandBludgeoning.Expertise = Expertise.TwoHandedMace;
         _state.Config.PlayerSettings.ExpertiseTechnique = Expertise.NA;
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.None, _state.Enemies.First(), _state.Config.Gear.TwoHandBludgeoning);
+        var luckyHitEvent = new LuckyHitEvent(123, null, SkillType.None, _state.Enemies.First(), _state.Config.Gear.TwoHandBludgeoning);
 
         _expertise.ProcessEvent(luckyHitEvent, _state);
 
@@ -38,7 +38,7 @@ public class TwoHandedMaceExpertiseTests
     {
         _state.Config.Gear.TwoHandSlashing.Expertise = Expertise.NA;
         _state.Config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedMace;
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.None, _state.Enemies.First(), _state.Config.Gear.TwoHandSlashing);
+        var luckyHitEvent = new LuckyHitEvent(123, null, SkillType.None, _state.Enemies.First(), _state.Config.Gear.TwoHandSlashing);
 
         _expertise.ProcessEvent(luckyHitEvent, _state);
 
@@ -52,7 +52,7 @@ public class TwoHandedMaceExpertiseTests
         _mockRandomGenerator.Setup(m => m.Roll(RollType.TwoHandedMaceExpertise)).Returns(0.11);
         _state.Config.Gear.TwoHandSlashing.Expertise = Expertise.NA;
         _state.Config.PlayerSettings.ExpertiseTechnique = Expertise.TwoHandedMace;
-        var luckyHitEvent = new LuckyHitEvent(123, SkillType.None, _state.Enemies.First(), _state.Config.Gear.TwoHandSlashing);
+        var luckyHitEvent = new LuckyHitEvent(123, null, SkillType.None, _state.Enemies.First(), _state.Config.Gear.TwoHandSlashing);
 
         _expertise.ProcessEvent(luckyHitEvent, _state);
 

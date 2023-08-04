@@ -15,7 +15,7 @@ public class EnhancedWhirlwind : IHandlesEvent<DamageEvent>
         {
             var furyGenerated = state.Config.EnemySettings.IsElite ? ELITE_FURY_GAINED : FURY_GAINED;
 
-            var furyGeneratedEvent = new FuryGeneratedEvent(e.Timestamp, furyGenerated);
+            var furyGeneratedEvent = new FuryGeneratedEvent(e.Timestamp, "Enhanced Whirlwind", furyGenerated);
             state.Events.Add(furyGeneratedEvent);
         }
     }

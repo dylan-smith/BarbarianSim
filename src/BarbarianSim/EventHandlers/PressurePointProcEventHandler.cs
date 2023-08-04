@@ -8,7 +8,7 @@ public class PressurePointProcEventHandler : EventHandler<PressurePointProcEvent
 {
     public override void ProcessEvent(PressurePointProcEvent e, SimulationState state)
     {
-        e.VulnerableAppliedEvent = new AuraAppliedEvent(e.Timestamp, PressurePoint.VULNERABLE_DURATION, Aura.Vulnerable, e.Target);
+        e.VulnerableAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Pressure Point", PressurePoint.VULNERABLE_DURATION, Aura.Vulnerable, e.Target);
 
         state.Events.Add(e.VulnerableAppliedEvent);
     }

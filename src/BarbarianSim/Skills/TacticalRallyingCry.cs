@@ -13,7 +13,7 @@ public class TacticalRallyingCry : IHandlesEvent<RallyingCryEvent>
     {
         if (state.Config.HasSkill(Skill.TacticalRallyingCry))
         {
-            state.Events.Add(new FuryGeneratedEvent(e.Timestamp, FURY_GENERATED));
+            state.Events.Add(new FuryGeneratedEvent(e.Timestamp, "Tactical Rallying Cry", FURY_GENERATED));
         }
     }
 

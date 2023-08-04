@@ -41,7 +41,7 @@ public class WhirlwindStoppedEventHandlerTests
     [Fact]
     public void Removes_ViolentWhirlwindAuraAppliedEvents()
     {
-        _state.Events.Add(new AuraAppliedEvent(123, 5, Aura.ViolentWhirlwind));
+        _state.Events.Add(new AuraAppliedEvent(123, null, 5, Aura.ViolentWhirlwind));
 
         var whirlwindStoppedEvent = new WhirlwindStoppedEvent(100);
         _handler.ProcessEvent(whirlwindStoppedEvent, _state);

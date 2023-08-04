@@ -15,7 +15,7 @@ public class FuriousWhirlwind : IHandlesEvent<WhirlwindSpinEvent>
         {
             foreach (var enemy in state.Enemies)
             {
-                var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, e.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, enemy);
+                var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, "Furious Whirlwind", e.BaseDamage * BLEED_DAMAGE, BLEED_DURATION, enemy);
                 state.Events.Add(bleedAppliedEvent);
             }
         }

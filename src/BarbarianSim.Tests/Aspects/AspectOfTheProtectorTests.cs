@@ -22,7 +22,7 @@ public sealed class AspectOfTheProtectorTests
     public void Creates_AspectOfTheProtectorProcEvent()
     {
         _state.Config.EnemySettings.IsElite = true;
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var dmg = new DamageEvent(0.0, null, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
         _state.CurrentTime = 123.0;
 
         _aspect.ProcessEvent(dmg, _state);
@@ -36,7 +36,7 @@ public sealed class AspectOfTheProtectorTests
     public void Does_Not_Fire_If_Enemy_Not_Elite()
     {
         _state.Config.EnemySettings.IsElite = false;
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var dmg = new DamageEvent(0.0, null, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _aspect.ProcessEvent(dmg, _state);
 
@@ -48,7 +48,7 @@ public sealed class AspectOfTheProtectorTests
     {
         _state.Config.EnemySettings.IsElite = true;
         _state.Player.Auras.Add(Aura.AspectOfTheProtectorCooldown);
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var dmg = new DamageEvent(0.0, null, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _aspect.ProcessEvent(dmg, _state);
 
@@ -60,7 +60,7 @@ public sealed class AspectOfTheProtectorTests
     {
         _state.Config.EnemySettings.IsElite = true;
         _state.Events.Add(new AspectOfTheProtectorProcEvent(0.0, 1000));
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var dmg = new DamageEvent(0.0, null, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _aspect.ProcessEvent(dmg, _state);
 
@@ -72,7 +72,7 @@ public sealed class AspectOfTheProtectorTests
     {
         _state.Config.Gear.Helm.Aspect = null;
         _state.Config.EnemySettings.IsElite = true;
-        var dmg = new DamageEvent(0.0, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
+        var dmg = new DamageEvent(0.0, null, 1.0, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, _state.Enemies.First());
 
         _aspect.ProcessEvent(dmg, _state);
 

@@ -7,11 +7,11 @@ public class BarrierAppliedEvent : EventInfo
     public Barrier Barrier { get; set; }
     public BarrierExpiredEvent BarrierExpiredEvent { get; set; }
 
-    public BarrierAppliedEvent(double timestamp, double barrierAmount, double duration) : base(timestamp)
+    public BarrierAppliedEvent(double timestamp, string source, double barrierAmount, double duration) : base(timestamp, source)
     {
         BarrierAmount = barrierAmount;
         Duration = duration;
     }
 
-    public override string ToString() => $"{base.ToString()} - {BarrierAmount} barrier applied for {Duration} seconds";
+    public override string ToString() => $"{base.ToString()} - {BarrierAmount:F2} barrier applied for {Duration:F2} seconds (Source: {Source})";
 }

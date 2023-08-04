@@ -2,7 +2,7 @@
 
 public class WrathOfTheBerserkerEvent : EventInfo
 {
-    public WrathOfTheBerserkerEvent(double timestamp) : base(timestamp)
+    public WrathOfTheBerserkerEvent(double timestamp) : base(timestamp, null)
     {
     }
 
