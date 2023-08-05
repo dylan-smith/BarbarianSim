@@ -13,6 +13,11 @@ public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
     // Explode into rage, Knocking Back surrounding enemies and gaining Berserking and Unstoppable for 5 seconds. For the next 10 seconds dealing Direct Damage with Basic Skills grants Berserking for 5 seconds. (Cooldown: 60 seconds)
     // Prime: While Wrath of the Berserker is active, gain 20%[+] increased Movement Speed and increase Fury Generation by 30%[x]
     // Supreme: While Wrath of the Berserker is active, every 50 Fury you spend increases Berserk's damage bonus by 25%[x]
+
+    public WrathOfTheBerserker(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual bool CanUse(SimulationState state) =>
         state.Config.HasSkill(Skill.WrathOfTheBerserker)
         && !state.Player.Auras.Contains(Aura.WrathOfTheBerserkerCooldown);
@@ -26,6 +31,7 @@ public class WrathOfTheBerserker : IHandlesEvent<DirectDamageEvent>
             e.SkillType == SkillType.Basic)
         {
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Wrath Of The Berserker", BERSERKING_DURATION, Aura.Berserking));
+            _log.Verbose($"Wrath of the Berserker created AuraAppliedEvent for Berserking for {BERSERKING_DURATION} seconds");
         }
     }
 }

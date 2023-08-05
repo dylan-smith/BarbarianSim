@@ -11,6 +11,10 @@ public class IronSkin
     public const double HEAL_FROM_TACTICAL = 0.1;
     public const double FORTIFY_FROM_STRATEGIC = 0.15;
 
+    public IronSkin(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     // Steel yourself, gaining a Barrier that absorbs 65% of your missing life for 5 seconds (Cooldown: 14 seconds)
     // Enhanced: Ironskin's Barrier absorbs 20% more of your Maximum Life
     // Tactical: While Ironskin is active Heal for 10% of the Barrier's original amount as Life per second
@@ -26,7 +30,7 @@ public class IronSkin
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.IronSkin);
         skillPoints += state.Config.GetSkillPoints(Skill.IronSkin);
 
-        return skillPoints switch
+        var result = skillPoints switch
         {
             1 => 0.50,
             2 => 0.55,
@@ -35,5 +39,8 @@ public class IronSkin
             >= 5 => 0.70,
             _ => 0.0,
         };
+
+        _log.Verbose($"Barrier from Iron Skin = {result}% with {skillPoints} skill points");
+        return result;
     }
 }

@@ -13,6 +13,10 @@ public class WarCry
     // Enhanced: War Cry grants you Berserking for 4 seconds
     // Mighty: War Cry grants you 15%[x] Base Life (15%[x] HP) as Fortify
 
+    public WarCry(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual bool CanUse(SimulationState state) =>
         state.Config.HasSkill(Skill.WarCry)
         && !state.Player.Auras.Contains(Aura.WarCryCooldown);
@@ -29,7 +33,7 @@ public class WarCry
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.WarCry);
         skillPoints += state.Config.GetSkillPoints(Skill.WarCry);
 
-        return skillPoints switch
+        var result = skillPoints switch
         {
             1 => 1.15,
             2 => 1.165,
@@ -38,5 +42,8 @@ public class WarCry
             >= 5 => 1.21,
             _ => 1.0,
         };
+
+        _log.Verbose($"Damage bonus from War Cry = {result}x with {skillPoints} skill points");
+        return result;
     }
 }

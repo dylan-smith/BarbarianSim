@@ -3,14 +3,21 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
 public class IronSkinTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly IronSkin _ironSkin = new();
+    private readonly IronSkin _ironSkin;
+
+    public IronSkinTests()
+    {
+        _ironSkin = new(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()

@@ -12,6 +12,7 @@ namespace BarbarianSim.Tests.Abilities;
 public class WhirlwindTests
 {
     private readonly Mock<FuryCostReductionCalculator> _mockFuryCostReductionCalculator = TestHelpers.CreateMock<FuryCostReductionCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
 
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly Whirlwind _whirlwind;
@@ -21,7 +22,7 @@ public class WhirlwindTests
         _mockFuryCostReductionCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), SkillType.Core))
                                         .Returns(1.0);
 
-        _whirlwind = new(_mockFuryCostReductionCalculator.Object);
+        _whirlwind = new(_mockFuryCostReductionCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]

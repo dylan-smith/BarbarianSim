@@ -3,14 +3,21 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
 public class ChallengingShoutTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly ChallengingShout _challengingShout = new();
+    private readonly ChallengingShout _challengingShout;
+
+    public ChallengingShoutTests()
+    {
+        _challengingShout = new(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()

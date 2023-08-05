@@ -1,5 +1,4 @@
-﻿using BarbarianSim.Config;
-using BarbarianSim.Enums;
+﻿using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
 
@@ -10,9 +9,14 @@ public class Whirlwind
     public const double FURY_COST = 25.0;
     public const double LUCKY_HIT_CHANCE = 0.2;
 
-    public Whirlwind(FuryCostReductionCalculator furyCostReductionCalculator) => _furyCostReductionCalculator = furyCostReductionCalculator;
+    public Whirlwind(FuryCostReductionCalculator furyCostReductionCalculator, SimLogger log)
+    {
+        _furyCostReductionCalculator = furyCostReductionCalculator;
+        _log = log;
+    }
 
     private readonly FuryCostReductionCalculator _furyCostReductionCalculator;
+    private readonly SimLogger _log;
 
     public virtual bool CanUse(SimulationState state)
     {
@@ -31,14 +35,12 @@ public class Whirlwind
         state.Events.Add(new AuraExpiredEvent(state.CurrentTime, "Whirlwind", Aura.Whirlwinding));
     }
 
-    public GearItem Weapon { get; set; }
-
     public virtual double GetSkillMultiplier(SimulationState state)
     {
         var skillPoints = state?.Config.Skills[Skill.Whirlwind];
         skillPoints += state?.Config.Gear.AllGear.Sum(g => g.Whirlwind);
 
-        return skillPoints switch
+        var result = skillPoints switch
         {
             1 => 0.17,
             2 => 0.19,
@@ -47,5 +49,8 @@ public class Whirlwind
             >= 5 => 0.24,
             _ => 0.0,
         };
+
+        _log.Verbose($"Skill multiplier from Whirlwind = {result}x with {skillPoints} skill points");
+        return result;
     }
 }

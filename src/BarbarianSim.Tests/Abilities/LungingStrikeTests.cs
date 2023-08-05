@@ -3,14 +3,21 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
 public sealed class LungingStrikeTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly LungingStrike _lungingStrike = new();
+    private readonly LungingStrike _lungingStrike;
+
+    public LungingStrikeTests()
+    {
+        _lungingStrike = new(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void CanUse_When_Weapon_On_Cooldown_Returns_False()
