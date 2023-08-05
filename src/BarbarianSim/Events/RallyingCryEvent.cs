@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Ability("Rallying Cry")]
 public class RallyingCryEvent : EventInfo
 {
     public RallyingCryEvent(double timestamp) : base(timestamp, null)

@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Ability("Wrath of the Berserker")]
 public class WrathOfTheBerserkerEvent : EventInfo
 {
     public WrathOfTheBerserkerEvent(double timestamp) : base(timestamp, null)

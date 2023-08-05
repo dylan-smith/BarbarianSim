@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Ability("War Cry")]
 public class WarCryEvent : EventInfo
 {
     public WarCryEvent(double timestamp) : base(timestamp, null)

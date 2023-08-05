@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Ability("Challenging Shout")]
 public class ChallengingShoutEvent : EventInfo
 {
     public ChallengingShoutEvent(double timestamp) : base(timestamp, null)

@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Ability("Lunging Strike")]
 public class LungingStrikeEvent : EventInfo
 {
     public LungingStrikeEvent(double timestamp, EnemyState target) : base(timestamp, null) => Target = target;

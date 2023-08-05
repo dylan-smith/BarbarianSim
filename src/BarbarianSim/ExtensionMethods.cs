@@ -72,4 +72,6 @@ public static class ExtensionMethods
         var memberInfo = enumType.GetMember(enumVal.ToString());
         return memberInfo[0].GetCustomAttribute(typeof(T)) != null;
     }
+
+    public static bool HasAttribute<T>(this Type type) where T : Attribute => type.GetCustomAttribute<T>() != null;
 }

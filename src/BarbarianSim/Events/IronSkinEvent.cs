@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Ability("Iron Skin")]
 public class IronSkinEvent : EventInfo
 {
     public IronSkinEvent(double timestamp) : base(timestamp, null)

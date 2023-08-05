@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Enums;
+﻿using System.Reflection;
+using BarbarianSim.Enums;
 using BarbarianSim.Events;
 
 namespace BarbarianSim;
@@ -27,13 +28,7 @@ public class SimulationSummary
     public ICollection<(Aura Aura, int Count, double UptimePercentage)> PlayerEffects { get; init; } = new List<(Aura Aura, int Count, double UptimePercentage)>();
 
     // Ability Counts
-    public int LungingStrikeCount { get; init; }
-    public int WhirlwindSpinCount { get; init; }
-    public int RallyingCryCount { get; init; }
-    public int WarCryCount { get; init; }
-    public int ChallengingShoutCount { get; init; }
-    public int WrathOfTheBerserkerCount { get; init; }
-    public int IronSkinCount { get; init; }
+    public ICollection<(string Ability, int Count)> AbilityCounts { get; init; } = new List<(string Ability, int Count)>();
 
     // Procs
     public int AspectOfEchoingFuryProcCount { get; init; }
@@ -104,13 +99,12 @@ public class SimulationSummary
         var (Count, UptimePercentage) = GetBleedingStats(state);
         EnemyEffects.Add((Aura.Bleeding, Count, UptimePercentage));
 
-        LungingStrikeCount = state.ProcessedEvents.OfType<LungingStrikeEvent>().Count();
-        WhirlwindSpinCount = state.ProcessedEvents.OfType<WhirlwindSpinEvent>().Count();
-        RallyingCryCount = state.ProcessedEvents.OfType<RallyingCryEvent>().Count();
-        WarCryCount = state.ProcessedEvents.OfType<WarCryEvent>().Count();
-        ChallengingShoutCount = state.ProcessedEvents.OfType<ChallengingShoutEvent>().Count();
-        WrathOfTheBerserkerCount = state.ProcessedEvents.OfType<WrathOfTheBerserkerEvent>().Count();
-        IronSkinCount = state.ProcessedEvents.OfType<IronSkinEvent>().Count();
+        var abilitityEventTypes = GetAbilityEventTypes();
+
+        foreach (var abilityEventType in abilitityEventTypes)
+        {
+            AbilityCounts.Add((abilityEventType.GetCustomAttribute<AbilityAttribute>().Name, state.ProcessedEvents.Count(e => e.GetType().IsAssignableTo(abilityEventType))));
+        }
 
         AspectOfEchoingFuryProcCount = state.ProcessedEvents.OfType<AspectOfEchoingFuryProcEvent>().Count();
         AspectOfTheProtectorProcCount = state.ProcessedEvents.OfType<AspectOfTheProtectorProcEvent>().Count();
@@ -130,6 +124,11 @@ public class SimulationSummary
         FuryGenerated = state.ProcessedEvents.OfType<FuryGeneratedEvent>().Sum(e => e.FuryGenerated);
         FurySpent = state.ProcessedEvents.OfType<FurySpentEvent>().Sum(e => e.FurySpent);
     }
+
+    private IEnumerable<Type> GetAbilityEventTypes() =>
+        typeof(Program).Assembly
+                       .GetTypes()
+                       .Where(t => t.HasAttribute<AbilityAttribute>());
 
     public void Print()
     {
@@ -175,13 +174,10 @@ public class SimulationSummary
         Console.WriteLine("");
         Console.WriteLine("Abilities Used");
         Console.WriteLine("==============");
-        Console.WriteLine($"Lunging Strike: {LungingStrikeCount}");
-        Console.WriteLine($"Whirlwind: {WhirlwindSpinCount}");
-        Console.WriteLine($"Rallying Cry: {RallyingCryCount}");
-        Console.WriteLine($"War Cry: {WarCryCount}");
-        Console.WriteLine($"Challenging Shout: {ChallengingShoutCount}");
-        Console.WriteLine($"Wrath of the Berserker: {WrathOfTheBerserkerCount}");
-        Console.WriteLine($"Iron Skin: {IronSkinCount}");
+        foreach (var (Ability, Count) in AbilityCounts.Where(x => x.Count > 0).OrderByDescending(x => x.Count))
+        {
+            Console.WriteLine($"{Ability}: {Count}");
+        }
 
         Console.WriteLine("");
         Console.WriteLine("Procs");

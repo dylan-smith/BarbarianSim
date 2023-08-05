@@ -14,3 +14,10 @@ public abstract class EventInfo
 
     public override string ToString() => $"[{Timestamp:F1}] {GetType().Name}";
 }
+
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class AbilityAttribute : Attribute
+{
+    public AbilityAttribute(string name) => Name = name;
+    public string Name { get; init; }
+}
