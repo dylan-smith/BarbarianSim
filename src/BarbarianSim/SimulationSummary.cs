@@ -34,10 +34,7 @@ public class SimulationSummary
     public ICollection<(string Proc, int Count)> ProcCounts { get; init; } = new List<(string Proc, int Count)>();
 
     // Damage Breakdown
-    public double LungingStrikeDamage { get; init; }
-    public double WhirlwindSpinDamage { get; init; }
-    public double GohrsDevastatingGripsDamage { get; init; }
-    public double BleedingDamage { get; init; }
+    public IDictionary<DamageSource, double> DamageBySource { get; init; } = new Dictionary<DamageSource, double>();
 
     // Fury Management
     public double FuryGenerated { get; init; }
@@ -101,10 +98,11 @@ public class SimulationSummary
             ProcCounts.Add((procEventType.GetCustomAttribute<ProcAttribute>().Name, state.ProcessedEvents.Count(e => e.GetType().IsAssignableTo(procEventType))));
         }
 
-        LungingStrikeDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.LungingStrike).Sum(e => e.Damage);
-        WhirlwindSpinDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.Whirlwind).Sum(e => e.Damage);
-        GohrsDevastatingGripsDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.GohrsDevastatingGrips).Sum(e => e.Damage);
-        BleedingDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.Bleeding).Sum(e => e.Damage);
+        foreach (var damageSource in Enum.GetValues<DamageSource>())
+        {
+            var damage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == damageSource).Sum(e => e.Damage);
+            DamageBySource.Add(damageSource, damage);
+        }
 
         FuryGenerated = state.ProcessedEvents.OfType<FuryGeneratedEvent>().Sum(e => e.FuryGenerated);
         FurySpent = state.ProcessedEvents.OfType<FurySpentEvent>().Sum(e => e.FurySpent);
@@ -180,10 +178,10 @@ public class SimulationSummary
         Console.WriteLine("");
         Console.WriteLine("Damage Breakdown");
         Console.WriteLine("================");
-        Console.WriteLine($"Lunging Strike: {LungingStrikeDamage:N0} [{100 * LungingStrikeDamage / TotalDamage:F1}%]");
-        Console.WriteLine($"Whirlwind: {WhirlwindSpinDamage:N0} [{100 * WhirlwindSpinDamage / TotalDamage:F1}%]");
-        Console.WriteLine($"Gohrs Devastating Grips: {GohrsDevastatingGripsDamage:N0} [{100 * GohrsDevastatingGripsDamage / TotalDamage:F1}%]");
-        Console.WriteLine($"Bleeding: {BleedingDamage:N0} [{100 * BleedingDamage / TotalDamage:F1}%]");
+        foreach (var (DamageSource, Damage) in DamageBySource.Where(x => x.Value > 0).OrderByDescending(x => x.Value))
+        {
+            Console.WriteLine($"{DamageSource}: {Damage:N0} [{100 * Damage / TotalDamage:F1}%]");
+        }
 
         Console.WriteLine("");
         Console.WriteLine("Fury Management");
