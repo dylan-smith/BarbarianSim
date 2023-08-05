@@ -174,17 +174,23 @@ internal class Program
         // Other
         serviceCollection.AddSingleton(new RandomGenerator(123));
         serviceCollection.AddSingleton<EventPublisher>();
+        serviceCollection.AddSingleton<SimLogger>();
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
 
         var config = CreateConfig(serviceProvider);
 
-        var sim = new Simulation(config, serviceProvider.GetRequiredService<EventPublisher>());
+        var sim = new Simulation(config, serviceProvider.GetRequiredService<EventPublisher>(), serviceProvider.GetRequiredService<SimLogger>());
         var state = sim.Run();
 
         foreach (var e in state.ProcessedEvents)
         {
             Console.WriteLine(e);
+
+            foreach (var msg in e.VerboseLog)
+            {
+                Console.WriteLine($"    {msg}");
+            }
         }
 
         var summary = new SimulationSummary(state);
@@ -200,7 +206,7 @@ internal class Program
             Rotation = sp.GetRequiredService<SpinToWin>()
         };
 
-        config.EnemySettings.Life = 400000000;
+        config.EnemySettings.Life = 40000000;
         config.EnemySettings.NumberOfEnemies = 3;
         config.EnemySettings.Level = 100;
         config.EnemySettings.IsElite = true;

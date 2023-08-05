@@ -14,6 +14,7 @@ public class LungingStrikeEventHandlerTests
 {
     private readonly Mock<AttackSpeedCalculator> _mockAttackSpeedCalculator = TestHelpers.CreateMock<AttackSpeedCalculator>();
     private readonly Mock<LungingStrike> _mockLungingStrike = TestHelpers.CreateMock<LungingStrike>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
 
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
 
@@ -27,7 +28,7 @@ public class LungingStrikeEventHandlerTests
         _mockLungingStrike.Setup(x => x.GetSkillMultiplier(It.IsAny<SimulationState>()))
                           .Returns(0.33);
 
-        _handler = new LungingStrikeEventHandler(_mockAttackSpeedCalculator.Object, _mockLungingStrike.Object);
+        _handler = new LungingStrikeEventHandler(_mockAttackSpeedCalculator.Object, _mockLungingStrike.Object, _mockSimLogger.Object);
     }
 
     [Fact]

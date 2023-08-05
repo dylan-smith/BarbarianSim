@@ -16,6 +16,7 @@ public class ResourceGenerationCalculatorTests
     private readonly Mock<ProlificFury> _mockProlificFury = TestHelpers.CreateMock<ProlificFury>();
     private readonly Mock<TacticalRallyingCry> _mockTacticalRallyingCry = TestHelpers.CreateMock<TacticalRallyingCry>();
     private readonly Mock<PrimeWrathOfTheBerserker> _mockPrimeWrathOfTheBerserker = TestHelpers.CreateMock<PrimeWrathOfTheBerserker>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ResourceGenerationCalculator _calculator;
 
@@ -27,7 +28,12 @@ public class ResourceGenerationCalculatorTests
         _mockTacticalRallyingCry.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
         _mockPrimeWrathOfTheBerserker.Setup(m => m.GetResourceGeneration(It.IsAny<SimulationState>())).Returns(1.0);
 
-        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object, _mockRallyingCry.Object, _mockProlificFury.Object, _mockTacticalRallyingCry.Object, _mockPrimeWrathOfTheBerserker.Object);
+        _calculator = new ResourceGenerationCalculator(_mockWillpowerCalculator.Object,
+                                                       _mockRallyingCry.Object,
+                                                       _mockProlificFury.Object,
+                                                       _mockTacticalRallyingCry.Object,
+                                                       _mockPrimeWrathOfTheBerserker.Object,
+                                                       _mockSimLogger.Object);
     }
 
     [Fact]

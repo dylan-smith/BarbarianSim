@@ -13,6 +13,13 @@ public abstract class EventInfo
     }
 
     public override string ToString() => $"[{Timestamp:F1}] {GetType().Name}";
+
+    public ICollection<string> VerboseLog { get; init; } = new List<string>();
+
+    public void AddVerboseLog(string msg)
+    {
+        VerboseLog.Add(msg);
+    }
 }
 
 [AttributeUsage(AttributeTargets.Class)]

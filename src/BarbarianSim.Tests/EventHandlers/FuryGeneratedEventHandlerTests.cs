@@ -12,6 +12,7 @@ public class FuryGeneratedEventHandlerTests
 {
     private readonly Mock<ResourceGenerationCalculator> _mockResourceGenerationCalculator = TestHelpers.CreateMock<ResourceGenerationCalculator>();
     private readonly Mock<MaxFuryCalculator> _mockMaxFuryCalculator = TestHelpers.CreateMock<MaxFuryCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly FuryGeneratedEventHandler _handler;
 
@@ -23,7 +24,7 @@ public class FuryGeneratedEventHandlerTests
         _mockMaxFuryCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                               .Returns(100);
 
-        _handler = new FuryGeneratedEventHandler(_mockResourceGenerationCalculator.Object, _mockMaxFuryCalculator.Object);
+        _handler = new FuryGeneratedEventHandler(_mockResourceGenerationCalculator.Object, _mockMaxFuryCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
