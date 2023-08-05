@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Warbringer")]
 public class WarbringerProcEvent : EventInfo
 {
     public WarbringerProcEvent(double timestamp) : base(timestamp, null)

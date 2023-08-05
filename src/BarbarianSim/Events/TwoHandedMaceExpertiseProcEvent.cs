@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("2-Handed Mace Expertise")]
 public class TwoHandedMaceExpertiseProcEvent : EventInfo
 {
     public TwoHandedMaceExpertiseProcEvent(double timestamp) : base(timestamp, null)

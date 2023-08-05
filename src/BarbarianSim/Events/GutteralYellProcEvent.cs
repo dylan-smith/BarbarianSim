@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Gutteral Yell")]
 public class GutteralYellProcEvent : EventInfo
 {
     public GutteralYellProcEvent(double timestamp) : base(timestamp, null)

@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Aspect of Echoing Fury")]
 public class AspectOfEchoingFuryProcEvent : EventInfo
 {
     public AspectOfEchoingFuryProcEvent(double timestamp, double duration, double fury) : base(timestamp, null)

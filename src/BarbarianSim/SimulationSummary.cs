@@ -31,15 +31,7 @@ public class SimulationSummary
     public ICollection<(string Ability, int Count)> AbilityCounts { get; init; } = new List<(string Ability, int Count)>();
 
     // Procs
-    public int AspectOfEchoingFuryProcCount { get; init; }
-    public int AspectOfTheProtectorProcCount { get; init; }
-    public int ExploitProcCount { get; init; }
-    public int GohrsDevastatingGripsProcCount { get; init; }
-    public int GutteralYellProcCount { get; init; }
-    public int PressurePointProcCount { get; init; }
-    public int RaidLeaderProcCount { get; init; }
-    public int TwoHandedMaceExpertiseProcCount { get; init; }
-    public int WarbringerProcCount { get; init; }
+    public ICollection<(string Proc, int Count)> ProcCounts { get; init; } = new List<(string Proc, int Count)>();
 
     // Damage Breakdown
     public double LungingStrikeDamage { get; init; }
@@ -104,15 +96,10 @@ public class SimulationSummary
             AbilityCounts.Add((abilityEventType.GetCustomAttribute<AbilityAttribute>().Name, state.ProcessedEvents.Count(e => e.GetType().IsAssignableTo(abilityEventType))));
         }
 
-        AspectOfEchoingFuryProcCount = state.ProcessedEvents.OfType<AspectOfEchoingFuryProcEvent>().Count();
-        AspectOfTheProtectorProcCount = state.ProcessedEvents.OfType<AspectOfTheProtectorProcEvent>().Count();
-        ExploitProcCount = state.ProcessedEvents.OfType<ExploitProcEvent>().Count();
-        GohrsDevastatingGripsProcCount = state.ProcessedEvents.OfType<GohrsDevastatingGripsProcEvent>().Count();
-        GutteralYellProcCount = state.ProcessedEvents.OfType<GutteralYellProcEvent>().Count();
-        PressurePointProcCount = state.ProcessedEvents.OfType<PressurePointProcEvent>().Count();
-        RaidLeaderProcCount = state.ProcessedEvents.OfType<RaidLeaderProcEvent>().Count();
-        TwoHandedMaceExpertiseProcCount = state.ProcessedEvents.OfType<TwoHandedMaceExpertiseProcEvent>().Count();
-        WarbringerProcCount = state.ProcessedEvents.OfType<WarbringerProcEvent>().Count();
+        foreach (var procEventType in GetProcEventTypes())
+        {
+            ProcCounts.Add((procEventType.GetCustomAttribute<ProcAttribute>().Name, state.ProcessedEvents.Count(e => e.GetType().IsAssignableTo(procEventType))));
+        }
 
         LungingStrikeDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.LungingStrike).Sum(e => e.Damage);
         WhirlwindSpinDamage = state.ProcessedEvents.OfType<DamageEvent>().Where(e => e.DamageSource == DamageSource.Whirlwind).Sum(e => e.Damage);
@@ -127,6 +114,11 @@ public class SimulationSummary
         typeof(Program).Assembly
                        .GetTypes()
                        .Where(t => t.HasAttribute<AbilityAttribute>());
+
+    private IEnumerable<Type> GetProcEventTypes() =>
+        typeof(Program).Assembly
+                       .GetTypes()
+                       .Where(t => t.HasAttribute<ProcAttribute>());
 
     public void Print()
     {
@@ -180,23 +172,18 @@ public class SimulationSummary
         Console.WriteLine("");
         Console.WriteLine("Procs");
         Console.WriteLine("=====");
-        Console.WriteLine($"Aspect of Echoing Fury: {AspectOfEchoingFuryProcCount}");
-        Console.WriteLine($"Aspect of the Protector: {AspectOfTheProtectorProcCount}");
-        Console.WriteLine($"Exploit: {ExploitProcCount}");
-        Console.WriteLine($"Gohrs Devastating Grips: {GohrsDevastatingGripsProcCount}");
-        Console.WriteLine($"Gutteral Yell: {GutteralYellProcCount}");
-        Console.WriteLine($"Pressure Point: {PressurePointProcCount}");
-        Console.WriteLine($"Raid Leader: {RaidLeaderProcCount}");
-        Console.WriteLine($"2-Handed Mace Expertise: {TwoHandedMaceExpertiseProcCount}");
-        Console.WriteLine($"Warbringer: {WarbringerProcCount}");
+        foreach (var (Proc, Count) in ProcCounts.Where(x => x.Count > 0).OrderByDescending(x => x.Count))
+        {
+            Console.WriteLine($"{Proc}: {Count}");
+        }
 
         Console.WriteLine("");
         Console.WriteLine("Damage Breakdown");
         Console.WriteLine("================");
-        Console.WriteLine($"Lunging Strike Damage: {LungingStrikeDamage:N0} [{100 * LungingStrikeDamage / TotalDamage:F1}%]");
-        Console.WriteLine($"Whirlwind Damage: {WhirlwindSpinDamage:N0} [{100 * WhirlwindSpinDamage / TotalDamage:F1}%]");
-        Console.WriteLine($"Gohrs Devastating Grips Damage: {GohrsDevastatingGripsDamage:N0} [{100 * GohrsDevastatingGripsDamage / TotalDamage:F1}%]");
-        Console.WriteLine($"Bleeding Damage: {BleedingDamage:N0} [{100 * BleedingDamage / TotalDamage:F1}%]");
+        Console.WriteLine($"Lunging Strike: {LungingStrikeDamage:N0} [{100 * LungingStrikeDamage / TotalDamage:F1}%]");
+        Console.WriteLine($"Whirlwind: {WhirlwindSpinDamage:N0} [{100 * WhirlwindSpinDamage / TotalDamage:F1}%]");
+        Console.WriteLine($"Gohrs Devastating Grips: {GohrsDevastatingGripsDamage:N0} [{100 * GohrsDevastatingGripsDamage / TotalDamage:F1}%]");
+        Console.WriteLine($"Bleeding: {BleedingDamage:N0} [{100 * BleedingDamage / TotalDamage:F1}%]");
 
         Console.WriteLine("");
         Console.WriteLine("Fury Management");

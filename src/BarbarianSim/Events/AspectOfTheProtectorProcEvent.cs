@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Aspect of the Protector")]
 public class AspectOfTheProtectorProcEvent : EventInfo
 {
     public AspectOfTheProtectorProcEvent(double timestamp, int barrierAmount) : base(timestamp, null) => BarrierAmount = barrierAmount;

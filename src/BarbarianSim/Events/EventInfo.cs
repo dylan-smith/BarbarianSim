@@ -21,3 +21,10 @@ public sealed class AbilityAttribute : Attribute
     public AbilityAttribute(string name) => Name = name;
     public string Name { get; init; }
 }
+
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class ProcAttribute : Attribute
+{
+    public ProcAttribute(string name) => Name = name;
+    public string Name { get; init; }
+}

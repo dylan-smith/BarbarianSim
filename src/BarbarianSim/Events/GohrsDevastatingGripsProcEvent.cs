@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Gohr's Devastating Grips")]
 public class GohrsDevastatingGripsProcEvent : EventInfo
 {
     public GohrsDevastatingGripsProcEvent(double timestamp, double damage) : base(timestamp, null) => Damage = damage;

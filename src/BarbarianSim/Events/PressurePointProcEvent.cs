@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Pressure Point")]
 public class PressurePointProcEvent : EventInfo
 {
     public PressurePointProcEvent(double timestamp, EnemyState target) : base(timestamp, null) => Target = target;

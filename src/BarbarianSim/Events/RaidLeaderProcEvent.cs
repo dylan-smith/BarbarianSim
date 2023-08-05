@@ -1,5 +1,6 @@
 ﻿namespace BarbarianSim.Events;
 
+[Proc("Raid Leader")]
 public class RaidLeaderProcEvent : EventInfo
 {
     public RaidLeaderProcEvent(double timestamp, double duration) : base(timestamp, null) => Duration = duration;
