@@ -14,6 +14,7 @@ public class TotalDamageMultiplierCalculator
                                            StrengthCalculator strengthCalculator,
                                            PitFighter pitFighter,
                                            WarCry warCry,
+                                           PowerWarCry powerWarCry,
                                            SupremeWrathOfTheBerserker supremeWrathOfTheBerserker,
                                            UnbridledRage unbridledRage,
                                            ViolentWhirlwind violentWhirlwind,
@@ -32,6 +33,7 @@ public class TotalDamageMultiplierCalculator
         _strengthCalculator = strengthCalculator;
         _pitFighter = pitFighter;
         _warCry = warCry;
+        _powerWarCry = powerWarCry;
         _supremeWrathOfTheBerserker = supremeWrathOfTheBerserker;
         _unbridledRage = unbridledRage;
         _violentWhirlwind = violentWhirlwind;
@@ -51,6 +53,7 @@ public class TotalDamageMultiplierCalculator
     private readonly StrengthCalculator _strengthCalculator;
     private readonly PitFighter _pitFighter;
     private readonly WarCry _warCry;
+    private readonly PowerWarCry _powerWarCry;
     private readonly SupremeWrathOfTheBerserker _supremeWrathOfTheBerserker;
     private readonly UnbridledRage _unbridledRage;
     private readonly ViolentWhirlwind _violentWhirlwind;
@@ -71,6 +74,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _strengthCalculator.GetStrengthMultiplier(state, skillType);
         damageBonus *= _pitFighter.GetCloseDamageBonus(state);
         damageBonus *= _warCry.GetDamageBonus(state);
+        damageBonus *= _powerWarCry.GetDamageBonus(state);
         damageBonus *= _unbridledRage.GetDamageBonus(state, skillType);
         damageBonus *= _violentWhirlwind.GetDamageBonus(state, damageSource);
         damageBonus *= _enhancedLungingStrike.GetDamageBonus(state, damageSource, enemy);

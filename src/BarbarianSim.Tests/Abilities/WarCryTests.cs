@@ -2,25 +2,15 @@
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
-using BarbarianSim.Skills;
 using FluentAssertions;
-using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Abilities;
 
 public class WarCryTests
 {
-    private readonly Mock<PowerWarCry> _mockPowerWarCry = TestHelpers.CreateMock<PowerWarCry>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly WarCry _warCry;
-
-    public WarCryTests()
-    {
-        _mockPowerWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(0);
-
-        _warCry = new WarCry(_mockPowerWarCry.Object);
-    }
+    private readonly WarCry _warCry = new();
 
     [Fact]
     public void CanUse_Returns_True_If_Not_On_Cooldown()
@@ -79,16 +69,6 @@ public class WarCryTests
         _state.Player.Auras.Add(Aura.WarCry);
 
         _warCry.GetDamageBonus(_state).Should().Be(1.18);
-    }
-
-    [Fact]
-    public void PowerWarCry_Adds_DamageBonus()
-    {
-        _mockPowerWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(0.1);
-        _state.Config.Skills.Add(Skill.WarCry, 1);
-        _state.Player.Auras.Add(Aura.WarCry);
-
-        _warCry.GetDamageBonus(_state).Should().Be(1.25);
     }
 
     [Fact]

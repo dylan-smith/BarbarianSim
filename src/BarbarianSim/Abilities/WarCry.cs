@@ -1,6 +1,5 @@
 ﻿using BarbarianSim.Enums;
 using BarbarianSim.Events;
-using BarbarianSim.Skills;
 
 namespace BarbarianSim.Abilities;
 
@@ -13,10 +12,6 @@ public class WarCry
     // Bellow a mighty war cry, increasing your damage dealt by 15%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
     // Enhanced: War Cry grants you Berserking for 4 seconds
     // Mighty: War Cry grants you 15%[x] Base Life (15%[x] HP) as Fortify
-
-    public WarCry(PowerWarCry powerWarCry) => _powerWarCry = powerWarCry;
-
-    private readonly PowerWarCry _powerWarCry;
 
     public virtual bool CanUse(SimulationState state) =>
         state.Config.HasSkill(Skill.WarCry)
@@ -34,7 +29,7 @@ public class WarCry
         var skillPoints = state.Config.Gear.AllGear.Sum(g => g.WarCry);
         skillPoints += state.Config.GetSkillPoints(Skill.WarCry);
 
-        var damageBonus = skillPoints switch
+        return skillPoints switch
         {
             1 => 1.15,
             2 => 1.165,
@@ -43,9 +38,5 @@ public class WarCry
             >= 5 => 1.21,
             _ => 1.0,
         };
-
-        damageBonus += _powerWarCry.GetDamageBonus(state);
-
-        return damageBonus;
     }
 }

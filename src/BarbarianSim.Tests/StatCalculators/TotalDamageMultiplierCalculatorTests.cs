@@ -18,6 +18,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<StrengthCalculator> _mockStrengthCalculator = TestHelpers.CreateMock<StrengthCalculator>();
     private readonly Mock<PitFighter> _mockPitFighter = TestHelpers.CreateMock<PitFighter>();
     private readonly Mock<WarCry> _mockWarCry = TestHelpers.CreateMock<WarCry>();
+    private readonly Mock<PowerWarCry> _mockPowerWarCry = TestHelpers.CreateMock<PowerWarCry>();
     private readonly Mock<SupremeWrathOfTheBerserker> _mockSupremeWrathOfTheBerserker = TestHelpers.CreateMock<SupremeWrathOfTheBerserker>();
     private readonly Mock<UnbridledRage> _mockUnbridledRage = TestHelpers.CreateMock<UnbridledRage>();
     private readonly Mock<ViolentWhirlwind> _mockViolentWhirlwind = TestHelpers.CreateMock<ViolentWhirlwind>();
@@ -40,6 +41,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockStrengthCalculator.Setup(m => m.GetStrengthMultiplier(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockPowerWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockSupremeWrathOfTheBerserker.Setup(m => m.GetBerserkDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockUnbridledRage.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
         _mockViolentWhirlwind.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<DamageSource>())).Returns(1.0);
@@ -58,6 +60,7 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockStrengthCalculator.Object,
                                                           _mockPitFighter.Object,
                                                           _mockWarCry.Object,
+                                                          _mockPowerWarCry.Object,
                                                           _mockSupremeWrathOfTheBerserker.Object,
                                                           _mockUnbridledRage.Object,
                                                           _mockViolentWhirlwind.Object,
@@ -128,6 +131,16 @@ public class TotalDamageMultiplierCalculatorTests
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
         result.Should().Be(1.21);
+    }
+
+    [Fact]
+    public void Includes_PowerWarCry_Bonus()
+    {
+        _mockPowerWarCry.Setup(m => m.GetDamageBonus(_state)).Returns(1.1);
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
+
+        result.Should().Be(1.1);
     }
 
     [Fact]

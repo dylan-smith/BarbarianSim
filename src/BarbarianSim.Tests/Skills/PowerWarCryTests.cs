@@ -19,7 +19,7 @@ public class PowerWarCryTests
         state.Config.Skills.Add(Skill.PowerWarCry, 1);
         state.Player.Auras.Add(Aura.WarCry);
 
-        _skill.GetDamageBonus(state).Should().Be(0.1);
+        _skill.GetDamageBonus(state).Should().Be(1.1);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class PowerWarCryTests
         var state = new SimulationState(config);
         state.Player.Auras.Add(Aura.WarCry);
 
-        _skill.GetDamageBonus(state).Should().Be(0.0);
+        _skill.GetDamageBonus(state).Should().Be(1.0);
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class PowerWarCryTests
         var state = new SimulationState(config);
         state.Config.Skills.Add(Skill.PowerWarCry, 1);
 
-        _skill.GetDamageBonus(state).Should().Be(0.0);
+        _skill.GetDamageBonus(state).Should().Be(1.0);
     }
 
     [Fact]
@@ -53,6 +53,6 @@ public class PowerWarCryTests
         state.Config.Skills.Add(Skill.PowerWarCry, 1);
         state.Player.Auras.Add(Aura.WarCry);
 
-        _skill.GetDamageBonus(state).Should().Be(0.0);
+        _skill.GetDamageBonus(state).Should().Be(1.0);
     }
 }
