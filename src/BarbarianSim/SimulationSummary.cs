@@ -99,9 +99,7 @@ public class SimulationSummary
         var (Count, UptimePercentage) = GetBleedingStats(state);
         EnemyEffects.Add((Aura.Bleeding, Count, UptimePercentage));
 
-        var abilitityEventTypes = GetAbilityEventTypes();
-
-        foreach (var abilityEventType in abilitityEventTypes)
+        foreach (var abilityEventType in GetAbilityEventTypes())
         {
             AbilityCounts.Add((abilityEventType.GetCustomAttribute<AbilityAttribute>().Name, state.ProcessedEvents.Count(e => e.GetType().IsAssignableTo(abilityEventType))));
         }
