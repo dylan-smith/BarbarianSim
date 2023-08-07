@@ -3,14 +3,21 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Arsenal;
 
 public class TwoHandedSwordExpertiseTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly TwoHandedSwordExpertise _expertise = new();
+    private readonly TwoHandedSwordExpertise _expertise;
+
+    public TwoHandedSwordExpertiseTests()
+    {
+        _expertise = new(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void Creates_BleedAppliedEvent_Using_Sword()

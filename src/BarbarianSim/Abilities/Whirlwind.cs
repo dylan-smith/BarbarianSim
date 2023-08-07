@@ -30,10 +30,7 @@ public class Whirlwind
 
     public virtual void Use(SimulationState state) => state.Events.Add(new WhirlwindSpinEvent(state.CurrentTime));
 
-    public virtual void StopSpinning(SimulationState state)
-    {
-        state.Events.Add(new AuraExpiredEvent(state.CurrentTime, "Whirlwind", Aura.Whirlwinding));
-    }
+    public virtual void StopSpinning(SimulationState state) => state.Events.Add(new AuraExpiredEvent(state.CurrentTime, "Whirlwind", Aura.Whirlwinding));
 
     public virtual double GetSkillMultiplier(SimulationState state)
     {

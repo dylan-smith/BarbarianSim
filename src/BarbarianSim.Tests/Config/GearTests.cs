@@ -3,6 +3,7 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Gems;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Config;
@@ -40,7 +41,7 @@ public class GearTests
     {
         var gear = new Gear();
         gear.Helm.Aspect = new AspectOfEchoingFury();
-        gear.Chest.Aspect = new AspectOfDisobedience();
+        gear.Chest.Aspect = new AspectOfDisobedience(new Mock<SimLogger>().Object);
         gear.Amulet.Aspect = null;
 
         gear.GetAllAspects<Aspect>().Should().HaveCount(2);
@@ -51,7 +52,7 @@ public class GearTests
     {
         var gear = new Gear();
         gear.Helm.Aspect = new AspectOfEchoingFury();
-        gear.Chest.Aspect = new AspectOfDisobedience() { ArmorIncrement = 0.25 };
+        gear.Chest.Aspect = new AspectOfDisobedience(new Mock<SimLogger>().Object) { ArmorIncrement = 0.25 };
         gear.Amulet.Aspect = null;
 
         gear.GetAllAspects<AspectOfDisobedience>().Should().HaveCount(1);
