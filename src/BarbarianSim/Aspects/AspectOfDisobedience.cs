@@ -10,6 +10,10 @@ public class AspectOfDisobedience : Aspect
     public double ArmorIncrement { get; set; }
     public double MaxArmorBonus { get; set; }
 
+    public AspectOfDisobedience(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual double GetArmorBonus(SimulationState state)
     {
         if (IsAspectEquipped(state))
@@ -18,9 +22,12 @@ public class AspectOfDisobedience : Aspect
                                                    .Where(e => e.Timestamp >= state.CurrentTime - 4.0)
                                                    .Count();
 
-            var armorBonus = damageCount * ArmorIncrement / 100.0;
 
-            return 1 + Math.Min(armorBonus, MaxArmorBonus / 100.0);
+            var armorBonus = damageCount * ArmorIncrement / 100.0;
+            armorBonus = 1 + Math.Min(armorBonus, MaxArmorBonus / 100.0);
+            _log.Verbose($"Aspect of Disobedience found {damageCount} damage events in the last 4 seconds, granting {armorBonus:F2}x armor bonus");
+
+            return armorBonus;
         }
 
         return 1.0;

@@ -12,9 +12,14 @@ public class TwoHandedMaceExpertise : IHandlesEvent<LuckyHitEvent>
     public const double PROC_CHANCE = 0.1;
     public const double CRIT_DAMAGE = 1.15;
 
-    public TwoHandedMaceExpertise(RandomGenerator randomGenerator) => _randomGenerator = randomGenerator;
+    public TwoHandedMaceExpertise(RandomGenerator randomGenerator, SimLogger log)
+    {
+        _randomGenerator = randomGenerator;
+        _log = log;
+    }
 
     private readonly RandomGenerator _randomGenerator;
+    private readonly SimLogger _log;
 
     public void ProcessEvent(LuckyHitEvent e, SimulationState state)
     {
@@ -25,6 +30,7 @@ public class TwoHandedMaceExpertise : IHandlesEvent<LuckyHitEvent>
             if (procRoll <= PROC_CHANCE)
             {
                 state.Events.Add(new TwoHandedMaceExpertiseProcEvent(e.Timestamp));
+                _log.Verbose($"2-Handed Mace Expertise procced and created TwoHandedMaceExpertiseProcEvent");
             }
         }
     }
