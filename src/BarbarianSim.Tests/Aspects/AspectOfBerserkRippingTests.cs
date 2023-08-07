@@ -3,18 +3,23 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfBerserkRippingTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AspectOfBerserkRipping _aspect = new();
+    private readonly AspectOfBerserkRipping _aspect;
 
     public AspectOfBerserkRippingTests()
     {
-        _aspect.Damage = 30;
+        _aspect = new(_mockSimLogger.Object)
+        {
+            Damage = 30
+        };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 

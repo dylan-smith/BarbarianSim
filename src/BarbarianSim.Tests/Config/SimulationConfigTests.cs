@@ -3,6 +3,7 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Gems;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Config;
@@ -72,7 +73,7 @@ public class SimulationConfigTests
         config.Gear.OneHandLeft.Expertise = Expertise.OneHandedSword;
         config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald(GearSlot.OneHandLeft));
 
-        config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping();
+        config.Gear.OneHandRight.Aspect = new AspectOfBerserkRipping(new Mock<SimLogger>().Object);
         config.Gear.OneHandRight.Expertise = Expertise.OneHandedSword;
         config.Gear.OneHandRight.Gems.Add(new RoyalEmerald(GearSlot.OneHandRight));
 
