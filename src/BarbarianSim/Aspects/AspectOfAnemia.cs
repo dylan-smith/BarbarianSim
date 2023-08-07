@@ -10,9 +10,14 @@ public class AspectOfAnemia : Aspect, IHandlesEvent<LuckyHitEvent>
     public const double STUN_DURATION = 2.0;
     public double StunChance { get; set; }
 
-    public AspectOfAnemia(RandomGenerator randomGenerator) => _randomGenerator = randomGenerator;
+    public AspectOfAnemia(RandomGenerator randomGenerator, SimLogger log)
+    {
+        _randomGenerator = randomGenerator;
+        _log = log;
+    }
 
     private readonly RandomGenerator _randomGenerator;
+    private readonly SimLogger _log;
 
     public void ProcessEvent(LuckyHitEvent e, SimulationState state)
     {
@@ -24,6 +29,7 @@ public class AspectOfAnemia : Aspect, IHandlesEvent<LuckyHitEvent>
             if (procRoll <= (StunChance / 100.0))
             {
                 state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Aspect of Anemia", STUN_DURATION, Aura.Stun, e.Target));
+                _log.Verbose($"Aspect of Anemia created AuraAppliedEvent for Stun for {STUN_DURATION} seconds to Enemy #{e.Target.Id}");
             }
         }
     }

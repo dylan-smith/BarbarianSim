@@ -11,13 +11,14 @@ namespace BarbarianSim.Tests.Aspects;
 public sealed class AspectOfAnemiaTests
 {
     private readonly Mock<RandomGenerator> _mockRandomGenerator = TestHelpers.CreateMock<RandomGenerator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly AspectOfAnemia _aspect;
 
     public AspectOfAnemiaTests()
     {
         _mockRandomGenerator.Setup(m => m.Roll(RollType.AspectOfAnemia)).Returns(1.0);
-        _aspect = new AspectOfAnemia(_mockRandomGenerator.Object) { StunChance = 30 };
+        _aspect = new AspectOfAnemia(_mockRandomGenerator.Object, _mockSimLogger.Object) { StunChance = 30 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 
