@@ -11,13 +11,14 @@ namespace BarbarianSim.Tests.Arsenal;
 public class TwoHandedMaceExpertiseTests
 {
     private readonly Mock<RandomGenerator> _mockRandomGenerator = TestHelpers.CreateMock<RandomGenerator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TwoHandedMaceExpertise _expertise;
 
     public TwoHandedMaceExpertiseTests()
     {
         _mockRandomGenerator.Setup(m => m.Roll(RollType.TwoHandedMaceExpertise)).Returns(0);
-        _expertise = new(_mockRandomGenerator.Object);
+        _expertise = new(_mockRandomGenerator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
