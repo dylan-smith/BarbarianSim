@@ -3,17 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfDisobedienceTests
 {
-    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AspectOfDisobedience _aspect = new();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly AspectOfDisobedience _aspect;
 
     public AspectOfDisobedienceTests()
     {
+        _aspect = new(_mockSimLogger.Object);
         _state.Config.Gear.Helm.Aspect = _aspect;
         _aspect.ArmorIncrement = 0.5;
         _aspect.MaxArmorBonus = 30;
