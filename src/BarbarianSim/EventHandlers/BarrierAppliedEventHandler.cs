@@ -16,6 +16,6 @@ public class BarrierAppliedEventHandler : EventHandler<BarrierAppliedEvent>
 
         e.BarrierExpiredEvent = new BarrierExpiredEvent(e.Timestamp + e.Duration, e.Source, e.Barrier);
         state.Events.Add(e.BarrierExpiredEvent);
-        _log.Verbose($"Created BarrierExpiredEvent for {e.Barrier:F2} barrier expiring in {e.Duration:F2} seconds");
+        _log.Verbose($"Created BarrierExpiredEvent expiring in {e.Duration:F2} seconds");
     }
 }
