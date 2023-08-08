@@ -3,18 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class RamaladnisMagnumOpusTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly RamaladnisMagnumOpus _aspect = new();
+    private readonly RamaladnisMagnumOpus _aspect;
 
     public RamaladnisMagnumOpusTests()
     {
-        _aspect.DamagePerFury = 0.3;
+        _aspect = new(_mockSimLogger.Object) { DamagePerFury = 0.3 };
         _state.Config.Gear.OneHandLeft.Aspect = _aspect;
     }
 

@@ -9,11 +9,16 @@ public class RamaladnisMagnumOpus : Aspect, IHandlesEvent<SimulationStartedEvent
     public double DamagePerFury { get; set; }
     public const double FURY_PER_SECOND_LOST = 2.0;
 
+    public RamaladnisMagnumOpus(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(SimulationStartedEvent e, SimulationState state)
     {
         if (IsAspectEquipped(state))
         {
             state.Events.Add(new RamaladnisMagnumOpusEvent(1.0));
+            _log.Verbose($"Ramaladni's Magnum Opus created RamaladnisMagnumOpusEvent at timestamp 1.0");
         }
     }
 
