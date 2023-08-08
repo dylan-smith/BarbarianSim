@@ -9,6 +9,10 @@ public class PenitentGreaves : Aspect, IHandlesEvent<SimulationStartedEvent>
     // You leave behind a trail of frost that Chills enemies. You deal [7 - 10]%[x] more damage to Chilled enemies.
     public int Damage { get; set; }
 
+    public PenitentGreaves(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(SimulationStartedEvent e, SimulationState state)
     {
         if (IsAspectEquipped(state))
@@ -16,6 +20,7 @@ public class PenitentGreaves : Aspect, IHandlesEvent<SimulationStartedEvent>
             foreach (var enemy in state.Enemies)
             {
                 state.Events.Add(new AuraAppliedEvent(0, "Penitent Greaves", 0, Aura.Chill, enemy));
+                _log.Verbose($"Penitent Greaves created AuraAppliedEvent for Chill to Enemy #{enemy.Id}");
             }
         }
     }

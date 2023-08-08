@@ -3,17 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class PenitentGreavesTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly PenitentGreaves _aspect = new();
+    private readonly PenitentGreaves _aspect;
 
     public PenitentGreavesTests()
     {
+        _aspect = new(_mockSimLogger.Object);
         _aspect.Damage = 10;
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
