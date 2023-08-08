@@ -2,17 +2,20 @@
 using BarbarianSim.Config;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfEchoingFuryTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AspectOfEchoingFury _aspect = new();
+    private readonly AspectOfEchoingFury _aspect;
 
     public AspectOfEchoingFuryTests()
     {
+        _aspect = new(_mockSimLogger.Object);
         _state.Config.Gear.Helm.Aspect = _aspect;
         _aspect.Fury = 4;
     }

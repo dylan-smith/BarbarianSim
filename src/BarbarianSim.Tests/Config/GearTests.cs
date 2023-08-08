@@ -40,7 +40,7 @@ public class GearTests
     public void GetAllAspects_Returns_All_Aspects()
     {
         var gear = new Gear();
-        gear.Helm.Aspect = new AspectOfEchoingFury();
+        gear.Helm.Aspect = new AspectOfEchoingFury(new Mock<SimLogger>().Object);
         gear.Chest.Aspect = new AspectOfDisobedience(new Mock<SimLogger>().Object);
         gear.Amulet.Aspect = null;
 
@@ -51,7 +51,7 @@ public class GearTests
     public void GetAllAspects_Filters_To_A_Specific_Aspect()
     {
         var gear = new Gear();
-        gear.Helm.Aspect = new AspectOfEchoingFury();
+        gear.Helm.Aspect = new AspectOfEchoingFury(new Mock<SimLogger>().Object);
         gear.Chest.Aspect = new AspectOfDisobedience(new Mock<SimLogger>().Object) { ArmorIncrement = 0.25 };
         gear.Amulet.Aspect = null;
 

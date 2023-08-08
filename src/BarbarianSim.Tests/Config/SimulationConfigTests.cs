@@ -88,7 +88,7 @@ public class SimulationConfigTests
         config.Gear.Ring1.Aspect = new BoldChieftainsAspect();
         config.Gear.Ring1.Gems.Add(new RoyalSkull(GearSlot.Ring1));
 
-        config.Gear.Ring2.Aspect = new AspectOfEchoingFury();
+        config.Gear.Ring2.Aspect = new AspectOfEchoingFury(new Mock<SimLogger>().Object);
         config.Gear.Ring2.Gems.Add(new RoyalSkull(GearSlot.Ring2));
 
         return config;
