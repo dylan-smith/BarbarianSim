@@ -11,7 +11,7 @@ namespace BarbarianSim.Tests.Aspects;
 public class EdgemastersAspectTests
 {
     private readonly Mock<MaxFuryCalculator> _mockMaxFuryCalculator = TestHelpers.CreateMock<MaxFuryCalculator>();
-
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly EdgemastersAspect _aspect;
 
@@ -20,7 +20,7 @@ public class EdgemastersAspectTests
         _mockMaxFuryCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                               .Returns(100);
 
-        _aspect = new(_mockMaxFuryCalculator.Object);
+        _aspect = new(_mockMaxFuryCalculator.Object, _mockSimLogger.Object);
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 

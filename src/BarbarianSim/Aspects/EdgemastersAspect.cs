@@ -7,9 +7,14 @@ namespace BarbarianSim.Aspects;
 public class EdgemastersAspect : Aspect
 {
     // Skills deal up to 10-20%[x] increased damage based on your available Primary Resource when cast, receiving the maximum benefit while you have full Primary Resource
-    public EdgemastersAspect(MaxFuryCalculator maxFuryCalculator) => _maxFuryCalculator = maxFuryCalculator;
+    public EdgemastersAspect(MaxFuryCalculator maxFuryCalculator, SimLogger log)
+    {
+        _maxFuryCalculator = maxFuryCalculator;
+        _log = log;
+    }
 
     private readonly MaxFuryCalculator _maxFuryCalculator;
+    private readonly SimLogger _log;
 
     public int Damage { get; set; }
 
@@ -20,7 +25,11 @@ public class EdgemastersAspect : Aspect
             var maxFury = _maxFuryCalculator.Calculate(state);
             var furyMultiplier = state.Player.Fury / maxFury;
 
-            return 1 + (Damage / 100.0 * furyMultiplier);
+            var result = 1 + (Damage / 100.0 * furyMultiplier);
+
+            _log.Verbose($"Damage bonus from Edgemasters Aspect = {result:F2}x");
+
+            return result;
         }
 
         return 1.0;
