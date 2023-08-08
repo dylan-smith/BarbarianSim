@@ -85,7 +85,7 @@ public class SimulationConfigTests
         config.Gear.Amulet.Aspect = new GhostwalkerAspect();
         config.Gear.Amulet.Gems.Add(new RoyalSkull(GearSlot.Amulet));
 
-        config.Gear.Ring1.Aspect = new BoldChieftainsAspect();
+        config.Gear.Ring1.Aspect = new BoldChieftainsAspect(new Mock<SimLogger>().Object);
         config.Gear.Ring1.Gems.Add(new RoyalSkull(GearSlot.Ring1));
 
         config.Gear.Ring2.Aspect = new AspectOfEchoingFury(new Mock<SimLogger>().Object);

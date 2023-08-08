@@ -3,17 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public class BoldChieftainsAspectTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly BoldChieftainsAspect _aspect = new();
+    private readonly BoldChieftainsAspect _aspect;
 
     public BoldChieftainsAspectTests()
     {
+        _aspect = new(_mockSimLogger.Object);
         _state.Config.Gear.Helm.Aspect = _aspect;
         _aspect.CooldownReduction = 1.9;
     }

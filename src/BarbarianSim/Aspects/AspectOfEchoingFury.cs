@@ -17,7 +17,7 @@ public class AspectOfEchoingFury : Aspect, IHandlesEvent<ChallengingShoutEvent>,
         if (IsAspectEquipped(state))
         {
             state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
-            _log.Verbose($"Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for {Fury} per second for {e.Duration} seconds");
+            _log.Verbose($"Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for {Fury} Fury per second for {e.Duration:F2} seconds");
         }
     }
 
@@ -26,7 +26,7 @@ public class AspectOfEchoingFury : Aspect, IHandlesEvent<ChallengingShoutEvent>,
         if (IsAspectEquipped(state))
         {
             state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
-            _log.Verbose($"Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for {Fury} per second for {e.Duration} seconds");
+            _log.Verbose($"Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for {Fury} Fury per second for {e.Duration:F2} seconds");
         }
     }
 
@@ -35,7 +35,7 @@ public class AspectOfEchoingFury : Aspect, IHandlesEvent<ChallengingShoutEvent>,
         if (IsAspectEquipped(state))
         {
             state.Events.Add(new AspectOfEchoingFuryProcEvent(e.Timestamp, e.Duration, Fury));
-            _log.Verbose($"Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for {Fury} per second for {e.Duration} seconds");
+            _log.Verbose($"Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for {Fury} Fury per second for {e.Duration:F2} seconds");
         }
     }
 }

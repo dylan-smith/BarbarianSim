@@ -21,7 +21,7 @@ public class AspectOfBerserkRipping : Aspect, IHandlesEvent<DirectDamageEvent>
             var bleedDamage = e.BaseDamage * Damage / 100.0;
             var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, "Aspect of Berserk Ripping", bleedDamage, BLEED_DURATION, e.Enemy);
             state.Events.Add(bleedAppliedEvent);
-            _log.Verbose($"Aspect of Berserk Ripping created BleedAppliedEvent for {bleedDamage} damage over {BLEED_DURATION} seconds to Enemy #{e.Enemy.Id}");
+            _log.Verbose($"Aspect of Berserk Ripping created BleedAppliedEvent for {bleedDamage:F2} damage over {BLEED_DURATION} seconds to Enemy #{e.Enemy.Id}");
         }
     }
 }

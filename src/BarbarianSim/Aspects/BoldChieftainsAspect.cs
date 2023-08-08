@@ -10,6 +10,10 @@ public class BoldChieftainsAspect : Aspect, IHandlesEvent<ChallengingShoutEvent>
     public const double MAX_COOLDOWN_REDUCTION = 6.0;
     public double CooldownReduction { get; set; }
 
+    public BoldChieftainsAspect(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
         if (IsAspectEquipped(state))
@@ -21,6 +25,7 @@ public class BoldChieftainsAspect : Aspect, IHandlesEvent<ChallengingShoutEvent>
                  .OfType<AuraAppliedEvent>()
                  .Single(x => x is AuraAppliedEvent auraAppliedEvent && auraAppliedEvent.Aura == Aura.ChallengingShoutCooldown)
                  .Duration -= cooldownReduction;
+            _log.Verbose($"Bold Chieftain's Aspect reduced Challenging Shout cooldown by {cooldownReduction:F2} seconds");
         }
     }
 
@@ -35,6 +40,7 @@ public class BoldChieftainsAspect : Aspect, IHandlesEvent<ChallengingShoutEvent>
                  .OfType<AuraAppliedEvent>()
                  .Single(x => x is AuraAppliedEvent auraAppliedEvent && auraAppliedEvent.Aura == Aura.RallyingCryCooldown)
                  .Duration -= cooldownReduction;
+            _log.Verbose($"Bold Chieftain's Aspect reduced Rallying Cry cooldown by {cooldownReduction:F2} seconds");
         }
     }
     public void ProcessEvent(WarCryEvent e, SimulationState state)
@@ -48,6 +54,7 @@ public class BoldChieftainsAspect : Aspect, IHandlesEvent<ChallengingShoutEvent>
                  .OfType<AuraAppliedEvent>()
                  .Single(x => x is AuraAppliedEvent auraAppliedEvent && auraAppliedEvent.Aura == Aura.WarCryCooldown)
                  .Duration -= cooldownReduction;
+            _log.Verbose($"Bold Chieftain's Aspect reduced War Cry cooldown by {cooldownReduction:F2} seconds");
         }
     }
 }
