@@ -33,8 +33,13 @@ public class AspectOfLimitlessRage : Aspect, IHandlesEvent<FuryGeneratedEvent>
         {
             var result = 1 + (_damageBoost / 100.0);
             _damageBoost = 0;
-            _log.Verbose($"Aspect of Limitless Rage granted {result:F2}x damage bonus");
-            _log.Verbose($"Aspect of Limitless Rage reset to 0");
+
+            if (result > 1.0)
+            {
+                _log.Verbose($"Aspect of Limitless Rage granted {result:F2}x damage bonus");
+                _log.Verbose($"Aspect of Limitless Rage reset to 0");
+            }
+
             return result;
         }
 

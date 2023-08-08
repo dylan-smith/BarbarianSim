@@ -30,7 +30,10 @@ public class AspectOfTheDireWhirlwind : Aspect
             var critChanceBonus = Math.Floor(state.CurrentTime - startTime) * CritChance;
             var result = Math.Min(critChanceBonus, MaxCritChance);
 
-            _log.Verbose($"Aspect of the Dire Whirlwind added Crit Chance bonus of {result:F2}%");
+            if (result > 0)
+            {
+                _log.Verbose($"Aspect of the Dire Whirlwind added Crit Chance bonus of {result:F2}%");
+            }
 
             return result;
         }
