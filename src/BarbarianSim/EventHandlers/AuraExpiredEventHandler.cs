@@ -26,7 +26,7 @@ public class AuraExpiredEventHandler : EventHandler<AuraExpiredEvent>
         {
             if (state.Events.Any(x => x is AuraExpiredEvent expiredEvent && expiredEvent.Target == e.Target && expiredEvent.Aura == e.Aura))
             {
-                _log.Verbose($"Doing nothing because a later AuraExpiredEvent for {e.Aura} on {e.Target} exists");
+                _log.Verbose($"Doing nothing because a later AuraExpiredEvent for {e.Aura} on Enemy #{e.Target.Id} exists");
             }
             else
             {
