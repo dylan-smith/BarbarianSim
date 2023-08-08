@@ -10,6 +10,10 @@ public class AspectOfTheDireWhirlwind : Aspect
     public int CritChance { get; set; }
     public int MaxCritChance { get; set; }
 
+    public AspectOfTheDireWhirlwind(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual double GetCritChanceBonus(SimulationState state)
     {
         if (IsAspectEquipped(state) && state.Player.Auras.Contains(Aura.Whirlwinding))
@@ -24,8 +28,11 @@ public class AspectOfTheDireWhirlwind : Aspect
 
             var startTime = appliedEvent.Timestamp;
             var critChanceBonus = Math.Floor(state.CurrentTime - startTime) * CritChance;
+            var result = Math.Min(critChanceBonus, MaxCritChance);
 
-            return Math.Min(critChanceBonus, MaxCritChance);
+            _log.Verbose($"Aspect of the Dire Whirlwind added Crit Chance bonus of {result:F2}%");
+
+            return result;
         }
 
         return 0.0;
