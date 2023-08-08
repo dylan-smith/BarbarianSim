@@ -5,7 +5,9 @@ This project is configured to use [devcontainers](https://containers.dev/)
 ## CLI
 
 `dotnet build ./src`
+
 `dotnet test ./src`
+
 `dotnet run --project ./src/BarbarianSim`
 
 ## Visual Studio Code
