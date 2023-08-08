@@ -2,18 +2,23 @@
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class IronBloodAspectTests
 {
-    private readonly IronBloodAspect _aspect = new();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
+    private readonly IronBloodAspect _aspect;
 
     public IronBloodAspectTests()
     {
-        _aspect.DamageReduction = 4;
-        _aspect.MaxDamageReduction = 20;
+        _aspect = new(_mockSimLogger.Object)
+        {
+            DamageReduction = 4,
+            MaxDamageReduction = 20
+        };
     }
 
     [Fact]
