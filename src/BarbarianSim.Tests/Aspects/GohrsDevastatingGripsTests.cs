@@ -3,18 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public class GohrsDevastatingGripsTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly GohrsDevastatingGrips _aspect = new();
+    private readonly GohrsDevastatingGrips _aspect;
 
     public GohrsDevastatingGripsTests()
     {
-        _aspect.DamagePercent = 20;
+        _aspect = new(_mockSimLogger.Object) { DamagePercent = 20 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 

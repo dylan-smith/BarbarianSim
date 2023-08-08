@@ -56,7 +56,7 @@ public class SimulationConfigTests
         config.Gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
         config.Gear.Chest.Gems.Add(new RoyalSapphire(GearSlot.Chest));
 
-        config.Gear.Gloves.Aspect = new GohrsDevastatingGrips();
+        config.Gear.Gloves.Aspect = new GohrsDevastatingGrips(new Mock<SimLogger>().Object);
 
         config.Gear.Pants.Aspect = new GhostwalkerAspect(new Mock<SimLogger>().Object);
         config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));

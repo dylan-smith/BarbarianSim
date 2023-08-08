@@ -13,6 +13,10 @@ public class GohrsDevastatingGrips : Aspect, IHandlesEvent<DirectDamageEvent>, I
     public double TotalBaseDamage { get; set; }
     public const int MAX_HIT_COUNT = 100;
 
+    public GohrsDevastatingGrips(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(DirectDamageEvent e, SimulationState state)
     {
         if (e.DamageSource != DamageSource.Whirlwind)
@@ -33,6 +37,7 @@ public class GohrsDevastatingGrips : Aspect, IHandlesEvent<DirectDamageEvent>, I
         {
             var damage = TotalBaseDamage * DamagePercent / 100.0;
             state.Events.Add(new GohrsDevastatingGripsProcEvent(e.Timestamp, damage));
+            _log.Verbose($"Gohr's Devastating Grips created GohrsDevastatingGripsProcEvent for {damage:F2} Fire damage");
 
             HitCount = 0;
             TotalBaseDamage = 0;

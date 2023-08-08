@@ -60,7 +60,7 @@ public class SpinToWinTests
     {
         _state.Player.Auras.Add(Aura.Whirlwinding);
         _state.CurrentTime = 123;
-        var aspect = new GohrsDevastatingGrips()
+        var aspect = new GohrsDevastatingGrips(new Mock<SimLogger>().Object)
         {
             HitCount = GohrsDevastatingGrips.MAX_HIT_COUNT
         };
