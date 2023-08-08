@@ -3,14 +3,21 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfLimitlessRageTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AspectOfLimitlessRage _aspect = new();
+    private readonly AspectOfLimitlessRage _aspect;
+
+    public AspectOfLimitlessRageTests()
+    {
+        _aspect = new(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void Returns_Min_DamageBonus_After_1_ExtraFury()
