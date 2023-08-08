@@ -3,18 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public class GhostwalkerAspectTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly GhostwalkerAspect _aspect = new();
+    private readonly GhostwalkerAspect _aspect;
 
     public GhostwalkerAspectTests()
     {
-        _aspect.Speed = 25;
+        _aspect = new(_mockSimLogger.Object) { Speed = 25 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 

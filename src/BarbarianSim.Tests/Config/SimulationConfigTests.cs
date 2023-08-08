@@ -58,11 +58,11 @@ public class SimulationConfigTests
 
         config.Gear.Gloves.Aspect = new GohrsDevastatingGrips();
 
-        config.Gear.Pants.Aspect = new GhostwalkerAspect();
+        config.Gear.Pants.Aspect = new GhostwalkerAspect(new Mock<SimLogger>().Object);
         config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));
         config.Gear.Pants.Gems.Add(new RoyalSapphire(GearSlot.Pants));
 
-        config.Gear.Boots.Aspect = new GhostwalkerAspect();
+        config.Gear.Boots.Aspect = new GhostwalkerAspect(new Mock<SimLogger>().Object);
 
         config.Gear.TwoHandBludgeoning.Aspect = new AspectOfGraspingWhirlwind();
         config.Gear.TwoHandBludgeoning.Expertise = Expertise.TwoHandedMace;
@@ -82,7 +82,7 @@ public class SimulationConfigTests
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald(GearSlot.TwoHandSlashing));
         config.Gear.TwoHandSlashing.Gems.Add(new RoyalEmerald(GearSlot.TwoHandSlashing));
 
-        config.Gear.Amulet.Aspect = new GhostwalkerAspect();
+        config.Gear.Amulet.Aspect = new GhostwalkerAspect(new Mock<SimLogger>().Object);
         config.Gear.Amulet.Gems.Add(new RoyalSkull(GearSlot.Amulet));
 
         config.Gear.Ring1.Aspect = new BoldChieftainsAspect(new Mock<SimLogger>().Object);
