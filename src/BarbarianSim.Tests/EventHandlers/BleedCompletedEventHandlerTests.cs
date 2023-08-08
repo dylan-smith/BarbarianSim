@@ -12,6 +12,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class BleedCompletedEventHandlerTests
 {
     private readonly Mock<TotalDamageMultiplierCalculator> _mockTotalDamageMultiplierCalculator = TestHelpers.CreateMock<TotalDamageMultiplierCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly BleedCompletedEventHandler _handler;
 
@@ -20,7 +21,7 @@ public class BleedCompletedEventHandlerTests
         _mockTotalDamageMultiplierCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>(), It.IsAny<SkillType>(), It.IsAny<DamageSource>(), It.IsAny<GearItem>()))
                                             .Returns(1.0);
 
-        _handler = new BleedCompletedEventHandler(_mockTotalDamageMultiplierCalculator.Object);
+        _handler = new BleedCompletedEventHandler(_mockTotalDamageMultiplierCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
