@@ -10,6 +10,10 @@ public class AspectOfTheExpectant : Aspect
     public const double MAX_DAMAGE = 30.0;
     public double Damage { get; set; }
 
+    public AspectOfTheExpectant(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual double GetDamageBonus(SimulationState state, SkillType skillType)
     {
         if (IsAspectEquipped(state) && skillType == SkillType.Core)
@@ -19,7 +23,14 @@ public class AspectOfTheExpectant : Aspect
 
             var basicCount = state.ProcessedEvents.OfType<DirectDamageEvent>().OrderBy(e => e.Timestamp).Count(e => e.SkillType == SkillType.Basic && e.Timestamp > lastCoreSkillTimestamp);
 
-            return 1 + (Math.Min(MAX_DAMAGE, basicCount * Damage) / 100.0);
+            var result = 1 + (Math.Min(MAX_DAMAGE, basicCount * Damage) / 100.0);
+
+            if (result > 1.0)
+            {
+                _log.Verbose($"Damage bonus from Aspect of the Expectant = {result:F2}x");
+            }
+
+            return result;
         }
 
         return 1.0;
