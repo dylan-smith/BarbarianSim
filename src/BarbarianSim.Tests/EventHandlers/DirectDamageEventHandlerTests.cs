@@ -17,6 +17,7 @@ public class DirectDamageEventHandlerTests
     private readonly Mock<OverpowerDamageCalculator> _mockOverpowerDamageCalculator = TestHelpers.CreateMock<OverpowerDamageCalculator>();
     private readonly Mock<LuckyHitChanceCalculator> _mockLuckyHitChanceCalculator = TestHelpers.CreateMock<LuckyHitChanceCalculator>();
     private readonly Mock<RandomGenerator> _mockRandomGenerator = TestHelpers.CreateMock<RandomGenerator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
 
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
 
@@ -47,7 +48,8 @@ public class DirectDamageEventHandlerTests
                                                 _mockCritDamageCalculator.Object,
                                                 _mockOverpowerDamageCalculator.Object,
                                                 _mockLuckyHitChanceCalculator.Object,
-                                                _mockRandomGenerator.Object);
+                                                _mockRandomGenerator.Object,
+                                                _mockSimLogger.Object);
     }
 
     [Fact]
@@ -164,7 +166,7 @@ public class DirectDamageEventHandlerTests
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
-        directDamageEvent.DamageEvent.Damage.Should().Be((1200 + 100) * 2.5);
+        directDamageEvent.DamageEvent.Damage.Should().Be(1200 + (100 * 2.5));
     }
 
     [Fact]
@@ -183,7 +185,7 @@ public class DirectDamageEventHandlerTests
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
-        directDamageEvent.DamageEvent.Damage.Should().Be((1200 + 500) * 2.5);
+        directDamageEvent.DamageEvent.Damage.Should().Be(1200 + (500 * 2.5));
     }
 
     [Fact]
@@ -202,7 +204,7 @@ public class DirectDamageEventHandlerTests
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
-        directDamageEvent.DamageEvent.Damage.Should().Be((1200 + 500 + 300) * 2.5);
+        directDamageEvent.DamageEvent.Damage.Should().Be(1200 + ((500 + 300) * 2.5));
     }
 
     [Fact]
@@ -256,7 +258,7 @@ public class DirectDamageEventHandlerTests
 
         _handler.ProcessEvent(directDamageEvent, _state);
 
-        directDamageEvent.DamageEvent.Damage.Should().Be(((1200 * 4.0) + (800 * 4.0)) * 2.5);
+        directDamageEvent.DamageEvent.Damage.Should().Be((1200 * 4.0) + (800 * 4.0 * 2.5));
     }
 
     [Fact]
