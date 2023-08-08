@@ -12,6 +12,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class ChallengingShoutEventHandlerTests
 {
     private readonly Mock<BoomingVoice> _mockBoomingVoice = TestHelpers.CreateMock<BoomingVoice>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly ChallengingShoutEventHandler _handler;
 
@@ -20,7 +21,7 @@ public class ChallengingShoutEventHandlerTests
         _mockBoomingVoice.Setup(m => m.GetDurationIncrease(It.IsAny<SimulationState>()))
                          .Returns(1.0);
 
-        _handler = new ChallengingShoutEventHandler(_mockBoomingVoice.Object);
+        _handler = new ChallengingShoutEventHandler(_mockBoomingVoice.Object, _mockSimLogger.Object);
     }
 
     [Fact]
