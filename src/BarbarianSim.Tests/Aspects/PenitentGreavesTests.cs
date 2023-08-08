@@ -16,8 +16,7 @@ public sealed class PenitentGreavesTests
 
     public PenitentGreavesTests()
     {
-        _aspect = new(_mockSimLogger.Object);
-        _aspect.Damage = 10;
+        _aspect = new(_mockSimLogger.Object) { Damage = 10 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 
