@@ -6,9 +6,14 @@ namespace BarbarianSim.EventHandlers;
 
 public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
 {
-    public AuraAppliedEventHandler(CrowdControlDurationCalculator crowdControlDurationCalculator) => _crowdControlDurationCalculator = crowdControlDurationCalculator;
+    public AuraAppliedEventHandler(CrowdControlDurationCalculator crowdControlDurationCalculator, SimLogger log)
+    {
+        _crowdControlDurationCalculator = crowdControlDurationCalculator;
+        _log = log;
+    }
 
     private readonly CrowdControlDurationCalculator _crowdControlDurationCalculator;
+    private readonly SimLogger _log;
 
     public override void ProcessEvent(AuraAppliedEvent e, SimulationState state)
     {
@@ -32,6 +37,7 @@ public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
 
             e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + duration, e.Source, e.Target, e.Aura);
             state.Events.Add(e.AuraExpiredEvent);
+            _log.Verbose($"Created AuraExpiredEvent for {e.Aura} expiring in {duration} seconds");
         }
     }
 }

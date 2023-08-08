@@ -12,13 +12,14 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class AuraAppliedEventHandlerTests
 {
     private readonly Mock<CrowdControlDurationCalculator> _mockCrowdControlDurationCalculator = TestHelpers.CreateMock<CrowdControlDurationCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly AuraAppliedEventHandler _handler;
 
     public AuraAppliedEventHandlerTests()
     {
         _mockCrowdControlDurationCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<double>())).Returns(1.0);
-        _handler = new AuraAppliedEventHandler(_mockCrowdControlDurationCalculator.Object);
+        _handler = new AuraAppliedEventHandler(_mockCrowdControlDurationCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
