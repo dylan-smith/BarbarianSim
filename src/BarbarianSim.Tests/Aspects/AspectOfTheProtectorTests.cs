@@ -3,18 +3,20 @@ using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfTheProtectorTests
 {
-    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AspectOfTheProtector _aspect = new();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
+    private readonly SimulationState _state = new(new SimulationConfig());
+    private readonly AspectOfTheProtector _aspect;
 
     public AspectOfTheProtectorTests()
     {
-        _aspect.BarrierAmount = 1000;
+        _aspect = new(_mockSimLogger.Object) { BarrierAmount = 1000 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 

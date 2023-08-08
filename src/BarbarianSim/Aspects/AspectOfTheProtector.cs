@@ -12,6 +12,10 @@ public class AspectOfTheProtector : Aspect, IHandlesEvent<DamageEvent>
     public const double BARRIER_EXPIRY = 10.0;
     public const double COOLDOWN = 30;
 
+    public AspectOfTheProtector(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(DamageEvent e, SimulationState state)
     {
         if (!IsAspectEquipped(state))
@@ -35,5 +39,6 @@ public class AspectOfTheProtector : Aspect, IHandlesEvent<DamageEvent>
         }
 
         state.Events.Add(new AspectOfTheProtectorProcEvent(state.CurrentTime, BarrierAmount));
+        _log.Verbose($"Aspect of the Protector created AspectOfTheProtectorProcEvent for {BarrierAmount} barrier");
     }
 }
