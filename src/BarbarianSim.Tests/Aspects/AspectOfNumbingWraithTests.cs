@@ -11,6 +11,7 @@ namespace BarbarianSim.Tests.Aspects;
 public sealed class AspectOfNumbingWraithTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly AspectOfNumbingWraith _aspect;
 
@@ -18,7 +19,7 @@ public sealed class AspectOfNumbingWraithTests
     {
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200);
         _state.Player.Fortify = 0;
-        _aspect = new AspectOfNumbingWraith(_mockMaxLifeCalculator.Object) { Fortify = 54 };
+        _aspect = new AspectOfNumbingWraith(_mockMaxLifeCalculator.Object, _mockSimLogger.Object) { Fortify = 54 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 
