@@ -40,6 +40,8 @@ public class Gear
 
     public bool HasAspect(Aspect aspect) => AllGear.Any(g => g.Aspect == aspect);
 
+    public bool HasAspect<T>() where T : Aspect => AllGear.Any(g => g.Aspect is T);
+
     public double GetStatTotal(Func<GearItem, double> stat) => AllGear.Sum(g => g.GetStatWithGems(stat));
 
     public double GetStatTotalMultiplied(Func<GearItem, double> stat) => AllGear.Multiply(g => g.GetStatWithGemsMultiplied(stat));

@@ -58,9 +58,9 @@ public class SpinToWin : IRotation
         {
             if (state.Player.Auras.Contains(Aura.Whirlwinding))
             {
-                if (state.Config.Gear.AllGear.Select(g => g.Aspect).Any(a => a is GohrsDevastatingGrips))
+                if (state.Config.Gear.HasAspect<GohrsDevastatingGrips>())
                 {
-                    var gohrsDevastatingGrips = state.Config.Gear.AllGear.Select(g => g.Aspect).First(a => a is GohrsDevastatingGrips) as GohrsDevastatingGrips;
+                    var gohrsDevastatingGrips = state.Config.Gear.GetAllAspects<GohrsDevastatingGrips>().Single();
 
                     if (gohrsDevastatingGrips.HitCount >= GohrsDevastatingGrips.MAX_HIT_COUNT)
                     {
