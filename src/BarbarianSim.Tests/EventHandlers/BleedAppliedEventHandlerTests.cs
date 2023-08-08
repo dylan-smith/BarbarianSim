@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class BleedAppliedEventHandlerTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly BleedAppliedEventHandler _handler = new();
+    private readonly BleedAppliedEventHandler _handler;
+
+    public BleedAppliedEventHandlerTests() => _handler = new(_mockSimLogger.Object);
 
     [Fact]
     public void Adds_Bleeding_Aura()
