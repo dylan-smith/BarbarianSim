@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class AspectOfTheProtectorProcEventHandlerTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly AspectOfTheProtectorProcEventHandler _handler = new();
+    private readonly AspectOfTheProtectorProcEventHandler _handler;
+
+    public AspectOfTheProtectorProcEventHandlerTests() => _handler = new(_mockSimLogger.Object);
 
     [Fact]
     public void Creates_AspectOfTheProtectorCooldownAuraAppliedEvent()
