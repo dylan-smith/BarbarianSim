@@ -11,6 +11,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class FortifyGeneratedEventHandlerTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly FortifyGeneratedEventHandler _handler;
 
@@ -19,7 +20,7 @@ public class FortifyGeneratedEventHandlerTests
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                               .Returns(1000);
 
-        _handler = new FortifyGeneratedEventHandler(_mockMaxLifeCalculator.Object);
+        _handler = new FortifyGeneratedEventHandler(_mockMaxLifeCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
