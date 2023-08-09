@@ -3,13 +3,17 @@ using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class GohrsDevastatingGripsProcEventHandlerTests
 {
-    private readonly GohrsDevastatingGripsProcEventHandler _handler = new();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
+    private readonly GohrsDevastatingGripsProcEventHandler _handler;
+
+    public GohrsDevastatingGripsProcEventHandlerTests() => _handler = new(_mockSimLogger.Object);
 
     [Fact]
     public void Creates_DamageEvents()
