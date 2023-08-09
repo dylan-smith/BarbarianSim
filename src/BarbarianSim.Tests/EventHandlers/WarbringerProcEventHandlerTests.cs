@@ -11,6 +11,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class WarbringerProcEventHandlerTests
 {
     private readonly Mock<Warbringer> _mockWarbringer = TestHelpers.CreateMock<Warbringer>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly WarbringerProcEventHandler _handler;
 
@@ -19,7 +20,7 @@ public class WarbringerProcEventHandlerTests
         _mockWarbringer.Setup(m => m.GetFortifyGenerated(It.IsAny<SimulationState>()))
                        .Returns(120);
 
-        _handler = new WarbringerProcEventHandler(_mockWarbringer.Object);
+        _handler = new WarbringerProcEventHandler(_mockWarbringer.Object, _mockSimLogger.Object);
     }
 
     [Fact]
