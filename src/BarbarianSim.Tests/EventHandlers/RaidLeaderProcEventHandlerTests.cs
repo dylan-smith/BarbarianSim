@@ -14,6 +14,7 @@ public class RaidLeaderProcEventHandlerTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
     private readonly Mock<RaidLeader> _mockRaidLeader = TestHelpers.CreateMock<RaidLeader>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly RaidLeaderProcEventHandler _handler;
 
@@ -25,7 +26,7 @@ public class RaidLeaderProcEventHandlerTests
         _mockRaidLeader.Setup(m => m.GetHealPercentage(It.IsAny<SimulationState>()))
                      .Returns(0.02);
 
-        _handler = new RaidLeaderProcEventHandler(_mockMaxLifeCalculator.Object, _mockRaidLeader.Object);
+        _handler = new RaidLeaderProcEventHandler(_mockMaxLifeCalculator.Object, _mockRaidLeader.Object, _mockSimLogger.Object);
     }
 
     [Fact]
