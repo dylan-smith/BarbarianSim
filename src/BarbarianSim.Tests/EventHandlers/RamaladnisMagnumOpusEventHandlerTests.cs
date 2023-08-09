@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class RamaladnisMagnumOpusEventHandlerTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly RamaladnisMagnumOpusEventHandler _handler = new();
+    private readonly RamaladnisMagnumOpusEventHandler _handler;
+
+    public RamaladnisMagnumOpusEventHandlerTests() => _handler = new(_mockSimLogger.Object);
 
     [Fact]
     public void Creates_FurySpentEvent()
