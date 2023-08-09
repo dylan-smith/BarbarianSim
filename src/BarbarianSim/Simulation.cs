@@ -28,6 +28,7 @@ public class Simulation
 
         while (true)
         {
+            _log.ActiveEvent = null;
             State.Config.Rotation.Execute(State);
             var nextEvent = GetNextEvent();
 
