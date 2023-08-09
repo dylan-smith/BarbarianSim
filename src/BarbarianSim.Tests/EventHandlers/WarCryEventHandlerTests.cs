@@ -12,6 +12,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class WarCryEventHandlerTests
 {
     private readonly Mock<BoomingVoice> _mockBoomingVoice = TestHelpers.CreateMock<BoomingVoice>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly WarCryEventHandler _handler;
 
@@ -20,7 +21,7 @@ public class WarCryEventHandlerTests
         _mockBoomingVoice.Setup(m => m.GetDurationIncrease(It.IsAny<SimulationState>()))
                          .Returns(1.0);
 
-        _handler = new WarCryEventHandler(_mockBoomingVoice.Object);
+        _handler = new WarCryEventHandler(_mockBoomingVoice.Object, _mockSimLogger.Object);
     }
 
     [Fact]
