@@ -14,6 +14,7 @@ public class IronSkinEventHandlerTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
     private readonly Mock<IronSkin> _mockIronSkin = TestHelpers.CreateMock<IronSkin>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly IronSkinEventHandler _handler;
 
@@ -25,7 +26,7 @@ public class IronSkinEventHandlerTests
         _mockIronSkin.Setup(m => m.GetBarrierPercentage(It.IsAny<SimulationState>()))
                      .Returns(0.6);
 
-        _handler = new IronSkinEventHandler(_mockMaxLifeCalculator.Object, _mockIronSkin.Object);
+        _handler = new IronSkinEventHandler(_mockMaxLifeCalculator.Object, _mockIronSkin.Object, _mockSimLogger.Object);
     }
 
     [Fact]
