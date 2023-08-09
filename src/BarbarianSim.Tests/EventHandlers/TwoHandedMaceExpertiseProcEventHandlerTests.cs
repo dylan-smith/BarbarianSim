@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class TwoHandedMaceExpertiseProcEventHandlerTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly TwoHandedMaceExpertiseProcEventHandler _handler = new();
+    private readonly TwoHandedMaceExpertiseProcEventHandler _handler;
+
+    public TwoHandedMaceExpertiseProcEventHandlerTests() => _handler = new(_mockSimLogger.Object);
 
     [Fact]
     public void Creates_FuryGeneratedEvent()
