@@ -12,13 +12,14 @@ namespace BarbarianSim.Tests.Paragon;
 public class WarbringerTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly Warbringer _paragon;
 
     public WarbringerTests()
     {
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200);
-        _paragon = new(_mockMaxLifeCalculator.Object);
+        _paragon = new(_mockMaxLifeCalculator.Object, _mockSimLogger.Object);
         _state.Config.ParagonNodes.Add(ParagonNode.Warbringer);
     }
 
