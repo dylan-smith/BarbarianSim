@@ -5,25 +5,33 @@ namespace BarbarianSim.EventHandlers;
 
 public class HealingEventHandler : EventHandler<HealingEvent>
 {
-    public HealingEventHandler(HealingReceivedCalculator healingReceivedCalculator, MaxLifeCalculator maxLifeCalculator)
+    public HealingEventHandler(HealingReceivedCalculator healingReceivedCalculator, MaxLifeCalculator maxLifeCalculator, SimLogger log)
     {
         _healingReceivedCalculator = healingReceivedCalculator;
         _maxLifeCalculator = maxLifeCalculator;
+        _log = log;
     }
 
     private readonly HealingReceivedCalculator _healingReceivedCalculator;
     private readonly MaxLifeCalculator _maxLifeCalculator;
+    private readonly SimLogger _log;
 
     public override void ProcessEvent(HealingEvent e, SimulationState state)
     {
+        _log.Verbose($"Base Amount Healed = {e.BaseAmountHealed:F2}");
         e.AmountHealed = e.BaseAmountHealed * _healingReceivedCalculator.Calculate(state);
+        _log.Verbose($"Total Healing = {e.AmountHealed}");
 
-        if (e.AmountHealed + state.Player.Life > _maxLifeCalculator.Calculate(state))
+        var maxLife = _maxLifeCalculator.Calculate(state);
+        if (e.AmountHealed + state.Player.Life > maxLife)
         {
-            e.OverHeal = state.Player.Life + e.AmountHealed - _maxLifeCalculator.Calculate(state);
+            e.OverHeal = state.Player.Life + e.AmountHealed - maxLife;
+            _log.Verbose($"Overheal = {e.OverHeal}");
             e.AmountHealed -= e.OverHeal;
+            _log.Verbose($"Actual Amount Healed = {e.AmountHealed}");
         }
 
         state.Player.Life += e.AmountHealed;
+        _log.Verbose($"New Player Life = {state.Player.Life}");
     }
 }

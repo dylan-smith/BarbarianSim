@@ -12,6 +12,7 @@ public class HealingEventHandlerTests
 {
     private readonly Mock<HealingReceivedCalculator> _mockHealingReceivedCalculator = TestHelpers.CreateMock<HealingReceivedCalculator>();
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly HealingEventHandler _handler;
 
@@ -23,7 +24,7 @@ public class HealingEventHandlerTests
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>()))
                               .Returns(1200);
 
-        _handler = new HealingEventHandler(_mockHealingReceivedCalculator.Object, _mockMaxLifeCalculator.Object);
+        _handler = new HealingEventHandler(_mockHealingReceivedCalculator.Object, _mockMaxLifeCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
