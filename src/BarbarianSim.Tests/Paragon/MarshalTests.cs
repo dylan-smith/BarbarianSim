@@ -3,16 +3,22 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Paragon;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Paragon;
 
 public class MarshalTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly Marshal _paragon = new();
+    private readonly Marshal _paragon;
 
-    public MarshalTests() => _state.Config.ParagonNodes.Add(ParagonNode.Marshal);
+    public MarshalTests()
+    {
+        _state.Config.ParagonNodes.Add(ParagonNode.Marshal);
+        _paragon = new Marshal(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void Reduces_Shout_Cooldown()

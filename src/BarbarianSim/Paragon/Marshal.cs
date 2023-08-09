@@ -8,6 +8,10 @@ public class Marshal : IHandlesEvent<AuraAppliedEvent>
     // After casting a Shout Skill, the active Cooldown of every other Shout Skill is reduced by 1.2 seconds.
     public const double COOLDOWN_REDUCTION = 1.2;
 
+    public Marshal(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(AuraAppliedEvent e, SimulationState state)
     {
         if (!state.Config.HasParagonNode(ParagonNode.Marshal))
@@ -23,6 +27,7 @@ public class Marshal : IHandlesEvent<AuraAppliedEvent>
             {
                 cooldownEvent.Timestamp -= COOLDOWN_REDUCTION;
                 cooldownEvent.Timestamp = Math.Max(cooldownEvent.Timestamp, state.CurrentTime);
+                _log.Verbose($"Marshal reduced {cooldownEvent.Aura} by {COOLDOWN_REDUCTION:F2} seconds to Timestamp {cooldownEvent.Timestamp:F2}");
             }
         }
     }
