@@ -3,16 +3,22 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Paragon;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Paragon;
 
 public class WrathTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly Wrath _paragon = new();
+    private readonly Wrath _paragon;
 
-    public WrathTests() => _state.Config.ParagonNodes.Add(ParagonNode.Wrath);
+    public WrathTests()
+    {
+        _state.Config.ParagonNodes.Add(ParagonNode.Wrath);
+        _paragon = new Wrath(_mockSimLogger.Object);
+    }
 
     [Fact]
     public void Creates_FuryGeneratedEvent()
