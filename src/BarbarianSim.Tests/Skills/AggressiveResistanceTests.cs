@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class AggressiveResistanceTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly AggressiveResistance _skill = new();
+    private readonly AggressiveResistance _skill;
+
+    public AggressiveResistanceTests() => _skill = new(_mockSimLogger.Object);
 
     [Theory]
     [InlineData(0, 0)]
