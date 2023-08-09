@@ -41,7 +41,11 @@ public class RallyingCry
             _ => 1.0,
         };
 
-        _log.Verbose($"Resource Generation from Rallying Cry = {result}x with {skillPoints} skill points");
+        if (result > 1.0)
+        {
+            _log.Verbose($"Resource Generation bonus from Rallying Cry = {result}x with {skillPoints} skill points");
+        }
+
         return result;
     }
 }
