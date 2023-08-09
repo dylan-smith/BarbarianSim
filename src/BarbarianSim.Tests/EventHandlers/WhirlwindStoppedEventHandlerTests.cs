@@ -3,15 +3,19 @@ using BarbarianSim.Enums;
 using BarbarianSim.EventHandlers;
 using BarbarianSim.Events;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.EventHandlers;
 
 public class WhirlwindStoppedEventHandlerTests
 {
-    private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly WhirlwindStoppedEventHandler _handler = new();
-
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
+    private readonly SimulationState _state = new new(new SimulationConfig());
+    private readonly WhirlwindStoppedEventHandler _handler;
+    
+    public WhirlwindStoppedEventHandlerTests() => _handler = new WhirlwindStoppedEventHandler(_mockSimLogger.Object);
+    
     [Fact]
     public void Creates_WhirlwindingAuraExpiredEvent()
     {
