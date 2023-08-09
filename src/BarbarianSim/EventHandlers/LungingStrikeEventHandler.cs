@@ -25,18 +25,18 @@ public class LungingStrikeEventHandler : EventHandler<LungingStrikeEvent>
         _log.Verbose($"Created FuryGeneratedEvent for {e.FuryGeneratedEvent.BaseFury} Fury");
 
         var weaponDamage = (state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].MinDamage + state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].MaxDamage) / 2.0;
-        _log.Verbose($"Weapon Damage = {weaponDamage}");
+        _log.Verbose($"Weapon Damage = {weaponDamage:F2}");
         var skillMultiplier = _lungingStrike.GetSkillMultiplier(state);
-        _log.Verbose($"Skill Multiplier = {skillMultiplier}");
+        _log.Verbose($"Skill Multiplier = {skillMultiplier:F2}");
         e.BaseDamage = weaponDamage * skillMultiplier;
-        _log.Verbose($"Base Damage = {e.BaseDamage}");
+        _log.Verbose($"Base Damage = {e.BaseDamage:F2}");
 
         e.DirectDamageEvent = new DirectDamageEvent(e.Timestamp, "Lunging Strike", e.BaseDamage, DamageType.Physical, DamageSource.LungingStrike, SkillType.Basic, LungingStrike.LUCKY_HIT_CHANCE, state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike], e.Target);
         state.Events.Add(e.DirectDamageEvent);
-        _log.Verbose($"Created DirectDamageEvent for {e.DirectDamageEvent.BaseDamage} damage");
+        _log.Verbose($"Created DirectDamageEvent for {e.DirectDamageEvent.BaseDamage:F2} damage");
 
         var weaponSpeed = 1 / state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].AttacksPerSecond;
-        _log.Verbose($"Weapon Speed = {weaponSpeed}");
+        _log.Verbose($"Weapon Speed = {weaponSpeed:F2}");
         weaponSpeed *= _attackSpeedCalculator.Calculate(state);
         _log.Verbose($"Weapon Speed (after attack speed) = {weaponSpeed:F2}");
         e.WeaponCooldownAuraAppliedEvent = new AuraAppliedEvent(e.Timestamp, "Lunging Strike", weaponSpeed, Aura.WeaponCooldown);
