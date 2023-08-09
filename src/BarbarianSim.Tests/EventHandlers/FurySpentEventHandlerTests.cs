@@ -12,6 +12,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class FurySpentEventHandlerTests
 {
     private readonly Mock<FuryCostReductionCalculator> _mockFuryCostReductionCalculator = TestHelpers.CreateMock<FuryCostReductionCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly FurySpentEventHandler _handler;
 
@@ -20,7 +21,7 @@ public class FurySpentEventHandlerTests
         _mockFuryCostReductionCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<SkillType>()))
                                         .Returns(1.0);
 
-        _handler = new FurySpentEventHandler(_mockFuryCostReductionCalculator.Object);
+        _handler = new FurySpentEventHandler(_mockFuryCostReductionCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]

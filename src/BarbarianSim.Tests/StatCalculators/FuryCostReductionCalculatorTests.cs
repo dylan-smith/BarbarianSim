@@ -11,6 +11,7 @@ namespace BarbarianSim.Tests.StatCalculators;
 public sealed class FuryCostReductionCalculatorTests
 {
     private readonly Mock<UnbridledRage> _mockUnbridledRage = TestHelpers.CreateMock<UnbridledRage>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly FuryCostReductionCalculator _calculator;
 
@@ -19,7 +20,7 @@ public sealed class FuryCostReductionCalculatorTests
         _mockUnbridledRage.Setup(m => m.GetFuryCostReduction(It.IsAny<SimulationState>(), It.IsAny<SkillType>()))
                            .Returns(1.0);
 
-        _calculator = new FuryCostReductionCalculator(_mockUnbridledRage.Object);
+        _calculator = new FuryCostReductionCalculator(_mockUnbridledRage.Object, _mockSimLogger.Object);
     }
 
     [Fact]
