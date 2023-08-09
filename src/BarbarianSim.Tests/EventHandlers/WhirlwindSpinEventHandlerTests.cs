@@ -12,6 +12,7 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class WhirlwindSpinEventHandlerTests
 {
     private readonly Mock<Whirlwind> _mockWhirlwind = TestHelpers.CreateMock<Whirlwind>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly WhirlwindSpinEventHandler _handler;
 
@@ -22,7 +23,7 @@ public class WhirlwindSpinEventHandlerTests
 
         _state.Config.PlayerSettings.SkillWeapons.Add(Skill.Whirlwind, new GearItem { MinDamage = 1, MaxDamage = 2, AttacksPerSecond = 1 });
 
-        _handler = new WhirlwindSpinEventHandler(_mockWhirlwind.Object);
+        _handler = new WhirlwindSpinEventHandler(_mockWhirlwind.Object, _mockSimLogger.Object);
     }
 
     [Fact]
