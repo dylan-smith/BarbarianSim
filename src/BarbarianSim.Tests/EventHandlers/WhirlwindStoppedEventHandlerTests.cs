@@ -11,11 +11,11 @@ namespace BarbarianSim.Tests.EventHandlers;
 public class WhirlwindStoppedEventHandlerTests
 {
     private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
-    private readonly SimulationState _state = new new(new SimulationConfig());
+    private readonly SimulationState _state = new(new SimulationConfig());
     private readonly WhirlwindStoppedEventHandler _handler;
-    
+
     public WhirlwindStoppedEventHandlerTests() => _handler = new WhirlwindStoppedEventHandler(_mockSimLogger.Object);
-    
+
     [Fact]
     public void Creates_WhirlwindingAuraExpiredEvent()
     {
