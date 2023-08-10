@@ -9,7 +9,6 @@ public class AdditiveDamageBonusCalculator
                                          DamageToInjuredCalculator damageToInjuredCalculator,
                                          DamageToSlowedCalculator damageToSlowedCalculator,
                                          DamageToCrowdControlledCalculator damageToCrowdControlledCalculator,
-                                         BerserkingDamageCalculator berserkingDamageCalculator,
                                          SimLogger log)
     {
         _physicalDamageCalculator = physicalDamageCalculator;
@@ -17,7 +16,6 @@ public class AdditiveDamageBonusCalculator
         _damageToInjuredCalculator = damageToInjuredCalculator;
         _damageToSlowedCalculator = damageToSlowedCalculator;
         _damageToCrowdControlledCalculator = damageToCrowdControlledCalculator;
-        _berserkingDamageCalculator = berserkingDamageCalculator;
         _log = log;
     }
 
@@ -26,7 +24,6 @@ public class AdditiveDamageBonusCalculator
     private readonly DamageToInjuredCalculator _damageToInjuredCalculator;
     private readonly DamageToSlowedCalculator _damageToSlowedCalculator;
     private readonly DamageToCrowdControlledCalculator _damageToCrowdControlledCalculator;
-    private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
     private readonly SimLogger _log;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy)
@@ -36,9 +33,8 @@ public class AdditiveDamageBonusCalculator
         var damageToInjured = _damageToInjuredCalculator.Calculate(state, enemy);
         var damageToSlowed = _damageToSlowedCalculator.Calculate(state, enemy);
         var damageToCrowdControlled = _damageToCrowdControlledCalculator.Calculate(state, enemy);
-        var berserkingDamage = _berserkingDamageCalculator.Calculate(state);
 
-        var bonus = physicalDamage + damageToClose + damageToInjured + damageToSlowed + damageToCrowdControlled + berserkingDamage;
+        var bonus = physicalDamage + damageToClose + damageToInjured + damageToSlowed + damageToCrowdControlled;
         var result = 1.0 + (bonus / 100.0);
 
         if (result > 1.0)

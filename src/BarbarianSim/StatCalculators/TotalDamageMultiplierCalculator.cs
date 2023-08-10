@@ -25,7 +25,8 @@ public class TotalDamageMultiplierCalculator
                                            AspectOfTheExpectant aspectOfTheExpectant,
                                            ExploitersAspect exploitersAspect,
                                            PenitentGreaves penitentGreaves,
-                                           RamaladnisMagnumOpus ramaladnisMagnumOpus)
+                                           RamaladnisMagnumOpus ramaladnisMagnumOpus,
+                                           BerserkingDamageCalculator berserkingDamageCalculator)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _twoHandedWeaponDamageMultiplicativeCalculator = twoHandedWeaponDamageMultiplicativeCalculator;
@@ -45,6 +46,7 @@ public class TotalDamageMultiplierCalculator
         _exploitersAspect = exploitersAspect;
         _penitentGreaves = penitentGreaves;
         _ramaladnisMagnumOpus = ramaladnisMagnumOpus;
+        _berserkingDamageCalculator = berserkingDamageCalculator;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -65,6 +67,7 @@ public class TotalDamageMultiplierCalculator
     private readonly ExploitersAspect _exploitersAspect;
     private readonly PenitentGreaves _penitentGreaves;
     private readonly RamaladnisMagnumOpus _ramaladnisMagnumOpus;
+    private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource, GearItem weapon)
     {
@@ -86,6 +89,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _exploitersAspect.GetDamageBonus(state, enemy);
         damageBonus *= _penitentGreaves.GetDamageBonus(state);
         damageBonus *= _ramaladnisMagnumOpus.GetDamageBonus(state, weapon);
+        damageBonus *= _berserkingDamageCalculator.Calculate(state);
 
         return damageBonus;
     }

@@ -14,7 +14,6 @@ public class AdditiveDamageBonusCalculatorTests
     private readonly Mock<DamageToInjuredCalculator> _mockDamageToInjuredCalculator = TestHelpers.CreateMock<DamageToInjuredCalculator>();
     private readonly Mock<DamageToSlowedCalculator> _mockDamageToSlowedCalculator = TestHelpers.CreateMock<DamageToSlowedCalculator>();
     private readonly Mock<DamageToCrowdControlledCalculator> _mockDamageToCrowdControlledCalculator = TestHelpers.CreateMock<DamageToCrowdControlledCalculator>();
-    private readonly Mock<BerserkingDamageCalculator> _mockBerserkingDamageCalculator = TestHelpers.CreateMock<BerserkingDamageCalculator>();
     private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly AdditiveDamageBonusCalculator _calculator;
@@ -26,14 +25,12 @@ public class AdditiveDamageBonusCalculatorTests
         _mockDamageToInjuredCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(0.0);
         _mockDamageToSlowedCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(0.0);
         _mockDamageToCrowdControlledCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>())).Returns(0.0);
-        _mockBerserkingDamageCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
 
         _calculator = new(_mockPhysicalDamageCalculator.Object,
                           _mockDamageToCloseCalculator.Object,
                           _mockDamageToInjuredCalculator.Object,
                           _mockDamageToSlowedCalculator.Object,
                           _mockDamageToCrowdControlledCalculator.Object,
-                          _mockBerserkingDamageCalculator.Object,
                           _mockSimLogger.Object);
     }
 
@@ -96,16 +93,6 @@ public class AdditiveDamageBonusCalculatorTests
     }
 
     [Fact]
-    public void Includes_BerserkingDamage()
-    {
-        _mockBerserkingDamageCalculator.Setup(m => m.Calculate(_state)).Returns(25.0);
-
-        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
-
-        result.Should().Be(1.25);
-    }
-
-    [Fact]
     public void Adds_All_Additive_Damage_Bonuses()
     {
         _mockPhysicalDamageCalculator.Setup(m => m.Calculate(_state, DamageType.Physical)).Returns(12.0);
@@ -113,10 +100,9 @@ public class AdditiveDamageBonusCalculatorTests
         _mockDamageToInjuredCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(12.0);
         _mockDamageToSlowedCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(12.0);
         _mockDamageToCrowdControlledCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First())).Returns(12.0);
-        _mockBerserkingDamageCalculator.Setup(m => m.Calculate(_state)).Returns(12.0);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First());
 
-        result.Should().Be(1.72);
+        result.Should().Be(1.6);
     }
 }
