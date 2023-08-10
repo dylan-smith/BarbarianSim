@@ -19,7 +19,7 @@ public class StrategicIronSkin : IHandlesEvent<Events.IronSkinEvent>
 
     public void ProcessEvent(IronSkinEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.StrategicIronSkin) > 0)
+        if (state.Config.HasSkill(Skill.StrategicIronSkin))
         {
             var fortifyAmount = IronSkin.FORTIFY_FROM_STRATEGIC * state.Player.BaseLife;
 

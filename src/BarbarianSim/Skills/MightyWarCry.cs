@@ -14,7 +14,7 @@ public class MightyWarCry : IHandlesEvent<WarCryEvent>
 
     public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.MightyWarCry) > 0)
+        if (state.Config.HasSkill(Skill.MightyWarCry))
         {
             var fortify = state.Player.BaseLife * FORTIFY;
             state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Mighty War Cry", fortify));

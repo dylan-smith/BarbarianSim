@@ -12,7 +12,7 @@ public class EnhancedRallyingCry : IHandlesEvent<RallyingCryEvent>
 
     public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.EnhancedRallyingCry) > 0)
+        if (state.Config.HasSkill(Skill.EnhancedRallyingCry))
         {
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Enhanced Rallying Cry", e.Duration, Aura.Unstoppable));
             _log.Verbose($"Enhanced Rallying Cry created AuraAppliedEvent for Unstoppable for {e.Duration:F2} seconds");

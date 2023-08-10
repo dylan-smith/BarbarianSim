@@ -15,7 +15,7 @@ public class EnhancedWhirlwind : IHandlesEvent<DamageEvent>
 
     public void ProcessEvent(DamageEvent e, SimulationState state)
     {
-        if (e.DamageSource == DamageSource.Whirlwind && state.Config.Skills.ContainsKey(Skill.EnhancedWhirlwind))
+        if (e.DamageSource == DamageSource.Whirlwind && state.Config.HasSkill(Skill.EnhancedWhirlwind))
         {
             var furyGenerated = state.Config.EnemySettings.IsElite ? ELITE_FURY_GAINED : FURY_GAINED;
 

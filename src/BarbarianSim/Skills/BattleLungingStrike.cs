@@ -15,7 +15,7 @@ public class BattleLungingStrike : IHandlesEvent<LungingStrikeEvent>
 
     public void ProcessEvent(LungingStrikeEvent e, SimulationState state)
     {
-        if (state.Config.Skills.ContainsKey(Skill.BattleLungingStrike))
+        if (state.Config.HasSkill(Skill.BattleLungingStrike))
         {
             var bleedDamage = e.BaseDamage * BLEED_DAMAGE;
             var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, "Battle Lunging Strike", bleedDamage, BLEED_DURATION, e.Target);

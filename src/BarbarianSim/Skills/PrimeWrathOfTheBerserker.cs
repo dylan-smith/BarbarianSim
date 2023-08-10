@@ -14,7 +14,7 @@ public class PrimeWrathOfTheBerserker
 
     public virtual double GetMovementSpeedIncrease(SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.PrimeWrathOfTheBerserker) > 0 && state.Player.Auras.Contains(Aura.WrathOfTheBerserker))
+        if (state.Config.HasSkill(Skill.PrimeWrathOfTheBerserker) && state.Player.Auras.Contains(Aura.WrathOfTheBerserker))
         {
             _log.Verbose($"Movement Speed increase from Prime Wrath of the Berserker = {MOVEMENT_SPEED_INCREASE:F2}%");
             return MOVEMENT_SPEED_INCREASE;
@@ -25,7 +25,7 @@ public class PrimeWrathOfTheBerserker
 
     public virtual double GetResourceGeneration(SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.PrimeWrathOfTheBerserker) > 0 && state.Player.Auras.Contains(Aura.WrathOfTheBerserker))
+        if (state.Config.HasSkill(Skill.PrimeWrathOfTheBerserker) && state.Player.Auras.Contains(Aura.WrathOfTheBerserker))
         {
             _log.Verbose($"Resource Generation increase from Prime Wrath of the Berserker = {FURY_GENERATION_INCREASE:F2}x");
             return FURY_GENERATION_INCREASE;

@@ -14,7 +14,7 @@ public class EnhancedChallengingShout
     public virtual double GetMaxLifeMultiplier(SimulationState state)
     {
         if (state.Player.Auras.Contains(Aura.ChallengingShout) &&
-            state.Config.GetSkillPoints(Skill.EnhancedChallengingShout) > 0)
+            state.Config.HasSkill(Skill.EnhancedChallengingShout))
         {
             _log.Verbose($"Max Life Bonus from Enhanced Challenging Shout = {MAX_LIFE_BONUS:F2}x");
             return MAX_LIFE_BONUS;

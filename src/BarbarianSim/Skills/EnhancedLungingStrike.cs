@@ -21,7 +21,7 @@ public class EnhancedLungingStrike : IHandlesEvent<LungingStrikeEvent>
 
     public void ProcessEvent(LungingStrikeEvent e, SimulationState state)
     {
-        if (state.Config.Skills.ContainsKey(Skill.EnhancedLungingStrike) &&
+        if (state.Config.HasSkill(Skill.EnhancedLungingStrike) &&
             e.Target.IsHealthy())
         {
             var healingAmount = _maxLifeCalculator.Calculate(state) * HEAL_PERCENT;

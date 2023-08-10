@@ -32,7 +32,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
 
     public void ProcessEvent(ChallengingShoutEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.RaidLeader) > 0)
+        if (state.Config.HasSkill(Skill.RaidLeader))
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
             _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration} seconds");
@@ -41,7 +41,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
 
     public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.RaidLeader) > 0)
+        if (state.Config.HasSkill(Skill.RaidLeader))
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
             _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration} seconds");
@@ -50,7 +50,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
 
     public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.RaidLeader) > 0)
+        if (state.Config.HasSkill(Skill.RaidLeader))
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
             _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration} seconds");

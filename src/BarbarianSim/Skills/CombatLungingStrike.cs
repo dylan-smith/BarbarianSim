@@ -15,7 +15,7 @@ public class CombatLungingStrike : IHandlesEvent<DamageEvent>
     public void ProcessEvent(DamageEvent e, SimulationState state)
     {
         if (e.DamageSource == DamageSource.LungingStrike &&
-            state.Config.Skills.ContainsKey(Skill.CombatLungingStrike) &&
+            state.Config.HasSkill(Skill.CombatLungingStrike) &&
             e.DamageType.HasFlag(DamageType.CriticalStrike))
         {
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Combat Lunging Strike", BERSERKING_DURATION, Aura.Berserking));

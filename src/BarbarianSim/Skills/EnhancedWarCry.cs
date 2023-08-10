@@ -14,7 +14,7 @@ public class EnhancedWarCry : IHandlesEvent<WarCryEvent>
 
     public void ProcessEvent(WarCryEvent e, SimulationState state)
     {
-        if (state.Config.GetSkillPoints(Skill.EnhancedWarCry) > 0)
+        if (state.Config.HasSkill(Skill.EnhancedWarCry))
         {
             state.Events.Add(new AuraAppliedEvent(e.Timestamp, "Enhanced War Cry", BERSERKING_DURATION, Aura.Berserking));
             _log.Verbose($"Enhanced War Cry created AuraAppliedEvent for Berserking for {BERSERKING_DURATION:F2} seconds");
