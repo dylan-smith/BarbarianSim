@@ -23,7 +23,7 @@ public class PitFighter
 
         if (result > 1.0)
         {
-            _log.Verbose($"Close Damage Bonus from Pit Fighter = {result:P2} with {skillPoints} skill points");
+            _log.Verbose($"Close Damage Bonus from Pit Fighter = {result:F2}x with {skillPoints} skill points");
         }
 
         return result;

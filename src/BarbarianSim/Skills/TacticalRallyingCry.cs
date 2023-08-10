@@ -27,7 +27,7 @@ public class TacticalRallyingCry : IHandlesEvent<RallyingCryEvent>
         if (state.Config.HasSkill(Skill.TacticalRallyingCry) &&
                state.Player.Auras.Contains(Aura.RallyingCry))
         {
-            _log.Verbose($"Resource Generation from Tactical Rallying Cry = {RESOURCE_GENERATION}x");
+            _log.Verbose($"Resource Generation from Tactical Rallying Cry = {RESOURCE_GENERATION:F2}x");
             return RESOURCE_GENERATION;
         }
 

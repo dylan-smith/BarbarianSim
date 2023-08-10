@@ -35,7 +35,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
         if (state.Config.HasSkill(Skill.RaidLeader))
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
-            _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration} seconds");
+            _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration:F2} seconds");
         }
     }
 
@@ -44,7 +44,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
         if (state.Config.HasSkill(Skill.RaidLeader))
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
-            _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration} seconds");
+            _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration:F2} seconds");
         }
     }
 
@@ -53,7 +53,7 @@ public class RaidLeader : IHandlesEvent<ChallengingShoutEvent>, IHandlesEvent<Ra
         if (state.Config.HasSkill(Skill.RaidLeader))
         {
             state.Events.Add(new RaidLeaderProcEvent(e.Timestamp, e.Duration));
-            _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration} seconds");
+            _log.Verbose($"Raid Leader created RaidLeaderProcEvent for {e.Duration:F2} seconds");
         }
     }
 }
