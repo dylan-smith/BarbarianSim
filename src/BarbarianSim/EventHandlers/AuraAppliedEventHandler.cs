@@ -37,7 +37,15 @@ public class AuraAppliedEventHandler : EventHandler<AuraAppliedEvent>
 
             e.AuraExpiredEvent = new AuraExpiredEvent(e.Timestamp + duration, e.Source, e.Target, e.Aura);
             state.Events.Add(e.AuraExpiredEvent);
-            _log.Verbose($"Created AuraExpiredEvent for {e.Aura} expiring in {duration:F2} seconds");
+
+            if (duration > 0)
+            {
+                _log.Verbose($"Created AuraExpiredEvent for {e.Aura} expiring in {duration:F2} seconds");
+            }
+            else
+            {
+                _log.Verbose($"Created AuraExpiredEvent for {e.Aura} with no duration");
+            }
         }
     }
 }
