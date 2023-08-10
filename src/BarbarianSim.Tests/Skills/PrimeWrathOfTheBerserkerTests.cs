@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class PrimeWrathOfTheBerserkerTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly PrimeWrathOfTheBerserker _skill = new();
+    private readonly PrimeWrathOfTheBerserker _skill;
+
+    public PrimeWrathOfTheBerserkerTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void Returns_20_When_Active()
