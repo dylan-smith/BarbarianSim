@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class SupremeWrathOfTheBerserkerTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly SupremeWrathOfTheBerserker _skill = new();
+    private readonly SupremeWrathOfTheBerserker _skill;
+
+    public SupremeWrathOfTheBerserkerTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void GetBerserkDamageBonus_Returns_3x_When_157_Fury_Spent()
