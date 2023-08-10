@@ -22,7 +22,11 @@ public class SupremeWrathOfTheBerserker
             var totalFurySpent = state.ProcessedEvents.OfType<FurySpentEvent>().Where(e => e.Timestamp >= startTime).Sum(e => e.FurySpent);
             var damageBonus = Math.Pow(DAMAGE_BONUS, Math.Floor(totalFurySpent / 50));
 
-            _log.Verbose($"Damage Bonus from Supreme Wrath of the Berserker = {damageBonus:F2}x");
+            if (damageBonus > 1.0)
+            {
+                _log.Verbose($"Supreme Wrath of the Berserker calculating based on {totalFurySpent:F2} Fury spent since Wrath of the Berserker started");
+                _log.Verbose($"Damage Bonus from Supreme Wrath of the Berserker = {damageBonus:F2}x");
+            }
 
             return damageBonus;
         }
