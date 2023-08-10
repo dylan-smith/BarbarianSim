@@ -9,7 +9,8 @@ public class AdditiveDamageBonusCalculator
                                          DamageToInjuredCalculator damageToInjuredCalculator,
                                          DamageToSlowedCalculator damageToSlowedCalculator,
                                          DamageToCrowdControlledCalculator damageToCrowdControlledCalculator,
-                                         BerserkingDamageCalculator berserkingDamageCalculator)
+                                         BerserkingDamageCalculator berserkingDamageCalculator,
+                                         SimLogger log)
     {
         _physicalDamageCalculator = physicalDamageCalculator;
         _damageToCloseCalculator = damageToCloseCalculator;
@@ -17,6 +18,7 @@ public class AdditiveDamageBonusCalculator
         _damageToSlowedCalculator = damageToSlowedCalculator;
         _damageToCrowdControlledCalculator = damageToCrowdControlledCalculator;
         _berserkingDamageCalculator = berserkingDamageCalculator;
+        _log = log;
     }
 
     private readonly PhysicalDamageCalculator _physicalDamageCalculator;
@@ -25,6 +27,7 @@ public class AdditiveDamageBonusCalculator
     private readonly DamageToSlowedCalculator _damageToSlowedCalculator;
     private readonly DamageToCrowdControlledCalculator _damageToCrowdControlledCalculator;
     private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
+    private readonly SimLogger _log;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy)
     {
@@ -36,7 +39,13 @@ public class AdditiveDamageBonusCalculator
         var berserkingDamage = _berserkingDamageCalculator.Calculate(state);
 
         var bonus = physicalDamage + damageToClose + damageToInjured + damageToSlowed + damageToCrowdControlled + berserkingDamage;
+        var result = 1.0 + (bonus / 100.0);
 
-        return 1.0 + (bonus / 100.0);
+        if (result > 1.0)
+        {
+            _log.Verbose($"Additive Damage Bonus = {result:F2}x");
+        }
+
+        return result;
     }
 }

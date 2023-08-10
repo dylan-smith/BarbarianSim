@@ -15,6 +15,7 @@ public class AdditiveDamageBonusCalculatorTests
     private readonly Mock<DamageToSlowedCalculator> _mockDamageToSlowedCalculator = TestHelpers.CreateMock<DamageToSlowedCalculator>();
     private readonly Mock<DamageToCrowdControlledCalculator> _mockDamageToCrowdControlledCalculator = TestHelpers.CreateMock<DamageToCrowdControlledCalculator>();
     private readonly Mock<BerserkingDamageCalculator> _mockBerserkingDamageCalculator = TestHelpers.CreateMock<BerserkingDamageCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly AdditiveDamageBonusCalculator _calculator;
 
@@ -32,7 +33,8 @@ public class AdditiveDamageBonusCalculatorTests
                           _mockDamageToInjuredCalculator.Object,
                           _mockDamageToSlowedCalculator.Object,
                           _mockDamageToCrowdControlledCalculator.Object,
-                          _mockBerserkingDamageCalculator.Object);
+                          _mockBerserkingDamageCalculator.Object,
+                          _mockSimLogger.Object);
     }
 
     [Fact]
