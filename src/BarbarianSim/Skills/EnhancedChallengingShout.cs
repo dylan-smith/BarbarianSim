@@ -7,12 +7,19 @@ public class EnhancedChallengingShout
     // While Challenging Shout is active, gain 20%[x] bonus Max Life
     public const double MAX_LIFE_BONUS = 1.2;
 
+    public EnhancedChallengingShout(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual double GetMaxLifeMultiplier(SimulationState state)
     {
-        return state.Player.Auras.Contains(Aura.ChallengingShout) &&
-            state.Config.Skills.ContainsKey(Skill.EnhancedChallengingShout) &&
-            state.Config.Skills[Skill.EnhancedChallengingShout] > 0
-            ? MAX_LIFE_BONUS
-            : 1.0;
+        if (state.Player.Auras.Contains(Aura.ChallengingShout) &&
+            state.Config.GetSkillPoints(Skill.EnhancedChallengingShout) > 0)
+        {
+            _log.Verbose($"Max Life Bonus from Enhanced Challenging Shout = {MAX_LIFE_BONUS:F2}x");
+            return MAX_LIFE_BONUS;
+        }
+
+        return 1.0;
     }
 }

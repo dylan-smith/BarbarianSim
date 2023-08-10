@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class EnhancedChallengingShoutTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly EnhancedChallengingShout _skill = new();
+    private readonly EnhancedChallengingShout _skill;
+
+    public EnhancedChallengingShoutTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void Returns_20_Percent_Multiplier_When_Active()
