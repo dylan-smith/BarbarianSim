@@ -11,7 +11,7 @@ public class TacticalIronSkin : IHandlesEvent<Events.IronSkinEvent>
     public TacticalIronSkin(SimLogger log) => _log = log;
 
     private readonly SimLogger _log;
-    
+
     public void ProcessEvent(IronSkinEvent e, SimulationState state)
     {
         if (state.Config.HasSkill(Skill.TacticalIronSkin))
@@ -21,7 +21,7 @@ public class TacticalIronSkin : IHandlesEvent<Events.IronSkinEvent>
                 var healAmount = e.BarrierAppliedEvent.BarrierAmount * HEAL_PERCENT;
                 var healEvent = new HealingEvent(e.Timestamp + i + 1, "Tactical Iron Skin", healAmount);
                 state.Events.Add(healEvent);
-                _log.Verbose($"Tactical Iron Skin created HealingEvent for {healEvent.Amount:F2} Life");
+                _log.Verbose($"Tactical Iron Skin created HealingEvent for {healAmount:F2} at Timestamp {e.Timestamp + i + 1:F2}");
             }
         }
     }

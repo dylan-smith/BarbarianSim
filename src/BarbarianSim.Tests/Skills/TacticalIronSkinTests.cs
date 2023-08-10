@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class TacticalIronSkinTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly TacticalIronSkin _skill = new();
+    private readonly TacticalIronSkin _skill;
+
+    public TacticalIronSkinTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void TacticalIronSkin_Creates_5_HealingEvents()
