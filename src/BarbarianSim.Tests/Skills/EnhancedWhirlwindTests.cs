@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class EnhancedWhirlwindTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly EnhancedWhirlwind _skill = new();
+    private readonly EnhancedWhirlwind _skill;
+
+    public EnhancedWhirlwindTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void Generates_1_Fury_For_Non_Elites()

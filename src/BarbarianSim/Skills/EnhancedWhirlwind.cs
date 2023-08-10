@@ -9,6 +9,10 @@ public class EnhancedWhirlwind : IHandlesEvent<DamageEvent>
     public const double FURY_GAINED = 1;
     public const double ELITE_FURY_GAINED = 4;
 
+    public EnhancedWhirlwind(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(DamageEvent e, SimulationState state)
     {
         if (e.DamageSource == DamageSource.Whirlwind && state.Config.Skills.ContainsKey(Skill.EnhancedWhirlwind))
@@ -17,6 +21,7 @@ public class EnhancedWhirlwind : IHandlesEvent<DamageEvent>
 
             var furyGeneratedEvent = new FuryGeneratedEvent(e.Timestamp, "Enhanced Whirlwind", furyGenerated);
             state.Events.Add(furyGeneratedEvent);
+            _log.Verbose($"Enhanced Whirlwind created FuryGeneratedEvent for {furyGenerated:F2} Fury");
         }
     }
 }
