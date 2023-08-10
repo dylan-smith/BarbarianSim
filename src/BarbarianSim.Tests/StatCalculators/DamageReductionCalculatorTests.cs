@@ -23,6 +23,7 @@ public class DamageReductionCalculatorTests
     private readonly Mock<AspectOfTheIronWarrior> _mockAspectOfTheIronWarrior = TestHelpers.CreateMock<AspectOfTheIronWarrior>();
     private readonly Mock<IronBloodAspect> _mockIronBloodAspect = TestHelpers.CreateMock<IronBloodAspect>();
     private readonly Mock<Undaunted> _mockUndaunted = TestHelpers.CreateMock<Undaunted>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly DamageReductionCalculator _calculator;
 
@@ -49,7 +50,8 @@ public class DamageReductionCalculatorTests
             _mockGutteralYell.Object,
             _mockAspectOfTheIronWarrior.Object,
             _mockIronBloodAspect.Object,
-            _mockUndaunted.Object);
+            _mockUndaunted.Object,
+            _mockSimLogger.Object);
     }
 
     [Fact]
