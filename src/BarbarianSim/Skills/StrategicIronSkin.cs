@@ -8,6 +8,7 @@ namespace BarbarianSim.Skills;
 public class StrategicIronSkin : IHandlesEvent<Events.IronSkinEvent>
 {
     // Strategic: Ironskin also grants 15% Base Life (15%[x] HP) as Fortify. Double this amount if cast while below 50% Life
+    public const double FORTIFY_PERCENT = 0.15;
     public StrategicIronSkin(MaxLifeCalculator maxLifeCalculator, SimLogger log)
     {
         _maxLifeCalculator = maxLifeCalculator;
@@ -21,7 +22,7 @@ public class StrategicIronSkin : IHandlesEvent<Events.IronSkinEvent>
     {
         if (state.Config.HasSkill(Skill.StrategicIronSkin))
         {
-            var fortifyAmount = IronSkin.FORTIFY_FROM_STRATEGIC * state.Player.BaseLife;
+            var fortifyAmount = FORTIFY_PERCENT * state.Player.BaseLife;
 
             if (state.Player.GetLifePercentage(_maxLifeCalculator.Calculate(state)) < 0.5)
             {

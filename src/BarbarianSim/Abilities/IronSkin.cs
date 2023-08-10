@@ -8,8 +8,6 @@ public class IronSkin
     public const double DURATION = 5;
     public const double COOLDOWN = 14;
     public const double BONUS_FROM_ENHANCED = 0.2;
-    public const double HEAL_FROM_TACTICAL = 0.1;
-    public const double FORTIFY_FROM_STRATEGIC = 0.15;
 
     public IronSkin(SimLogger log) => _log = log;
 
