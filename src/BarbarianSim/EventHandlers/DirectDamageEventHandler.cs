@@ -39,7 +39,6 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
         _log.Verbose($"Damage: {e.BaseDamage:F2} * {damageMultiplier:F2} = {damage:F2}");
 
         var critChance = _critChanceCalculator.Calculate(state, e.DamageType, e.Enemy, e.Weapon);
-        _log.Verbose($"Crit Chance = {critChance:F2}%");
         var critRoll = _randomGenerator.Roll(RollType.CriticalStrike);
 
         var damageType = e.DamageType | DamageType.Direct;
@@ -68,7 +67,7 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
 
         e.DamageEvent = new DamageEvent(e.Timestamp, e.Source, damage, damageType, e.DamageSource, e.SkillType, e.Enemy);
         state.Events.Add(e.DamageEvent);
-        _log.Verbose($"Created DamageEvent for {damage:F2} damage on Enemy #{e.Enemy.Id}");
+        _log.Verbose($"Created DamageEvent for {damage:F2} damage on Enemy #{e.Enemy.Id} of type {damageType}");
 
         var luckyRoll = _randomGenerator.Roll(RollType.LuckyHit);
 

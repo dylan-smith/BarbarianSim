@@ -19,7 +19,7 @@ public class CritChancePhysicalAgainstElitesCalculatorTests
 
         var result = _calculator.Calculate(_state, DamageType.Physical);
 
-        result.Should().Be(0.12);
+        result.Should().Be(12);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class CritChancePhysicalAgainstElitesCalculatorTests
 
         var result = _calculator.Calculate(_state, DamageType.Physical);
 
-        result.Should().Be(0.12);
+        result.Should().Be(12);
     }
 
     [Fact]

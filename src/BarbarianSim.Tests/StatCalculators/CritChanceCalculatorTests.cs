@@ -15,6 +15,7 @@ public class CritChanceCalculatorTests
     private readonly Mock<DexterityCalculator> _mockDexterityCalculator = TestHelpers.CreateMock<DexterityCalculator>();
     private readonly Mock<AspectOfTheDireWhirlwind> _mockAspectOfTheDireWhirlwind = TestHelpers.CreateMock<AspectOfTheDireWhirlwind>();
     private readonly Mock<SmitingAspect> _mockSmitingAspect = TestHelpers.CreateMock<SmitingAspect>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly CritChanceCalculator _calculator;
 
@@ -30,7 +31,8 @@ public class CritChanceCalculatorTests
                                                _mockCritChanceVulnerableCalculator.Object,
                                                _mockDexterityCalculator.Object,
                                                _mockAspectOfTheDireWhirlwind.Object,
-                                               _mockSmitingAspect.Object);
+                                               _mockSmitingAspect.Object,
+                                               _mockSimLogger.Object);
     }
 
     [Fact]

@@ -8,8 +8,7 @@ public class CritChancePhysicalAgainstElitesCalculator
     {
         if (state.Config.EnemySettings.IsElite && damageType == DamageType.Physical)
         {
-            var critChance = state.Config.GetStatTotal(g => g.CritChancePhysicalAgainstElites);
-            return critChance / 100.0;
+            return state.Config.GetStatTotal(g => g.CritChancePhysicalAgainstElites);
         }
 
         return 0.0;
