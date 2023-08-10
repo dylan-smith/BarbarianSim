@@ -11,13 +11,14 @@ public class CrowdControlDurationCalculatorTests
 {
     private readonly Mock<SmitingAspect> _mockSmitingAspect = TestHelpers.CreateMock<SmitingAspect>();
     private readonly Mock<ExploitersAspect> _mockExploitersAsepct = TestHelpers.CreateMock<ExploitersAspect>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly CrowdControlDurationCalculator _calculator;
 
     public CrowdControlDurationCalculatorTests()
     {
         _mockSmitingAspect.Setup(m => m.GetCrowdControlDurationBonus(It.IsAny<SimulationState>())).Returns(1.0);
-        _calculator = new(_mockSmitingAspect.Object, _mockExploitersAsepct.Object);
+        _calculator = new(_mockSmitingAspect.Object, _mockExploitersAsepct.Object, _mockSimLogger.Object);
     }
 
     [Fact]
@@ -31,7 +32,7 @@ public class CrowdControlDurationCalculatorTests
     [Fact]
     public void Includes_ExploitersAspect_Bonus()
     {
-        _mockExploitersAsepct.Setup(m => m.GetCrowdControlDuration(_state)).Returns(0.2);
+        _mockExploitersAsepct.Setup(m => m.GetCrowdControlDuration(_state)).Returns(20);
         var result = _calculator.Calculate(_state, 2.0);
 
         result.Should().Be(2.4);
