@@ -39,7 +39,7 @@ public class ChallengingShout
         {
             _log.Verbose($"Damage Reduction from Iron Skin = {result}% with {skillPoints} skill points");
         }
-        
+
         return result;
     }
 }
