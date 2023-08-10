@@ -12,12 +12,12 @@ public class AggressiveResistance
 
     public virtual double GetDamageReduction(SimulationState state)
     {
-        var skillPoints = 0;
-
-        if (state.Config.Skills.ContainsKey(Skill.AggressiveResistance) && state.Player.Auras.Contains(Aura.Berserking))
+        if (!state.Player.Auras.Contains(Aura.Berserking))
         {
-            skillPoints += state.Config.Skills[Skill.AggressiveResistance];
+            return 0;
         }
+
+        var skillPoints = state.Config.GetSkillPoints(Skill.AggressiveResistance);
 
         var result = skillPoints switch
         {

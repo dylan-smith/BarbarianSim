@@ -11,12 +11,7 @@ public class BoomingVoice
 
     public virtual double GetDurationIncrease(SimulationState state)
     {
-        var skillPoints = 0;
-
-        if (state.Config.Skills.ContainsKey(Skill.BoomingVoice))
-        {
-            skillPoints += state.Config.Skills[Skill.BoomingVoice];
-        }
+        var skillPoints = state.Config.GetSkillPoints(Skill.BoomingVoice);
 
         var result = skillPoints switch
         {
