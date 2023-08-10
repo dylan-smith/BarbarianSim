@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class BattleLungingStrikeTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly BattleLungingStrike _skill = new();
+    private readonly BattleLungingStrike _skill;
+
+    public BattleLungingStrikeTests() => _skill = new BattleLungingStrike(_mockSimLogger.Object);
 
     [Fact]
     public void BattleLungingStrike_Applies_Bleed()
