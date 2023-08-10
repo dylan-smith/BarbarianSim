@@ -11,12 +11,12 @@ public class HeavyHanded
 
     public virtual double GetCriticalStrikeDamage(SimulationState state, Expertise expertise)
     {
-        var skillPoints = 0;
-
-        if (state.Config.Skills.ContainsKey(Skill.HeavyHanded) && expertise.IsTwoHanded())
+        if (!expertise.IsTwoHanded())
         {
-            skillPoints += state.Config.Skills[Skill.HeavyHanded];
+            return 0;
         }
+
+        var skillPoints = state.Config.GetSkillPoints(Skill.HeavyHanded);
 
         var result = skillPoints switch
         {
