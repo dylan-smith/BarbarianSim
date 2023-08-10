@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class PitFighterTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly PitFighter _skill = new();
+    private readonly PitFighter _skill;
+
+    public PitFighterTests() => _skill = new(_mockSimLogger.Object);
 
     [Theory]
     [InlineData(0, 1)]
