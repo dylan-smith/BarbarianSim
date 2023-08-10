@@ -9,18 +9,27 @@ public class ViolentWhirlwind : IHandlesEvent<WhirlwindSpinEvent>
     public const double DELAY = 2.0;
     public const double DAMAGE_MULTIPLIER = 1.3;
 
+    public ViolentWhirlwind(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(WhirlwindSpinEvent e, SimulationState state)
     {
-        if (state.Config.Skills.ContainsKey(Skill.ViolentWhirlwind))
+        if (state.Config.HasSkill(Skill.ViolentWhirlwind))
         {
             state.Events.Add(new AuraAppliedEvent(e.Timestamp + DELAY, "Violent Whirlwind", 0, Aura.ViolentWhirlwind));
+            _log.Verbose($"Violent Whirlwind created AuraAppliedEvent for Violent Whirlwind at Timestamp {e.Timestamp + DELAY:F2}");
         }
     }
 
     public virtual double GetDamageBonus(SimulationState state, DamageSource damageSource)
     {
-        return damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind)
-            ? ViolentWhirlwind.DAMAGE_MULTIPLIER
-            : 1.0;
+        if (damageSource == DamageSource.Whirlwind && state.Player.Auras.Contains(Aura.ViolentWhirlwind))
+        {
+            _log.Verbose($"Damage Bonus from Violent Whirlwind = {DAMAGE_MULTIPLIER}x");
+            return DAMAGE_MULTIPLIER;
+        }
+
+        return 1.0;
     }
 }
