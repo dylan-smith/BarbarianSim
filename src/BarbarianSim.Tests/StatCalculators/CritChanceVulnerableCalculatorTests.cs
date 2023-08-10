@@ -11,6 +11,7 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class CritChanceVulnerableCalculatorTests
 {
     private readonly Mock<TwoHandedAxeExpertise> _mockTwoHandedAxeExpertise = TestHelpers.CreateMock<TwoHandedAxeExpertise>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly CritChanceVulnerableCalculator _calculator;
 
@@ -18,7 +19,7 @@ public class CritChanceVulnerableCalculatorTests
     {
         _state.Enemies.First().Auras.Add(Aura.Vulnerable);
         _mockTwoHandedAxeExpertise.Setup(m => m.GetCritChanceVulnerable(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
-        _calculator = new(_mockTwoHandedAxeExpertise.Object);
+        _calculator = new(_mockTwoHandedAxeExpertise.Object, _mockSimLogger.Object);
     }
 
     [Fact]
