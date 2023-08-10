@@ -1,7 +1,6 @@
 ﻿using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Events;
-using BarbarianSim.StatCalculators;
 using FluentAssertions;
 using Moq;
 using Xunit;
