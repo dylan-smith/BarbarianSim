@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class CritChancePhysicalAgainstElitesCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly CritChancePhysicalAgainstElitesCalculator _calculator = new();
+    private readonly CritChancePhysicalAgainstElitesCalculator _calculator;
+
+    public CritChancePhysicalAgainstElitesCalculatorTests() => _calculator = new(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Stats_From_Gear()
