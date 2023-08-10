@@ -10,36 +10,36 @@ namespace BarbarianSim.Tests.Aspects;
 
 public sealed class AspectOfNumbingWraithTests
 {
-    private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
     private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly AspectOfNumbingWraith _aspect;
 
     public AspectOfNumbingWraithTests()
     {
-        _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200);
-        _state.Player.Fortify = 0;
-        _aspect = new AspectOfNumbingWraith(_mockMaxLifeCalculator.Object, _mockSimLogger.Object) { Fortify = 54 };
+        _aspect = new AspectOfNumbingWraith(_mockSimLogger.Object) { Fortify = 54 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 
     [Fact]
-    public void Min_Fortify_Gain_After_1_Extra_FuryGenerated()
+    public void Creates_FortifyGeneratedEvent()
     {
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 1 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 2 };
 
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
-        _state.Player.Fortify.Should().Be(54);
+
+        _state.Events.Should().ContainSingle(e => e is FortifyGeneratedEvent);
+        _state.Events.OfType<FortifyGeneratedEvent>().Single().Timestamp.Should().Be(123);
+        _state.Events.OfType<FortifyGeneratedEvent>().Single().Amount.Should().Be(108);
     }
 
     [Fact]
-    public void Fortify_Matches_MaxLife_After_Lots_Of_FuryGenerated()
+    public void Does_Nothing_When_No_Overflow_Fury()
     {
-        _state.Player.Fortify = 500;
-        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20) { OverflowFury = 20 };
+        var furyGeneratedEvent = new FuryGeneratedEvent(123, null, 20);
+
         _aspect.ProcessEvent(furyGeneratedEvent, _state);
 
-        _state.Player.Fortify.Should().Be(1200);
+        _state.Events.Should().NotContain(e => e is FortifyGeneratedEvent);
     }
 
     [Fact]
