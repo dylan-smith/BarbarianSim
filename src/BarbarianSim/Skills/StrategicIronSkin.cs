@@ -1,5 +1,4 @@
-﻿using BarbarianSim.Abilities;
-using BarbarianSim.Enums;
+﻿using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.StatCalculators;
 
