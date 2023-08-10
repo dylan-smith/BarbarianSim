@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class CombatLungingStrikeTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly CombatLungingStrike _skill = new();
+    private readonly CombatLungingStrike _skill;
+
+    public CombatLungingStrikeTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void Grants_Berserking_On_Crit()
