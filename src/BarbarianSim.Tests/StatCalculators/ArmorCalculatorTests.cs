@@ -11,6 +11,7 @@ public class ArmorCalculatorTests
 {
     private readonly Mock<StrengthCalculator> _mockStrengthCalculator = TestHelpers.CreateMock<StrengthCalculator>();
     private readonly Mock<AspectOfDisobedience> _mockAspectOfDisobedience = TestHelpers.CreateMock<AspectOfDisobedience>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ArmorCalculator _calculator;
 
@@ -18,7 +19,7 @@ public class ArmorCalculatorTests
     {
         _mockStrengthCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
         _mockAspectOfDisobedience.Setup(m => m.GetArmorBonus(It.IsAny<SimulationState>())).Returns(1.0);
-        _calculator = new ArmorCalculator(_mockStrengthCalculator.Object, _mockAspectOfDisobedience.Object);
+        _calculator = new ArmorCalculator(_mockStrengthCalculator.Object, _mockAspectOfDisobedience.Object, _mockSimLogger.Object);
     }
 
     [Fact]
