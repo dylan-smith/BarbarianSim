@@ -7,7 +7,6 @@ public class WarCry
 {
     public const double DURATION = 6.0;
     public const double COOLDOWN = 25.0;
-    public const double BERSERKING_DURATION_FROM_ENHANCED = 4.0;
 
     // Bellow a mighty war cry, increasing your damage dealt by 15%[x] for 6.0 seconds, and Nearby allies for 3.0 seconds (Cooldown: 25 seconds)
     // Enhanced: War Cry grants you Berserking for 4 seconds
