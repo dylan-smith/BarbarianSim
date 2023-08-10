@@ -33,7 +33,11 @@ public class LungingStrike
             _ => 0.0,
         };
 
-        _log.Verbose($"Skill multiplier from Lunging Strike = {result}x with {skillPoints} skill points");
+        if (result > 0)
+        {
+            _log.Verbose($"Skill multiplier from Lunging Strike = {result}x with {skillPoints} skill points");
+        }
+
         return result;
     }
 }

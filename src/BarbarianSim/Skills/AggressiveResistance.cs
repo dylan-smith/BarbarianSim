@@ -27,7 +27,10 @@ public class AggressiveResistance
             _ => 0,
         };
 
-        _log.Verbose($"Damage Reduction from Aggressive Resistance = {result}% with {skillPoints} skill points");
+        if (result > 0)
+        {
+            _log.Verbose($"Damage Reduction from Aggressive Resistance = {result}% with {skillPoints} skill points");
+        }
 
         return result;
     }

@@ -42,7 +42,10 @@ public class GutteralYell : IHandlesEvent<WarCryEvent>, IHandlesEvent<Challengin
             _ => 0,
         };
 
-        _log.Verbose($"Gutteral Yell reduced damage by {result:F2}%");
+        if (result > 0)
+        {
+            _log.Verbose($"Gutteral Yell reduced damage by {result:F2}%");
+        }
 
         return result;
     }

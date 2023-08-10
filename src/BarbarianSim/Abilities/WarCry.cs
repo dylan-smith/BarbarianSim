@@ -42,7 +42,11 @@ public class WarCry
             _ => 1.0,
         };
 
-        _log.Verbose($"Damage bonus from War Cry = {result}x with {skillPoints} skill points");
+        if (result > 1.0)
+        {
+            _log.Verbose($"Damage bonus from War Cry = {result}x with {skillPoints} skill points");
+        }
+
         return result;
     }
 }

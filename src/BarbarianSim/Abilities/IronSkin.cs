@@ -40,7 +40,11 @@ public class IronSkin
             _ => 0.0,
         };
 
-        _log.Verbose($"Barrier from Iron Skin = {result}% with {skillPoints} skill points");
+        if (result > 0)
+        {
+            _log.Verbose($"Barrier from Iron Skin = {result}% with {skillPoints} skill points");
+        }
+
         return result;
     }
 }

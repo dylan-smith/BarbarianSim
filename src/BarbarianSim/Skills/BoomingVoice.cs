@@ -26,7 +26,10 @@ public class BoomingVoice
             _ => 1,
         };
 
-        _log.Verbose($"Duration Increase from Booming Voice = {result:F2}x with {skillPoints} skill points");
+        if (result > 1)
+        {
+            _log.Verbose($"Duration Increase from Booming Voice = {result:F2}x with {skillPoints} skill points");
+        }
 
         return result;
     }
