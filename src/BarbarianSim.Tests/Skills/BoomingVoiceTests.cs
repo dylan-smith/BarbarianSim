@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class BoomingVoiceTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly BoomingVoice _skill = new();
+    private readonly BoomingVoice _skill;
+
+    public BoomingVoiceTests() => _skill = new(_mockSimLogger.Object);
 
     [Theory]
     [InlineData(0, 1)]
