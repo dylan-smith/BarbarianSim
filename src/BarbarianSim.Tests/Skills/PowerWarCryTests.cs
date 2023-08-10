@@ -2,13 +2,17 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class PowerWarCryTests
 {
-    private readonly PowerWarCry _skill = new();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
+    private readonly PowerWarCry _skill;
+
+    public PowerWarCryTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void GetDamageBonus_When_Active()

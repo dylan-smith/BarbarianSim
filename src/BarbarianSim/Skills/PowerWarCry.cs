@@ -8,12 +8,20 @@ public class PowerWarCry
     public const double DAMAGE_BONUS = 1.1;
     public const double NEARBY_ENEMIES = 6;
 
+    public PowerWarCry(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public virtual double GetDamageBonus(SimulationState state)
     {
-        return state.Config.HasSkill(Skill.PowerWarCry) &&
+        if (state.Config.HasSkill(Skill.PowerWarCry) &&
             state.Enemies.Count >= NEARBY_ENEMIES &&
-            state.Player.Auras.Contains(Aura.WarCry)
-            ? DAMAGE_BONUS
-            : 1.0;
+            state.Player.Auras.Contains(Aura.WarCry))
+        {
+            _log.Verbose($"Damage Bonus from Power War Cry = {DAMAGE_BONUS:F2}x");
+            return DAMAGE_BONUS;
+        }
+
+        return 1.0;
     }
 }
