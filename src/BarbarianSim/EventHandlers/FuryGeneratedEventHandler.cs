@@ -23,11 +23,12 @@ public class FuryGeneratedEventHandler : EventHandler<FuryGeneratedEvent>
         e.FuryGenerated += e.BaseFury * multiplier;
         state.Player.Fury += e.FuryGenerated;
 
-        if (state.Player.Fury > _maxFuryCalculator.Calculate(state))
+        var maxFury = _maxFuryCalculator.Calculate(state);
+        if (state.Player.Fury > maxFury)
         {
-            e.OverflowFury = state.Player.Fury - _maxFuryCalculator.Calculate(state);
-            state.Player.Fury = _maxFuryCalculator.Calculate(state);
-            _log.Verbose($"Overflow Fury = {e.OverflowFury}");
+            e.OverflowFury = state.Player.Fury - maxFury;
+            state.Player.Fury = maxFury;
+            _log.Verbose($"Overflow Fury = {e.OverflowFury:F2}");
         }
     }
 }
