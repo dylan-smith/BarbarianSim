@@ -3,14 +3,18 @@ using BarbarianSim.Enums;
 using BarbarianSim.Events;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class EnhancedRallyingCryTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly EnhancedRallyingCry _skill = new();
+    private readonly EnhancedRallyingCry _skill;
+
+    public EnhancedRallyingCryTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void Creates_UnstoppableAuraAppliedEvent()
