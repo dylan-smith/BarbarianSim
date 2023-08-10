@@ -1,14 +1,18 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class AttackSpeedCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly AttackSpeedCalculator _calculator = new();
+    private readonly AttackSpeedCalculator _calculator;
+
+    public AttackSpeedCalculatorTests() => _calculator = new(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Stats_From_Gear()
