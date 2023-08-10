@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Skills;
 
 public class UnbridledRageTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly UnbridledRage _skill = new();
+    private readonly UnbridledRage _skill;
+
+    public UnbridledRageTests() => _skill = new(_mockSimLogger.Object);
 
     [Fact]
     public void Double_The_Cost_With_Unbridled_Rage()
@@ -48,7 +52,7 @@ public class UnbridledRageTests
 
         var result = _skill.GetDamageBonus(_state, SkillType.Core);
 
-        result.Should().Be(2.0);
+        result.Should().Be(2.35);
     }
 
     [Fact]
