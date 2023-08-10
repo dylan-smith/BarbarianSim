@@ -20,7 +20,7 @@ public class BattleLungingStrike : IHandlesEvent<LungingStrikeEvent>
             var bleedDamage = e.BaseDamage * BLEED_DAMAGE;
             var bleedAppliedEvent = new BleedAppliedEvent(e.Timestamp, "Battle Lunging Strike", bleedDamage, BLEED_DURATION, e.Target);
             state.Events.Add(bleedAppliedEvent);
-            _log.Verbose($"Created BleedAppliedEvent for {bleedDamage:F2} damage over {BLEED_DURATION} seconds on Enemy #{e.Target.Id}");
+            _log.Verbose($"Battle Lunging Strike created BleedAppliedEvent for {bleedDamage:F2} damage over {BLEED_DURATION} seconds on Enemy #{e.Target.Id}");
         }
     }
 }
