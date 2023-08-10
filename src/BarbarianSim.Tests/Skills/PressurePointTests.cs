@@ -11,13 +11,14 @@ namespace BarbarianSim.Tests.Skills;
 public class PressurePointTests
 {
     private readonly Mock<RandomGenerator> _mockRandomGenerator = TestHelpers.CreateMock<RandomGenerator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly PressurePoint _skill;
 
     public PressurePointTests()
     {
         _mockRandomGenerator.Setup(m => m.Roll(RollType.PressurePoint)).Returns(0.0);
-        _skill = new PressurePoint(_mockRandomGenerator.Object);
+        _skill = new PressurePoint(_mockRandomGenerator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
