@@ -9,11 +9,17 @@ public class StrategicRallyingCry : IHandlesEvent<RallyingCryEvent>, IHandlesEve
     public const double FORTIFY = 0.1;
     public const double DIRECT_DAMAGE_FORTIFY = 0.02;
 
+    public StrategicRallyingCry(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
     public void ProcessEvent(RallyingCryEvent e, SimulationState state)
     {
-        if (state.Config.Skills.ContainsKey(Skill.StrategicRallyingCry) && state.Config.Skills[Skill.StrategicRallyingCry] > 0)
+        if (state.Config.GetSkillPoints(Skill.StrategicRallyingCry) > 0)
         {
-            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Rallying Cry", FORTIFY * state.Player.BaseLife));
+            var fortifyAmount = FORTIFY * state.Player.BaseLife;
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Rallying Cry", fortifyAmount));
+            _log.Verbose($"Strategic Rallying Cry created FortifyGeneratedEvent for {fortifyAmount:F2} Fortify");
         }
     }
 
@@ -22,7 +28,9 @@ public class StrategicRallyingCry : IHandlesEvent<RallyingCryEvent>, IHandlesEve
         if (state.Config.HasSkill(Skill.StrategicRallyingCry) &&
             state.Player.Auras.Contains(Aura.RallyingCry))
         {
-            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Rallying Cry", DIRECT_DAMAGE_FORTIFY * state.Player.BaseLife));
+            var fortifyAmount = DIRECT_DAMAGE_FORTIFY * state.Player.BaseLife;
+            state.Events.Add(new FortifyGeneratedEvent(e.Timestamp, "Strategic Rallying Cry", fortifyAmount));
+            _log.Verbose($"Strategic Rallying Cry created FortifyGeneratedEvent for {fortifyAmount:F2} Fortify");
         }
     }
 }
