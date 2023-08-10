@@ -13,6 +13,7 @@ public class CritDamageCalculatorTests
 {
     private readonly Mock<HeavyHanded> _mockHeavyHanded = TestHelpers.CreateMock<HeavyHanded>();
     private readonly Mock<TwoHandedMaceExpertise> _mockTwoHandedMaceExpertise = TestHelpers.CreateMock<TwoHandedMaceExpertise>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly CritDamageCalculator _calculator;
 
@@ -20,7 +21,7 @@ public class CritDamageCalculatorTests
     {
         _mockHeavyHanded.Setup(m => m.GetCriticalStrikeDamage(It.IsAny<SimulationState>(), It.IsAny<Expertise>())).Returns(0.0);
         _mockTwoHandedMaceExpertise.Setup(m => m.GetCriticalStrikeDamageMultiplier(It.IsAny<SimulationState>(), It.IsAny<GearItem>(), It.IsAny<EnemyState>())).Returns(1.0);
-        _calculator = new CritDamageCalculator(_mockHeavyHanded.Object, _mockTwoHandedMaceExpertise.Object);
+        _calculator = new CritDamageCalculator(_mockHeavyHanded.Object, _mockTwoHandedMaceExpertise.Object, _mockSimLogger.Object);
     }
 
     [Fact]
