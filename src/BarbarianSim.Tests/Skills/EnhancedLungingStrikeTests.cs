@@ -12,13 +12,14 @@ namespace BarbarianSim.Tests.Skills;
 public class EnhancedLungingStrikeTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly EnhancedLungingStrike _skill;
 
     public EnhancedLungingStrikeTests()
     {
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200);
-        _skill = new EnhancedLungingStrike(_mockMaxLifeCalculator.Object);
+        _skill = new EnhancedLungingStrike(_mockMaxLifeCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
