@@ -11,13 +11,14 @@ namespace BarbarianSim.Tests.Skills;
 public class StrategicChallengingShoutTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly StrategicChallengingShout _skill;
 
     public StrategicChallengingShoutTests()
     {
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200);
-        _skill = new StrategicChallengingShout(_mockMaxLifeCalculator.Object);
+        _skill = new StrategicChallengingShout(_mockMaxLifeCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
