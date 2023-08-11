@@ -11,7 +11,7 @@ public class TwoHandedWeaponDamageMultiplicativeCalculator
 
     public virtual double Calculate(SimulationState state, GearItem weapon)
     {
-        if (weapon.Expertise.IsTwoHanded())
+        if (weapon?.Expertise.IsTwoHanded() == true)
         {
             var result = 1 + (state.Config.GetStatTotal(g => g.TwoHandWeaponDamageMultiplicative) / 100.0);
             if (result > 1.0)
