@@ -9,13 +9,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class ResistanceToAllCalculatorTests
 {
     private readonly Mock<IntelligenceCalculator> _mockIntelligenceCalculator = TestHelpers.CreateMock<IntelligenceCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ResistanceToAllCalculator _calculator;
 
     public ResistanceToAllCalculatorTests()
     {
         _mockIntelligenceCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
-        _calculator = new ResistanceToAllCalculator(_mockIntelligenceCalculator.Object);
+        _calculator = new ResistanceToAllCalculator(_mockIntelligenceCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
