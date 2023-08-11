@@ -10,6 +10,7 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class MaxLifeCalculatorTests
 {
     private readonly Mock<EnhancedChallengingShout> _mockEnhancedChallengingShout = TestHelpers.CreateMock<EnhancedChallengingShout>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly MaxLifeCalculator _calculator;
 
@@ -18,7 +19,7 @@ public class MaxLifeCalculatorTests
         _mockEnhancedChallengingShout.Setup(m => m.GetMaxLifeMultiplier(It.IsAny<SimulationState>()))
                                       .Returns(1.0);
 
-        _calculator = new MaxLifeCalculator(_mockEnhancedChallengingShout.Object);
+        _calculator = new MaxLifeCalculator(_mockEnhancedChallengingShout.Object, _mockSimLogger.Object);
     }
 
     [Fact]
