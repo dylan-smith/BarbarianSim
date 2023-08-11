@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageReductionFromBleedingCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly DamageReductionFromBleedingCalculator _calculator = new();
+    private readonly DamageReductionFromBleedingCalculator _calculator;
+
+    public DamageReductionFromBleedingCalculatorTests() => _calculator = new(_mockSimLogger.Object);
 
     [Fact]
     public void Multiplies_DamageReduction_When_Enemy_Is_Bleeding()

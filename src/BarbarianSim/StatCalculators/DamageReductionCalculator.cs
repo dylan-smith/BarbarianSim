@@ -56,16 +56,16 @@ public class DamageReductionCalculator
         }
 
         damageReduction *= damageReductionFromConfig;
-        damageReduction *= 1 - (_damageReductionFromBleedingCalculator.Calculate(state, enemy) / 100.0);
-        damageReduction *= 1 - (_damageReductionFromCloseCalculator.Calculate(state) / 100.0);
-        damageReduction *= 1 - (_damageReductionWhileFortifiedCalculator.Calculate(state) / 100.0);
-        damageReduction *= 1 - (_damageReductionWhileInjuredCalculator.Calculate(state) / 100.0);
-        damageReduction *= 1 - (_aggressiveResistance.GetDamageReduction(state) / 100.0);
-        damageReduction *= 1 - (_challengingShout.GetDamageReduction(state) / 100.0);
-        damageReduction *= 1 - (_gutteralYell.GetDamageReduction(state) / 100.0);
-        damageReduction *= 1 - (_aspectOfTheIronWarrior.GetDamageReductionBonus(state) / 100.0);
-        damageReduction *= 1 - (_ironBloodAspect.GetDamageReductionBonus(state) / 100.0);
-        damageReduction *= 1 - (_undaunted.GetDamageReduction(state) / 100.0);
+        damageReduction *= _damageReductionFromBleedingCalculator.Calculate(state, enemy);
+        damageReduction *= _damageReductionFromCloseCalculator.Calculate(state);
+        damageReduction *= _damageReductionWhileFortifiedCalculator.Calculate(state);
+        damageReduction *= _damageReductionWhileInjuredCalculator.Calculate(state);
+        damageReduction *= _aggressiveResistance.GetDamageReduction(state);
+        damageReduction *= _challengingShout.GetDamageReduction(state);
+        damageReduction *= _gutteralYell.GetDamageReduction(state);
+        damageReduction *= _aspectOfTheIronWarrior.GetDamageReductionBonus(state);
+        damageReduction *= _ironBloodAspect.GetDamageReductionBonus(state);
+        damageReduction *= _undaunted.GetDamageReduction(state);
 
         _log.Verbose($"Total Damage Reduction = {damageReduction:F2}x");
 
