@@ -10,13 +10,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class ThornsCalculatorTests
 {
     private readonly Mock<StrategicChallengingShout> _mockStrategicChallengingShout = TestHelpers.CreateMock<StrategicChallengingShout>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly ThornsCalculator _calculator;
 
     public ThornsCalculatorTests()
     {
         _mockStrategicChallengingShout.Setup(m => m.GetThorns(It.IsAny<SimulationState>())).Returns(0);
-        _calculator = new ThornsCalculator(_mockStrategicChallengingShout.Object);
+        _calculator = new ThornsCalculator(_mockStrategicChallengingShout.Object, _mockSimLogger.Object);
     }
 
     [Fact]
