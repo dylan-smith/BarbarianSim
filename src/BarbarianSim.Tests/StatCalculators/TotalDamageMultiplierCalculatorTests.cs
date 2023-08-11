@@ -41,7 +41,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<DamageType>(), It.IsAny<EnemyState>())).Returns(1.0);
         _mockTwoHandedWeaponDamageMultiplicativeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
         _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>(), It.IsAny<EnemyState>(), It.IsAny<GearItem>())).Returns(1.0);
-        _mockStrengthCalculator.Setup(m => m.GetStrengthMultiplier(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
+        _mockStrengthCalculator.Setup(m => m.GetDamageMultiplier(It.IsAny<SimulationState>(), It.IsAny<SkillType>())).Returns(1.0);
         _mockPitFighter.Setup(m => m.GetCloseDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockPowerWarCry.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
@@ -123,7 +123,7 @@ public class TotalDamageMultiplierCalculatorTests
     [Fact]
     public void Includes_Strength_Bonus()
     {
-        _mockStrengthCalculator.Setup(m => m.GetStrengthMultiplier(_state, SkillType.Basic)).Returns(1.042);
+        _mockStrengthCalculator.Setup(m => m.GetDamageMultiplier(_state, SkillType.Basic)).Returns(1.042);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Basic, DamageSource.LungingStrike, null);
 
@@ -317,7 +317,7 @@ public class TotalDamageMultiplierCalculatorTests
 
         _mockAdditiveDamageBonusCalculator.Setup(m => m.Calculate(_state, DamageType.Physical, _state.Enemies.First())).Returns(1.2);
         _mockVulnerableDamageBonusCalculator.Setup(m => m.Calculate(_state, _state.Enemies.First(), null)).Returns(1.2);
-        _mockStrengthCalculator.Setup(m => m.GetStrengthMultiplier(_state, SkillType.Core)).Returns(1.05);
+        _mockStrengthCalculator.Setup(m => m.GetDamageMultiplier(_state, SkillType.Core)).Returns(1.05);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, null);
 

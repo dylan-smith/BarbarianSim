@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class StrengthCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly StrengthCalculator _calculator = new();
+    private readonly StrengthCalculator _calculator;
+
+    public StrengthCalculatorTests() => _calculator = new StrengthCalculator(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Base_Value()
@@ -80,7 +84,7 @@ public class StrengthCalculatorTests
     {
         _state.Config.Gear.Helm.Strength = 42;
         _state.Config.PlayerSettings.Level = 1;
-        var result = _calculator.GetStrengthMultiplier(_state, SkillType.Core);
+        var result = _calculator.GetDamageMultiplier(_state, SkillType.Core);
 
         result.Should().Be(1.052);
     }
@@ -90,7 +94,7 @@ public class StrengthCalculatorTests
     {
         _state.Config.Gear.Helm.Strength = 42;
         _state.Config.PlayerSettings.Level = 1;
-        var result = _calculator.GetStrengthMultiplier(_state, SkillType.None);
+        var result = _calculator.GetDamageMultiplier(_state, SkillType.None);
 
         result.Should().Be(1.0);
     }
