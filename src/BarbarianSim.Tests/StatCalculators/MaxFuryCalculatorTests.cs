@@ -10,13 +10,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class MaxFuryCalculatorTests
 {
     private readonly Mock<TemperedFury> _mockTemperedFury = TestHelpers.CreateMock<TemperedFury>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly MaxFuryCalculator _calculator;
 
     public MaxFuryCalculatorTests()
     {
         _mockTemperedFury.Setup(m => m.GetMaximumFury(It.IsAny<SimulationState>())).Returns(0);
-        _calculator = new MaxFuryCalculator(_mockTemperedFury.Object);
+        _calculator = new MaxFuryCalculator(_mockTemperedFury.Object, _mockSimLogger.Object);
     }
 
     [Fact]
