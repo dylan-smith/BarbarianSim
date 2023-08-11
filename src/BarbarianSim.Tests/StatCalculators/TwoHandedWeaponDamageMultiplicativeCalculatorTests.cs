@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class TwoHandedWeaponDamageMultiplicativeCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly TwoHandedWeaponDamageMultiplicativeCalculator _calculator = new();
+    private readonly TwoHandedWeaponDamageMultiplicativeCalculator _calculator;
+
+    public TwoHandedWeaponDamageMultiplicativeCalculatorTests() => _calculator = new TwoHandedWeaponDamageMultiplicativeCalculator(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Stats_From_Gear_TwoHandBludgeoning()

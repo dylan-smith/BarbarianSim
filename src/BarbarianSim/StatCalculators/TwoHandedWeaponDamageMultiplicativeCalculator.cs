@@ -5,8 +5,22 @@ namespace BarbarianSim.StatCalculators;
 
 public class TwoHandedWeaponDamageMultiplicativeCalculator
 {
-    public virtual double Calculate(SimulationState state, GearItem weapon) =>
-        weapon?.Expertise is Expertise.TwoHandedAxe or Expertise.TwoHandedMace or Expertise.TwoHandedSword
-            ? 1 + (state.Config.GetStatTotal(g => g.TwoHandWeaponDamageMultiplicative) / 100.0)
-            : 1.0;
+    public TwoHandedWeaponDamageMultiplicativeCalculator(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
+    public virtual double Calculate(SimulationState state, GearItem weapon)
+    {
+        if (weapon.Expertise.IsTwoHanded())
+        {
+            var result = 1 + (state.Config.GetStatTotal(g => g.TwoHandWeaponDamageMultiplicative) / 100.0);
+            if (result > 1.0)
+            {
+                _log.Verbose($"Two-Handed Weapon Damage = {result:F2}x");
+            }
+            return result;
+        }
+
+        return 1.0;
+    }
 }
