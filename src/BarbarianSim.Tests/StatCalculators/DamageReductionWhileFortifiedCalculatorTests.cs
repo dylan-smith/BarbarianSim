@@ -1,14 +1,18 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageReductionWhileFortifiedCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly DamageReductionWhileFortifiedCalculator _calculator = new();
+    private readonly DamageReductionWhileFortifiedCalculator _calculator;
+
+    public DamageReductionWhileFortifiedCalculatorTests() => _calculator = new(_mockSimLogger.Object);
 
     [Fact]
     public void Base_Fortify_DamageReduction_Is_10_Percent()
