@@ -4,5 +4,23 @@ namespace BarbarianSim.StatCalculators;
 
 public class PhysicalDamageCalculator
 {
-    public virtual double Calculate(SimulationState state, DamageType damageType) => damageType == DamageType.Physical ? state.Config.GetStatTotal(g => g.PhysicalDamage) : 0.0;
+    public PhysicalDamageCalculator(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
+    public virtual double Calculate(SimulationState state, DamageType damageType)
+    {
+        if (damageType == DamageType.Physical)
+        {
+            var result = state.Config.GetStatTotal(g => g.PhysicalDamage);
+            if (result > 0)
+            {
+                _log.Verbose($"Total Physical Damage = {result:F2}%");
+            }
+
+            return result;
+        }
+
+        return 0;
+    }
 }

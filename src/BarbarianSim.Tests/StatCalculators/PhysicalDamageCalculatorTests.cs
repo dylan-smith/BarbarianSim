@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class PhysicalDamageCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly PhysicalDamageCalculator _calculator = new();
+    private readonly PhysicalDamageCalculator _calculator;
+
+    public PhysicalDamageCalculatorTests() => _calculator = new PhysicalDamageCalculator(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Stats_From_Gear()
