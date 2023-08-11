@@ -21,6 +21,6 @@ public class FurySpentEventHandler : EventHandler<FurySpentEvent>
 
         state.Player.Fury -= e.FurySpent;
         state.Player.Fury = Math.Max(state.Player.Fury, 0);
-        _log.Verbose($"Fury Remaining = {state.Player.Fury}");
+        _log.Verbose($"Fury Remaining = {state.Player.Fury:F2}");
     }
 }

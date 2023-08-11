@@ -15,7 +15,7 @@ public class PhysicalDamageCalculator
             var result = state.Config.GetStatTotal(g => g.PhysicalDamage);
             if (result > 0)
             {
-                _log.Verbose($"Total Physical Damage = {result:F2}%");
+                _log.Verbose($"Physical Damage = {result:F2}%");
             }
 
             return result;

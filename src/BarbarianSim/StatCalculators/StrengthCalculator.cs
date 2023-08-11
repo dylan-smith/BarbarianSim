@@ -13,13 +13,13 @@ public class StrengthCalculator
         var strengthFromConfig = state.Config.GetStatTotal(g => g.Strength);
         if (strengthFromConfig > 0)
         {
-            _log.Verbose($"Strength from Config = {strengthFromConfig:F2}%");
+            _log.Verbose($"Strength from Config = {strengthFromConfig:F2}");
         }
 
         var strengthFromAllStats = state.Config.GetStatTotal(g => g.AllStats);
         if (strengthFromAllStats > 0)
         {
-            _log.Verbose($"Strength from All Stats from Config = {strengthFromAllStats:F2}%");
+            _log.Verbose($"Strength from All Stats from Config = {strengthFromAllStats:F2}");
         }
 
         var baseStrength = state.Config.PlayerSettings.Strength;

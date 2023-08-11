@@ -25,7 +25,7 @@ public class MaxFuryCalculator
         var maxFuryTemperedFury = _temperedFury.GetMaximumFury(state);
 
         maxFury += maxFuryFromConfig + maxFuryTemperedFury;
-        _log.Verbose($"Total Max Fury = {maxFury:F2}");
+        _log.Verbose($"Total Max Fury = {maxFury:F2} (Current Fury: {state.Player.Fury:F2})");
 
         return maxFury;
     }
