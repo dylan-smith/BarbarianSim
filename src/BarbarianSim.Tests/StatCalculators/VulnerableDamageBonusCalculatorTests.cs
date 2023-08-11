@@ -11,13 +11,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class VulnerableDamageBonusCalculatorTests
 {
     private readonly Mock<TwoHandedAxeExpertise> _mockTwoHandedAxeExpertise = TestHelpers.CreateMock<TwoHandedAxeExpertise>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly VulnerableDamageBonusCalculator _calculator;
 
     public VulnerableDamageBonusCalculatorTests()
     {
         _mockTwoHandedAxeExpertise.Setup(m => m.GetVulnerableDamageMultiplier(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
-        _calculator = new(_mockTwoHandedAxeExpertise.Object);
+        _calculator = new(_mockTwoHandedAxeExpertise.Object, _mockSimLogger.Object);
     }
 
     [Fact]
