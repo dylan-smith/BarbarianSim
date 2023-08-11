@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Abilities;
+using BarbarianSim.Arsenal;
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
@@ -31,6 +32,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<PenitentGreaves> _mockPenitentGreaves = TestHelpers.CreateMock<PenitentGreaves>();
     private readonly Mock<RamaladnisMagnumOpus> _mockRamaladnisMagnumOpus = TestHelpers.CreateMock<RamaladnisMagnumOpus>();
     private readonly Mock<BerserkingDamageCalculator> _mockBerserkingDamageCalculator = TestHelpers.CreateMock<BerserkingDamageCalculator>();
+    private readonly Mock<PolearmExpertise> _mockPolearmExpertise = TestHelpers.CreateMock<PolearmExpertise>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -55,6 +57,7 @@ public class TotalDamageMultiplierCalculatorTests
         _mockPenitentGreaves.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>())).Returns(1.0);
         _mockRamaladnisMagnumOpus.Setup(m => m.GetDamageBonus(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
         _mockBerserkingDamageCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1.0);
+        _mockPolearmExpertise.Setup(m => m.GetHealthyDamageMultiplier(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
 
         _calculator = new TotalDamageMultiplierCalculator(_mockAdditiveDamageBonusCalculator.Object,
                                                           _mockTwoHandedWeaponDamageMultiplicativeCalculator.Object,
@@ -74,7 +77,8 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockExploitersAspect.Object,
                                                           _mockPenitentGreaves.Object,
                                                           _mockRamaladnisMagnumOpus.Object,
-                                                          _mockBerserkingDamageCalculator.Object);
+                                                          _mockBerserkingDamageCalculator.Object,
+                                                          _mockPolearmExpertise.Object);
     }
 
     [Fact]
@@ -287,6 +291,17 @@ public class TotalDamageMultiplierCalculatorTests
     {
         var weapon = new GearItem() { Expertise = Expertise.Polearm };
         _mockBerserkingDamageCalculator.Setup(m => m.Calculate(_state)).Returns(1.25);
+
+        var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, weapon);
+
+        result.Should().Be(1.25);
+    }
+
+    [Fact]
+    public void Includes_PolearmExpertise_Bonus()
+    {
+        var weapon = new GearItem() { Expertise = Expertise.Polearm };
+        _mockPolearmExpertise.Setup(m => m.GetHealthyDamageMultiplier(_state, weapon)).Returns(1.25);
 
         var result = _calculator.Calculate(_state, DamageType.Physical, _state.Enemies.First(), SkillType.Core, DamageSource.Whirlwind, weapon);
 

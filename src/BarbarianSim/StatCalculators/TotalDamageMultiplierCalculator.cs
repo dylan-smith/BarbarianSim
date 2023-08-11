@@ -1,4 +1,5 @@
 ﻿using BarbarianSim.Abilities;
+using BarbarianSim.Arsenal;
 using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
@@ -26,7 +27,8 @@ public class TotalDamageMultiplierCalculator
                                            ExploitersAspect exploitersAspect,
                                            PenitentGreaves penitentGreaves,
                                            RamaladnisMagnumOpus ramaladnisMagnumOpus,
-                                           BerserkingDamageCalculator berserkingDamageCalculator)
+                                           BerserkingDamageCalculator berserkingDamageCalculator,
+                                           PolearmExpertise polearmExpertise)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _twoHandedWeaponDamageMultiplicativeCalculator = twoHandedWeaponDamageMultiplicativeCalculator;
@@ -47,6 +49,7 @@ public class TotalDamageMultiplierCalculator
         _penitentGreaves = penitentGreaves;
         _ramaladnisMagnumOpus = ramaladnisMagnumOpus;
         _berserkingDamageCalculator = berserkingDamageCalculator;
+        _polearmExpertise = polearmExpertise;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -68,6 +71,7 @@ public class TotalDamageMultiplierCalculator
     private readonly PenitentGreaves _penitentGreaves;
     private readonly RamaladnisMagnumOpus _ramaladnisMagnumOpus;
     private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
+    private readonly PolearmExpertise _polearmExpertise;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource, GearItem weapon)
     {
@@ -90,6 +94,7 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _penitentGreaves.GetDamageBonus(state);
         damageBonus *= _ramaladnisMagnumOpus.GetDamageBonus(state, weapon);
         damageBonus *= _berserkingDamageCalculator.Calculate(state);
+        damageBonus *= _polearmExpertise.GetHealthyDamageMultiplier(state, weapon);
 
         return damageBonus;
     }
