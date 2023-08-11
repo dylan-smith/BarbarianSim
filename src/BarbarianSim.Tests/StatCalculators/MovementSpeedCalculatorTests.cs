@@ -1,4 +1,5 @@
-﻿using BarbarianSim.Aspects;
+﻿using BarbarianSim.Abilities;
+using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using BarbarianSim.Skills;
@@ -13,6 +14,8 @@ public class MovementSpeedCalculatorTests
 {
     private readonly Mock<PrimeWrathOfTheBerserker> _mockPrimeWrathOfTheBerserker = TestHelpers.CreateMock<PrimeWrathOfTheBerserker>();
     private readonly Mock<GhostwalkerAspect> _mockGhostwalkerAspect = TestHelpers.CreateMock<GhostwalkerAspect>();
+    private readonly Mock<RallyingCry> _mockRallyingCry = TestHelpers.CreateMock<RallyingCry>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly MovementSpeedCalculator _calculator;
 
@@ -22,8 +25,10 @@ public class MovementSpeedCalculatorTests
                                      .Returns(0);
         _mockGhostwalkerAspect.Setup(m => m.GetMovementSpeedIncrease(It.IsAny<SimulationState>()))
                               .Returns(0);
+        _mockRallyingCry.Setup(m => m.GetMovementSpeedIncrease(It.IsAny<SimulationState>()))
+                        .Returns(0);
 
-        _calculator = new(_mockPrimeWrathOfTheBerserker.Object, _mockGhostwalkerAspect.Object);
+        _calculator = new(_mockPrimeWrathOfTheBerserker.Object, _mockGhostwalkerAspect.Object, _mockRallyingCry.Object, _mockSimLogger.Object);
     }
 
     [Fact]
@@ -61,7 +66,7 @@ public class MovementSpeedCalculatorTests
     public void Bonus_From_RallyingCry()
     {
         _state.Config.Gear.Helm.MovementSpeed = 12.0;
-        _state.Player.Auras.Add(Aura.RallyingCry);
+        _mockRallyingCry.Setup(m => m.GetMovementSpeedIncrease(_state)).Returns(30);
 
         var result = _calculator.Calculate(_state);
 

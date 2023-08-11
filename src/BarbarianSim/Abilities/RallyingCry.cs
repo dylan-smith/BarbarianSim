@@ -48,4 +48,15 @@ public class RallyingCry
 
         return result;
     }
+
+    public virtual double GetMovementSpeedIncrease(SimulationState state)
+    {
+        if (state.Player.Auras.Contains(Aura.RallyingCry))
+        {
+            _log.Verbose($"Movement Speed Increase from Rallying Cry = {MOVEMENT_SPEED:F2}%");
+            return MOVEMENT_SPEED;
+        }
+
+        return 0;
+    }
 }

@@ -7,24 +7,45 @@ namespace BarbarianSim.StatCalculators;
 
 public class MovementSpeedCalculator
 {
-    public MovementSpeedCalculator(PrimeWrathOfTheBerserker primeWrathOfTheBerserker, GhostwalkerAspect ghostwalkerAspect)
+    public MovementSpeedCalculator(PrimeWrathOfTheBerserker primeWrathOfTheBerserker, GhostwalkerAspect ghostwalkerAspect, RallyingCry rallyingCry, SimLogger log)
     {
         _primeWrathOfTheBerserker = primeWrathOfTheBerserker;
         _ghostwalkerAspect = ghostwalkerAspect;
+        _rallyingCry = rallyingCry;
+        _log = log;
     }
 
     private readonly PrimeWrathOfTheBerserker _primeWrathOfTheBerserker;
     private readonly GhostwalkerAspect _ghostwalkerAspect;
+    private readonly RallyingCry _rallyingCry;
+    private readonly SimLogger _log;
 
     public virtual double Calculate(SimulationState state)
     {
-        var movementSpeed = state.Config.GetStatTotal(g => g.MovementSpeed);
-        movementSpeed += state.Player.Auras.Contains(Aura.Berserking) ? 15 : 0;
-        movementSpeed += state.Player.Auras.Contains(Aura.RallyingCry) ? RallyingCry.MOVEMENT_SPEED : 0;
+        var speedFromConfig = state.Config.GetStatTotal(g => g.MovementSpeed);
+        if (speedFromConfig > 0)
+        {
+            _log.Verbose($"Movement Speed from Config = {speedFromConfig:F2}%");
+        }
 
-        movementSpeed += _primeWrathOfTheBerserker.GetMovementSpeedIncrease(state);
-        movementSpeed += _ghostwalkerAspect.GetMovementSpeedIncrease(state);
+        var speedFromBerserking = state.Player.Auras.Contains(Aura.Berserking) ? 15 : 0;
+        if (speedFromBerserking > 0)
+        {
+            _log.Verbose($"Movement Speed from Berserking = {speedFromBerserking:F2}%");
+        }
 
-        return 1.0 + (movementSpeed / 100.0);
+        var speedFromRallyingCry = _rallyingCry.GetMovementSpeedIncrease(state);
+        var speedFromWrathOfTheBerserker = _primeWrathOfTheBerserker.GetMovementSpeedIncrease(state);
+        var speedFromGhostwalker = _ghostwalkerAspect.GetMovementSpeedIncrease(state);
+
+        var result = speedFromConfig + speedFromBerserking + speedFromRallyingCry + speedFromWrathOfTheBerserker + speedFromGhostwalker;
+        result = 1.0 + (result / 100.0);
+
+        if (result > 1.0)
+        {
+            _log.Verbose($"Total Movement Speed = {result:F2}x");
+        }
+
+        return result;
     }
 }
