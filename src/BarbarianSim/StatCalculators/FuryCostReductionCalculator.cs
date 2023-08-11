@@ -25,7 +25,7 @@ public class FuryCostReductionCalculator
 
         var result = 1.0 - (furyCostReduction / 100);
 
-        result *= _unbridledRage.GetFuryCostReduction(state, skillType);
+        result *= _unbridledRage.GetFuryCostReduction(state, skillType); // this is really a fury cost increase
 
         if (result != 1.0)
         {
