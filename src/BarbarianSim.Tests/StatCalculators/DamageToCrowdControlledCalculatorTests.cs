@@ -2,14 +2,18 @@
 using BarbarianSim.Enums;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageToCrowdControlledCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly DamageToCrowdControlledCalculator _calculator = new();
+    private readonly DamageToCrowdControlledCalculator _calculator;
+
+    public DamageToCrowdControlledCalculatorTests() => _calculator = new(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Damage_To_Crowd_Controlled_When_Enemy_Is_Slowed()
