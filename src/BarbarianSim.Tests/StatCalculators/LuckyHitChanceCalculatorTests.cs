@@ -10,13 +10,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public sealed class LuckyHitChanceCalculatorTests
 {
     private readonly Mock<PolearmExpertise> _mockPolearmExpertise = TestHelpers.CreateMock<PolearmExpertise>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly LuckyHitChanceCalculator _calculator;
 
     public LuckyHitChanceCalculatorTests()
     {
         _mockPolearmExpertise.Setup(m => m.GetLuckyHitChanceMultiplier(It.IsAny<SimulationState>(), It.IsAny<GearItem>())).Returns(1.0);
-        _calculator = new(_mockPolearmExpertise.Object);
+        _calculator = new(_mockPolearmExpertise.Object, _mockSimLogger.Object);
     }
 
     [Fact]

@@ -70,8 +70,10 @@ public class DirectDamageEventHandler : EventHandler<DirectDamageEvent>
         _log.Verbose($"Created DamageEvent for {damage:F2} damage on Enemy #{e.Enemy.Id} of type {damageType}");
 
         var luckyRoll = _randomGenerator.Roll(RollType.LuckyHit);
+        var luckyHitChance = e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state, e.Weapon);
+        _log.Verbose($"Total Lucky Hit Chance = {luckyHitChance:P2}");
 
-        if (luckyRoll <= (e.LuckyHitChance + _luckyHitChanceCalculator.Calculate(state, e.Weapon)))
+        if (luckyRoll <= luckyHitChance)
         {
             e.LuckyHitEvent = new LuckyHitEvent(e.Timestamp, e.Source, e.SkillType, e.Enemy, e.Weapon);
             state.Events.Add(e.LuckyHitEvent);
