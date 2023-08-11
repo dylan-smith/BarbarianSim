@@ -9,13 +9,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class OverpowerDamageCalculatorTests
 {
     private readonly Mock<WillpowerCalculator> _mockWillpowerCalculator = TestHelpers.CreateMock<WillpowerCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly OverpowerDamageCalculator _calculator;
 
     public OverpowerDamageCalculatorTests()
     {
         _mockWillpowerCalculator.Setup(x => x.Calculate(It.IsAny<SimulationState>())).Returns(0.0);
-        _calculator = new OverpowerDamageCalculator(_mockWillpowerCalculator.Object);
+        _calculator = new OverpowerDamageCalculator(_mockWillpowerCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
