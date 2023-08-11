@@ -2,5 +2,15 @@
 
 public class DamageToCloseCalculator
 {
-    public virtual double Calculate(SimulationState state) => state.Config.GetStatTotal(g => g.DamageToClose);
+    public DamageToCloseCalculator(SimLogger log) => _log = log;
+
+    private readonly SimLogger _log;
+
+    public virtual double Calculate(SimulationState state)
+    {
+        var result = state.Config.GetStatTotal(g => g.DamageToClose);
+        _log.Verbose($"Damage to Close = {result:F2}%");
+
+        return result;
+    }
 }
