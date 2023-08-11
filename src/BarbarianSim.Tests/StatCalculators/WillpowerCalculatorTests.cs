@@ -1,14 +1,18 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class WillpowerCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly WillpowerCalculator _calculator = new();
+    private readonly WillpowerCalculator _calculator;
+
+    public WillpowerCalculatorTests() => _calculator = new WillpowerCalculator(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Base_Value()
