@@ -28,7 +28,8 @@ public class TotalDamageMultiplierCalculator
                                            PenitentGreaves penitentGreaves,
                                            RamaladnisMagnumOpus ramaladnisMagnumOpus,
                                            BerserkingDamageCalculator berserkingDamageCalculator,
-                                           PolearmExpertise polearmExpertise)
+                                           PolearmExpertise polearmExpertise,
+                                           SimLogger log)
     {
         _additiveDamageBonusCalculator = additiveDamageBonusCalculator;
         _twoHandedWeaponDamageMultiplicativeCalculator = twoHandedWeaponDamageMultiplicativeCalculator;
@@ -50,6 +51,7 @@ public class TotalDamageMultiplierCalculator
         _ramaladnisMagnumOpus = ramaladnisMagnumOpus;
         _berserkingDamageCalculator = berserkingDamageCalculator;
         _polearmExpertise = polearmExpertise;
+        _log = log;
     }
 
     private readonly AdditiveDamageBonusCalculator _additiveDamageBonusCalculator;
@@ -72,6 +74,7 @@ public class TotalDamageMultiplierCalculator
     private readonly RamaladnisMagnumOpus _ramaladnisMagnumOpus;
     private readonly BerserkingDamageCalculator _berserkingDamageCalculator;
     private readonly PolearmExpertise _polearmExpertise;
+    private readonly SimLogger _log;
 
     public virtual double Calculate(SimulationState state, DamageType damageType, EnemyState enemy, SkillType skillType, DamageSource damageSource, GearItem weapon)
     {
@@ -95,6 +98,8 @@ public class TotalDamageMultiplierCalculator
         damageBonus *= _ramaladnisMagnumOpus.GetDamageBonus(state, weapon);
         damageBonus *= _berserkingDamageCalculator.Calculate(state);
         damageBonus *= _polearmExpertise.GetHealthyDamageMultiplier(state, weapon);
+
+        _log.Verbose($"Total damage bonus: {damageBonus:F2}x");
 
         return damageBonus;
     }

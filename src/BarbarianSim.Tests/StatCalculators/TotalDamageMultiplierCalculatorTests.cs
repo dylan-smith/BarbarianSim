@@ -33,6 +33,7 @@ public class TotalDamageMultiplierCalculatorTests
     private readonly Mock<RamaladnisMagnumOpus> _mockRamaladnisMagnumOpus = TestHelpers.CreateMock<RamaladnisMagnumOpus>();
     private readonly Mock<BerserkingDamageCalculator> _mockBerserkingDamageCalculator = TestHelpers.CreateMock<BerserkingDamageCalculator>();
     private readonly Mock<PolearmExpertise> _mockPolearmExpertise = TestHelpers.CreateMock<PolearmExpertise>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly TotalDamageMultiplierCalculator _calculator;
 
@@ -78,7 +79,8 @@ public class TotalDamageMultiplierCalculatorTests
                                                           _mockPenitentGreaves.Object,
                                                           _mockRamaladnisMagnumOpus.Object,
                                                           _mockBerserkingDamageCalculator.Object,
-                                                          _mockPolearmExpertise.Object);
+                                                          _mockPolearmExpertise.Object,
+                                                          _mockSimLogger.Object);
     }
 
     [Fact]
