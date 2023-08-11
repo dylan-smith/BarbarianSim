@@ -1,14 +1,18 @@
 ﻿using BarbarianSim.Config;
 using BarbarianSim.StatCalculators;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.StatCalculators;
 
 public class DamageToInjuredCalculatorTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly DamageToInjuredCalculator _calculator = new();
+    private readonly DamageToInjuredCalculator _calculator;
+
+    public DamageToInjuredCalculatorTests() => _calculator = new(_mockSimLogger.Object);
 
     [Fact]
     public void Includes_Damage_To_Injured_When_Enemy_Is_Injured()
