@@ -9,13 +9,14 @@ namespace BarbarianSim.Tests.StatCalculators;
 public class DamageReductionWhileInjuredCalculatorTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
     private readonly DamageReductionWhileInjuredCalculator _calculator;
 
     public DamageReductionWhileInjuredCalculatorTests()
     {
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1000.0);
-        _calculator = new DamageReductionWhileInjuredCalculator(_mockMaxLifeCalculator.Object);
+        _calculator = new DamageReductionWhileInjuredCalculator(_mockMaxLifeCalculator.Object, _mockSimLogger.Object);
     }
 
     [Fact]
