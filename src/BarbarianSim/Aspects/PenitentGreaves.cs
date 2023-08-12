@@ -27,8 +27,14 @@ public class PenitentGreaves : Aspect, IHandlesEvent<SimulationStartedEvent>
 
     public virtual double GetDamageBonus(SimulationState state)
     {
-        return IsAspectEquipped(state)
-            ? 1 + (Damage / 100.0)
-            : 1.0;
+        if (IsAspectEquipped(state))
+        {
+            var result = 1 + (Damage / 100.0);
+            _log.Verbose($"Penitent Greaves Damage Bonus = {result:F2}x");
+            
+            return result;
+        }
+
+        return 1.0;
     }
 }

@@ -24,8 +24,13 @@ public class RamaladnisMagnumOpus : Aspect, IHandlesEvent<SimulationStartedEvent
 
     public virtual double GetDamageBonus(SimulationState state, GearItem weapon)
     {
-        return weapon?.Aspect == this
-            ? 1 + (DamagePerFury * state.Player.Fury / 100)
-            : 1.0;
+        if (weapon?.Aspect == this)
+        {
+            var result = 1 + (DamagePerFury * state.Player.Fury / 100);
+
+            return result;
+        }
+
+        return 1.0;
     }
 }

@@ -28,6 +28,7 @@ public class GhostwalkerAspect : Aspect, IHandlesEvent<AuraAppliedEvent>
         {
             if (state.Player.Auras.Contains(Aura.Ghostwalker))
             {
+                _log.Verbose($"Ghostwalker Aspect increased Movement Speed by {Speed}%");
                 return Speed;
             }
         }
