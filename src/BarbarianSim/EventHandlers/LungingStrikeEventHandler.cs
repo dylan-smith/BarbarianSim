@@ -27,7 +27,6 @@ public class LungingStrikeEventHandler : EventHandler<LungingStrikeEvent>
         var weaponDamage = (state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].MinDamage + state.Config.PlayerSettings.SkillWeapons[Skill.LungingStrike].MaxDamage) / 2.0;
         _log.Verbose($"Weapon Damage = {weaponDamage:F2}");
         var skillMultiplier = _lungingStrike.GetSkillMultiplier(state);
-        _log.Verbose($"Skill Multiplier = {skillMultiplier:F2}");
         e.BaseDamage = weaponDamage * skillMultiplier;
         _log.Verbose($"Base Damage = {e.BaseDamage:F2}");
 

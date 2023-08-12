@@ -23,6 +23,8 @@ public class FuryGeneratedEventHandler : EventHandler<FuryGeneratedEvent>
         e.FuryGenerated += e.BaseFury * multiplier;
         state.Player.Fury += e.FuryGenerated;
 
+        _log.Verbose($"Fury Generated = {e.FuryGenerated:F2}");
+
         var maxFury = _maxFuryCalculator.Calculate(state);
         if (state.Player.Fury > maxFury)
         {

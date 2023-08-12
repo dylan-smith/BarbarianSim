@@ -19,12 +19,15 @@ public class RaidLeaderProcEventHandler : EventHandler<RaidLeaderProcEvent>
 
     public override void ProcessEvent(RaidLeaderProcEvent e, SimulationState state)
     {
+        var maxLife = _maxLifeCalculator.Calculate(state);
+        var healPercent = _raidLeader.GetHealPercentage(state);
+
         for (var i = 0; i < Math.Floor(e.Duration); i++)
         {
-            var healEvent = new HealingEvent(e.Timestamp + i + 1, "Raid Leader", _maxLifeCalculator.Calculate(state) * _raidLeader.GetHealPercentage(state));
+            var healEvent = new HealingEvent(e.Timestamp + i + 1, "Raid Leader", maxLife * healPercent);
             e.HealingEvents.Add(healEvent);
             state.Events.Add(healEvent);
-            _log.Verbose($"Created HealingEvent for {healEvent.BaseAmountHealed:F2}");
+            _log.Verbose($"Created HealingEvent for {healEvent.BaseAmountHealed:F2} at Timestamp {e.Timestamp + i + 1:F2}");
         }
     }
 }

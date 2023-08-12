@@ -33,7 +33,7 @@ public class MaxLifeCalculator
         var lifeFromChallengingShout = _enhancedChallengingShout.GetMaxLifeMultiplier(state);
 
         var result = (baseLife + lifeFromConfig) * maxLifePercent * lifeFromChallengingShout;
-        _log.Verbose($"Total Max Life = {result:F2}");
+        _log.Verbose($"Total Max Life = {result:F2} (Current Life: {state.Player.Life:F2})");
 
         return result;
     }
