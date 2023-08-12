@@ -37,10 +37,14 @@ public class TwoHandedMaceExpertise : IHandlesEvent<LuckyHitEvent>
 
     public virtual double GetCriticalStrikeDamageMultiplier(SimulationState state, GearItem weapon, EnemyState enemy)
     {
-        return weapon?.Expertise == Expertise.TwoHandedMace
+        if (weapon?.Expertise == Expertise.TwoHandedMace
             && (enemy.IsStunned() || enemy.IsVulnerable())
-            && state.Player.Auras.Contains(Aura.Berserking)
-                ? CRIT_DAMAGE
-                : 1.0;
+            && state.Player.Auras.Contains(Aura.Berserking))
+        {
+            _log.Verbose($"2-Handed Mace Expertise Critical Strike Damage = {CRIT_DAMAGE:F2}x");
+            return CRIT_DAMAGE;
+        }
+
+        return 1.0;
     }
 }
