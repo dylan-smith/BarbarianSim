@@ -2,14 +2,18 @@
 using BarbarianSim.Config;
 using BarbarianSim.Enums;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Arsenal;
 
 public class TwoHandedAxeExpertiseTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new(new SimulationConfig());
-    private readonly TwoHandedAxeExpertise _expertise = new();
+    private readonly TwoHandedAxeExpertise _expertise;
+
+    public TwoHandedAxeExpertiseTests() => _expertise = new TwoHandedAxeExpertise(_mockSimLogger.Object);
 
     [Fact]
     public void GetVulnerableDamageMultiplier_Returns_1_When_Not_Active()
