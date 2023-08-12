@@ -69,7 +69,7 @@ public class SimulationConfigTests
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald(GearSlot.TwoHandBludgeoning));
         config.Gear.TwoHandBludgeoning.Gems.Add(new RoyalEmerald(GearSlot.TwoHandBludgeoning));
 
-        config.Gear.OneHandLeft.Aspect = new ConceitedAspect();
+        config.Gear.OneHandLeft.Aspect = new ConceitedAspect(new Mock<SimLogger>().Object);
         config.Gear.OneHandLeft.Expertise = Expertise.OneHandedSword;
         config.Gear.OneHandLeft.Gems.Add(new RoyalEmerald(GearSlot.OneHandLeft));
 

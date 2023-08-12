@@ -1,18 +1,20 @@
 ﻿using BarbarianSim.Aspects;
 using BarbarianSim.Config;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace BarbarianSim.Tests.Aspects;
 
 public class ConceitedAspectTests
 {
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
-    private readonly ConceitedAspect _aspect = new();
+    private readonly ConceitedAspect _aspect;
 
     public ConceitedAspectTests()
     {
-        _aspect.Damage = 25;
+        _aspect = new ConceitedAspect(_mockSimLogger.Object) { Damage = 25 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 
