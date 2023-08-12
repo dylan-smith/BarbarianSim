@@ -31,7 +31,7 @@ public class PenitentGreaves : Aspect, IHandlesEvent<SimulationStartedEvent>
         {
             var result = 1 + (Damage / 100.0);
             _log.Verbose($"Penitent Greaves Damage Bonus = {result:F2}x");
-            
+
             return result;
         }
 
