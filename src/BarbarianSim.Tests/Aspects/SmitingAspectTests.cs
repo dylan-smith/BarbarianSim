@@ -10,13 +10,14 @@ namespace BarbarianSim.Tests.Aspects;
 public sealed class SmitingAspectTests
 {
     private readonly Mock<MaxLifeCalculator> _mockMaxLifeCalculator = TestHelpers.CreateMock<MaxLifeCalculator>();
+    private readonly Mock<SimLogger> _mockSimLogger = TestHelpers.CreateMock<SimLogger>();
     private readonly SimulationState _state = new SimulationState(new SimulationConfig());
     private readonly SmitingAspect _aspect;
 
     public SmitingAspectTests()
     {
         _mockMaxLifeCalculator.Setup(m => m.Calculate(It.IsAny<SimulationState>())).Returns(1200.0);
-        _aspect = new SmitingAspect(_mockMaxLifeCalculator.Object) { CritChance = 20, CrowdControlDuration = 40 };
+        _aspect = new SmitingAspect(_mockMaxLifeCalculator.Object, _mockSimLogger.Object) { CritChance = 20, CrowdControlDuration = 40 };
         _state.Config.Gear.Helm.Aspect = _aspect;
     }
 

@@ -9,22 +9,38 @@ public class SmitingAspect : Aspect
     public double CritChance { get; set; }
     public double CrowdControlDuration { get; set; }
 
-    public SmitingAspect(MaxLifeCalculator maxLifeCalculator) => _maxLifeCalculator = maxLifeCalculator;
+    public SmitingAspect(MaxLifeCalculator maxLifeCalculator, SimLogger log)
+    {
+        _maxLifeCalculator = maxLifeCalculator;
+        _log = log;
+    }
 
     private readonly MaxLifeCalculator _maxLifeCalculator;
+    private readonly SimLogger _log;
 
     public virtual double GetCriticalStrikeChanceBonus(SimulationState state, EnemyState enemy)
     {
-        return IsAspectEquipped(state) && enemy.IsInjured()
-            ? 1 + (CritChance / 100.0)
-            : 1.0;
+        if (IsAspectEquipped(state) && enemy.IsInjured())
+        {
+            var result = 1 + (CritChance / 100.0);
+            _log.Verbose($"Smiting Aspect Critical Strike Chance Bonus = {result:F2}x");
+
+            return result;
+        }
+
+        return 1.0;
     }
 
     public virtual double GetCrowdControlDurationBonus(SimulationState state)
     {
-        return IsAspectEquipped(state) &&
-            state.Player.IsHealthy(_maxLifeCalculator.Calculate(state))
-            ? 1 + (CrowdControlDuration / 100.0)
-            : 1.0;
+        if (IsAspectEquipped(state) && state.Player.IsHealthy(_maxLifeCalculator.Calculate(state)))
+        {
+            var result = 1 + (CrowdControlDuration / 100.0);
+            _log.Verbose($"Smiting Aspect Crowd Control Duration Bonus = {result:F2}x");
+
+            return result;
+        }
+
+        return 1.0;
     }
 }
