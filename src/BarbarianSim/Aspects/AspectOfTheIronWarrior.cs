@@ -25,8 +25,12 @@ public class AspectOfTheIronWarrior : Aspect, IHandlesEvent<IronSkinEvent>
 
     public virtual double GetDamageReductionBonus(SimulationState state)
     {
-        return IsAspectEquipped(state) && state.Player.Auras.Contains(Aura.IronSkin)
-            ? DamageReduction
-            : 0.0;
+        if (IsAspectEquipped(state) && state.Player.Auras.Contains(Aura.IronSkin))
+        {
+            _log.Verbose($"Damage Reduction from Aspect of the Iron Warrior = {DamageReduction:F2}%");
+            return DamageReduction;
+        }
+
+        return 0.0;
     }
 }
