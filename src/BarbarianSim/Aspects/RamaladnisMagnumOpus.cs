@@ -27,6 +27,7 @@ public class RamaladnisMagnumOpus : Aspect, IHandlesEvent<SimulationStartedEvent
         if (weapon?.Aspect == this)
         {
             var result = 1 + (DamagePerFury * state.Player.Fury / 100);
+            _log.Verbose($"Ramaladni's Magnum Opus Damage Bonus = {result:F2}x");
 
             return result;
         }
