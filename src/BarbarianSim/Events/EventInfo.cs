@@ -16,10 +16,7 @@ public abstract class EventInfo
 
     public ICollection<string> VerboseLog { get; init; } = new List<string>();
 
-    public void AddVerboseLog(string msg)
-    {
-        VerboseLog.Add(msg);
-    }
+    public void AddVerboseLog(string msg) => VerboseLog.Add(msg);
 }
 
 [AttributeUsage(AttributeTargets.Class)]
