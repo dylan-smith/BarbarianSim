@@ -36,6 +36,10 @@ public class CombatLog
         sb.AppendLine("  <body>");
         sb.AppendLine("    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm\" crossorigin=\"anonymous\"></script>");
         sb.AppendLine("    <div class=\"EventFilter\">");
+        sb.AppendLine("      <div style=\"padding: 10px\">");
+        sb.AppendLine("        <input class=\"form-check-input me-1 FilterAllEventsCheckbox\" type=\"checkbox\" id=\"FilterAllEventsCheckbox\" checked>");
+        sb.AppendLine($"        <label class=\"form-check-label\" for=\"FilterAllEventsCheckbox\">All Events ({_state.ProcessedEvents.Count})</label>");
+        sb.AppendLine("      </div>");
         sb.AppendLine("      <ul class=\"list-group\" style=\"width: 400px; padding: 10px\">");
 
         foreach (var eventGroup in _state.ProcessedEvents.GroupBy(x => x.GetType().Name).OrderByDescending(x => x.Count()))
@@ -67,6 +71,13 @@ public class CombatLog
         sb.AppendLine("              eventElement.style.display = 'none';");
         sb.AppendLine("            });");
         sb.AppendLine("          }");
+        sb.AppendLine("        });");
+        sb.AppendLine("      });");
+        sb.AppendLine("      var changeEvent = new Event('change');");
+        sb.AppendLine("      document.querySelector('#FilterAllEventsCheckbox').addEventListener('change', function (event) {");
+        sb.AppendLine("        document.querySelectorAll('.EventFilterCheckbox').forEach(function (checkbox) {");
+        sb.AppendLine("          checkbox.checked = event.target.checked;");
+        sb.AppendLine("          checkbox.dispatchEvent(changeEvent);");
         sb.AppendLine("        });");
         sb.AppendLine("      });");
         sb.AppendLine("    </script>");
