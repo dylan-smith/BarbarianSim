@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bootstrap demo</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+        <div class="EventFilter">
+            <ul class="list-group" style="width: 400px; padding: 10px">
+                <li class="list-group-item">
+                    <input class="form-check-input me-1 EventFilterCheckbox" type="checkbox" id="SimulationStartedEventCheckbox" checked>
+                    <label class="form-check-label" for="SimulationStartedEventCheckbox">SimulationStartedEvent (1)</label>
+                </li>
+                <li class="list-group-item">
+                    <input class="form-check-input me-1 EventFilterCheckbox" type="checkbox" id="RallyingCryEventCheckbox" checked>
+                    <label class="form-check-label" for="RallyingCryEventCheckbox">RallyingCryEvent (1)</label>
+                </li>
+                <li class="list-group-item">
+                    <input class="form-check-input me-1 EventFilterCheckbox" type="checkbox" id="ChallengingShoutEventCheckbox" checked>
+                    <label class="form-check-label" for="ChallengingShoutEventCheckbox">ChallengingShoutEvent (1)</label>
+                </li>
+            </ul>
+        </div>
+
+        <div class="accordion" id="accordionExample" style="width: 1000px; padding: 10px">
+            <div class="accordion-item SimulationStartedEvent">
+                <div class="accordion-header">
+                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" style="padding-left: 5px">
+                        <span class="px-2 fw-semibold bg-success-subtle border border-success-subtle rounded-2 mx-2">0.0</span>SimulationStartedEvent
+                    </button>
+                </div>
+                <div id="collapseOne" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <code>[ No log data for this event ]</code>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item RallyingCryEvent">
+                <div class="accordion-header">
+                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#123" style="padding-left: 5px">
+                        <span class="px-2 fw-semibold bg-success-subtle border border-success-subtle rounded-2 mx-2">0.0</span>RallyingCryEvent - Increasing Movement Speed and Resource Generation for 6 seconds
+                    </button>
+                </div>
+                <div id="123" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <code>
+                            Duration Increase from Booming Voice = 1.24x with 3 skill points<br/>
+                            Created AuraAppliedEvent for Rallying Cry for 7.44 seconds<br/>
+                            Created AuraAppliedEvent for Rallying Cry Cooldown for 25.00 seconds<br/>
+                            Enhanced Rallying Cry created AuraAppliedEvent for Unstoppable for 7.44 seconds<br/>
+                            Gutteral Yell created GutteralYellProcEvent<br/>
+                            Raid Leader created RaidLeaderProcEvent for 7.44 seconds<br/>
+                            Strategic Rallying Cry created FortifyGeneratedEvent for 4.00 Fortify<br/>
+                            Tactical Rallying Cry created FuryGeneratedEvent for 20.00 Fury<br/>
+                            Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for 4 Fury per second for 7.44 seconds<br/>
+                            Bold Chieftain's Aspect reduced Rallying Cry cooldown by 5.70 seconds<br/>
+                        </code>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item ChallengingShoutEvent">
+                <div class="accordion-header">
+                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" style="padding-left: 5px">
+                        <span class="px-2 fw-semibold bg-success-subtle border border-success-subtle rounded-2 mx-2">0.0</span>ChallengingShoutEvent - Challenging Shout active for 7.44 seconds
+                    </button>
+                </div>
+                <div id="collapseThree" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <code>
+                            Duration Increase from Booming Voice = 1.24x with 3 skill points<br/>
+                            Booming Voice duration multiplier = 1.24x<br/>
+                            Created AuraAppliedEvent for Challenging Shout expiring in 7.44 seconds<br/>
+                            Created AuraAppliedEvent for Challenging Shout cooldown for 25 seconds<br/>
+                            Created AuraAppliedEvent for Taunt on Enemy #1 for 7.44 seconds<br/>
+                            Created AuraAppliedEvent for Taunt on Enemy #2 for 7.44 seconds<br/>
+                            Created AuraAppliedEvent for Taunt on Enemy #3 for 7.44 seconds<br/>
+                            Gutteral Yell created GutteralYellProcEvent<br/>
+                            Raid Leader created RaidLeaderProcEvent for 7.44 seconds<br/>
+                            Aspect of Echoing Fury created AspectOfEchoingFuryProcEvent for 4 Fury per second for 7.44 seconds<br/>
+                            Bold Chieftain's Aspect reduced Challenging Shout cooldown by 5.70 seconds<br/>
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.querySelectorAll('.EventFilterCheckbox').forEach(function (checkbox) {
+                checkbox.addEventListener('change', function (event) {
+                    var eventClass = event.target.id.replace('Checkbox', '');
+                    var eventElements = document.querySelectorAll('.' + eventClass);
+                    if (event.target.checked) {
+                        eventElements.forEach(function (eventElement) {
+                            eventElement.style.display = 'block';
+                        });
+                    } else {
+                        eventElements.forEach(function (eventElement) {
+                            eventElement.style.display = 'none';
+                        });
+                    }
+                });
+            });
+        </script>
+
+        <style>
+            .EventFilter, .accordion {
+                height: 100vh;
+                float: left;
+                overflow-y: scroll;
+            }
+        </style>
+    </body>
+</html>

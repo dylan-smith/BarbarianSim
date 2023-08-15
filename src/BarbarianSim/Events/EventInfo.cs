@@ -12,7 +12,7 @@ public abstract class EventInfo
         Source = source;
     }
 
-    public override string ToString() => $"[{Timestamp:F1}] {GetType().Name}";
+    public override string ToString() => $"{GetType().Name}";
 
     public ICollection<string> VerboseLog { get; init; } = new List<string>();
 

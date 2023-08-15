@@ -183,15 +183,8 @@ internal class Program
         var sim = new Simulation(config, serviceProvider.GetRequiredService<EventPublisher>(), serviceProvider.GetRequiredService<SimLogger>());
         var state = sim.Run();
 
-        foreach (var e in state.ProcessedEvents)
-        {
-            Console.WriteLine(e);
-
-            foreach (var msg in e.VerboseLog)
-            {
-                Console.WriteLine($"    {msg}");
-            }
-        }
+        var combatLog = new CombatLog(state);
+        combatLog.Show();
 
         var summary = new SimulationSummary(state);
         summary.Print();
