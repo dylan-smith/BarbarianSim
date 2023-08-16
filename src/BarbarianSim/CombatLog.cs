@@ -35,33 +35,36 @@ public class CombatLog
         sb.AppendLine("  </head>");
         sb.AppendLine("  <body>");
         sb.AppendLine("    <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm\" crossorigin=\"anonymous\"></script>");
-        sb.AppendLine("    <div class=\"EventFilter\">");
-        sb.AppendLine("      <div style=\"padding: 10px\">");
-        sb.AppendLine("        <input class=\"form-check-input me-1 FilterAllEventsCheckbox\" type=\"checkbox\" id=\"FilterAllEventsCheckbox\" checked>");
-        sb.AppendLine($"        <label class=\"form-check-label\" for=\"FilterAllEventsCheckbox\">All Events ({_state.ProcessedEvents.Count})</label>");
-        sb.AppendLine("      </div>");
-        sb.AppendLine("      <ul class=\"list-group\" style=\"width: 400px; padding: 10px\">");
+        sb.AppendLine("    <div class=\"wrapper\">");
+        sb.AppendLine("      <aside>");
+        sb.AppendLine("        <div style=\"padding: 10px\">");
+        sb.AppendLine("          <input class=\"form-check-input me-1 FilterAllEventsCheckbox\" type=\"checkbox\" id=\"FilterAllEventsCheckbox\" checked>");
+        sb.AppendLine($"          <label class=\"form-check-label\" for=\"FilterAllEventsCheckbox\">All Events ({_state.ProcessedEvents.Count})</label>");
+        sb.AppendLine("        </div>");
+        sb.AppendLine("        <ul class=\"list-group\" style=\"width: 400px; padding: 10px\">");
 
         foreach (var eventGroup in _state.ProcessedEvents.GroupBy(x => x.GetType().Name).OrderByDescending(x => x.Count()))
         {
             RenderEventFilter(eventGroup.Key, eventGroup.Count(), sb);
         }
 
-        sb.AppendLine("      </ul>");
-        sb.AppendLine("    </div>");
+        sb.AppendLine("        </ul>");
+        sb.AppendLine("      </aside>");
 
-        //RenderJson(_state.ProcessedEvents, sb);
-
-        sb.AppendLine("    <div class=\"accordion\" id=\"accordionExample\" style=\"width: 1200px; padding: 10px\">");
+        sb.AppendLine("      <main>");
+        sb.AppendLine("        <div class=\"accordion\" id=\"accordionExample\" style=\"width: 1200px; padding: 10px\">");
 
         foreach (var e in _state.ProcessedEvents)
         {
             RenderEvent(e, sb);
         }
 
+        sb.AppendLine("        </div>");
+        sb.AppendLine("      </main>");
         sb.AppendLine("    </div>");
+
         sb.AppendLine("    <script>");
-        RenderJson(_state.ProcessedEvents, sb);
+
         sb.AppendLine("      document.querySelectorAll('.EventFilterCheckbox').forEach(function (checkbox) {");
         sb.AppendLine("        checkbox.addEventListener('change', function (event) {");
         sb.AppendLine("          var eventClass = event.target.id.replace('Checkbox', '');");
@@ -85,36 +88,25 @@ public class CombatLog
         sb.AppendLine("          checkbox.dispatchEvent(changeEvent);");
         sb.AppendLine("        });");
         sb.AppendLine("      });");
-        sb.AppendLine("");
-
-        sb.AppendLine("      document.querySelectorAll('.accordion-button').forEach(function(button) {");
-        sb.AppendLine("          button.addEventListener('click', function (event) {");
-        sb.AppendLine("              if (event.target.classList.contains('collapsed')) { return; }");
-        sb.AppendLine("              var bodyElement = event.target.parentElement.parentElement.querySelector('.accordion-body');");
-        sb.AppendLine("              var eventId = bodyElement.parentElement.id;");
-        sb.AppendLine("");
-        //sb.AppendLine("              var eventJson = JSON.parse(document.querySelector('#event-json').innerHTML);");
-        sb.AppendLine("              var event = eventData.find(function (event) {");
-        sb.AppendLine("                  return event['eventId'] === eventId;");
-        sb.AppendLine("              });");
-        sb.AppendLine("");
-        sb.AppendLine("              if (event.logs.length > 0) {");
-        sb.AppendLine("                  bodyElement.innerHTML = '<code>' + event.logs.join('<br/>') + '</code>';");
-        sb.AppendLine("              } else {");
-        sb.AppendLine("                  bodyElement.innerHTML = '<code>[ No log data for this event ]</code>';");
-        sb.AppendLine("              }");
-        sb.AppendLine("          });");
-        sb.AppendLine("      });");
 
         sb.AppendLine("    </script>");
+
         sb.AppendLine("    <style>");
-        sb.AppendLine("      .EventFilter, .accordion {");
-        sb.AppendLine("        height: 100vh;");
-        sb.AppendLine("        float: left;");
+        sb.AppendLine("      body {");
+        sb.AppendLine("        overflow: hidden;");
+        sb.AppendLine("        height: 100vh");
+        sb.AppendLine("      }");
+
+        sb.AppendLine("      fooaside {");
+        sb.AppendLine("        flex: 0 0 10%;");
+        sb.AppendLine("      }");
+        sb.AppendLine("      .wrapper {");
+        sb.AppendLine("        display: flex;");
+        sb.AppendLine("        height: 100%;");
         sb.AppendLine("        overflow-y: auto;");
         sb.AppendLine("      }");
-        //sb.AppendLine("      .collapsing {\n    -webkit-transition: none;\n    transition: none;\n    display: none;\n}");
         sb.AppendLine("    </style>");
+
         sb.AppendLine("  </body>");
         sb.AppendLine("</html>");
 
