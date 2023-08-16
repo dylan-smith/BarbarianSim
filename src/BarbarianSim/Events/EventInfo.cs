@@ -2,8 +2,8 @@
 
 public abstract class EventInfo
 {
+    public Guid Id { get; init; } = Guid.NewGuid();
     public double Timestamp { get; set; }
-
     public string Source { get; init; }
 
     protected EventInfo(double timestamp, string source)
