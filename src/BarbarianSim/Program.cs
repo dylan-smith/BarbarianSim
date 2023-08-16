@@ -17,6 +17,21 @@ internal class Program
 {
     private static void Main()
     {
+        var serviceProvider = ConfigureDIContainer();
+        var config = CreateConfig(serviceProvider);
+
+        var sim = new Simulation(config, serviceProvider.GetRequiredService<EventPublisher>(), serviceProvider.GetRequiredService<SimLogger>());
+        var state = sim.Run();
+
+        var combatLog = new CombatLog(state);
+        combatLog.Show();
+
+        var summary = new SimulationSummary(state);
+        summary.Print();
+    }
+
+    private static IServiceProvider ConfigureDIContainer()
+    {
         var serviceCollection = new ServiceCollection();
 
         // Abilities
@@ -176,18 +191,7 @@ internal class Program
         serviceCollection.AddSingleton<EventPublisher>();
         serviceCollection.AddSingleton<SimLogger>();
 
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-
-        var config = CreateConfig(serviceProvider);
-
-        var sim = new Simulation(config, serviceProvider.GetRequiredService<EventPublisher>(), serviceProvider.GetRequiredService<SimLogger>());
-        var state = sim.Run();
-
-        var combatLog = new CombatLog(state);
-        combatLog.Show();
-
-        var summary = new SimulationSummary(state);
-        summary.Print();
+        return serviceCollection.BuildServiceProvider();
     }
 
     private static T CreateAspect<T>(IServiceProvider serviceProvider) where T : Aspect => serviceProvider.GetRequiredService<T>();
